@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<style>
+			.player_position {
+				border: solid 1px black;
+				height: 20px;
+			}
+			.player_position div {
+				background-color: black;
+			}
+			#play {
+				width: 50px; height: 50px;
+				text-align: center;
+				vertical-align: middle;
+			}
+			.play {background-color: green}
+			#play.stop {background-color: red}
+		</style>
+	</head>
+	<body>
+		<h2></h2>
+		<p>P.S. This only works in browsers that support mp4.</p>
+		<video src="trailer.mp4" width="425" height="240" preload id='trailer'></video>
+		<div id='position'></div>
+		<div id='play'>HELLO</div>
+		<script type='text/javascript'
+			src='../steal/steal.js?player'></script>
+	</body>
+</html>
