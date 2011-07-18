@@ -1,275 +1,220 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Ruby on Rails: Welcome aboard</title>
-    <style type="text/css" media="screen">
-      body {
-        margin: 0;
-        margin-bottom: 25px;
-        padding: 0;
-        background-color: #f0f0f0;
-        font-family: "Lucida Grande", "Bitstream Vera Sans", "Verdana";
-        font-size: 13px;
-        color: #333;
-      }
-      
-      h1 {
-        font-size: 28px;
-        color: #000;
-      }
-      
-      a  {color: #03c}
-      a:hover {
-        background-color: #03c;
-        color: white;
-        text-decoration: none;
-      }
-      
-      
-      #page {
-        background-color: #f0f0f0;
-        width: 750px;
-        margin: 0;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      
-      #content {
-        float: left;
-        background-color: white;
-        border: 3px solid #aaa;
-        border-top: none;
-        padding: 25px;
-        width: 500px;
-      }
-      
-      #sidebar {
-        float: right;
-        width: 175px;
-      }
-
-      #footer {
-        clear: both;
-      }
-      
-
-      #header, #about, #getting-started {
-        padding-left: 75px;
-        padding-right: 30px;
-      }
-
-
-      #header {
-        background-image: url("images/rails.png");
-        background-repeat: no-repeat;
-        background-position: top left;
-        height: 64px;
-      }
-      #header h1, #header h2 {margin: 0}
-      #header h2 {
-        color: #888;
-        font-weight: normal;
-        font-size: 16px;
-      }
-      
-      
-      #about h3 {
-        margin: 0;
-        margin-bottom: 10px;
-        font-size: 14px;
-      }
-      
-      #about-content {
-        background-color: #ffd;
-        border: 1px solid #fc0;
-        margin-left: -11px;
-      }
-      #about-content table {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        font-size: 11px;
-        border-collapse: collapse;
-      }
-      #about-content td {
-        padding: 10px;
-        padding-top: 3px;
-        padding-bottom: 3px;
-      }
-      #about-content td.name  {color: #555}
-      #about-content td.value {color: #000}
-      
-      #about-content.failure {
-        background-color: #fcc;
-        border: 1px solid #f00;
-      }
-      #about-content.failure p {
-        margin: 0;
-        padding: 10px;
-      }
-      
-      
-      #getting-started {
-        border-top: 1px solid #ccc;
-        margin-top: 25px;
-        padding-top: 15px;
-      }
-      #getting-started h1 {
-        margin: 0;
-        font-size: 20px;
-      }
-      #getting-started h2 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: normal;
-        color: #333;
-        margin-bottom: 25px;
-      }
-      #getting-started ol {
-        margin-left: 0;
-        padding-left: 0;
-      }
-      #getting-started li {
-        font-size: 18px;
-        color: #888;
-        margin-bottom: 25px;
-      }
-      #getting-started li h2 {
-        margin: 0;
-        font-weight: normal;
-        font-size: 18px;
-        color: #333;
-      }
-      #getting-started li p {
-        color: #555;
-        font-size: 13px;
-      }
-      
-      
-      #search {
-        margin: 0;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        font-size: 11px;
-      }
-      #search input {
-        font-size: 11px;
-        margin: 2px;
-      }
-      #search-text {width: 170px}
-      
-      
-      #sidebar ul {
-        margin-left: 0;
-        padding-left: 0;
-      }
-      #sidebar ul h3 {
-        margin-top: 25px;
-        font-size: 16px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-      }
-      #sidebar li {
-        list-style-type: none;
-      }
-      #sidebar ul.links li {
-        margin-bottom: 5px;
-      }
-      
-    </style>
-    <script type="text/javascript" src="javascripts/prototype.js"></script>
-    <script type="text/javascript" src="javascripts/effects.js"></script>
-    <script type="text/javascript">
-      function about() {
-        if (Element.empty('about-content')) {
-          new Ajax.Updater('about-content', 'rails/info/properties', {
-            method:     'get',
-            onFailure:  function() {Element.classNames('about-content').add('failure')},
-            onComplete: function() {new Effect.BlindDown('about-content', {duration: 0.25})}
-          });
-        } else {
-          new Effect[Element.visible('about-content') ? 
-            'BlindUp' : 'BlindDown']('about-content', {duration: 0.25});
-        }
-      }
-      
-      window.onload = function() {
-        $('search-text').value = '';
-        $('search').onsubmit = function() {
-          $('search-text').value = 'site:rubyonrails.org ' + $F('search-text');
-        }
-      }
-    </script>
+    <title>JavaScriptMVC</title>
+	<link rel="stylesheet" type='text/css' href='jmvc/site/production.css' />
+	<link rel="shortcut icon" href="documentjs/jmvcdoc/images/favicon.ico" />
   </head>
   <body>
-    <div id="page">
-      <div id="sidebar">
-        <ul id="sidebar-items">
-          <li>
-            <form id="search" action="http://www.google.com/search" method="get">
-              <input type="hidden" name="hl" value="en" />
-              <input type="text" id="search-text" name="q" value="site:rubyonrails.org " />
-              <input type="submit" value="Search" /> the Rails site
-            </form>
-          </li>
-        
-          <li>
-            <h3>Join the community</h3>
-            <ul class="links">
-              <li><a href="http://www.rubyonrails.org/">Ruby on Rails</a></li>
-              <li><a href="http://weblog.rubyonrails.org/">Official weblog</a></li>
-              <li><a href="http://wiki.rubyonrails.org/">Wiki</a></li>
-            </ul>
-          </li>
-          
-          <li>
-            <h3>Browse the documentation</h3>
-            <ul class="links">
-              <li><a href="http://api.rubyonrails.org/">Rails API</a></li>
-              <li><a href="http://stdlib.rubyonrails.org/">Ruby standard library</a></li>
-              <li><a href="http://corelib.rubyonrails.org/">Ruby core</a></li>
-              <li><a href="http://guides.rubyonrails.org/">Rails Guides</a></li>
-            </ul>
-          </li>
+    <div id='container'>
+      <div id='header'>
+        <a href="index.html" id="logo"><img alt="JavascriptMVC" src="jmvc/images/logo.png" title="JavascriptMVC"/></a>
+        <div id='download-box'>
+          <a href="https://github.com/downloads/jupiterjs/javascriptmvc/javascriptmvc-3.1.0.zip">Download v3.1.0</a>
+          <a href="builder.html" id="download-builder">or go to the download builder</a>
+        </div>
+      </div>
+      <div id='navigation'>
+        <ul>
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="docs.html">Documentation</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="follow.html">Follow &amp; Community</a></li>
+          <li><a href="contribute.html">Contribute</a></li>
+          <li><a href="code.html">Code</a></li>
         </ul>
       </div>
-
-      <div id="content">
-        <div id="header">
-          <h1>Welcome aboard</h1>
-          <h2>You&rsquo;re riding Ruby on Rails!</h2>
-        </div>
-
-        <div id="about">
-          <h3><a href="rails/info/properties" onclick="about(); return false">About your application&rsquo;s environment</a></h3>
-          <div id="about-content" style="display: none"></div>
-        </div>
-        
-        <div id="getting-started">
-          <h1>Getting started</h1>
-          <h2>Here&rsquo;s how to get rolling:</h2>
+      <div id='content-wrapper'>
+        <div id='content'>
+          <h2>What's Inside?</h2>
+          <p>Everything you should be doing, as easy as possible:</p>
+          <table class="inside">
+          <tbody>
+          <tr class="odd">
+          	<td>
+          		<a href="docs/steal.generate.html">Code Generators</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">.<span class="regexp">/js jquery/g</span>enerate/app myapp</code></pre>
+          	</td>
+          </tr>
+          <tr>
+          	<td>
+          		<a href="docs/steal.html">Dependency Management</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">steal.plugins(<span class="string">'jquery/controller'</span>).then(<span class="function"><span class="keyword">function</span><span class="params">($)</span>{</span> ... });</code></pre>
+          	</td>
+          </tr>
+          <tr class="odd">
+          	<td>
+          		<a href="docs/steal.build.html">Production Builds</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">js myapp/scripts/build.js</code></pre>
+          	</td>
+          </tr>
+          <tr>
+          	<td>
+          		<a href="docs/FuncUnit.html">Testing</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">S.open(<span class="string">"//myapp/myapp.html"</span>);<br />S(<span class="string">"#search"</span>).click().type(<span class="string">"Hello World"</span>);</code></pre>
+          	</td>
+          </tr>
+          <tr class="odd">
+          	<td>
+          		<a href="docs/jQuery.View.html">Client Side Templates</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">$(<span class="string">"#menu"</span>).html(<span class="string">"menu.tmpl"</span>,items);</code></pre>
+          	</td>
+          </tr>
+          <tr>
+          	<td>
+          		<a href="docs/jQuery.Controller.html">jQuery Widget Factory</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">$.Controller(<span class="string">"Tabs"</span>,{ <span class="string">"li click"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span> ... } });</code></pre>
+          	</td>
+          </tr>
+          <tr class="odd">
+          	<td>
+          		<a href="docs/jQuery.Model.html">Service/Data Modeling</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">$.Model(<span class="string">"Todo"</span>,{ findAll : <span class="string">"/recipes"</span> }, {});<br />Todo.findAll(<span class="function"><span class="keyword">function</span><span class="params">(todos)</span>{</span> ... });</code></pre>
+          	</td>
+          </tr>
+          <tr>
+          	<td>
+          		<a href="docs/DocumentJS.html">Documentation</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">js myapp/scripts/docs.js</code></pre>
+          	</td>
+          </tr>
+          <tr class="odd">
+          	<td>
+          		<a href="docs/steal.clean.html">Code Cleaning and Linting</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">js myapp/scripts/clean.js</code></pre>
+          	</td>
+          </tr>
+          <tr>
+          	<td>
+          		<a href="docs/specialevents.html">jQuery Special Events</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">$(<span class="string">"#items"</span>).delegate(<span class="string">".item"</span>,<span class="string">"draginit"</span>,<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>});</code></pre>
+          	</td>
+          </tr>
+          <tr class="odd">
+          	<td>
+          		<a href="docs/dom.html">jQuery Utilities</a>
+          	</td>
+          	<td>
+          		<pre><code class="javascript">$(<span class="string">"#panel"</span>).outerWidth(<span class="number">500</span>);</code></pre>
+          	</td>
+          </tr>
+          </tbody>
+          </table>
+          <p>You can use JavaScriptMVC as a complete framework, or   <a href="builder.html">download</a> only the parts you need. Read <a href="http://jupiterjs.com/news/javascriptmvc-features">JavaScriptMVC's features</a> for more info.</p></p>
+          <h2>The Plan.</h2>
+          <ul>
+            <li><a href="builder.html">Download</a> JavaScriptMVC</li>
+            <li><a href="docs/getstarted.html">Read</a> the Getting Started Guide</li>
+            <li><a href="docs/learn.html">Learn</a> the technology</li>
+            <li><a href="docs/api.html">Explore</a> the api</li>
+          </ul>
+          <h2>What People are Saying</h2>
+          <blockquote>
+            <p>"JavaScriptMVC is the <span class="highlight">single most important reason</span> why I don't hate
+            client side development anymore."</p>
+          </blockquote>
+          <p><cite> Mihael Konjevic, HibreedCMS </cite></p>
           
-          <ol>          
-            <li>
-              <h2>Use <tt>script/generate</tt> to create your models and controllers</h2>
-              <p>To see all available options, run it without parameters.</p>
-            </li>
-            
-            <li>
-              <h2>Set up a default route and remove or rename this file</h2>
-              <p>Routes are set up in config/routes.rb.</p>
-            </li>
-
-            <li>
-              <h2>Create your database</h2>
-              <p>Run <tt>rake db:migrate</tt> to create your database. If you're not using SQLite (the default), edit <tt>config/database.yml</tt> with your username and password.</p>
-            </li>
-          </ol>
+          <blockquote>
+            <p>"JavaScriptMVC strike the 
+            <span class="highlight">perfect balance between structure, speed
+            and featureset</span> to enable web developers to build large, scalable apps
+            in a modular fashion."</p>
+          </blockquote>
+          <p><cite> Rob Loh, Lyris, Inc. </cite></p>
+          
+          <blockquote>
+            <p>"JavaScriptMVC is an 
+            <span class="highlight">elegant solution that has proven indispensable</span> in building
+            our most sophisticated applications."</p>
+          </blockquote>
+          <p><cite>Chris Osborn, Sitelier Inc.</cite></p>
+          
+          <blockquote>
+            <p>"Since standardizing on JavaScriptMVC, we've been able to start sharing
+            well-tested code between projects, 
+            <span class="highlight">quickly bring new developers up to speed</span>
+            and take the complexity out of the packaging, minification, and deployment
+            process."</p>
+          </blockquote>
+          <p><cite> Thomas Reynolds, Second Story</cite></p>
+          
+          <blockquote>
+            <p>"Structured Event Delegation? Development, Test, and Production 
+            environments?  It even has a build step in its deployment process?
+            <span class="highlight">Are you sure this is a JavaScript application?</span>"</p>
+          </blockquote>
+          <p><cite> Donnie Hall, eNova Financial</cite></p>
         </div>
+        <div id='sidebar'>
+          <p class='greenbox' id='what-is-javascriptmvc'><strong>JavaScriptMVC</strong> is an open-source framework containing the best ideas in jQuery development. <br /><br />It guides you to successfully completed projects by promoting best practices, maintainability, and convention over configuration.</p>
+          <div id='twitter-feed-wrapper'>
+            <div id='twitter-feed'></div>
+            <a href="http://www.twitter.com/javascriptmvc" title="Follow @javascriptmvc"><img alt="Follow twitter" src="jmvc/images/follow_twitter.png"/></a>
+          </div>
+        </div>
+        <div class='clear'></div>
       </div>
-      
-      <div id="footer">&nbsp;</div>
+      <div class='greenbox' id='footer'>
+        <div id='who-javascriptmvc'>
+          <h4>What is JavaScriptMVC?</h4>
+          <p>A collection of the best practices and tools for building JavaScript applications. 
+		  Built on top of jQuery, it consists of the following standalone components:</p>
+          <ul>
+            <li><a href='docs/stealjs.html'>StealJS</a> - Dependency management and a stupidly easy build tool.</li>
+            <li><a href='docs/FuncUnit.html'>FuncUnit</a> - There's no better functional testing solution available. Write tests in jQuery syntax, run them via command line or browser.</li>
+            <li><a href='https://github.com/jupiterjs/jquerymx'>jQueryMX</a> - These plugins are the building blocks of large jQuery applications: model, view, controller, class, fixtures, and more.</li>
+            <li><a href='docs/DocumentJS.html'>DocumentJS</a> - A JSDoc compliant tool that turns comments into a searchable documentation app.</li>
+          </ul>
+          <h4>Why JavaScriptMVC?</h4>
+		  <p>It is the product of years of experience in the trenches developing medium to large JavaScript applications. 
+		  It will help you build a quality application.</p>
+          <h4>Who Uses JavaScriptMVC?</h4>
+          <p>Our users are software craftsmen who care about doing JavaScript development the right way. They care about things like test driven development, performance, code quality, structure and maintainability.</p>
+          <p>JavaScriptMVC makes it simple to do all these things and more.</p>
+        </div>
+        <div id='forum-feed'>
+          <h4><a href='http://forum.javascriptmvc.com'>Fresh on Forums</a></h4>
+          <ul></ul>
+        </div>
+        <div class='clear'></div>
+      </div>
     </div>
+    <div id='bottom-bar'>
+      <a href="http://jupiterit.com">&copy; Jupiter IT - JavaScriptMVC Training and Support</a>
+    </div>
+	
+    <script type='text/javascript' src='steal/steal.production.js?jmvc/site'></script>
+    
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try{
+		var pageTracker = _gat._getTracker("UA-2302003-4");
+		pageTracker._trackPageview();
+		} catch(err) {}
+	</script>
   </body>
 </html>

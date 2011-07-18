@@ -1,6 +1,6 @@
 // load('jquery/build.js')
 
-load('steal/rhino/steal.js')
+load('steal/rhino/rhino.js')
 
 var i, fileName, cmd, 
 	plugins = [
@@ -16,6 +16,8 @@ var i, fileName, cmd,
 	"event/default",
 	"event/destroyed",
 	"event/drag",
+	"event/pause",
+	"event/resize",
 	{
 		plugin: "event/drag/limit", 
 		exclude: ["jquery/lang/vector/vector.js", "jquery/event/livehack/livehack.js", "jquery/event/drag/drag.js"]},
@@ -96,7 +98,7 @@ var i, fileName, cmd,
 ]
 
 
-steal.plugins('steal/build/pluginify').then( function(s){
+steal('steal/build/pluginify').then( function(s){
 var plugin, exclude, fileDest, fileName;
 	for(i=0; i<plugins.length; i++){
 		plugin = plugins[i];

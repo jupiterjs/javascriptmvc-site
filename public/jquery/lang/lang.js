@@ -1,5 +1,5 @@
 //string helpers
-steal.plugins('jquery').then(function( $ ) {
+steal('jquery').then(function( $ ) {
 	// Several of the methods in this plugin use code adapated from Prototype
 	//  Prototype JavaScript framework, version 1.6.0.1
 	//  (c) 2005-2007 Sam Stephenson
@@ -13,7 +13,7 @@ steal.plugins('jquery').then(function( $ ) {
 		dot: /\./
 	},
 		getNext = function(current, nextPart, add){
-			return current[nextPart] || ( add && (current[nextPart] = {}) );
+			return current[nextPart] !== undefined ? current[nextPart] : ( add && (current[nextPart] = {}) );
 		},
 		isContainer = function(current){
 			var type = typeof current;
@@ -115,7 +115,7 @@ steal.plugins('jquery').then(function( $ ) {
 			 * @return {String} the niceName
 			 */
 			niceName: function( s ) {
-				str.classize(parts[i],' ');
+				return str.classize(s,' ');
 			},
 
 			/**

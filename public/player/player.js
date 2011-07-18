@@ -1,4 +1,4 @@
-steal('play','position').then(function(){
+steal('./play.js','./position.js').then(function(){
 	
 	var video = Popcorn("#trailer");
 	

@@ -1,6 +1,6 @@
 /*global OpenAjax: true */
 
-steal.plugins('jquery/class', 'jquery/lang').then(function() {
+steal('jquery/class', 'jquery/lang').then(function() {
 	
 	//helper stuff for later.  Eventually, might not need jQuery.
 	var underscore = $.String.underscore,
@@ -28,7 +28,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 					src = ajaxOb;
 				}
 			}
-			attrs = extend({},attrs)
+			typeof attrs == "object" && (attrs =  extend({},attrs))
 			
 			var url = $.String.sub(src, attrs, true)
 			return $.ajax({
@@ -122,7 +122,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		unbind = $method('unbind');
 	/**
 	 * @class jQuery.Model
-	 * @tag core
+	 * @parent jquerymx
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/model.js
 	 * @test jquery/model/qunit.html
 	 * @plugin jquery/model
@@ -634,8 +634,13 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			//add ajax converters
 			var converters = {},
 				convertName = "* "+this._shortName+".model";
+				
 			converters[convertName+"s"] = this.callback('models');
-			converters[convertName] = this.callback('model');
+			converters[convertName] = this.callback('model');	
+				
+			//converters[convertName+"s"] = this.models = this.callback(this.models);
+			//converters[convertName] = this.model = this.callback(this.model);
+			
 			$.ajaxSetup({
 				converters : converters
 			});				
@@ -760,6 +765,9 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		model: function( attributes ) {
 			if (!attributes ) {
 				return null;
+			}
+			if( attributes instanceof this){
+				attributes = attributes.serialize();
 			}
 			return new this(
 				// checks for properties in an object (like rails 2.0 gives);
@@ -906,7 +914,8 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			}
 			var res = getList(this.List),
 				arr = isArray(instancesRawData),
-				raw = arr ? instancesRawData : instancesRawData.data,
+				ml = ($.Model.List && instancesRawData instanceof $.Model.List),
+				raw = arr ? instancesRawData : (ml ? instancesRawData.serialize() : instancesRawData.data),
 				length = raw.length,
 				i = 0;
 			//@steal-remove-start
@@ -1000,6 +1009,21 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			},
 			"boolean": function( val ) {
 				return Boolean(val);
+			},
+			"default" : function(val, error, type){
+				var construct = $.String.getObject(type), 
+					context = window, realType;
+				if(type.indexOf(".") >= 0){
+					realType = type.substring(0, type.lastIndexOf("."));
+					context = $.String.getObject(realType);
+				}
+				return typeof construct == "function" ? 
+					construct.call(context, val) : val;
+			}
+		},
+		serialize : {
+			"default" : function( val, type ){
+				return isObject(val) && val.serialize ? val.serialize() : val;
 			}
 		},
 		bind: bind,
@@ -1177,6 +1201,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		attr: function( attribute, value, success, error ) {
 			var cap = classize(attribute),
 				get = "get" + cap;
+				
 			if ( value !== undefined ) {
 				this._setProperty(attribute, value, success, error, cap);
 				return this;
@@ -1269,30 +1294,35 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			var Class = this.Class,
 				val, type = Class.attributes[property] || Class.addAttr(property, Class.guessType(value)),
 				//the converter
-				converter = Class.convert[type],
+				converter = Class.convert[type] || Class.convert['default'],
 				errors = null,
-				stub;
+				prefix = "",
+				global = "updated.",
+				args,
+				globalArgs,
+				callback = success;
 
 			val = this[property] = (value === null ? //if the value is null or undefined
 			null : // it should be null
-			(converter ? converter.call(Class, value) : //convert it to something useful
-			value)); //just return it
+			converter.call(Class, value, function(){}, type)  //convert it to something useful
+			); //just return it
 			//validate (only if not initializing, this is for performance)
 			if (!this._init ) {
 				errors = this.errors(property);
 			}
-
-			if ( errors ) {
-				//get an array of errors
-				errorCallback(errors);
-			} else {
-				if ( old !== val && !this._init ) {
-					$(this).triggerHandler(property, [val]);
-					$(this).triggerHandler("updated.attr", [property,val, old]); // this is for 3.1
-				}
-				stub = success && success(this);
-
+			args = [val];
+			globalArgs = [property,val, old];
+			if(errors){
+				prefix = global ="error.";
+				callback = errorCallback;
+				globalArgs.splice(1,0, errors);
+				args.unshift(errors)
 			}
+			if (old !== val && !this._init) {
+				!errors && $(this).triggerHandler(prefix + property, args);
+				$(this).triggerHandler(global + "attr", globalArgs);
+			}
+			callback && callback.apply(this, args);
 
 			//if this class has a global list, add / remove from the list.
 			if ( property === Class.id && val !== null && Class.list ) {
@@ -1346,6 +1376,25 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 
 			}
 			return attributes;
+		},
+		serialize : function(){
+			var Class = this.Class,
+				attrs = Class.attributes,
+				type,
+				converter,
+				data = {},
+				attr;
+
+				attributes = {};
+				
+			for ( attr in attrs ) {
+				if ( attrs.hasOwnProperty(attr) ) {
+					type = attrs[attr];
+					converter = Class.serialize[type] || Class.serialize['default'];
+					data[attr] = converter( this[attr] , type );
+				}
+			}
+			return data;
 		},
 		/**
 		 * Returns if the instance is a new object.  This is essentially if the
@@ -1467,10 +1516,10 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			models[shortName] = this;
 		}
 	});
+	
 	// map wrapMany
 	$.Model.wrapMany = $.Model.models;
 	$.Model.wrap = $.Model.model;
-
 
 	each([
 	/**

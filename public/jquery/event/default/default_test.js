@@ -1,4 +1,4 @@
-steal.plugins('funcunit/qunit','jquery/event/default').then(function(){
+steal('funcunit/qunit','jquery/event/default').then(function(){
 
 module("jquery/event/default")
 test("namespaced with same function", function(){
@@ -125,6 +125,24 @@ test("default and live order", function(){
 	
 	same(order, ['show','default'],"show then default")
 	$("#foo").die()
+});
+
+
+test("type on objects", function(){
+	var ev = $.Event('updated'),
+		obj = {foo: 'bar'};
+		
+	$(obj).trigger(ev)
+
+	equals(ev.type, 'updated')
+});
+
+test("namespace on objects", function(){
+	var ev = $.Event('updated.ns'),
+		obj = {foo: 'bar'};
+		
+	$(obj).trigger(ev)
+	equals(ev.namespace, 'ns')
 });
 
 

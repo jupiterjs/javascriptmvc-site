@@ -1,4 +1,4 @@
-steal.plugins('player/popcorn','jquery/controller').then(function(){
+steal('player/popcorn','jquery/controller').then(function(){
 	
 	$.Controller('Play', {
 		init : function(){

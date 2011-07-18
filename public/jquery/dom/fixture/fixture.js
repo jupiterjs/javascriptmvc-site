@@ -1,5 +1,4 @@
-steal.plugins('jquery/dom').then(function( $ ) {
-	
+steal('jquery/dom').then(function( $ ) {
 	// the pre-filter needs to re-route the url
 	$.ajaxPrefilter( function( settings, originalOptions, jqXHR ) {
 	  	// if fixtures are on
@@ -150,6 +149,18 @@ steal.plugins('jquery/dom').then(function( $ ) {
 		 */
 		getId = function(settings){
         	var id = settings.data.id;
+
+			if(id === undefined && typeof settings.data === "number") {
+				id = settings.data;
+			}
+
+			/*
+			Check for id in params(if query string)
+			If this is just a string representation of an id, parse
+			if(id === undefined && typeof settings.data === "string") {
+				id = settings.data;
+			}
+			//*/
 
 			if(id === undefined){
                 settings.url.replace(/\/(\d+)(\/|$)/g, function(all, num){
@@ -323,13 +334,12 @@ steal.plugins('jquery/dom').then(function( $ ) {
 			
 			//handle removing.  An exact match if fixture was provided, otherwise, anything similar
 			var index = find(settings, !!fixture);
-			if(index >= -1){
+			if(index > -1){
 				overwrites.splice(index,1)
 			}
 			if(fixture == null){
 				return 
 			}
-			
 			settings.fixture = fixture;
 			overwrites.push(settings)
 		}
@@ -436,7 +446,6 @@ steal.plugins('jquery/dom').then(function( $ ) {
 			}
 			//set plural fixture for findAll
 			$.fixture["-" + types[0]] = function( settings ) {
-
 				//copy array of items
 				var retArr = items.slice(0);
 
@@ -482,7 +491,7 @@ steal.plugins('jquery/dom').then(function( $ ) {
 				//filter results if someone added an attr like parentId
 				for ( var param in settings.data ) {
 					i=0;
-					if ( settings.data[param] && // don't do this if the value of the param is null (ignore it)
+					if ( settings.data[param] != undefined && // don't do this if the value of the param is null (ignore it)
 						(param.indexOf("Id") != -1 || param.indexOf("_id") != -1) ) {
 						while ( i < retArr.length ) {
 							if ( settings.data[param] != retArr[i][param] ) {
@@ -516,7 +525,8 @@ steal.plugins('jquery/dom').then(function( $ ) {
 			};
             // findOne
 			$.fixture["-" + types[1]] = function( settings ) {
-				return [findOne(settings.data.id)];
+				var item = findOne(getId(settings));
+				return item ? [item] : [];
 			};
             // update
             $.fixture["-" + types[1]+"Update"] = function( settings, cbType ) {
@@ -550,6 +560,15 @@ steal.plugins('jquery/dom').then(function( $ ) {
 				items.push(item);
 				return $.fixture["-restCreate"](settings, cbType)
 			};
+			
+			
+			return {
+				getId: getId,
+				findOne : findOne,
+				find : function(settings){
+					return findOne( getId(settings) );
+				}
+			}
 		},
 		/**
 		 * Use $.fixture.xhr to create an object that looks like an xhr object. 
@@ -617,7 +636,7 @@ steal.plugins('jquery/dom').then(function( $ ) {
 	 * the success and complete handlers are called.  This only sets
 	 * functional fixtures.  By default, the delay is 200ms.
 	 * @codestart
-	 * steal.plugins('jquery/dom/fixtures').then(function(){
+	 * steal('jquery/dom/fixtures').then(function(){
 	 *   $.fixture.delay = 1000;
 	 * })
 	 * @codeend
@@ -752,7 +771,7 @@ steal.plugins('jquery/dom').then(function( $ ) {
 	 *     steal({path: '//todo/fixtures/fixtures.js',ignore: true});
 	 *     
 	 *     //start of your app's steals
-	 *     steal.plugins( ... )
+	 *     steal( ... )
 	 * 
 	 * We typically keep it a one liner so it's easy to comment out.
 	 * 

@@ -1,13 +1,13 @@
 // load('jquery/build.js')
 
-load('steal/rhino/steal.js')
+load('steal/rhino/rhino.js')
 
 
 // load every plugin in a single app
 // get dependency graph
 // generate single script
 
-steal.plugins('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( function(s){
+steal('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( function(s){
 	var ignore = /\.\w+|test|generate|dist|qunit|fixtures|pages/
 	
 	var plugins = [];
@@ -25,7 +25,7 @@ steal.plugins('steal/build/pluginify','steal/build/apps','steal/build/scripts').
 	// tell it to load all plugins into this page
 	rhinoLoader = {
 		callback: function( s ) {
-			s.plugins.apply(s,plugins);
+			s.apply(s,plugins);
 		}
 	};
 	
@@ -41,7 +41,7 @@ steal.plugins('steal/build/pluginify','steal/build/apps','steal/build/scripts').
 					var depend = stl.dependencies[d];
 					if(!steals[depend.path]){
 						steals[depend.path] = true;
-						print("  " + depend.path);
+						print("123  " + depend.path);
 						//depends(depend, steals);
 					}
 					
@@ -70,7 +70,9 @@ steal.plugins('steal/build/pluginify','steal/build/apps','steal/build/scripts').
 		if(stl.dependencies){
 			for (var d = 0; d < stl.dependencies.length; d++) {
 				var depend = stl.dependencies[d];
-				dependencies.push(depend.path);
+				if (depend.path !== "jquery/jquery.js") {
+					dependencies.push(depend.path);
+				}
 			}
 		}
 	})

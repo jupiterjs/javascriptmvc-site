@@ -3,7 +3,7 @@
 // http://ejohn.org/blog/simple-javascript-inheritance/
 // It provides class level inheritance and callbacks.
 //@steal-clean
-steal.plugins("jquery","jquery/lang").then(function( $ ) {
+steal("jquery","jquery/lang").then(function( $ ) {
 
 	// if we are initializing a new class
 	var initializing = false,
@@ -51,7 +51,7 @@ steal.plugins("jquery","jquery/lang").then(function( $ ) {
 	/**
 	 * @class jQuery.Class
 	 * @plugin jquery/class
-	 * @tag core
+	 * @parent jquerymx
 	 * @download dist/jquery/jquery.class.js
 	 * @test jquery/class/qunit.html
 	 * 

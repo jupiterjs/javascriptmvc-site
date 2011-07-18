@@ -1,5 +1,4 @@
-steal.plugins('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(function( $ ) {
-
+steal('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(function( $ ) {
 	// ------- helpers  ------
 	// Binds an element, returns a function that unbinds
 	var bind = function( el, ev, callback ) {
@@ -29,10 +28,11 @@ steal.plugins('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(func
 		Str = $.String,
 		// Binds an element, returns a function that unbinds
 		delegate = function( el, selector, ev, callback ) {
-			$(el).delegate(selector, ev, callback);
+			var binder = el.delegate && el.undelegate ? el : $(isFunction(el) ? [el] : el)
+			binder.delegate(selector, ev, callback);
 			return function() {
-				$(el).undelegate(selector, ev, callback);
-				el = ev = callback = selector = null;
+				binder.undelegate(selector, ev, callback);
+				binder = el = ev = callback = selector = null;
 			};
 		},
 		binder = function( el, ev, callback, selector ) {
@@ -65,7 +65,7 @@ steal.plugins('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(func
 		};
 	/**
 	 * @class jQuery.Controller
-	 * @tag core
+	 * @parent jquerymx
 	 * @plugin jquery/controller
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/controller/controller.js
 	 * @test jquery/controller/qunit.html
