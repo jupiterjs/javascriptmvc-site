@@ -1,0 +1,1 @@
+C({"name": "specialevents.jQuery.Event.prototype.pause", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jquery.event.pause", "specialevents"], "comment": "<p>Pauses an event (to be resumed later);</p>", "src": "../jquery/event/pause/pause.js", "children": []})

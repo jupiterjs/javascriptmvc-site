@@ -1,0 +1,1 @@
+C({"name": "jQuery.Model.List.prototype.get", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Gets a list of elements by ID or element.</p>\n\n<p>Gets a list of elements by ID or element.</p>", "src": "../jquery/model/list/list.js", "children": []})

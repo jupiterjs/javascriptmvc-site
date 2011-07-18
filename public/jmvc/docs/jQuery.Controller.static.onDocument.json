@@ -1,0 +1,1 @@
+C({"name": "jQuery.Controller.static.onDocument", "type": "attribute", "parents": ["jQuery.Controller.static"], "comment": "<p>Set to true if you want to automatically attach this element to the documentElement.</p>\n\n<p>Set to true if you want to automatically attach this element to the documentElement.</p>", "src": "../jquery/controller/controller.js", "children": []})

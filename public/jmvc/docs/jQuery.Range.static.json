@@ -1,0 +1,1 @@
+C({"name": "jQuery.Range.static", "type": "static", "parents": ["jQuery.Range"], "comment": "", "src": "../jquery/dom/range/range.js", "children": ["jQuery.Range.static.current", "jQuery.Range.static.current"]})
