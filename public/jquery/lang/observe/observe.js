@@ -15,10 +15,11 @@ var isArray =  $.isArray,
 		
 		//listen to all changes and send upwards
 		val.bind("change"+parent._namespace, function(ev, attr, how, val, old ) {
+			// trigger the type on this ...
 			var args = $.makeArray(arguments),
 				ev= args.shift();
 			args[0] = prop+ (args[0] != "*" ? "."+args[0] : ""); // change the attr
-			$([parent]).triggerHandler(ev, args);
+			$([parent]).trigger(ev, args);
 		});
 		
 		return val;
@@ -32,12 +33,59 @@ var isArray =  $.isArray,
 		}
 	},
 	push = [].push,
-	id = 0;
+	id = 0,
+	collecting = null,
+	collect = function(){
+		if(!collecting){
+			collecting = [];
+			return true;
+		}
+	},
+	send = function(item, event, args){
+		var THIS = $([item]);
+		if(!collecting){
+			return THIS.trigger(event, args)
+		} else {
+			collecting.push({t: THIS, ev: event, args: args})
+		}
+	},
+	sendCollection = function(){
+		var len = collecting.length,
+			cur;
+		for(var i =0; i < len; i++){
+			cur = collecting[i];
+			$(cur.t).trigger(cur.ev, cur.args)
+		}
+		collecting = null
+	};
 	
 
 // add - property added
 // remove - property removed
 // set - property value changed
+/**
+ * @class jQuery.Observe
+ * 
+ * Provides observable behavior on JSON-like data structures.
+ * 
+ *     new $.Observe({ 
+ *       addresses : [
+ *         {
+ *           city: 'Chicago',
+ *           state: 'IL'
+ *         },
+ *         {
+ *           city: 'Boston',
+ *           state : 'MA'
+ *         }
+ *         ]
+ *     });
+ * 
+ * Observable lets you list to events when an observable changes.
+ * 
+ * @param {Object} obj a JavaScript Object that will be 
+ * converted to an observable
+ */
 $.Class('jQuery.Observe',{
 	init : function(obj){
 		this._namespace = ".observe"+(++id);
@@ -55,6 +103,12 @@ $.Class('jQuery.Observe',{
 		
 		this._data = obj;
 	},
+	/**
+	 * Get or set an attribute
+	 * @param {String} attr
+	 * @param {Object} [val]
+	 * @return {Object} the observable or the attribute property
+	 */
 	attr : function(attr, val){
 		if(val === undefined){
 			return this._get(attr)
@@ -65,6 +119,10 @@ $.Class('jQuery.Observe',{
 			return this;
 		}
 	},
+	/**
+	 * Removes a property
+	 * @param {String} attr
+	 */
 	removeAttr : function(attr){
 		var parts = isArray(attr) ? attr : attr.split("."),
 			prop = parts.shift()
@@ -74,7 +132,8 @@ $.Class('jQuery.Observe',{
 			return current.removeAttr(parts)
 		} else {
 			delete this._data[prop];
-			$([this]).trigger("change", [prop, "remove", current]);
+			// add this .. 
+			send(this, "change", [prop, "remove", current]);
 		}
 	},
 	_get : function(attr){
@@ -101,10 +160,12 @@ $.Class('jQuery.Observe',{
 			
 			
 			if(value !== current){
+				
+				var changeType = this._data.hasOwnProperty(prop) ? "set" : "add";
 
 				this._data[prop] = isObject(value) ? hookup(value, prop, this) : value;
 				
-				$([this]).trigger("change", [prop, "set", value, current])
+				send(this,"change",[prop, changeType, value, current]);
 				
 				if(current && current.unbind){
 					current.unbind("change"+this._namespace)
@@ -112,17 +173,26 @@ $.Class('jQuery.Observe',{
 			}
 			
 		} else {
-			console.log("throw error?")
+			throw "jQuery.Observe: set a property on an object that does not exist"
 		}		
 	},
+	/**
+	 * Listen to changes in this observable
+	 */
 	bind : function(){
 		$.fn.bind.apply($([this]),arguments);
 		return this;
 	},
+	/**
+	 * 
+	 */
 	unbind : function(){
 		$.fn.unbind.apply($([this]),arguments);
 		return this;
 	},
+	/**
+	 * get the raw data of this observable
+	 */
 	serialize : function(){
 		var obj = {}, val;
 		for(var prop in this._data){
@@ -131,10 +201,18 @@ $.Class('jQuery.Observe',{
 		}
 		return obj;
 	},
-	merge : function(props, remove){
+	/**
+	 * Set multiple properties on the observable
+	 * @param {Object} props
+	 * @param {Boolean} remove true if you should remove properties that are not in props
+	 */
+	attrs : function(props, remove){
 		// copy
 		props = $.extend(true, {}, props);
-		for(var prop in this._data){
+		var prop,
+			collectingStarted = collect();
+			
+		for(prop in this._data){
 			var curVal = this._data[prop],
 				newVal = props[prop];
 			
@@ -144,7 +222,7 @@ $.Class('jQuery.Observe',{
 				continue;
 			}
 			if(isObject(curVal) && isObject(newVal) ){
-				curVal.merge(newVal, remove)
+				curVal.attrs(newVal, remove)
 			} else if( curVal != newVal ){
 				this._set(prop, newVal)
 			} else {
@@ -157,9 +235,16 @@ $.Class('jQuery.Observe',{
 			newVal = props[prop];
 			this._set(prop, newVal)
 		}
+		if(collectingStarted){
+			sendCollection();
+		}
 	}
 })
-
+/**
+ * @class jQuery.Observe.List
+ * @inhert jQuery.Observe
+ * An observable list
+ */
 jQuery.Observe('jQuery.Observe.List', {
 	init : function(instances){
 		this.length = 0;
@@ -167,6 +252,9 @@ jQuery.Observe('jQuery.Observe.List', {
         this.push.apply(this, $.makeArray(instances || [] ) );
 		this._data = this;
 	},
+	/**
+	 * Add items to the list
+	 */
 	push: function(){
 		var args = getArgs(arguments),
 			self = this;
@@ -180,7 +268,7 @@ jQuery.Observe('jQuery.Observe.List', {
 		var res = push.apply( this, args )
 		//do this first so we could prevent?
 
-		$([this]).trigger("change",["*","add",args])
+		send(this, "change", ["*","add",args] )
 		
 		return res;
 	},
@@ -191,6 +279,11 @@ jQuery.Observe('jQuery.Observe.List', {
 		}
 		return arr;
 	},
+	/**
+	 * Remove items from the list
+	 * @param {Object} index
+	 * @param {Object} count
+	 */
 	splice : function(index, count){
 		var args = $.makeArray(arguments);
 
@@ -205,23 +298,24 @@ jQuery.Observe('jQuery.Observe.List', {
 		}
 		var removed = [].splice.apply(this, args);
 		if(count > 0){
-			$([this]).trigger("change",["*","remove",removed]);
+			send(this, "change",["*","remove",removed]);
 		}
 		if(args.length > 2){
-			$([this]).trigger("change",["*","remove",args.slice(2)]);
+			send(this, "change",["*","remove",args.slice(2)]);
 		}
 		return removed;
 	},
-	merge : function(props, remove){
+	attrs : function(props, remove){
 		// copy
 		var props = props.slice(0),
-			len = Math.min(props.length, this.length);
+			len = Math.min(props.length, this.length),
+			collectingStarted = collect();
 		for(var prop =0; prop < len; prop++) {
 			var curVal =  this[prop],
 				newVal = props[prop];
 			
 			if(isObject(curVal) && isObject(newVal) ){
-				curVal.merge(newVal, remove)
+				curVal.attrs(newVal, remove)
 			} else if( curVal != newVal ){
 				this._set(prop, newVal)
 			} else {
@@ -235,6 +329,9 @@ jQuery.Observe('jQuery.Observe.List', {
 			this.splice(props.length)
 		}
 		//remove those props didn't get too
+		if(collectingStarted){
+			sendCollection()
+		}
 	}
 })
 

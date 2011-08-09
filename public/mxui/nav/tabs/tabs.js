@@ -1,4 +1,4 @@
-steal.plugins('mxui/nav/menuable').then(function($){
+steal('mxui/nav/menuable').then(function($){
 	//problem with this is it will search and find everything ...
 	Mxui.Nav.Menuable("Mxui.Nav.Tabable",
 	{
@@ -102,7 +102,7 @@ steal.plugins('mxui/nav/menuable').then(function($){
 			
 			el.trigger("activate");
 	   },
-	   "{child_selector} activate:after" : function(el, ev){
+	   "{child_selector} activate" : function(el, ev){
 	   		var el = this.element;
 			setTimeout(function(){
 				el.parent().triggerHandler("resize")

@@ -1,4 +1,4 @@
-steal.plugins('jquery/controller',
+steal('jquery/controller',
 	'mxui/layout/positionable',
 	'mxui/layout/bgiframe',
 	'mxui/layout/fill').then(function($){
@@ -30,10 +30,9 @@ steal.plugins('jquery/controller',
 	},{
 		init : function(){
 			this.element.show()
-			    .mxui_layout_fill(({all: true, parent: $(window)}))
-				.mxui_layout_positionable()
-				.mxui_layout_bgiframe();
-				
+			    .mxui_layout_positionable()
+				.mxui_layout_fill(({all: true, parent: $(window)}))
+				.mxui_layout_bgiframe();	
 			
 			
 			if(!this.element.is(":visible")){

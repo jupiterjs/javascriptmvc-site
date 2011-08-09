@@ -1,7 +1,6 @@
-steal.plugins('jquery/controller',
-			  'jquery/event/drag/limit',
-			  'jquery/dom/dimensions').css('split').then(function($){
-	
+steal('jquery/controller', 'jquery/event/drag/limit', 'jquery/dom/dimensions', 'jquery/event/key', 'jquery/event/resize')
+	.then('./split.css').then(function( $ ) {
+
 	/**
 	 * 
 	 * MXUI.Layout.Split is a splitter control that will split two or more elements
@@ -26,18 +25,17 @@ steal.plugins('jquery/controller',
 	 * E.g. <div class='collapsible'><div class='split'><div class='collapsible'> Only one or the other can be collapsible.
 	 * 
 	 */
-	$.Controller.extend("MXUI.Layout.Split",
-	{
-		defaults : {
-			child_class_names : "split",
-			active : "active",
-			hover : "split-hover",
-			splitter : "splitter",
-			direction : null,
-			dragDistance: 5
+	$.Controller.extend("MXUI.Layout.Split", {
+		defaults: {
+			active: "active",
+			hover: "split-hover",
+			splitter: "splitter",
+			direction: null,
+			dragDistance: 5,
+			panelClass: null
 		},
-		listensTo : ["insert","remove"],
-		directionMap : {
+		listensTo: ["insert", "remove"],
+		directionMap: {
 			vertical: {
 				dim: "width",
 				cap: "Width",
@@ -45,462 +43,547 @@ steal.plugins('jquery/controller',
 				pos: "left",
 				dragDir: "horizontal"
 			},
-			horizontal : {
-				dim : "height",
-				cap : "Height",
-				outer : "outerHeight",
+			horizontal: {
+				dim: "height",
+				cap: "Height",
+				outer: "outerHeight",
 				pos: "top",
 				dragDir: "vertical"
 			}
 		}
-	},
-	{
+	}, {
 		/**
 		 * Init method called by JMVC base controller.
 		 */
-		init : function()
-		{
-			var c = this.element.children(":visible");
-			
+		init: function() {
+			var c = this.panels();
+
 			//- Determine direction.  
 			//- TODO: Figure out better way to measure this since if its floating the panels and the 
 			//- width of the combined panels exceeds the parent container, it won't determine this correctly.
-			if(!this.options.direction){
-				this.options.direction = c.eq(0).position().top == c.eq(1).position().top ? 
-					"vertical" : "horizontal";
+			if (!this.options.direction ) {
+				this.options.direction = c.eq(0).position().top == c.eq(1).position().top ? "vertical" : "horizontal";
 			}
-			
+
 			$.Drag.distance = this.options.dragDistance;
 			this.dirs = this.Class.directionMap[this.options.direction];
 			this.usingAbsPos = c.eq(0).css('position') == "absolute";
+			if(this.usingAbsPos){
+
+				if(!/absolute|relative|fixed/.test(this.element.css('position'))){
+					this.element.css('position','relative')
+				}
+			}
+			
 			this.initalSetup(c);
 		},
-		
+
+		/**
+		 * Sizes the split bar and split elements initally.  This is different from size in that fact
+		 * that intial size retains the elements widths and resizes what can't fit to be within the parent dims.
+		 * @param {Object} c
+		 */
+		initalSetup: function( c ) {
+			//- Insert the splitter bars
+			for ( var i = 0; i < c.length - 1; i++ ) {
+				var $c = $(c[i]);
+				$c.after(this.splitterEl(
+				$c.hasClass('collapsible') ? "left" : ($(c[i + 1]).hasClass('collapsible') ? "right" : undefined)));
+			}
+
+			var splitters = this.element.children(".splitter")
+			splitterDim = splitters[this.dirs.outer](),
+				total = this.element[this.dirs.dim]() - splitterDim * (c.length - 1),
+				pHeight = this.element.height();
+
+
+			//- If its vertical, we need to set the height of the split bar
+			if ( this.options.direction == "vertical" ) {
+				splitters.height(pHeight);
+			}
+
+			//- Size the elements				  
+			for ( var i = 0; i < c.length; i++ ) {
+				var $c = $(c[i]);
+				// store in data for faster lookup
+				$c.data("split-min-" + this.dirs.dim, parseInt($c.css('min-' + this.dirs.dim)));
+
+
+				$c.addClass("split");
+			}
+
+			this.size();
+		},
+
+		/**
+		 * Appends a split bar.
+		 * @param {Object} dir
+		 */
+		splitterEl: function( dir ) {
+			var splitter = $("<div class='" + this.options.direction.substr(0, 1) + "splitter splitter' tabindex='0'>");
+
+			if ( this.usingAbsPos ) {
+				splitter.css("position", "absolute");
+			}
+
+			if ( dir ) {
+				splitter.append("<a class='" + dir + "-collapse collapser' href='javascript://'></a>")
+			}
+
+			return splitter;
+		},
+
+		/**
+		 * Returns all the panels.
+		 */
+		panels: function() {
+			return this.element.children((this.options.panelClass ? "." + this.options.panelClass : "") + ":not(.splitter):visible")
+		},
+
 		/**
 		 * Adds hover class to splitter bar.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 */
-        ".splitter mouseenter" : function(el, ev)
-		{
-            el.addClass(this.options.hover)
-        },
-		
+		".splitter mouseenter": function( el, ev ) {
+			if (!this.dragging ) {
+				el.addClass(this.options.hover)
+			}
+		},
+
 		/**
 		 * Removes hover class from splitter bar.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 */
-        ".splitter mouseleave" : function(el, ev)
-		{
-            el.removeClass(this.options.hover)
-        },
-		
+		".splitter mouseleave": function( el, ev ) {
+			if (!this.dragging ) {
+				el.removeClass(this.options.hover)
+			}
+		},
+
 		/**
-		 * Drag down event for the '.splitter' split bar.
+		 * For accessibility support, listen to key inputs on the split bar.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 */
-		".splitter dragdown" : function(el, ev)
-		{
-			ev.preventDefault();
+		".splitter keydown": function( el, ev ) {
+			var offset = el.offset();
+			switch ( ev.key() ) {
+			case 'right':
+				this.moveTo(el, offset.left + 1);
+				break;
+			case 'left':
+				this.moveTo(el, offset.left - 1);
+				break;
+			case '\r':
+				this.toggleCollapse(el);
+				break;
+			}
 		},
-		
+
 		/**
 		 * Drag init event for the '.splitter' split bar.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 * @param {Object} drag
 		 */
-		".splitter draginit" : function(el, ev, drag)
-		{
+		".splitter draginit": function( el, ev, drag ) {
 			drag.noSelection();
 			drag.limit(this.element);
+
+			// limit motion to one direction
 			drag[this.dirs.dragDir]();
-			drag.ghost().addClass("move").addClass(this.options.hover);
-			this.dragging = true;
+			var hoverClass = this.options.hover;
+			el.addClass("move").addClass(this.options.hover);
+			this.moveCache = this._makeCache(el);
+			
+			if(this.moveCache.next.hasClass('collapsed') 
+			|| this.moveCache.prev.hasClass('collapsed')){
+				el.addClass('disabled');
+				drag.cancel();
+				
+				setTimeout(function(){ el.removeClass('disabled')
+										 .removeClass("move")
+										 .removeClass(hoverClass); }, 800);
+			} else {
+				this.dragging = true;
+			}
 		},
-		
+
+		/**
+		 * Internal method for getting the cache info for an element
+		 * @param {Object} el
+		 */
+		_makeCache: function( el ) {
+			var next = el.next(),
+				prev = el.prev();
+			return {
+				offset: el.offset()[this.dirs.pos],
+				next: next,
+				prev: prev,
+				nextD: next[this.dirs.dim](),
+				prevD: prev[this.dirs.dim]()
+			};
+		},
+
+		/**
+		 * Moves a slider to a specific offset in the page
+		 * @param {jQuery} el
+		 * @param {Number} newOffset The location in the page in the direction the slider moves
+		 * @param {Object} [cache] A cache of dimensions data to make things run faster (esp for drag/drop). It looks like
+		 * 
+		 *     {
+		 *       offset: {top: 200, left: 200},
+		 *       prev: 400, // width or height of the previous element
+		 *       next: 200  // width or height of the next element
+		 *     }
+		 * @return {Boolean} false if unable to move
+		 */
+		moveTo: function( el, newOffset, cache ) {
+			cache = cache || this._makeCache(el);
+
+			var prevOffset = cache.offset,
+				delta = newOffset - prevOffset || 0,
+				prev = cache.prev,
+				next = cache.next,
+				prevD = cache.prevD,
+				nextD = cache.nextD,
+				prevMin = prev.data("split-min-" + this.dirs.dim),
+				nextMin = next.data("split-min-" + this.dirs.dim);
+
+			// we need to check the 'getting smaller' side
+			if ( delta > 0 && (nextD - delta < nextMin) ) {
+				return false;
+			} else if ( delta < 0 && (prevD + delta < prevMin) ) {
+				return false;
+			}
+
+			// make sure we can't go smaller than the right's min
+			if ( delta > 0 ) {
+				next[this.dirs.dim](nextD - delta);
+				prev[this.dirs.dim](prevD + delta);
+			} else {
+				prev[this.dirs.dim](prevD + delta);
+				next[this.dirs.dim](nextD - delta);
+			}
+
+			if ( this.usingAbsPos ) {
+				//- Sets the split bar element's offset relative to parents
+				var newOff = $(el).offset();
+				newOff[this.dirs.pos] = newOffset;
+				el.offset(newOff);
+				
+				//- Sets the next elements offset relative to parents
+				var off = next.offset();
+				off[this.dirs.pos] = newOffset + el[this.dirs.outer]();
+				next.offset(off);
+			}
+
+			// this can / should be throttled
+			clearTimeout(this._moveTimer);
+			this._moveTimer = setTimeout(function() {
+				prev.trigger("resize",[false]);
+				next.trigger("resize",[false]);
+			}, 1);
+		},
+
+		/**
+		 * As the split bar is dragged, resize.
+		 * @param {Object} el
+		 * @param {Object} ev
+		 * @param {Object} drag
+		 */
+		".splitter dragmove": function( el, ev, drag ) {
+			var moved = this.moveTo(el, drag.location[this.dirs.pos](), this.moveCache)
+
+			if ( moved === false ) {
+				ev.preventDefault();
+			}
+		},
+
 		/**
 		 * Drag end event for the '.splitter' split bar.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 * @param {Object} drag
 		 */
-		".splitter dragend" : function(el, ev, drag)
-		{
+		".splitter dragend": function( el, ev, drag ) {
 			this.dragging = false;
-			
-			var newOffset =  drag.movingElement.position()[this.dirs.pos],
-				prevOffset = el.position()[this.dirs.pos],
-				offset = newOffset - prevOffset || 0 ,
-				prev = el.prev(),
-				next = drag.movingElement.next(),
-				prevD = prev[this.dirs.dim]()
-				nextD = next[this.dirs.dim]();
-				
-			//make sure we can't go to 0 dim
-			if(nextD - offset < 0){
-				offset = nextD - offset
-			}
-			
-			if(prevD + offset < 0){
-				offset = prevD + offset
-			}
-			
-			//do the shrinking one first
-			if(offset > 0){
-				next[this.dirs.dim]( nextD - offset);
-				prev[this.dirs.dim]( prevD + offset);
-			}else{
-				prev[this.dirs.dim]( prevD + offset);
-				next[this.dirs.dim]( nextD - offset);
-			}
-			
-			if(this.usingAbsPos){
-				el.css(this.dirs.pos, newOffset);
-				next.css(this.dirs.pos, newOffset + el[this.dirs.outer]());
-			}
-
+			el.removeClass(this.options.hover)
 			drag.selection();
-			setTimeout(function(){
-				$(window).resize()
-				prev.triggerHandler("resize")
-				next.triggerHandler("resize")
-			},1)
 		},
-		
+
 		/**
 		 * Resizes the panels.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 * @param {Object} data
 		 */
-		resize : function(el, ev, data)
-		{
+		resize: function( el, ev, data ) {
 			//if not visible do nothing
-			if(!this.element.is(":visible")){
+			if (!this.element.is(":visible") ) {
+				this.oldHeight = this.oldWidth = 0;
 				return;
 			}
-			
-			if( !(data && data.force === true) && ! this.forceNext){
-				var h = this.element.height(), w = this.element.width()
-				if (this.oldHeight == h && this.oldWidth == w) {
-					ev.stopPropagation();
-					return;
-				}
-				this.oldHeight = h;
+
+			if (!(data && data.force === true) && !this.forceNext ) {
+				var h = this.element.height(),
+					w = this.element.width()
+					if ( this.oldHeight == h && this.oldWidth == w ) {
+						ev.stopPropagation();
+						return;
+					}
+					this.oldHeight = h;
 				this.oldWidth = w;
 			}
-			
+
 			this.forceNext = false;
-			this.size(null, null, data && data.keep);
+			this.size(null, null, data && data.keep, false);
 		},
-		
+
 		/**
 		 * Inserts a new splitter.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 */
-		insert : function(el, ev)
-		{
+		insert: function( el, ev ) {
 			ev.stopPropagation();
-			
-			if (ev.target.parentNode != this.element[0]) {
+
+			if ( ev.target.parentNode != this.element[0] ) {
 				return;
 			}
-			
+
 			var target = $(ev.target),
 				prevElm = target.prev();
-				
+
 			target.addClass("split");
-			target.before("<div class='" + this.options.direction.substr(0,1) + "splitter splitter'/>");
-			
-			//- Append Collapser Anchors
-			if(target.hasClass('collapsible')){
-				target.prev().append("<a class='right-collapse collapser' href='javascript://'>Expand/Collapse</a>");
-			}
-			
+			target.before(this.splitterEl(target.hasClass('collapsible') && "right"));
 			this.size(null, true, target);
-			
-			if(this.options.direction == "vertical"){
+
+			if ( this.options.direction == "vertical" ) {
 				var splitBar = target.prev(),
 					pHeight = this.element.height();
-				
+
 				splitBar.height(pHeight);
 				target.height(pHeight);
 			}
 		},
-		
+
 		/**
 		 * If an element is removed from this guy, react to it.
 		 * @param {Object} el
 		 * @param {Object} ev
 		 */
-		remove : function(el, ev)
-		{
-			if (ev.target.parentNode != this.element[0]) {
+		remove: function( el, ev ) {
+			if ( ev.target.parentNode != this.element[0] ) {
 				return;
 			}
-			
+
 			var target = $(ev.target);
-			
+
 			//remove the splitter before us
-			var prev = target.prev(), next;
-			if(prev.length && prev.hasClass('splitter')){
+			var prev = target.prev(),
+				next;
+			if ( prev.length && prev.hasClass('splitter') ) {
 				prev.remove();
-			}else {
+			} else {
 				next = target.next();
-				if(next.hasClass('splitter'))
-					next.remove();
+				if ( next.hasClass('splitter') ) next.remove();
 			}
-			
+
 			//what if I am already not visible .. I should note that
-			if(!this.element.is(':visible')){
+			if (!this.element.is(':visible') ) {
 				this.forceNext = true;
 			}
-			
-			this.size(this.element.children(":not(.splitter):visible").not(target), true);
-			
+
+			this.size(this.panels().not(target), true);
+
 			target.remove();
 		},
-		
+
 		/**
-		 * Sizes the split bar and split elements initally.  This is different from size in that fact
-		 * that intial size retains the elements widths and resizes what can't fit to be within the parent dims.
-		 * @param {Object} c
-		 */
-		initalSetup:function(c)
-		{
-			//- Insert the splitter bars
-			for(var i=0; i < c.length - 1; i++){	
-				var $c = $(c[i]);	
-				$c.after("<div class='" + this.options.direction.substr(0,1) + "splitter splitter'>");
-				
-				//- Append Collapser Anchors
-				if($c.hasClass('collapsible')){
-					$c.next().append("<a class='left-collapse collapser' href='javascript://'>Expand/Collapse</a>");
-				}
-				else if($(c[i + 1]).hasClass('collapsible')){
-					$c.next().append("<a class='right-collapse collapser' href='javascript://'>Expand/Collapse</a>");
-				}
-			}
-			
-			var splitterDim = this.element.children(".splitter")[this.dirs.outer](),
-							  total  = this.element[this.dirs.dim]() - splitterDim * (c.length - 1),
-							  pHeight = this.element.height(),
-							  splitters = this.element.children(".splitter");
-			
-			//- If its vertical, we need to set the height of the split bar
-			if (this.options.direction == "vertical") {
-				splitters.height(pHeight);
-			}
-			
-			//- Size the elements				  
-			for(var i=0; i < c.length; i++){
-				var $c = $(c[i]);
-				var cdim = $c[this.dirs.outer]();
-				
-				if(cdim > total){
-					cdim = total;
-				}
-				
-				$c[this.dirs.dim](cdim).addClass("split");
-				this.repositionAbsoluteElms(c, i, splitters, splitterDim);
-				
-				//- If its a vertical split, we need to size all the elms height to be the same.
-				if(this.options.direction == "vertical"){
-					$c.height(pHeight);
-				}
-				
-				total = total - cdim;
-			}
-		},
-		
-		/**
-		 * Occurs when the split bar's collapser was clicked to toggle visibility of a panel.
+		 * Collasper button in split panel was clicked.
 		 * @param {Object} el
 		 * @param {Object} event
 		 */
-		".collapser click":function(el,event)
-		{
-			var splitBar = el.parent(),
-				prevElm = splitBar.prev(),
+		".collapser click": function( el, event ) {
+			this.toggleCollapse(el.parent());
+		},
+
+		/**
+		 * Collapses a splitter ..
+		 * @param {Object} el
+		 */
+		toggleCollapse: function( splitBar ) {
+			// check the next and prev element should be collapsed
+			var prevElm = splitBar.prev(),
 				nextElm = splitBar.next(),
-				elmToTakeActionOn = prevElm.hasClass('collapsible') ? prevElm : nextElm,
-				elmIsHidden = !elmToTakeActionOn.is(':visible');
-				
-			if(elmIsHidden){
+				elmToTakeActionOn = (prevElm.hasClass('collapsible') && prevElm) || (nextElm.hasClass('collapsible') && nextElm);
+			if (!elmToTakeActionOn ) {
+				return;
+			}
+
+			if (!elmToTakeActionOn.is(':visible') ) {
 				this.showPanel(elmToTakeActionOn);
 			} else {
 				this.hidePanel(elmToTakeActionOn, true);
 			}
-			
+
 			elmToTakeActionOn.toggleClass('collapsed');
-			el.toggleClass('left-collapse').toggleClass('right-collapse');
+			splitBar.children().toggleClass('left-collapse').toggleClass('right-collapse');
 		},
-		
+
 		/**
 		 * Shows a panel that is currently hidden.
 		 * @param {Object} panel
 		 * @param {Object} width
 		 */
-		showPanel:function(panel, width)
-		{
-			if(!panel.is(':visible')){
-				
-				if(width){
+		showPanel: function( panel, width ) {
+			if (!panel.is(':visible') ) {
+
+				if ( width ) {
 					panel.width(width);
 				}
 
 				panel.removeClass('hidden');
-				
+
 				var prevElm = panel.prev();
-				if(prevElm.hasClass('splitter')){
+				if ( prevElm.hasClass('splitter') ) {
 					prevElm.removeClass('hidden');
 				} else {
 					//- if it was hidden by start, it didn't get a 
 					//- splitter added so we need to add one here
-					panel.before("<div class='" + this.options.direction.substr(0,1) + "splitter splitter'/>");
-					
-					//- Append Collapser Anchors
-					if(prevElm.hasClass('collapsible')){
-						panel.prev().append("<a class='left-collapse collapser' href='javascript://'>Expand/Collapse</a>");
-					}
-					else if(panel.hasClass('collapsible')){
-						panel.prev().append("<a class='right-collapse collapser' href='javascript://'>Expand/Collapse</a>");
-					}
+					panel.before(this.splitterEl(
+					prevElm.hasClass('collapsible') ? "left" : (
+					panel.hasClass('collapsible') ? "right" : undefined)));
 				}
-				
+
 				this.size(null, false, panel);
-				
-				//-trigger window resize for inner elms
-				$(window).resize();
 			}
 		},
-		
+
 		/**
 		 * Hides a panel that is currently visible.
 		 * @param {Object} panel
 		 * @param {Object} keepSplitter
 		 */
-		hidePanel:function(panel, keepSplitter)
-		{
-			if(panel.is(':visible') || panel.hasClass('collapsed')) {
+		hidePanel: function( panel, keepSplitter ) {
+			if ( panel.is(':visible') || panel.hasClass('collapsed') ) {
 				panel.addClass('hidden');
-				
-				if(!keepSplitter){
+
+				if (!keepSplitter ) {
 					panel.prev().addClass('hidden');
 				}
-				
+
 				this.size();
-				
-				//-trigger window resize for inner elms
-				$(window).resize();
 			}
 		},
-		
+
 		/**
-		 * Takes elements and animates them to the right size based on the drag.
-		 * @param {Object} els
+		 * Takes elements and animates them to the right size
+		 * @param {jQuery} [els] child elements
+		 * @param {Boolean} [animate] animate the change
+		 * @param {jQuery} [keep] keep this element's width / height the same
+		 * @param {Boolean} [resizePanels] resize the panels or not.
 		 */
-		size : function(els, animate, keep)
-		{
-			els = els || this.element.children(":not(.splitter):visible");
-			
-			//makes els the right height
-			if(keep){
-				els = els.not(keep)
-			}
+		size: function( els, animate, keep, resizePanels ) {
+			els = els || this.panels();
+			resizePanels = resizePanels == undefined ? true : false;
+
 			var splitters = this.element.children(".splitter:visible"),
 				splitterDim = splitters[this.dirs.outer](),
-				total  = this.element[this.dirs.dim]() - (splitterDim * splitters.length);
-			
-			if(keep){
+				total = this.element[this.dirs.dim]() - (splitterDim * splitters.length),
+				// rounding remainder
+				remainder = 0,
+				dims = [],
+				newDims = [],
+				sum = 0,
+				i, c$, dim, increase, keepSized = false,
+				curLeft = 0,
+				index, rawDim, newDim, pHeight = this.element.height(),
+				pWidth = this.element.width(),
+				length, start;
+
+			//makes els the right height
+			if ( keep ) {
+				els = els.not(keep);
 				total = total - $(keep)[this.dirs.outer]();
 			}
-			
+
+			length = els.length;
+			start = Math.floor(Math.random() * length);
+
+			// round down b/c some browsers don't like fractional dimensions
+			total = Math.floor(total);
+
 			//calculate current percentage of height
-			var dims = [], sum = 0;
-			for(var i =0; i < els.length; i++){
-				var $c = $(els[i]), 
-					dim = $c[this.dirs.outer](true);
-				dims.push(dim)
+			for ( i = 0; i < length; i++ ) {
+				$c = $(els[i]), dim = $c[this.dirs.outer](true);
+				dims.push(dim);
 				sum += dim;
 			}
-			
-			var increase = total / sum, keepSized = false;
-			if (increase == 1.0) {
-				els.each(function(){
-					$(this).triggerHandler('resize')
-				});
-				return;
+
+			increase = total / sum;
+
+			// this randomly adjusts sizes so scaling is approximately equal
+			for ( i = start; i < length + start; i++ ) {
+				index = i >= length ? i - length : i;
+				dim = dims[index];
+				rawDim = (dim * increase) + remainder;
+				newDim = (i == length + start - 1 ? total : Math.round(rawDim));
+				newDims[index] = newDim;
+				total = total - newDim;
 			}
-			
-			//go through and resize
-			var pHeight = this.element.height(), pWidth = this.element.width();
-			if(this.options.direction == "vertical"){
-				this.element.children('.splitter').height(pHeight);
+
+			//resize splitters to new height if vertical (horizontal will automatically be the right width)
+			if ( this.options.direction == "vertical" ) {
+				splitters.height(pHeight);
 			}
-			// Adjust widths for each pane to account for rounding
-			var adj = els.length + (keep ? keep.length : 0);
-			for (var i = 0; i < els.length; i++) {
-				var $c = $(els[i]), dim = dims[i];
-				
-				var newDim = this.options.direction == "horizontal" ? {
-					outerHeight: Math.floor(dim * increase) + (adj--),
+
+			// Adjust widths for each pane and account for rounding
+			for ( i = 0; i < length; i++ ) {
+
+				$c = $(els[i]);
+
+				var dim = this.options.direction == "horizontal" ? {
+					outerHeight: newDims[i],
 					outerWidth: pWidth
 				} : {
-					outerWidth: Math.floor(dim * increase) + (adj--),
+					outerWidth: newDims[i],
 					outerHeight: pHeight
 				};
-				
-				if (animate && !this.usingAbsPos) {
-					$c.animate(newDim, "fast", function(){
-						$(this).triggerHandler('resize');
-						
-						if (keep && !keepSized) {
-							keep.triggerHandler('resize')
+
+				if ( animate && !this.usingAbsPos ) {
+					$c.animate(dim, "fast", function() {
+
+						if ( resizePanels ) {
+							$(this).trigger('resize', [false]);
+						}
+
+						if ( keep && !keepSized ) {
+							keep.trigger('resize', [false])
 							keepSized = true;
 						}
 					});
 				}
 				else {
-					$c.outerHeight(newDim.outerHeight).outerWidth(newDim.outerWidth).triggerHandler('resize');
-				}
-			}
-			
-			//- we need to reitterate through and set the absolute position'd elms position now
-			if (this.usingAbsPos){
-				els = this.element.children(":not(.splitter)");
-				for(var i =0; i < els.length; i++){
-					this.repositionAbsoluteElms(els, i, splitters, splitterDim);
-				}
-			}
-		},
-		
-		/**
-		 * Repositions the absolutely positioned elements on a resize.
-		 * @param {Object} els
-		 * @param {Object} i
-		 * @param {Object} splitters
-		 * @param {Object} splitterDim
-		 */
-		repositionAbsoluteElms:function(els, i, splitters, splitterDim)
-		{
-			if (this.usingAbsPos && i > 0) {
-				var prev = $(els[i - 1]), 
-					prevPos = prev.position()[this.dirs.pos], 
-					prevDim = prev[this.dirs.dim](),
-					newOff = prevPos + prevDim;
-					
-				//- If we are absolute position, we need to move the next elm over to fit the split bar
-				$(els[i]).css(this.dirs.pos, (newOff + splitterDim));
+					$c.outerHeight(dim.outerHeight).outerWidth(dim.outerWidth);
 
-				//- If they panels are absolute position, we have to set the splitters offset correctly
-				if (i <= splitters.length) {
-					splitters.eq(i - 1).css(this.dirs.pos, newOff).css("position", "absolute");
+					if ( resizePanels ) {
+						$c.trigger('resize', [false]);
+					}
 				}
+
+				// adjust positions if absolutely positioned
+				if ( this.usingAbsPos ) {
+					//set splitter in the right spot
+					$c.css(this.dirs.pos, curLeft)
+					splitters.eq(i).css(this.dirs.pos, curLeft + newDims[i])
+				}
+
+				// move the next location
+				curLeft = curLeft + newDims[i] + splitterDim;
 			}
 		}
 	})

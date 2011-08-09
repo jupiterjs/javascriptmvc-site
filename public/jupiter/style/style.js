@@ -1,4 +1,4 @@
-steal.plugins('jquery').then(function($){
+steal('jquery').then(function($){
 	var style$ = jQuery.sub();
 	style$.extend(style$.fn,{
 		box : function(){

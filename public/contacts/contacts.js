@@ -1,10 +1,10 @@
-steal.plugins(	
+steal(	
 	'jupiter/scrollable_grid',
 	'jquery/dom/fixture', 
 	'jupiter/style', 
 	'mxui/data/list')
-	.css('contacts')
-	.models('location', 'contact', 'company', 'category')
+	.then('./contacts.css')
+	.then('./models/location.js', './models/contact.js', './models/company.js', './models/category.js')
 	.then(function(){
 		$.Controller("Contacts.Controller", {
 			init: function(){

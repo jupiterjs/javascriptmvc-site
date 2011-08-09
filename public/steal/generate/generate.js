@@ -1,4 +1,5 @@
-steal("steal/generate/ejs.js", 'steal/generate/inflector.js', 'steal/rhino/prompt.js', function( steal ) {
+steal("steal/generate/ejs.js", 'steal/generate/inflector.js', 
+	'steal/parse', 'steal/rhino/prompt.js', function( steal ) {
 
 	var render = function( from, to, data ) {
 		var text = readFile(from);
@@ -204,6 +205,7 @@ steal("steal/generate/ejs.js", 'steal/generate/inflector.js', 'steal/rhino/promp
 			var appName = name.split(".")[0]; //Customer
 			return {
 				underscore: generate.underscore(className),
+				plugin : generate.underscore(name.replace(/\./g, "_")),
 				path: generate.underscore(name).replace(/\./g, "/").replace(/\/[^\/]*$/, ""),
 				name: name,
 				fullName: name,
@@ -211,6 +213,90 @@ steal("steal/generate/ejs.js", 'steal/generate/inflector.js', 'steal/rhino/promp
 				plural: steal.Inflector.pluralize(generate.underscore(className)),
 				appName: generate.underscore(appName)
 			};
+		},
+		insertCode: function( destination, newCode ){
+			// get file, parse it
+			var fileTxt = readFile(destination),
+				parser =  steal.parse(fileTxt),
+				tokens = [],
+				lastToken,
+				token;
+
+			// parse until function(){
+			while (token = parser.until(["function", "(", ")"])) {
+				if (token) {
+					parser.partner("{", function(token){
+						if (token.value == "}") {
+							lastToken = token;
+						}
+//						print("TOKEN = " + token.value, token.type, token.from, token.to)
+					})
+				}
+			}
+			
+			
+			// insert steal
+			if(lastToken){
+				fileTxt = fileTxt.slice(0, lastToken.from) 
+					+ newCode + "\n" + fileTxt.slice(lastToken.from)
+			}
+			
+			steal.print('      ' + destination + ' (code added)');
+			// save back to original file destination
+			steal.File(destination).save(fileTxt);
+		},
+		/**
+		 * Inserts a new steal, like "foo/bar" into a file.  It can handle 4 cases:
+		 * 
+		 *   1. Page already looks like steal("a", function(){})
+		 *   1. Page already looks like steal(function(){})
+		 *   1. Page has no steals
+		 *   1. Page already looks like steal("a")
+		 *   
+		 *   It will try to put the new steal before the last function first
+		 *   
+		 * @param {String} destination a path to the script we're inserting a steal into
+		 * @param {String} newStealPath the new steal path to be inserted
+		 */
+		insertSteal: function( destination, newStealPath ){
+			// get file, parse it
+			var fileTxt = readFile(destination),
+				parser =  steal.parse(fileTxt),
+				tokens = [],
+				lastToken,
+				token,
+				duplicate = false;
+
+			// parse until steal(
+			while (token = parser.until(["steal", "("], [".","then","("])) {
+				if (token) {
+					parser.partner("(", function(token){
+						if (token.type == "name" || token.type == "string") {
+							lastToken = token;
+						}
+						if (token.type === "string" && token.value === newStealPath) { // duplicate
+							duplicate = true;
+						}
+//						print("TOKEN = " + token.value, token.type, token.from, token.to)
+					})
+				}
+				if (duplicate) {
+					throw {type: "DUPLICATE"}
+				}
+			}
+			
+			
+			// insert steal
+			if(lastToken){
+				fileTxt = fileTxt.slice(0, lastToken.from) 
+					+ "'" + newStealPath + "', " + fileTxt.slice(lastToken.from)
+			} else { // no steal found
+				fileTxt += "steal('" + newStealPath +"')"
+			}
+			
+			steal.print('      ' + destination + ' (steal added)');
+			// save back to original file destination
+			steal.File(destination).save(fileTxt);
 		},
 		render: render
 	});

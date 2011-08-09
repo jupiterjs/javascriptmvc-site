@@ -51,16 +51,17 @@
 			}
 		},
 		support = {
-			error: win.document && (function(){
+			error: doc && (function(){
 				var script = scriptTag();
 				script.setAttribute( "onerror", "return;" );
-    			if (typeof script["onerror"] === "function") {
+				if (typeof script["onerror"] === "function") {
 					return true;
 				}
 				else 
 					return "onerror" in script;
 			})(),
-			interactive: win.document && "attachEvent" in scriptTag()
+			interactive: doc && "attachEvent" in scriptTag()
+			
 		},
 		startup = function(){},
 		oldsteal = win.steal,
@@ -72,17 +73,75 @@
 	 * @class steal
 	 * @parent stealjs
 	 * 
-	 * <code>steal</code> is used to load scripts, css, and 
+	 * __steal__ is a function that loads scripts, css, and 
 	 * other resources into your application.
 	 * 
-	 * ## Adding steal to your page
+	 *     steal(FILE_or_FUNCTION, ...)
 	 * 
-	 * After installing StealJS (or JavaScriptMVC)
-	 * in a public folder on your server, you should 
-	 * have a <code>steal</code> folder with
+	 * ## Quick Walkthrough
+	 * 
+	 * Add a script tag that loads <code>steal/steal.js</code> and add
+	 * the path to the first file to load in the query string like:
+	 * 
+	 * &lt;script type='text/javascript'
+	 *     src='../steal/steal.js?myapp/myapp.js'>
+	 * &lt;/script>
+	 * 
+	 * Then, start loading things and using them like:
+	 * 
+	 *     steal('myapp/tabs.js',
+	 *           'myapp/slider.js', 
+	 *           'myapp/style.css',function(){
+	 *     
+	 *        // tabs and slider have loaded 
+	 *        $('#tabs').tabs();
+	 *        $('#slider').slider()
+	 *     })
+	 * 
+	 * Make sure your widgets load their dependencies too:
+	 * 
+	 *     // myapp/tabs.js
+	 *     steal('jquery', function(){
+	 *       $.fn.tabs = function(){
+	 *        ...
+	 *       }
+	 *     })
+	 * 
+	 * ## Examples:
+	 * 
+	 *     // Loads ROOT/jquery/controller/controller.js
+	 *     steal('jquery/controller')
+	 *     steal('jquery/controller/controller.js')
+	 *     
+	 *     // Loads coffee script type and a coffee file relative to
+	 *     // the current file
+	 *     steal('steal/coffee').then('./mycoffee.coffee')
+	 *     
+	 *     // Load 2 files and dependencies in parallel and
+	 *     // callback when both have completed
+	 *     steal('jquery/controller','jquery/model', function(){
+	 *       // $.Controller and $.Model are available
+	 *     })
+	 *     
+	 *     // Loads a coffee script with a non-standard extension (cf)
+	 *     // relative to the current page and instructs the build
+	 *     // system to not package it (but it will still be loaded).
+	 *     steal({
+	 *        src: "./foo.cf",
+	 *        packaged: false,
+	 *        type: "coffee"
+	 *      })
+	 * 
+	 * The following is a longer walkthrough of how to install
+	 * and use steal:
+	 * 
+	 * ## Adding steal to a page
+	 * 
+	 * After installing StealJS (or JavaScriptMVC), 
+	 * find the <code>steal</code> folder with
 	 * <code>steal/steal.js</code>. 
 	 * 
-	 * To use steal, you must add a script tag
+	 * To use steal, add a script tag
 	 * to <code>steal/steal.js</code> to your
 	 * html pages.  
 	 * 
@@ -255,70 +314,69 @@
 	 * Loads resources specified by each argument.  By default, resources
 	 * are loaded in parallel and run in any order.
 	 * 
-	 * Examples:
-	 * 
-	 *     // Loads ROOT/jquery/controller/controller.js
-	 *     steal('jquery/controller')
-	 *     steal('jquery/controller/controller.js')
-	 *     
-	 *     // Loads coffee script type and a coffee file relative to
-	 *     // the current file
-	 *     steal('steal/coffee').then('./mycoffee.coffee')
-	 *     
-	 *     // Load 2 files and dependencies in parallel and
-	 *     // callback when both have completed
-	 *     steal('jquery/controller','jquery/model', function(){
-	 *       // $.Controller and $.Model are available
-	 *     })
-	 *     
-	 *     // Loads a coffee script with a non-standard extension (cf)
-	 *     // relative to the current page and instructs the build
-	 *     // system to not package it (but it will still be loaded).
-	 *     steal({
-	 *        src: "./foo.cf",
-	 *        packaged: false,
-	 *        type: "coffee"
-	 *      })
 	 * 
 	 * @param {String|Function|Object} resource... 
 	 * 
-	 * Each argument specifies a resource.  Resources can be given as an:
+	 * Each argument specifies a resource.  Resources can 
+	 * be given as a:
 	 * 
-	 *  - __Object__ - options specifiy the behavior of this 
-	 *    resource.  The available options are:
-	 *    
-	 *    - __src__ {*String*} - the path to the resource.  
-	 *    
-	 *    - __waits__ {*Boolean default=false*} - true the resource should wait 
-	 *      for prior steals to load and run. False if the resource should load and run in
-	 *      parallel.  This defaults to true for functions.
+	 * ### Object
 	 *  
-	 *    - __unique__ {*Boolean default=true*} - true if this is a unique resource 
-	 *      that 'owns' this url.  This is true for files, false for functions.
+	 * An object that specifies the loading and build 
+	 * behavior of a resource.  
+	 *    
+	 *      steal({
+	 *        src: "myfile.cf",
+	 *        type: "coffee",
+	 *        packaged: true,
+	 *        unique: true,
+	 *        ignore: false,
+	 *        waits: false
+	 *      })
+	 *    
+	 * The available options are:
+	 *    
+	 *  - __src__ {*String*} - the path to the resource.  
+	 *    
+	 *  - __waits__ {*Boolean default=false*} - true the resource should wait 
+	 *    for prior steals to load and run. False if the resource should load and run in
+	 *    parallel.  This defaults to true for functions.
+	 *  
+	 *  - __unique__ {*Boolean default=true*} - true if this is a unique resource 
+	 *    that 'owns' this url.  This is true for files, false for functions.
 	 *             
-	 *    - __ignore__ {*Boolean default=false*} - true if this resource should
-	 *      not be built into a production file and not loaded in
-	 *      production.  This is great for script that should only be available
-	 *      in development mode.
+	 *  - __ignore__ {*Boolean default=false*} - true if this resource should
+	 *    not be built into a production file and not loaded in
+	 *    production.  This is great for script that should only be available
+	 *    in development mode.
 	 *  
-	 *    - __packaged__ {*Boolean default=true*} - true if the script should be built
-	 *      into the production file. false if the script should not be built
-	 *      into the production file, but still loaded.  This is useful for 
-	 *      loading 'packages'.
+	 *  - __packaged__ {*Boolean default=true*} - true if the script should be built
+	 *    into the production file. false if the script should not be built
+	 *    into the production file, but still loaded.  This is useful for 
+	 *    loading 'packages'.
 	 * 
-	 *    - __type__ {*String default="js"*} - the type of the resource.  This 
-	 *      is typically inferred from the src.
+	 *  - __type__ {*String default="js"*} - the type of the resource.  This 
+	 *    is typically inferred from the src.
 	 * 
-	 *  - __String__ - the src of the resource.  For example:
+	 * ### __String__
 	 *  
-	 *         steal('./file.js')
+	 * Specifies src of the resource.  For example:
+	 *  
+	 *       steal('./file.js')
 	 *         
-	 *    Is the same as calling:
+	 * Is the same as calling:
 	 *      
-	 *         steal({src: './file.js'})
+	 *       steal({src: './file.js'})
 	 *  
-	 *  - __Function__ - a callback function that runs when all previous steals
-	 *    have completed.
+	 * ### __Function__ 
+	 *  
+	 * A callback function that runs when all previous steals
+	 * have completed.
+	 *    
+	 *     steal('jquery', 'foo',function(){
+	 *       // jquery and foo have finished loading
+	 *       // and runing
+	 *     })
 	 * 
 	 * @return {steal} the steal object for chaining
 	 */
@@ -742,8 +800,8 @@
 				} else {
 					whenEach(files, "complete", self, "complete");
 				}
-				
-				each(files, function(){
+				// reverse it
+				each(files.reverse(), function(){
 					this.load();
 				});
 			} else if(joiner){
@@ -765,7 +823,7 @@
 			this.loading = true;
 			var self = this;
 			// get yourself
-			steal.require(this.options,this.orig, function(script){
+			steal.require(this.options,this.orig, function load_calling_loaded(script){
 				self.loaded(script);
 			}, function(error, src){
 				clearTimeout(self.completeTimeout)
@@ -804,9 +862,7 @@
 		 * steal script and the window location.  For example, if the 
 		 * script tag looks like this:
 		 * 
-@codestart
-  <script type='text/javascript' src='../../steal/steal.js?ui/app'></script>
-@codeend
+		 *     <script type='text/javascript' src='../../steal/steal.js?ui/app'></script>
 		 * 
 		 * rootUrl will be set to "../../".
 		 * Setting the rootUrl can be useful if you want to have
@@ -918,15 +974,18 @@
 			}
 			
 			var orig = options.src,
+				// path relative to the current files path
+				// this is done relative to jmvcroot
 				normalized = steal.File(orig).normalize(),
 				protocol = steal.File(options.src).protocol();
 				
 			extend(options,{
 				originalSrc : options.src,
 				rootSrc : normalized,
+				// path from the page
 				src : steal.root.join(normalized),
 				// "file:" or "http:" depending on what protocol the request uses
-				protocol: protocol || (win.document? location.protocol: "file:")
+				protocol: protocol || (doc? location.protocol: "file:")
 			});
 			options.originalSrc = options.src;
 			
@@ -1047,31 +1106,25 @@
 	 * Here's an example converting files of type .foo to JavaScript.  Foo is a fake language that saves global variables defined like.  A .foo file might 
 	 * look like this:
 	 * 
-@codestart javascript
-REQUIRED FOO
-@codeend
+	 *     REQUIRED FOO
 	 * 
 	 * To define this type, you'd call steal.type like this:
 	 * 
-@codestart javascript
-steal.type("foo js", function(options, original, success, error){
-	var parts = options.text.split(" ")
-	options.text = parts[0]+"='"+parts[1]+"'";
-	success();
-});
-@codeend
+	 *     steal.type("foo js", function(options, original, success, error){
+	 *       var parts = options.text.split(" ")
+	 *       options.text = parts[0]+"='"+parts[1]+"'";
+	 *       success();
+	 *     });
 	 * 
 	 * The method we provide is called with the text of .foo files in options.text. We parse the file, create 
 	 * JavaScript and put it in options.text.  Couldn't be simpler.
 	 * 
 	 * Here's an example, converting [http://jashkenas.github.com/coffee-script/ coffeescript] to JavaScript:
 	 * 
-@codestart javascript
-steal.type("coffee js", function(options, original, success, error){
-	options.text = CoffeeScript.compile(options.text);
-	success();
-});
-@codeend
+	 *     steal.type("coffee js", function(options, original, success, error){
+	 *       options.text = CoffeeScript.compile(options.text);
+	 *       success();
+	 *     });
 	 * 
 	 * In this example, any time steal encounters a file with
 	 * extension .coffee, it will call the given 
@@ -1080,17 +1133,15 @@ steal.type("coffee js", function(options, original, success, error){
 	 * 
 	 * Similarly, languages on top of CSS, like [http://lesscss.org/ LESS], can be converted to CSS:
 	 * 
-@codestart javascript
-steal.type("less css", function(options, original, success, error){
-	new (less.Parser)({
-        optimization: less.optimization,
-        paths: []
-    }).parse(options.text, function (e, root) {
-		options.text = root.toCSS();
-		success();
-	});
-});
-@codeend
+	 *     steal.type("less css", function(options, original, success, error){
+	 *       new (less.Parser)({
+	 *         optimization: less.optimization,
+	 *         paths: []
+	 *       }).parse(options.text, function (e, root) {
+	 *         options.text = root.toCSS();
+	 *         success();
+	 *       });
+	 *     });
 	 * 
 	 * This simple type system could be used to convert any file type to be used in your JavaScript app.  For example, 
 	 * [http://fdik.org/yml/ yml] could be used for configuration.  jQueryMX uses steal.type to support JS templates, such as EJS, TMPL, and others.
@@ -1106,10 +1157,10 @@ steal.type("less css", function(options, original, success, error){
 	 * to a basic type.  This method needs to do two things: 1) save the text of the converted file in options.text 
 	 * and 2) call success() when the conversion is done (it can work asynchronously).
 	 * 
-  - __options__ - the steal options for this file, including path information
-  - __original__ - the original argument passed to steal, which might be a path or a function
-  - __success__ - a method to call when the file is converted and processed successfully
-  - __error__ - a method called if the conversion fails or the file doesn't exist
+	 * - __options__ - the steal options for this file, including path information
+	 * - __original__ - the original argument passed to steal, which might be a path or a function
+	 * - __success__ - a method to call when the file is converted and processed successfully
+	 * - __error__ - a method called if the conversion fails or the file doesn't exist
 	 */
 	type = function(type, cb){
 		var typs = type.split(" ");
@@ -1150,10 +1201,10 @@ steal.type("less css", function(options, original, success, error){
 	 * Called for every file that is loaded.  It sets up a string of methods called for each type in the conversion chain and calls each type one by one.  
 	 * 
 	 * For example, if the file is a coffeescript file, here's what happens:
-
-  - The "text" type converter is called first.  This will perform an AJAX request for the file and save it in options.text.  
-  - Then the coffee type converter is called (the user provided method).  This converts the text from coffeescript to JavaScript.  
-  - Finally the "js" type converter is called, which inserts the JavaScript in the page as a script tag that is executed. 
+	 * 
+	 *   - The "text" type converter is called first.  This will perform an AJAX request for the file and save it in options.text.  
+	 *   - Then the coffee type converter is called (the user provided method).  This converts the text from coffeescript to JavaScript.  
+	 *   - Finally the "js" type converter is called, which inserts the JavaScript in the page as a script tag that is executed. 
 	 * 
 	 * @param {Object} options the steal options for this file, including path information
 	 * @param {Object} original the original argument passed to steal, which might be a path or a function
@@ -1178,7 +1229,7 @@ steal.type("less css", function(options, original, success, error){
 		
 		var type = types[converters.shift()];
 		
-		type.require(options, original, function(){
+		type.require(options, original, function require_continue_check(){
 			// if we have more types to convert
 			if(converters.length){
 				require(options, original, converters, success, error)
@@ -1255,24 +1306,52 @@ steal.type("text", function(options, original, success, error){
 	}, error)
 });
 
-steal.type("css", function(options, original, success, error){
+var cssCount = 0,
+	createSheet = doc && doc.createStyleSheet,
+	lastSheet,
+	lastSheetOptions;
+
+steal.type("css", function css_type(options, original, success, error){
 	if(options.text){
-		var css  = document.createElement('style')
+		var css  = doc[STR_CREATE_ELEMENT]('style');
+		
 		if (css.styleSheet) { // IE
-            css.styleSheet.cssText = options.text;
-	    } else {
-	        (function (node) {
-	            if (css.childNodes.length > 0) {
-	                if (css.firstChild.nodeValue !== node.nodeValue) {
-	                    css.replaceChild(node, css.firstChild);
-	                }
-	            } else {
-	                css.appendChild(node);
-	            }
-	        })(document.createTextNode(options.text));
-	    }
+			css.styleSheet.cssText = options.text;
+		} else {
+			(function (node) {
+				if (css.childNodes.length > 0) {
+					if (css.firstChild.nodeValue !== node.nodeValue) {
+						css.replaceChild(node, css.firstChild);
+					}
+				} else {
+					css.appendChild(node);
+				}
+			})(doc.createTextNode(options.text));
+		}
 		head().appendChild(css);
 	} else {
+		if( createSheet ){
+			// IE has a 31 sheet and 31 import per sheet limit
+			if(cssCount == 0){
+				lastSheet = createSheet(options.src);
+				lastSheetOptions = options;
+				cssCount++;
+			} else {
+				var relative = File(options.src).joinFrom(
+					File(lastSheetOptions.src).dir());
+					
+				console.log(relative);
+				lastSheet.addImport( relative );
+				cssCount++;
+				if(cssCount == 30){
+					cssCount = 0;
+				}
+			}
+			success()
+			return;
+		}
+
+		
 		options = options || {};
 		var link = doc[STR_CREATE_ELEMENT]('link');
 		link.rel = options.rel || "stylesheet";
@@ -1316,7 +1395,7 @@ request = function(options, success, error){
 		check = function(){
 			if ( request.readyState === 4 )  {
 				if ( request.status === 500 || request.status === 404 || 
-				     request.status === 2 || 
+					 request.status === 2 || 
 					 (request.status === 0 && request.responseText === '') ) {
 					error && error();
 					clean();
@@ -1457,16 +1536,16 @@ request = function(options, success, error){
 		// check if jQuery loaded after every script load ...
 		steal.p.loaded = before(steal.p.loaded, function(){
 	
-	        var $ = typeof jQuery !== "undefined" ? jQuery : null;
-	        if ($ && "readyWait" in $) {
-	            
-	            //Increment jQuery readyWait if ncecessary.
-	            if (!jQueryIncremented) {
-	                jQ = $;
+			var $ = typeof jQuery !== "undefined" ? jQuery : null;
+			if ($ && "readyWait" in $) {
+				
+				//Increment jQuery readyWait if ncecessary.
+				if (!jQueryIncremented) {
+					jQ = $;
 					$.readyWait += 1;
-	                jQueryIncremented = true;
-	            }
-	        }
+					jQueryIncremented = true;
+				}
+			}
 		});
 		
 		// once the current batch is done, fire ready if it hasn't already been done
@@ -1474,7 +1553,7 @@ request = function(options, success, error){
 			if (jQueryIncremented && !ready) {
 				jQ.ready(true);
 				ready = true;
-	        }
+			}
 		})
 
 		
@@ -1499,10 +1578,10 @@ request = function(options, success, error){
 	// =============================== AOP ===============================
 	function before(f, before, changeArgs){
 		return changeArgs ? 
-			function(){
+			function before_changeArgs(){
 				return f.apply(this,before.apply(this,arguments));
 			}:
-			function(){
+			function before_args(){
 				before.apply(this,arguments);
 				return f.apply(this,arguments);
 			}
@@ -1517,10 +1596,10 @@ request = function(options, success, error){
 	function after(f, after, changeRet){
 		
 		return changeRet ?
-			function(){
+			function after_CRet(){
 				return after.apply(this,[f.apply(this,arguments)].concat(makeArray(arguments)));
 			}:
-			function(){
+			function after_Ret(){
 				var ret = f.apply(this,arguments);
 				after.apply(this,arguments);
 				return ret;
@@ -1531,6 +1610,8 @@ request = function(options, success, error){
 	function convert(ob, func){
 			
 		var oldFunc = ob[func];
+		
+		// if we don't have callbacks
 		if(!ob[func].callbacks){
 			//replace start with a function that will call ob2's method
 			ob[func] = function(){
@@ -1538,7 +1619,8 @@ request = function(options, success, error){
 					ret;
 				
 				// call the original function
-				ret = oldFunc.apply(ob,arguments)
+				ret = oldFunc.apply(ob,arguments);
+				
 				var cbs = me.callbacks,
 					len = cbs.length;
 				
@@ -1557,24 +1639,35 @@ request = function(options, success, error){
 
 		return ob[func];
 	};
+	
+	// maintains 
 	function join(obj, meth){
 		this.obj = obj;
 		this.meth = meth;
-		convert(obj, meth)
+		convert(obj, meth);
 		this.calls = 0
-	}
+	};
+	
 	extend(join.prototype,{
 		called : function(){
 			this.calls--;
 			this.go();
 		},
+		// adds functions that will call this join
 		add : function(obj, meth){
-			var f = convert(obj, meth)
+			// converts the function to be able to call 
+			// this join
+			var f = convert(obj, meth);
 			if(!f.called){
+				
+				// adds us to the callback ... the callback will call
+				// called
 				f.callbacks.push(this);
 				this.calls++;
 			}
 		},
+		// call go every time the funtion is called
+		
 		go : function(){
 			if(this.calls === 0){
 				this.obj[this.meth]()
@@ -1590,7 +1683,8 @@ request = function(options, success, error){
 	function when(){
 		// handle if we get called with a function
 		var args = makeArray(arguments),
-			last = args[args.length -1]
+			last = args[args.length -1];
+			
 		if(typeof last === 'function' ){
 			args[args.length -1] = {
 				'fn' : last
@@ -1612,21 +1706,20 @@ request = function(options, success, error){
 	
 	// =========== DEBUG =========
 	
-	if(steal.browser.rhino){
+	if(steal.browser.rhino && typeof console == 'undefined'){
 		console = {
 			log: function(){
 				print.apply(null, arguments)
 			}
 		}
 	}
-	
 	var name = function(stel){
 		if(stel.options && stel.options.type == "fn"){
 			return stel.options.orig.toString().substr(0,50)
 		}
 		return stel.options ? stel.options.rootSrc : "CONTAINER"
 	}
-	
+
 	/**
 	steal.p.load = before(steal.p.load, function(){
 		console.log("load", name(this), this.loading, this.id)
@@ -1638,6 +1731,7 @@ request = function(options, success, error){
 	steal.p.complete = before(steal.p.complete, function(){
 		console.log("complete", name(this), this.id)
 	})*/
+
 	// ============= WINDOW LOAD ========
 	var addEvent = function(elem, type, fn) {
 		if ( elem.addEventListener ) {
@@ -1730,24 +1824,24 @@ var interactiveScript,
 	// key is script name, value is array of pending items
 	interactives = {},
 	getInteractiveScript = function() {
-	    var scripts, i, script;
-	    if (interactiveScript && interactiveScript.readyState === 'interactive') {
-	        return interactiveScript;
-	    }
+		var scripts, i, script;
+		if (interactiveScript && interactiveScript.readyState === 'interactive') {
+			return interactiveScript;
+		}
 		
-	    scripts = document.getElementsByTagName('script');
-	    for (i = scripts.length - 1; i > -1 && (script = scripts[i]); i--) {
-	        if (script.readyState === 'interactive') {
-	            return script;
-	        }
-	    }
+		scripts = document.getElementsByTagName('script');
+		for (i = scripts.length - 1; i > -1 && (script = scripts[i]); i--) {
+			if (script.readyState === 'interactive') {
+				return script;
+			}
+		}
 		
 		// check last inserted
 		if(lastInserted && lastInserted.readyState == 'interactive'){
 			return lastInserted;
 		}
 	
-	    return null;
+		return null;
 	}
 
 if (support.interactive) {
@@ -1884,7 +1978,12 @@ if (support.interactive) {
 			}
 			else {
 				var steals = [];
-				
+				if (steal.options.loadDev !== false) {
+					steals.push({
+						src: 'steal/dev/dev.js',
+						ignore: true
+					});
+				}
 				//if you have a startFile load it
 				if (steal.options.startFile) {
 					//steal(steal.options.startFile);
@@ -1892,12 +1991,7 @@ if (support.interactive) {
 				//steal._start = new steal.fn.init(steal.options.startFile);
 				//steal.queue(steal._start);
 				}
-				if (steal.options.loadDev !== false) {
-					steals.push({
-						src: 'steal/dev/dev.js',
-						ignore: true
-					});
-				}
+				
 				if (steals.length) {
 					steal.apply(null, steals);
 				}

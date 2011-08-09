@@ -1,5 +1,5 @@
-steal.css("../../mxui/data/grid/grid", "grid")
-	.plugins('mxui/data/grid', 'jupiter/create', 'jupiter/style')
+steal("mxui/data/grid/grid.css", "./grid.css")
+	.then('mxui/data/grid', 'jupiter/create', 'jupiter/style')
 	.then(function($){
 
 /**

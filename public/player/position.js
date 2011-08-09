@@ -1,4 +1,4 @@
-steal.plugins('player/popcorn',
+steal('player/popcorn',
 	'jquery/controller',
 	'jquery/dom/dimensions',
 	'jquery/event/resize',

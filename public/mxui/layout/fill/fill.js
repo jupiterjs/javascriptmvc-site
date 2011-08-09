@@ -1,5 +1,4 @@
-steal.plugins('jquery/dom/dimensions', 
-	'jquery/event/resize').then(function( $ ) {
+steal('jquery/dom/dimensions', 'jquery/event/resize').then(function( $ ) {
 	//evil things we should ignore
 	var matches = /script|td/,
 
@@ -35,6 +34,13 @@ steal.plugins('jquery/dom/dimensions',
 				el = el.parentNode
 			}
 		},
+		/**
+		 * @function jQuery.fn.mxui_layout_fill
+		 * @parent mxui
+		 * Fills a parent element's hieght with the jQuery element.
+		 * 
+		 * @param {Object} options
+		 */
 		filler = $.fn.mxui_layout_fill = function( options ) {
 			options || (options = {});
 			options.parent || (options.parent = $(this).parent())
@@ -51,7 +57,6 @@ steal.plugins('jquery/dom/dimensions',
 			$(options.parent).bind('resize', evData, filler.parentResize);
 			//if this element is removed, take it out
 
-
 			this.bind('destroyed', evData, function( ev ) {
 				$(ev.target).removeClass('mxui_filler')
 				$(options.parent).unbind('resize', filler.parentResize)
@@ -61,9 +66,9 @@ steal.plugins('jquery/dom/dimensions',
 			//add a resize to get things going
 			var func = function() {
 				//logg("triggering ..")
-				setTimeout(function() {
-					options.parent.triggerHandler("resize");
-				}, 13)
+				//setTimeout(function() {
+				options.parent.resize();
+				//}, 13)
 			}
 			if ( $.isReady ) {
 				func();
@@ -72,11 +77,10 @@ steal.plugins('jquery/dom/dimensions',
 			}
 			return this;
 		};
-		
-		
+
+
 	$.extend(filler, {
 		parentResize: function( ev ) {
-
 			var parent = $(this),
 				isWindow = this == window,
 				container = (isWindow ? $(document.body) : parent),
@@ -92,51 +96,53 @@ steal.plugins('jquery/dom/dimensions',
 					return get.position !== "absolute" && get.position !== "fixed" && get.display !== "none" && !jQuery.expr.filters.hidden(this)
 				}),
 				last = children.eq(-1),
-
-				offsetParentIsContainer = ev.data.filler.offsetParent()[0] === container[0],
-				//if the last element shares our containers offset parent or is the container
-				//we can just use offsetTop
-				offset = offsetParentIsContainer || last.offsetParent()[0] == container.offsetParent()[0] ? offsetTop : pageOffset,
-				//the offset of the container
-				firstOffset = offsetParentIsContainer ? 0 : offset(container), parentHeight = parent.height();
+				parentHeight = parent.height() - (isWindow ? parseInt(container.css('marginBottom'), 10) || 0 : 0),
+				currentSize;
 
 			if ( isBleeder ) {
 				//temporarily add a small div to use to figure out the 'bleed-through' margin
 				//of the last element
-				last = $('<div style="height: 0px; line-height:0px;overflow:hidden;' + (ev.data.inFloat ? 'clear: both' : '') + ';"/>')
-
-
-
-				.appendTo(container);
+				last = $('<div style="height: 0px; line-height:0px;overflow:hidden;' + (ev.data.inFloat ? 'clear: both' : '') + ';"/>').appendTo(container);
 			}
 
-			// the current size the content is taking up
-			var currentSize = (bottom(last, offset) - 0) - firstOffset,
+			//for performance, we want to figure out the currently used height of the parent element
+			// as quick as possible
+			// we can use either offsetTop or offset depending ...
+			if ( last && last.length > 0 ) {
+				if ( last.offsetParent()[0] === container[0] ) {
+					currentSize = last[0].offsetTop + last.outerHeight();
+				} else {
+					currentSize = last.offset().top - container.offset().top + last.outerHeight()
+				}
+			}
 
-				// what the difference between the parent height and what we are going to take up is
-				delta = parentHeight - currentSize,
+			// what the difference between the parent height and what we are going to take up is
+			var delta = parentHeight - currentSize,
 				// the current height of the object
 				fillerHeight = ev.data.filler.height();
 
 			//adjust the height
-			
-			if(ev.data.options.all){
+			if ( ev.data.options.all ) {
 				// we don't care about anything else ... we are likely absolutely positioned
 				//we need to fill the parent width ...
-				
-				ev.data.filler.outerHeight( parent.height() );
-				ev.data.filler.outerWidth(parent.width() )
-			}else{
+				// temporarily collapse ... then expand ...
+				ev.data.filler.height(0).width(0);
+				var parentWidth = parent.width(),
+					parentHeight = parent.height();
+
+				ev.data.filler.outerHeight(parentHeight);
+				ev.data.filler.outerWidth(parentWidth);
+			} else {
 				ev.data.filler.height(fillerHeight + delta)
 			}
-			
+
 
 			//remove the temporary element
 			if ( isBleeder ) {
 				last.remove();
 			}
-			
-			ev.data.filler.triggerHandler('resize');
+
+			//ev.data.filler.triggerHandler('resize');
 		}
 	});
 

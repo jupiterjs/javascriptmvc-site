@@ -1,4 +1,4 @@
-steal('funcunit/qunit','jquery/lang/observe').then(function(){
+steal('funcunit/qunit','jquery/lang/observe',function(){
 
 
 module('jquery/lang/observe/delegate')
@@ -23,6 +23,30 @@ test("delegate", function(){
 	
 	state.undelegate();
 	
+})
+test("delegate on add", function(){
+	
+	var state = new $.Observe({});
+	
+	state.delegate("foo","add", function(ev, newVal){
+		ok(true, "called");
+		equals(newVal, "bar","got newVal")
+	}).delegate("foo","remove", function(){
+		ok(false,"remove should not be called")
+	});
+	
+	state.attr("foo","bar")
+	
+})
+
+test("delegate set is called on add", function(){
+	var state = new $.Observe({});
+	
+	state.delegate("foo","set", function(ev, newVal){
+		ok(true, "called");
+		equals(newVal, "bar","got newVal")
+	});
+	state.attr("foo","bar")
 })
 
 

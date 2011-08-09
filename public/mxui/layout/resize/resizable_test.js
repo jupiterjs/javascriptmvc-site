@@ -1,8 +1,8 @@
-steal.plugins('funcunit').then(function(){
+steal('funcunit').then(function(){
 
 module("resize",{
 	setup : function(){
-		S.open("//mxui/resize/resize.html");
+		S.open("//mxui/layout/resize/resize.html");
 	}
 })
 

@@ -1,8 +1,8 @@
-steal.plugins('jquery/controller/view', 
+steal('jquery/controller/view', 
 	'jquery/view/ejs', 
 	'jquery/dom/form_params',
 	'mxui/util/keycode')
-	.css('create')
+	.then('./create.css')
 	.then(function($){
 
 /**

@@ -1,4 +1,4 @@
-steal.plugins('mxui/data/grid','jquery/event/drop','mxui/layout/sortable').then(function($){
+steal('mxui/data/grid','jquery/event/drop','mxui/layout/sortable').then(function($){
 
 	//creates a grid inside
 	$.Controller.extend("Mxui.Data.Grid.Groupable",{
@@ -89,7 +89,7 @@ steal.plugins('mxui/data/grid','jquery/event/drop','mxui/layout/sortable').then(
 		".groupDrag .remove click" : function(el){
 			var droparea = this.element.children(".droparea");
 			el.parent().remove();
-			droparea.triggerDefault("sortable:removePlaceholder");
+			droparea.trigger("sortable:removePlaceholder");
 			droparea.trigger("change")
 		},
 		addPlaceholder : function(){

@@ -1,9 +1,11 @@
-steal.plugins('mxui/layout/table_scroll',
+steal('mxui/layout/table_scroll',
 	'mxui/data',
 	'jquery/controller/view',
 	'jquery/view/ejs',
 	'mxui/data/order',
-	'mxui/util/selectable').then(function($){
+	'mxui/util/selectable')
+	.then('./views/th.ejs','./views/init.ejs','./views/list.ejs')
+	.then(function($){
 /**
  * A simple data grid that is paginate-able and sortable.
  * 
@@ -39,8 +41,18 @@ $.Controller.extend("Mxui.Data.Grid",{
 		row : null,
 		model : null,
 		noItems : "No Items",
+		// if true, can sort by multiple columns at a time
+		multiSort: true,
+		// if true, there are three states (asc, desc, no sort)
+		canUnsort: true,
 		// set to false for infinite scroll
-		newPageClears: true
+		offsetEmpties: true,
+		// set to false to turn off the filler
+		filler: true,
+		
+		// immediately uses the  model to request items for the grid
+		loadImmediate: true,
+		selectable : true
 	},
 	listensTo : ["select","deselect"]
 },
@@ -52,26 +64,39 @@ $.Controller.extend("Mxui.Data.Grid",{
 			count++;
 		}
 		this.element.append( this.view({columns: this.options.columns, count: count}) )
-		this.element.children('table').mxui_layout_table_scroll();
 		
-		this.find('thead').mxui_data_order({params: this.options.params})
+		this.element.children('table').mxui_layout_table_scroll({
+			filler: this.options.filler
+		});
+		this.$ = this.element.children(":first").controller(Mxui.Layout.TableScroll).elements()
 		
-		this.$ = {};
 		
-		this.$.scrollableController = this.element.children(":first").controller(Mxui.Layout.TableScroll);
-		this.$.tbody = this.find('.body tbody').mxui_util_selectable();
+		this.$.thead.mxui_data_order({
+			params: this.options.params,
+			multiSort: this.options.multiSort, 
+			canUnsort: this.options.canUnsort
+		})
+		
+		this.options.selectable && this.$.tbody.mxui_util_selectable();
 		//this.scrollable.cache.thead.mxui_layout_resizer({selector: "th"});
-		this.element.addClass("grid").mxui_layout_fill();
+		this.element.addClass("grid");
+		if (this.options.filler) {
+			this.element.mxui_layout_fill();
+		}
 		//this.setFixedAndColumns()
 		
 		// add jQuery UI stuff ...
 		this.element.find(".header table").attr('cellSpacing', '0').attr('cellPadding', '0');
-		var ths = this.element.find(".header th").addClass("ui-helper-reset ui-state-default")
+		
+		var ths = this.$.thead.find('th').addClass("ui-helper-reset ui-state-default");
+		
 		ths.eq(0).addClass('ui-corner-left')
 		ths.eq(-1).addClass('ui-corner-right')
 
+		if(this.options.loadImmediate){
+			this.options.model.findAll(this.options.params.attrs(), this.callback('list', true))
+		}
 		
-		this.options.model.findAll(this.options.params.attrs(), this.callback('list', true))
 	},
 	/**
 	 * 
@@ -80,33 +105,33 @@ $.Controller.extend("Mxui.Data.Grid",{
 	 */
 	list : function(clear, items){
 		this.curentParams = this.options.params.attrs();
-		var trs = this.view('list',{
+		
+		this.options.params.attr('updating', false);
+		
+		var trs = $(this.view('list',{
 			row : this.options.row,
 			items: items
-		});
+		}));
 		
 		if(clear){
-			var tbody = this.clear();
-			tbody.html(trs).trigger('resize');
-		}
-		else {
-			var lastTr = this.$.tbody.find("tr.asset:last")
-			this.insert(lastTr, $(trs));
+			this.empty();
 		}
 		
-		// draw in items
+		this.append(trs);
+		// update the items
 		this.options.params.attr('count',items.count)
 	},
 	"{params} updated.attr" : function(params, ev, attr, val){
-		if(attr !== 'count'){
+		if(attr !== 'count' && attr !== 'updating'){
 			//want to throttle for rapid updates
+			params.attr('updating', true)
 			clearTimeout(this.newRequestTimer,100)
 			this.newRequestTimer = setTimeout(this.callback('newRequest', attr, val))
 		}
 	},
 	newRequest : function(attr, val){
 		var clear = true; 
-		if(!this.options.newPageClears && attr == "offset"){ // if offset changes and we have newPageClears false
+		if(!this.options.offsetEmpties && attr == "offset"){ // if offset changes and we have offsetEmpties false
 			clear = false;
 		} 
 		this.options.model.findAll(this.options.params.attrs(), this.callback('list', clear))
@@ -116,25 +141,25 @@ $.Controller.extend("Mxui.Data.Grid",{
      * @param {Object} called
      * @param {Object} item
      */
-    "{model._shortName}.updated subscribe" : function(called, item){
+    "{model} updated" : function(model, ev, item){
         var el = item.elements(this.element).html(this.options.row, item);
         if(this.options.updated){
             this.options.updated(this.element, el, item)
         }
     },
-    "{model._shortName}.created subscribe" : function(called, item){
+    "{model} created" : function(model, ev, item){
         var newEl = $($.View("//mxui/data/grid/views/list",{
             items : [item],
             row: this.options.row
         }))
-        if(this.options.insert){
-            this.options.insert(this.element, newEl, item)
+        if(this.options.append){
+            this.options.append(this.element, newEl, item)
         }else{
-            this.insert(newEl)
+            this.append(newEl)
 			//newEl.appendTo(this.element).slideDown();
         }
     },
-    "{model._shortName}.destroyed subscribe" : function(called, item){
+    "{model} destroyed" : function(model, ev, item){
         var el = item.elements(this.element)
         if(this.options.remove){
             this.options.remove(this.element,el, item)
@@ -149,22 +174,12 @@ $.Controller.extend("Mxui.Data.Grid",{
 	 * @param {Object} row insert after this row
 	 * @param {Object} newEls new elements to insert (they should be trs)
 	 */
-	insert: function( row, newEls ) {
-		if(!newEls) {
-			newEls = row;
-			row = null;
-		}
-		if (row && row.length) {
-			row.after(newEls);
-		}
-		else {
-			this.find('.body tbody').prepend(newEls)
-		}
-		return newEls;
+	append: function( row, newEls ) {
+		this.element.children(":first").mxui_layout_table_scroll("append", row, newEls)
 	},
 	// remove all content from the grid
-	clear: function(){
-		return this.$.tbody.html("");
+	empty: function(){
+		this.element.children(":first").mxui_layout_table_scroll("empty")
 	},
 	"select" : function(el, ev){
 		ev.preventDefault();

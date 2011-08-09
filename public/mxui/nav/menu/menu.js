@@ -1,4 +1,4 @@
-steal.plugins('mxui/layout/positionable','mxui/nav/menuable','jquery/event/hover').then(function($){
+steal('mxui/layout/positionable','mxui/nav/menuable','jquery/event/hover').then(function($){
 	
 	/**
 	 * A general Menu System.
@@ -100,19 +100,17 @@ steal.plugins('mxui/layout/positionable','mxui/nav/menuable','jquery/event/hover
 		calculateSubmenuPosition : function(el, ev){
 			return el;
 		},
-		">hide:before" : function(el, ev){
+		">hide" : function(el, ev){
 			if (ev.target == this.element[0]) {
 				this.element.hide();
-				//el.trigger("hide:after")
 			}
 		},
 		/**
 		 * By default, shows the child element.
 		 */
-		">show:before" : function(el, ev){
+		">show" : function(el, ev){
 		   if(ev.target == this.element[0]){
 				this.element.show();
-				//this.element.triggerDefault("show:after")
 		   }
 			
 		}

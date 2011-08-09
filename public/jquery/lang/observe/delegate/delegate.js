@@ -1,11 +1,13 @@
-steal('jquery/lang/observe').then(function(){
+steal('jquery/lang/observe',function(){
 	
-	
+	// tells if the parts part of a delegate matches the broken up props of the event
 	var matches = function(delegate, props){
 		//check props parts are the same or 
 		var parts = delegate.parts,
 			len = parts.length,
 			i =0;
+		
+		// if the event matches
 		for(i; i< len; i++){
 			if(parts[i] == "**") {
 				return true;
@@ -17,18 +19,37 @@ steal('jquery/lang/observe').then(function(){
 		}
 		return len === props.length;
 	},
-		delegate = function(event, prop, how, value, current){
+		delegate = function(event, prop, how, newVal, oldVal){
 			var props = prop.split("."),
-				delegates = $.data(this,"_observe_delegates") || [];
+				delegates = $.data(this,"_observe_delegates") || [],
+				delegate;
 			
 			for(var i =0; i < delegates.length; i++){
-				if(matches(delegates[i], props)){
-					delegates[i].callback.apply(this.attr(prop), arguments);
+				// check delegate.event
+				delegate = delegates[i];
+				
+				if(  delegate.event === 'change' && matches(delegate, props) ){
+					delegate.callback.apply(this.attr(prop), arguments);
+				} else if(delegate.event === how && matches(delegate, props) ){
+					delegate.callback.apply(this.attr(prop), [event,newVal, oldVal]);
+				} else if(delegate.event === 'set' && how == 'add' && matches(delegates[i], props)) {
+					delegate.callback.apply(this.attr(prop), [event,newVal, oldVal]);
 				}
 			}
 		};
 		
 	$.extend($.Observe.prototype,{
+		/**
+		 * listens for changes in a child from the parent
+		 * 
+		 * observe.delegate("foo.bar","change", function(){
+		 *   // foo.bar has been added, set, or removed
+		 * });
+		 * 
+		 * @param {String} attr
+		 * @param {String} event
+		 * @param {Function} cb
+		 */
 		delegate :  function(attr, event, cb){
 			attr = $.trim(attr);
 			var delegates = $.data(this, "_observe_delegates") ||
@@ -37,7 +58,8 @@ steal('jquery/lang/observe').then(function(){
 			delegates.push({
 				attr : attr,
 				parts : attr.split('.'),
-				callback : cb
+				callback : cb,
+				event: event
 			});
 			if(delegates.length === 1){
 				this.bind("change",delegate)
