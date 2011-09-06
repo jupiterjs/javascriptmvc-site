@@ -1,8 +1,4 @@
 <div class='top'>
-	<div class="topCorner">
-		<div class="right"></div>
-		<div class="left"></div>
-	</div>
 	<div class="content">
 	    <h1><%=this.title || name.replace(/~/g,".") %>&nbsp;
 	    	<span class='<%= type%> type'><span class="typeEnd"><%= type %></span></span>&nbsp;
@@ -32,9 +28,5 @@
 	        test: <a href='<%= steal.root? steal.root.join(this.test): this.test %>'><%=this.test.match(/[^\/]*$/)[0]%></a>
 	    </div>
 	    <% } %>
-	</div>
-	<div class="bottomCorner">
-		<div class="right"></div>
-		<div class="left"></div>
 	</div>	
 </div>

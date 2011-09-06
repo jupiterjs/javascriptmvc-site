@@ -1007,8 +1007,9 @@ jQuery.extend({
 							while( callbacks[ 0 ] ) {
 								callbacks.shift().apply( context, args );
 							}
-						}
-						finally {
+						} catch( e ) {
+							throw e;
+						} finally {
 							fired = [ context, args ];
 							firing = 0;
 						}

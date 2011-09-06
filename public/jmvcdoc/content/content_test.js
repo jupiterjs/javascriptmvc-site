@@ -1,4 +1,4 @@
-steal('funcunit').then(function(){
+steal.plugins('funcunit').then(function(){
 
 module("Jmvcdoc.Content", { 
 	setup: function(){

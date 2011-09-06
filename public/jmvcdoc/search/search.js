@@ -31,10 +31,8 @@ $.Controller('Jmvcdoc.Search',
 		
 		//this.options.clientState.merge({search : }, true)
 	},
-	"{clientState} search change" : function(clientState, ev, attr, how, val){
-		if(how == "set" || how == "add"){
-			this.element.val(val)
-		}
+	"{clientState} search set" : function(clientState, ev, newVal){
+		this.element.val(newVal)
 	},
 	focusin : function(){
 		this.focused = true;

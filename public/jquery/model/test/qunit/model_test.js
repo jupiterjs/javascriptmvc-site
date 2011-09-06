@@ -405,3 +405,21 @@ test("serialize", function(){
 	}).serialize().createdAt, "feb", "serialized")
 });
 
+test("removeAttr test", function(){
+	var person = new Person({foo: "bar"})
+	equals(person.foo, "bar", "property set");
+	person.removeAttr('foo')
+	
+	equals(person.foo, undefined, "property removed");
+	var attrs = person.attrs()
+	equals(attrs.foo, undefined, "attrs removed");
+});
+
+test("identity should replace spaces with underscores", function(){
+	$.Model("Task",{},{});
+	t = new Task({
+		id: "id with spaces"
+	});
+	equals(t.identity(), "task_id_with_spaces")
+});
+

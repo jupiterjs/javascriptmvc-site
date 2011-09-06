@@ -1,1 +1,1 @@
-C({"name": "jQuery.Model.List.prototype.pop", "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Pops the last instance off the list</p>\n\n<p>Pops the last instance off the list</p>", "src": "../jquery/model/list/list.js", "children": []})
+C({"name": "jQuery.Model.List.prototype.pop", "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Pops the last instance off the list</p>", "src": "../jquery/model/list/list.js", "children": []})

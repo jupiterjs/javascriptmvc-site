@@ -1,4 +1,4 @@
-steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/deparam', 'jquery/lang/observe/delegate', function( $ ) {
+steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/string/deparam', 'jquery/lang/observe/delegate', function( $ ) {
 
 	var globalDefaults, matcher = /\:([\w\.]+)/g,
 		makeProps = function( props ) {
@@ -15,34 +15,126 @@ steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/deparam', '
 		},
 		escapeHTML = function( content ) {
 			return content.replace(/"/g, '&#34;').replace(/'/g, "&#39;");
-		};
+		},
+		// if a route matches the data provided
+		matchesData = function(route, data){
+			var count = 0;
+			for ( var i = 0; i < route.names.length; i++ ) {
+				if (!data.hasOwnProperty(route.names[i]) ) {
+					return 0;
+				}
+				count++;
+			}
+			return count;
+		},
+		onready = true;
 
 	/**
-	 * @parent dom
 	 * @class jQuery.route
+	 * @inherits jQuery.Observe
+	 * @plugin jquery/dom/route
+	 * @parent dom
 	 * @tag 3.2
 	 * 
-	 * jQuery.route helps manage browser history by
+	 * jQuery.route helps manage browser history (and
+	 * client state) by
 	 * synchronizing the window.location.hash with
-	 * [jQuery.route.data].
+	 * an [jQuery.Observe].
+	 * 
+	 * ## Background Information
+	 * 
+	 * To support the browser's back button and bookmarking
+	 * in an Ajax application, most applications use
+	 * the <code>window.location.hash</code>.  By
+	 * changing the hash (via a link or JavaScript), 
+	 * one is able to add to the browser's history 
+	 * without changing the page.  The [jQuery.event.special.hashchange event] allows
+	 * you to listen to when the hash is changed.
+	 * 
+	 * Combined, this provides the basics needed to
+	 * create history enabled Ajax websites.  However,
+	 * jQuery.Route addresses several other needs such as:
+	 * 
+	 *   - Pretty Routes
+	 *   - Keeping routes independent of application code
+	 *   - Listening to specific parts of the history changing
+	 *   - Setup / Teardown of widgets.
+	 * 
+	 * ## How it works
+	 * 
+	 * <code>$.route</code> is a [jQuery.Observe $.Observe] that represents the
+	 * <code>window.location.hash</code> as an 
+	 * object.  For example, if the hash looks like:
+	 * 
+	 *     #!type=videos&id=5
+	 *     
+	 * the data in <code>$.route</code> would look like:
+	 * 
+	 *     { type: 'videos', id: 5 }
+	 * 
+	 * 
+	 * $.route keeps the state of the hash in-sync with the data in
+	 * $.route.
+	 * 
+	 * ## $.Observe
+	 * 
+	 * $.route is a [jQuery.Observe $.Observe]. Understanding
+	 * $.Observe is essential for using $.route correctly.
+	 * 
+	 * You can
+	 * listen to changes in an Observe with bind and
+	 * delegate and change $.route's properties with 
+	 * attr and attrs.
+	 * 
+	 * ### Listening to changes in an Observable
+	 * 
+	 * Listen to changes in history 
+	 * by [jQuery.Observe.prototype.bind bind]ing to
+	 * changes in <code>$.route</code> like:
+	 * 
+	 *     $.route.bind('change', function(ev, attr, how, newVal, oldVal){
+	 *     
+	 *     })
+	 * 
+	 * You can also listen to specific changes 
+	 * with [jQuery.Observe.prototype.delegate delegate]:
+	 * 
+	 *     $.route.delegate('id','change', function(){ ... })
+	 * 
+	 * Observe lets you listen to the following events:
+	 * 
+	 *  - change - any change to the object
+	 *  - add - a property is added
+	 *  - set - a property value is added or changed
+	 *  - remove - a property is removed
+	 * 
+	 * Listening for <code>add</code> is useful for widget setup
+	 * behavior, <code>remove</code> is useful for teardown.
+	 * 
+	 * ### Updating an observable
 	 * 
 	 * Create changes in the route data like:
 	 * 
-	 *     $.route.attr('type','video');
+	 *     $.route.attr('type','images');
 	 * 
-	 * Listen to changes in the route data like
+	 * Or change multiple properties at once with
+	 * [jQuery.Observe.prototype.attrs attrs]:
 	 * 
-	 * $.route.delegate('type','add',function(ev, newVal, oldVal){
+	 *     $.route.attrs({type: 'pages', id: 5}, true)
 	 * 
-	 * })
+	 * When you make changes to $.route, they will automatically
+	 * change the <code>hash</code>.
 	 * 
 	 * ## Creating a Route
 	 * 
-	 * $.route("", {type: "videos"});
-	 * $.route(":type",{type: "videos"});
+	 * 
+	 * 
+	 *     $.route("", {type: "videos"});
+	 *     $.route(":type",{type: "videos"});
 	 * 
 	 * @param {String} url
 	 * @param {Object} [defaults]
+	 * @return {$.route}
 	 */
 	var $route = $.route = function( url, defaults ) {
 		// add route in a form that can be easily figured out
@@ -61,6 +153,7 @@ steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/deparam', '
 			defaults: defaults || {},
 			length: url.split('/').length
 		}
+		return $route;
 	};
 
 	$.extend($route, {
@@ -74,28 +167,30 @@ steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/deparam', '
 		param: function( data ) {
 			// see what data is provided ...
 			// check if it matches the names in any routes ...
+			// get the one with the most matches
+			var route,
+				matches = -1,
+				temp,
+				matchCount;
 			for ( var name in $route.routes ) {
-				var route = $route.routes[name],
-					ok = true;
-
-				// check if data has props
-				for ( var i = 0; i < route.names.length; i++ ) {
-					if (!data.hasOwnProperty(route.names[i]) ) {
-						ok = false;
-						break;
-					}
+				
+				var temp = $route.routes[name],
+					matchCount = matchesData(temp, data);
+				if( matchCount > matches ){
+					route = temp;
+					matches = matchCount
 				}
-				if ( ok ) {
-					// create url ...
-					var cpy = $.extend({}, data);
+			}
+			if ( route ) {
+				// create url ...
+				var cpy = $.extend({}, data);
 
-					var res = route.route.replace(matcher, function( whole, name ) {
-						delete cpy[name];
-						return data[name] === route.defaults[name] ? "" : data[name];
-					});
-					var after = $.param(cpy);
-					return res + (after ? "&" + after : "")
-				}
+				var res = route.route.replace(matcher, function( whole, name ) {
+					delete cpy[name];
+					return data[name] === route.defaults[name] ? "" : data[name];
+				});
+				var after = $.param(cpy);
+				return res + (after ? "&" + after : "")
 			}
 			return $.param(data);
 		},
@@ -139,9 +234,17 @@ steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/deparam', '
 		/**
 		 * Indicates that all routes have been added
 		 * and sets $.route.data based upon the routes.
+		 * @param {Boolean} [start]
+		 * @return 
 		 */
-		ready: function() {
-			setState();
+		ready: function(val) {
+			if( val === false ){
+				onready = false;
+			}
+			if( val === true || onready === true ){
+				setState();
+			}
+			return $route;
 		},
 		/**
 		 * Returns a url from the options
@@ -177,6 +280,11 @@ steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/deparam', '
 			return window.location.hash == "#!" + $route.param(options)
 		}
 	});
+	// onready
+	$(function(){
+		$.route.ready();
+	});
+	
 
 	$.each(['bind','unbind','delegate','undelegate','attr','attrs','removeAttr'], function(i, name){
 		$route[name] = function(){
@@ -191,7 +299,8 @@ steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/deparam', '
 			timer = setTimeout(func, time || 1);
 		}
 	},
-		curParams, setState = function() {
+		curParams, 
+		setState = function() {
 
 			var hash = window.location.hash.substr(2); // everything after #!
 			//deparam it

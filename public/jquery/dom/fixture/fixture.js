@@ -1,5 +1,31 @@
 steal('jquery/dom').then(function( $ ) {
+	
+	
+	/**
+	 * @page jquery.fixture.1errors Simulating Errors
+	 * @parent jQuery.fixture
+	 * 
+	 * The following simulates an unauthorized request 
+	 * to <code>/foo</code>.
+	 * 
+	 *     $.fixture("/foo", function(){
+	 * 		return [401,"{type: 'unauthorized'}"]
+	 * 	   });
+	 * 
+	 * This could be received by the following Ajax request:
+	 * 
+	 *     $.ajax({
+	 *       url: '/foo',
+	 *       error : function(jqXhr, status, statusText){
+	 *         // status === 'error'
+	 *         // statusText === "{type: 'unauthorized'}"
+	 *       }
+	 *     })
+	 * 
+	 */
+	
 	// the pre-filter needs to re-route the url
+	
 	$.ajaxPrefilter( function( settings, originalOptions, jqXHR ) {
 	  	// if fixtures are on
 		if(! $.fixture.on) {
@@ -254,7 +280,7 @@ steal('jquery/dom').then(function( $ ) {
 	 * <code>error</code>) expect. 
 	 *    
 	 * For example, the "<code>success</code>" of a json request is called with 
-	 * <code>[data, textStatus, XMLHttpRequest].
+	 * <code>[data, textStatus, XMLHttpRequest]</code>.
 	 * 
 	 * There are 2 ways to lookup dynamic fixtures. They can provided:
 	 * 
@@ -307,14 +333,12 @@ steal('jquery/dom').then(function( $ ) {
 	 * ## Helpers
 	 * 
 	 * The fixture plugin comes with a few ready-made dynamic fixtures and 
-	 * fixture helpers:</p>
+	 * fixture helpers:
 	 * 
-	 * <ul>
-	 * <li>[jQuery.fixture.make] - creates fixtures for findAll, findOne.</li>
-	 * <li>[jQuery.fixture.-restCreate] - a fixture for restful creates.</li>
-	 * <li>[jQuery.fixture.-restDestroy] - a fixture for restful updates.</li>
-	 * <li>[jQuery.fixture.-restUpdate] - a fixture for restful destroys.</li>
-	 * </ul>
+	 *  - [jQuery.fixture.make] - creates fixtures for findAll, findOne.
+	 *  - [jQuery.fixture.-restCreate] - a fixture for restful creates.
+	 *  - [jQuery.fixture.-restDestroy] - a fixture for restful updates.
+	 *  - [jQuery.fixture.-restUpdate] - a fixture for restful destroys.
 	 * 
 	 * @demo jquery/dom/fixture/fixture.html
 	 * @constructor
@@ -678,6 +702,7 @@ steal('jquery/dom').then(function( $ ) {
 		return false;
 	};
 
+	//
 	/**
 	 *  @add jQuery
 	 */
@@ -804,33 +829,6 @@ steal('jquery/dom').then(function( $ ) {
 	 *     } else {
 	 *       // default fixtures (maybe no fixtures)
 	 *     }
-	 * 
-	 */
-	//
-	/**
-	 * @add jQuery.fixture
-	 */
-	//
-	/**
-	 * @page jquery.fixture.1errors Simulating Errors
-	 * @parent jQuery.fixture
-	 * 
-	 * The following simulates an unauthorized request 
-	 * to <code>/foo</code>.
-	 * 
-	 *     $.fixture("/foo", function(){
-	 * 		return [401,"{type: 'unauthorized'}"]
-	 * 	   });
-	 * 
-	 * This could be received by the following Ajax request:
-	 * 
-	 *     $.ajax({
-	 *       url: '/foo',
-	 *       error : function(jqXhr, status, statusText){
-	 *         // status === 'error'
-	 *         // statusText === "{type: 'unauthorized'}"
-	 *       }
-	 *     })
 	 * 
 	 */
 });

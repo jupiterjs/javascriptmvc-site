@@ -9,12 +9,8 @@
 		 			title = (current.title ? current.title: current.name);
 					res = calculateDisplay(previous, title);
 					name = normalizeName(current.name) %>
-		<div class="topCorner">
-			<div class="right"></div>
-			<div class="left"></div>
-		</div>
 		<div class="content">
-			    <a href="#&who=<%=name%>" class='selected choice <%=current.type%>' style="padding-left: <%= res.length * 20%>px">
+			    <a href="<%=$.route.url({who: name})%>" class='selected choice <%=current.type%>' style="padding-left: <%= res.length * 20%>px">
 			    	<%if(name != "index") { %>
 						<span class='remove' title="close"></span>
 					<%}%>
@@ -23,10 +19,6 @@
 				</a>
 				<% previous = title%>
 		</div>
-		<div class="bottomCorner">
-			<div class="right"></div>
-			<div class="left"></div>
-		</div>
 			<% if(i<(selected.length-1)){ %>
 		<div class="spacer"><div>&nbsp;</div></div>
 			<%}%>
@@ -34,10 +26,6 @@
 	</div>
 <%}%>
 <div id='results' style="display: <%= hide? 'none' : 'block'%>">
-	<div class="topCorner">
-		<div class="right"></div>
-		<div class="left"></div>
-	</div>
 	<div class="content">
 	    <% for(var i =0; i < list.length; i++){%>
 			<% current = list[i];
@@ -45,15 +33,11 @@
 			   title = (current.title ? current.title: current.name);
 	           res = calculateDisplay(previous, title);
 			   name = normalizeName(current.name) %>
-		    <a href="<%=current.type == 'prototype' || current.type == 'static' ? 'javascript://': '#&who='+name%>" class='result choice <%=current.type%>' style="padding-left: <%= res.length * 20%>px">
+		    <a href="<%=current.type == 'prototype' || current.type == 'static' ? 'javascript://': $.route.url({who: name}) %>" class='result choice <%=current.type%>' style="padding-left: <%= res.length * 20%>px">
 		    	<%=res.name.replace("jQuery.","$.")%>
 			</a>
 			<% previous = title%>
 		<%}%>
-	</div>
-	<div class="bottomCorner">
-		<div class="right"></div>
-		<div class="left"></div>
 	</div>
 </div>
 

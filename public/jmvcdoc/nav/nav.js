@@ -19,12 +19,8 @@ $.Controller('Jmvcdoc.Nav',
 },
 /* @Prototype */
 {
-	"{clientState} who change" : function(clientState, ev, attr, how, val){
+	"{$.route.data} who set" : function(clientState, ev, val){
 		// write out who this is
-		if(how === "remove"){
-			// we should search for 'home'
-			val = 'index';
-		}
 		var item = Doc.findOne({
 			name: val
 		}),
@@ -82,7 +78,7 @@ $.Controller('Jmvcdoc.Nav',
 			window.location.hash = ""
 		}
 	},
-	"{clientState} search change" : function(clientState, ev, attr, how, val){
+	"{clientState} search set" : function(clientState, ev, attr, how, val){
 		var res = Doc.findAll({
 			search: val
 		});

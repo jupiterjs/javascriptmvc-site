@@ -2,7 +2,7 @@
 
 
 
-steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
+steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 	var myEval = function(script){
 			eval(script);
 		},
@@ -14,7 +14,7 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 		isArray = $.isArray,
 		clean = function( content ) {
 				return content.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/"/g, '\\"');
-		}
+		},
 		// from prototype  http://www.prototypejs.org/
 		escapeHTML = function(content){
 			return content.replace(/&/g,'&amp;')
@@ -94,15 +94,15 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 	 *     
 	 *         <% alert('hello world') %>
 	 *     
-	 *   - <code>&lt;%= CODE %&gt;</code> - Runs JS Code and writes the result into the result of the template.
+	 *   - <code>&lt;%= CODE %&gt;</code> - Runs JS Code and writes the _escaped_ result into the result of the template.
 	 *     For example:
 	 *     
 	 *         <h1><%= 'hello world' %></h1>
-	 *        
-	 *   - <code>&lt;%~ CODE %&gt;</code> - Runs JS Code and writes the _escaped_ result into the result of the template.
+	 *         
+	 *   - <code>&lt;%== CODE %&gt;</code> - Runs JS Code and writes the _unescaped_ result into the result of the template.
 	 *     For example:
 	 *     
-	 *         <%~ 'hello world' %>
+	 *         <h1><%== '<span>hello world</span>' %></h1>
 	 *         
 	 *   - <code>&lt;%%= CODE %&gt;</code> - Writes <%= CODE %> to the result of the template.  This is very useful for generators.
 	 *     
@@ -251,9 +251,11 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 	EJS.clean = function(text){
 		//return sanatized text
 		if(typeof text == 'string'){
-			return escapeHTML(text)
-		}else{
-			return "";
+			return escapeHTML(text);
+		} else if(typeof text == 'number') {
+			return text;
+		} else {
+			return EJS.text(text);
 		}
 	}
 	//returns something you can call scan on
@@ -286,12 +288,11 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 			eeLeft : left + '%==',
 			eLeft: left + '%=',
 			cmnt: left + '%#',
-			cleanLeft: left+"%~",
 			scan : scan,
 			lines : 0
 		});
-		scanner.splitter = new RegExp("(" + [scanner.dLeft, scanner.dRight, scanner.eeLeft, scanner.eLeft, scanner.cleanLeft,
-		scanner.cmnt, scanner.left, scanner.right + '\n', scanner.right, '\n'].join(")|(").
+		scanner.splitter = new RegExp("(" + [scanner.dLeft, scanner.dRight, scanner.eeLeft, scanner.eLeft, 
+			scanner.cmnt, scanner.left, scanner.right + '\n', scanner.right, '\n'].join(")|(").
 			replace(/\[/g,"\\[").replace(/\]/g,"\\]") + ")");
 		return scanner;
 	},
@@ -327,7 +328,6 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 					case scanner.left:
 					case scanner.eLeft:
 					case scanner.eeLeft:
-					case scanner.cleanLeft:
 					case scanner.cmnt:
 						startTag = token;
 						if ( content.length > 0 ) {
@@ -359,11 +359,8 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 								buff.push(content, ";");
 							}
 							break;
-						case scanner.cleanLeft : 
-							buff.push(insert_cmd, "(jQuery.EJS.clean(", content, ")));");
-							break;
 						case scanner.eLeft:
-							buff.push(insert_cmd, "(jQuery.EJS.text(", content, ")));");
+							buff.push(insert_cmd, "(jQuery.EJS.clean(", content, ")));");
 							break;
 						case scanner.eeLeft:
 							buff.push(insert_cmd, "(jQuery.EJS.text(", content, ")));");
@@ -469,6 +466,32 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 	 * @parent jQuery.EJS
 	 * By adding functions to jQuery.EJS.Helpers.prototype, those functions will be available in the 
 	 * views.
+	 * 
+	 * The following helper converts a given string to upper case:
+	 * 
+	 * 	$.EJS.Helpers.prototype.toUpper = function(params)
+	 * 	{
+	 * 		return params.toUpperCase();
+	 * 	}
+	 * 
+	 * Use it like this in any EJS template:
+	 * 
+	 * 	<%= toUpper('javascriptmvc') %>
+	 * 
+	 * To access the current DOM element return a function that takes the element as a parameter:
+	 * 
+	 * 	$.EJS.Helpers.prototype.upperHtml = function(params)
+	 * 	{
+	 * 		return function(el) {
+	 * 			$(el).html(params.toUpperCase());
+	 * 		}
+	 * 	}
+	 * 
+	 * In your EJS view you can then call the helper on an element tag:
+	 * 
+	 * 	<div <%= upperHtml('javascriptmvc') %>></div>
+	 * 
+	 * 
 	 * @constructor Creates a view helper.  This function is called internally.  You should never call it.
 	 * @param {Object} data The data passed to the view.  Helpers have access to it through this._data
 	 */
@@ -507,7 +530,8 @@ steal('jquery/view', 'jquery/lang/rsplit').then(function( $ ) {
 		//returns a function that renders the view
 		script: function( id, src ) {
 			return "jQuery.EJS(function(_CONTEXT,_VIEW) { " + new EJS({
-				text: src
+				text: src,
+				name: id
 			}).template.out + " })";
 		},
 		renderer: function( id, text ) {

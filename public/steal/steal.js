@@ -60,7 +60,7 @@
 				else 
 					return "onerror" in script;
 			})(),
-			interactive: doc && "attachEvent" in scriptTag()
+			interactive: false
 			
 		},
 		startup = function(){},
@@ -1192,6 +1192,9 @@
 			}
 			raw.type =  ext;
 		}
+		if (!types[raw.type]){
+			throw "steal.js - type " + raw.type + " has not been loaded.";
+		}
 		var converters =  types[raw.type].convert;
 		raw.buildType = converters.length ? converters[converters.length - 1] : raw.type;
 	});
@@ -1293,6 +1296,7 @@ steal.type("js", function(options,original, success, error){
 	
 	if (options.text) {
 		success();
+		cleanUp(script);
 	}
 });
 
@@ -1312,9 +1316,9 @@ var cssCount = 0,
 	lastSheetOptions;
 
 steal.type("css", function css_type(options, original, success, error){
-	if(options.text){
+	if(options.text){ // less
 		var css  = doc[STR_CREATE_ELEMENT]('style');
-		
+		css.type = 'text/css';
 		if (css.styleSheet) { // IE
 			css.styleSheet.cssText = options.text;
 		} else {
@@ -1333,14 +1337,13 @@ steal.type("css", function css_type(options, original, success, error){
 		if( createSheet ){
 			// IE has a 31 sheet and 31 import per sheet limit
 			if(cssCount == 0){
-				lastSheet = createSheet(options.src);
+				lastSheet = document.createStyleSheet(options.src);
 				lastSheetOptions = options;
 				cssCount++;
 			} else {
 				var relative = File(options.src).joinFrom(
 					File(lastSheetOptions.src).dir());
 					
-				console.log(relative);
 				lastSheet.addImport( relative );
 				cssCount++;
 				if(cssCount == 30){
@@ -1747,7 +1750,7 @@ request = function(options, success, error){
 		end : function(){}
 	};
 	
-	firstEnd = false;
+	var firstEnd = false;
 	addEvent(win, "load", function(){
 		loaded.load();
 	});
@@ -1823,17 +1826,23 @@ request = function(options, success, error){
 var interactiveScript, 
 	// key is script name, value is array of pending items
 	interactives = {},
-	getInteractiveScript = function() {
+	getInteractiveScript = function(){
+		var i, script,
+		  scripts = doc[STR_GET_BY_TAG]('script');
+		for (i = scripts.length - 1; i > -1 && (script = scripts[i]); i--) {
+			if (script.readyState === 'interactive') {
+				return script;
+			}
+		}
+	},
+	getCachedInteractiveScript = function() {
 		var scripts, i, script;
 		if (interactiveScript && interactiveScript.readyState === 'interactive') {
 			return interactiveScript;
 		}
 		
-		scripts = document.getElementsByTagName('script');
-		for (i = scripts.length - 1; i > -1 && (script = scripts[i]); i--) {
-			if (script.readyState === 'interactive') {
-				return script;
-			}
+		if(script = getInteractiveScript()){
+			return script;
 		}
 		
 		// check last inserted
@@ -1842,15 +1851,18 @@ var interactiveScript,
 		}
 	
 		return null;
-	}
+	};
+	
+support.interactive = doc && !!getInteractiveScript();
+
 
 if (support.interactive) {
 
 	// after steal is called, check which script is "interactive" (for IE)
 	steal.after = after(steal.after, function(){
-		var interactive = getInteractiveScript();
+		var interactive = getCachedInteractiveScript();
 		// if no interactive script, this is a steal coming from inside a steal, let complete handle it
-		if (!interactive || !interactive.src || /steal\.js/.test(interactive.src)) {
+		if (!interactive || !interactive.src || /steal\.(production\.)*js/.test(interactive.src)) {
 			return;
 		}
 		var src = interactive.src;
@@ -1868,13 +1880,16 @@ if (support.interactive) {
 	// dependencies that has come so far and assign them to the loaded script
 	steal.loaded = before(steal.loaded, function(name){
 		var src = steals[name].options.src,
-			interactive = getInteractiveScript(),
+			interactive = getCachedInteractiveScript(),
 			interactiveSrc = interactive.src;
 		interactives[src] = interactives[interactiveSrc];
 		interactives[interactiveSrc] = null;
 	});
 	
 }
+
+	// ===========  STEAL.BROWSERS ==========
+	win.location && /mode=commandline/.test(win.location.search) && steal("steal/browser/"+win.location.search.match(/browser=(\w+)/)[1]+"/client.js")
 	
 	// ===========  OPTIONS ==========
 	

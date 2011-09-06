@@ -84,7 +84,7 @@ DocumentationHelpers = {
 				if (!n ) {
 					n = dontReplace ? first : first.replace(/\.prototype|\.static/, "")
 				}
-				return "<a href='#&who=" + url.name + "'>" + n + "</a>"
+				return  "<a href='" +$.route.url({who:  url.name }) + "'>" + n + "</a>"
 			} else if ( typeof first == 'string' && first.match(/^https?|www\.|#/) ) {
 				return "<a href='" + first + "'>" + (n || first) + "</a>"
 			}

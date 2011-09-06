@@ -1,1 +1,1 @@
-C({"name": "DocumentJS.types.add.static.useName", "type": "attribute", "parents": ["DocumentJS.types.add.static"], "comment": "<p>Possible scopes for @add.</p>\n\n<p>Possible scopes for @add.</p>", "src": "../documentjs/types/add.js", "children": []})
+C({"name": "DocumentJS.types.add.static.useName", "type": "attribute", "parents": ["DocumentJS.types.add.static"], "comment": "<p>Possible scopes for @add.</p>", "src": "../documentjs/types/add.js", "children": []})
