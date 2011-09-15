@@ -1,0 +1,1 @@
+C({"name": "FuncUnit.prototype.prev", "type": "function", "parents": ["FuncUnit.prototype"], "comment": "<p>Asynchronous version of prev</p>", "src": "../funcunit/browser/traversers.js", "children": []})

@@ -1,0 +1,1 @@
+C({"name": "jQuery.Observe.List", "type": "class", "comment": "<p>An observable list</p>", "inherits": "jQuery.Observe", "parents": ["jQuery.Observe"], "src": "../jquery/lang/observe/observe.js", "children": ["jQuery.Observe.List.prototype"]})

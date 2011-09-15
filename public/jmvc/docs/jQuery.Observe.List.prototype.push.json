@@ -1,0 +1,1 @@
+C({"name": "jQuery.Observe.List.prototype.push", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Observe.List.prototype"], "comment": "<p>Add items to the list</p>", "src": "../jquery/lang/observe/observe.js", "children": []})
