@@ -1,1 +1,1 @@
-C({"name": "jQuery", "type": "class", "comment": "", "construct": "<p>blah</p>", "ret": {"type": "jquery", "description": ""}, "src": "../jquery/dom/cur_styles/cur_styles.js", "children": ["jQuery.post", "jQuery.curStyles"]})
+C({"name": "jQuery", "type": "class", "comment": "", "construct": "<p>blah</p>", "ret": {"type": "jquery", "description": ""}, "src": "../jquery/dom/cur_styles/cur_styles.js", "children": ["jQuery.curStyles"]})
