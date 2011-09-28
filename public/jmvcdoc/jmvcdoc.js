@@ -3,7 +3,6 @@ steal(
 	'jmvcdoc/content',
 	'jmvcdoc/nav',
 	'jmvcdoc/search',
-	'jquery/lang/string/deparam',
 	'jquery/dom/route'
 	/*,
 	
@@ -18,9 +17,9 @@ steal(
 		if ( pageName && location.hash == "" ) {
 			window.location.hash = "&who=" + pageName
 		}
-	
-	$.route(":who",{who: "index"});
-	$.route("/search/:search");
+	$.route.ready(false)
+		(":who",{who: "index"})
+		("/search/:search");
 	
 		
 	$('#nav').jmvcdoc_nav();

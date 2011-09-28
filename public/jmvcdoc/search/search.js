@@ -22,14 +22,11 @@ $.Controller('Jmvcdoc.Search',
 		this.searchTimer = setTimeout(this.callback('search'),200)
 	},
 	search : function(){
-		var val = this.element.val();
-		if(val){
-			window.location.hash = "#&search="+val
-		} else {
-			window.location.hash = "";
-		}
 		
-		//this.options.clientState.merge({search : }, true)
+		
+		$.route.attrs({
+			search: this.element.val()
+		}, true);
 	},
 	"{clientState} search set" : function(clientState, ev, newVal){
 		this.element.val(newVal)

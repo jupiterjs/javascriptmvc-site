@@ -19,7 +19,7 @@ $.Controller('Jmvcdoc.Nav',
 },
 /* @Prototype */
 {
-	"{$.route.data} who set" : function(clientState, ev, val){
+	"{$.route} who set" : function(clientState, ev, val){
 		// write out who this is
 		var item = Doc.findOne({
 			name: val
@@ -78,7 +78,7 @@ $.Controller('Jmvcdoc.Nav',
 			window.location.hash = ""
 		}
 	},
-	"{clientState} search set" : function(clientState, ev, attr, how, val){
+	"{$.route} search set" : function(clientState, ev, val){
 		var res = Doc.findAll({
 			search: val
 		});

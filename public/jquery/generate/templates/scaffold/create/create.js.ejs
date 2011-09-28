@@ -7,12 +7,11 @@ steal( 'jquery/controller',
 
 /**
  * @class <%=baseName%>.Create
+ * @parent index
+ * @inherits jQuery.Controller
+ * Creates <%= plural %>
  */
 $.Controller('<%=baseName%>.Create',
-/** @Static */
-{
-	defaults : {}
-},
 /** @Prototype */
 {
 	init : function(){
