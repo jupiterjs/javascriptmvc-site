@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+		"http://www.w3.org/TR/html4/strict.dtd">
+<head>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvcdoc/style.css" type="text/css"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<input id="search" type="input" class="jmvcdoc_search">
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#&amp;search=core"><span class="menuSpan">Core</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!Syn" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Syn
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!Syn.drag" class="result choice function" style="padding-left: 40px">
+		    	drag
+			</a>
+			
+		
+			
+		    <a href="#!Syn.key" class="result choice function" style="padding-left: 40px">
+		    	key
+			</a>
+			
+		
+			
+		    <a href="#!Syn.keycodes" class="result choice attribute" style="padding-left: 40px">
+		    	keycodes
+			</a>
+			
+		
+			
+		    <a href="#!Syn.move" class="result choice function" style="padding-left: 40px">
+		    	move
+			</a>
+			
+		
+			
+			
+		    <a href="#!Syn.type" class="result choice function" style="padding-left: 40px">
+		    	type
+			</a>
+			
+		
+			
+		    <a href="javascript://" class="result choice prototype" style="padding-left: 40px">
+		    	prototype
+			</a>
+			
+		
+			
+		    <a href="#!Syn.prototype._rightClick" class="result choice function" style="padding-left: 40px">
+		    	_rightClick
+			</a>
+			
+		
+			
+		    <a href="#!Syn.prototype.click" class="result choice function" style="padding-left: 40px">
+		    	click
+			</a>
+			
+		
+			
+		    <a href="#!Syn.prototype.dblclick" class="result choice function" style="padding-left: 40px">
+		    	dblclick
+			</a>
+			
+		
+			
+		    <a href="#!Syn.prototype.delay" class="result choice function" style="padding-left: 40px">
+		    	delay
+			</a>
+			
+		
+			
+		    <a href="#!Syn.prototype.then" class="result choice function" style="padding-left: 40px">
+		    	then
+			</a>
+			
+		
+			
+		    <a href="javascript://" class="result choice static" style="padding-left: 40px">
+		    	static
+			</a>
+			
+		
+			
+			
+			
+			
+			
+		    <a href="#!Syn.static.defaults" class="result choice attribute" style="padding-left: 40px">
+		    	defaults
+			</a>
+			
+		
+			
+			
+			
+			
+			
+			
+		    <a href="#!Syn.static.support" class="result choice attribute" style="padding-left: 40px">
+		    	support
+			</a>
+			
+		
+			
+			
+		    <a href="#!Syn.static.trigger" class="result choice function" style="padding-left: 40px">
+		    	trigger
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content"><div class="top">
+	<div class="content">
+	    <h1>Syn&nbsp;
+	    	<span class="class type"><span class="typeEnd">class</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+	    <div class="download">
+	        download: <a href="funcunit/dist/syn.js"> Syn</a>
+	    </div>
+	    
+		
+	    <div class="test">
+	        test: <a href="file:////opt/local/share/java/tomcat6/webapps/jmvc31/funcunit/synthetic/qunit.html">qunit.html</a>
+	    </div>
+	    
+	</div>
+</div>
+
+
+<p>Syn is used to simulate user actions.  It creates synthetic events and
+performs their default behaviors.</p>
+
+<h2>Basic Use</h2>
+
+<p>The following clicks an input element with <code>id='description'</code>
+and then types <code>'Hello World'</code>.</p>
+
+<pre><code class="javascript">     Syn.click({},<span class="string">'description'</span>)
+     .type(<span class="string">"Hello World"</span>)</code></pre><h2>User Actions and Events</h2>
+
+<p>Syn is typically used to simulate user actions as opposed to triggering events. Typing characters
+is an example of a user action.  The keypress that represents an <code>'a'</code>
+character being typed is an example of an event. 
+</p>
+
+
+<p>
+  While triggering events is supported, it's much more useful to simulate actual user behavior.  The 
+  following actions are supported by Syn:
+</p>
+
+
+<ul>
+  <li><code><a href="#!Syn.prototype.click">click</a></code> - a mousedown, focus, mouseup, and click.</li>
+  <li><code><a href="#!Syn.prototype.dblclick">dblclick</a></code> - two <code>click!</code> events followed by a <code>dblclick</code>.</li>
+  <li><code>[Syn.prototype.key key]</code> - types a single character (keydown, keypress, keyup).</li>
+  <li><code>[Syn.prototype.type type]</code> - types multiple characters into an element.</li>
+  <li><code>[Syn.prototype.move move]</code> - moves the mouse from one position to another (triggering mouseover / mouseouts).</li>
+  <li><code>[Syn.prototype.drag drag]</code> - a mousedown, followed by mousemoves, and a mouseup.</li>
+</ul>
+
+All actions run asynchronously.  
+Click on the links above for more 
+information on how to use the specific action.
+<h2>Asynchronous Callbacks</h2>
+Actions don't complete immediately. This is almost 
+entirely because <code>focus()</code> 
+doesn't run immediately in IE.
+If you provide a callback function to Syn, it will 
+be called after the action is completed.
+<br>The following checks that "Hello World" was entered correctly: 
+
+<pre><code class="javascript">     Syn.click({},<span class="string">'description'</span>)
+     .type(<span class="string">"Hello World"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+
+     ok(<span class="string">"Hello World"</span> == document.getElementById(<span class="string">'description'</span>).value)  
+     })</code></pre>     <h2>Asynchronous Chaining</h2>
+     <p>You might have noticed the <a href="#!Syn.prototype.then">then</a> method.  It provides chaining
+     so you can do a sequence of events with a single (final) callback.
+     </p><p>
+     If an element isn't provided to then, it uses the previous Syn's element.
+     </p>
+     The following does a lot of stuff before checking the result:
+
+<pre><code class="javascript">     Syn.type(<span class="string">'ice water'</span>,<span class="string">'title'</span>)
+     .type(<span class="string">'ice and water'</span>,<span class="string">'description'</span>)
+     .click({},<span class="string">'create'</span>)
+     .drag({to: <span class="string">'favorites'</span>},<span class="string">'newRecipe'</span>,
+     <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+     ok($(<span class="string">'#newRecipe'</span>).parents(<span class="string">'#favorites'</span>).length);
+     })</code></pre>     
+
+<pre><code class=" javascript"> &lt;h2&gt;jQuery Helper&lt;/h2&gt;
+ If jQuery is present, Syn adds a triggerSyn helper you can use like:
+</code></pre>
+
+<p></p><pre><code class="javascript">     $(<span class="string">"#description"</span>).triggerSyn(<span class="string">"type"</span>,<span class="string">"Hello World"</span>);</code></pre><h2>Key Event Recording</h2><p></p>
+
+<p>Every browser has very different rules for dispatching key events.  
+As there is no way to feature detect how a browser handles key events,
+synthetic uses a description of how the browser behaves generated
+by a recording application.  </p>
+<p>
+If you want to support a browser not currently supported, you can
+record that browser's key event description and add it to
+<code>Syn.key.browsers</code> by it's navigator agent.
+</p>
+
+<p></p><pre><code class="javascript">     Syn.key.browsers[<span class="string">"Envjs\ Resig/20070309 PilotFish/1.2.0.10\1.6"</span>] = {
+     <span class="string">'prevent'</span>:
+     {<span class="string">"keyup"</span>:[],<span class="string">"keydown"</span>:[<span class="string">"char"</span>,<span class="string">"keypress"</span>],<span class="string">"keypress"</span>:[<span class="string">"char"</span>]},
+     <span class="string">'character'</span>:
+     { ... }
+     }</code></pre><h2>Limitations</h2>
+Syn fully supports IE 6+, FF 3+, Chrome, Safari, Opera 10+.
+With FF 1+, drag / move events are only partially supported. They will
+not trigger mouseover / mouseout events.<br>
+Safari crashes when a mousedown is triggered on a select.  Syn will not 
+create this event.<p></p>
+
+<h2>Contributing to Syn</h2>
+
+<p>Have we missed something? We happily accept patches.  The following are 
+important objects and properties of Syn:</p>
+
+<ul>
+    <li><code>Syn.create</code> - contains methods to setup, convert options, and create an event of a specific type.</li>
+ <li><code>Syn.defaults</code> - default behavior by event type (except for keys).</li>
+ <li><code>Syn.key.defaults</code> - default behavior by key.</li>
+ <li><code>Syn.keycodes</code> - supported keys you can type.</li>
+</ul>
+
+<h2>Roll Your Own Functional Test Framework</h2>
+
+<p>Syn is really the foundation of JavaScriptMVC's functional testing framework - <a href="#!FuncUnit">FuncUnit</a>.
+  But, we've purposely made Syn work without any dependencies in the hopes that other frameworks or 
+  testing solutions can use it as well.
+</p>
+
+	<h2>Constructor</h2>
+	<p>Creates a synthetic event on the element.</p>
+
+
+<pre><code class=" javascript"><span class="keyword">new</span> Syn(type, options, element, callback) -&gt; undefined</code></pre>
+
+
+  <div class="params">
+  
+	    
+	      <div class="param ">
+	          <label>type</label>
+	          <code>{Object}</code>
+			  
+	      </div>
+	   
+	      <div class="param ">
+	          <label>options</label>
+	          <code>{Object}</code>
+			  
+	      </div>
+	   
+	      <div class="param ">
+	          <label>element</label>
+	          <code>{Object}</code>
+			  
+	      </div>
+	   
+	      <div class="param ">
+	          <label>callback</label>
+	          <code>{Object}</code>
+			  
+	      </div>
+	 
+ 
+ 
+     <div class="return">
+         <label>returns</label> 
+         <code>{}</code>
+		 <p>Syn</p>
+     </div>
+    
+ 
+ </div>
+
+</div>
+			<div id="disqus_thread"></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263436055
+</script>
+<script type="text/javascript" src="../steal/steal.js?jmvcdoc">
+</script>
+	
+
+</body>

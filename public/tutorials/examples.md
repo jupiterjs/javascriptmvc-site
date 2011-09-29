@@ -3,7 +3,7 @@
 
 ## [srchr Srchr]
 
-Srchr searches multiple services (like Flickr, Upcoming, and Twitter) and saves the results between page requests. It is based on the Rebecca Murphey's 
+Srchr searches multiple services (like Flickr, Upcoming, and Twitter) and saves the results between page requests. It is based on Rebecca Murphey's 
 [example app](http://blog.rebeccamurphey.com/2010/03/15/srchr-crowdsourcing-javascript-wisdom).  
 
 This article covers:
@@ -16,4 +16,6 @@ This article covers:
 
 ## Todo
 
-## Contacts
+## [contacts Contacts]
+
+Contacts is a application that allows users to add and organize their friend's contact information.

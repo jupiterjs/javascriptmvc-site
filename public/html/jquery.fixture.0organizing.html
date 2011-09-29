@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+		"http://www.w3.org/TR/html4/strict.dtd">
+<head>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvcdoc/style.css" type="text/css"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<input id="search" type="input" class="jmvcdoc_search">
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#&amp;search=core"><span class="menuSpan">Core</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					JavaScriptMVC
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!jquerymx" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					jQueryMX
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!dom" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					DOM Helpers
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!jQuery.fixture" class="selected choice function" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					$.fixture
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!jquery.fixture.0organizing" class="result choice page open" style="padding-left: 20px">
+		    	Organizing Fixtures
+			</a>
+			
+		
+			
+		    <a href="#!jQuery.fixture.make" class="result choice function" style="padding-left: 20px">
+		    	$.fixture.make
+			</a>
+			
+		
+			
+		    <a href="#!jQuery.fixture.rand" class="result choice function" style="padding-left: 40px">
+		    	rand
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content">
+<div class="top">
+	<div class="content">
+	    <h1>Organizing Fixtures&nbsp;
+	    	<span class="page type"><span class="typeEnd">page</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+	</div>
+</div>
+
+
+<p>The <strong>best</strong> way of organizing fixtures is to have a 'fixtures.js' file that steals
+<code>jquery/dom/fixture</code> and defines all your fixtures.  For example,
+if you have a 'todo' application, you might 
+have <code>todo/fixtures/fixtures.js</code> look like:</p>
+
+<pre><code class=" javascript">steal({
+        path: <span class="string">'//jquery/dom/fixture.js'</span>,
+        ignore: <span class="literal">true</span>
+      })
+      .then(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+
+  $.fixture({
+      type: <span class="string">'get'</span>,  
+      url: <span class="string">'/services/todos.json'</span>
+    },
+    <span class="string">'//todo/fixtures/todos.json'</span>);
+
+  $.fixture({
+      type: <span class="string">'post'</span>,  
+      url: <span class="string">'/services/todos.json'</span>
+    },
+    <span class="function"><span class="keyword">function</span><span class="params">(settings)</span>{</span>
+        <span class="keyword">return</span> {id: Math.random(), 
+             name: settings.data.name}
+    });
+
+})
+</code></pre>
+
+<p><strong>Notice</strong>: We used steal's ignore option to prevent 
+loading the fixture plugin in production.</p>
+
+<p>Finally, we steal <code>todo/fixtures/fixtures.js</code> in the 
+app file (<code>todo/todo.js</code>) like:</p>
+
+<pre><code class=" javascript">steal({path: <span class="string">'//todo/fixtures/fixtures.js'</span>,ignore: <span class="literal">true</span>});
+
+<span class="comment">//start of your app's steals</span>
+steal( ... )
+</code></pre>
+
+<p>We typically keep it a one liner so it's easy to comment out.</p>
+
+<h2>Switching Between Sets of Fixtures</h2>
+
+<p>If you are using fixtures for testing, you often want to use different
+sets of fixtures.  You can add something like the following to your fixtures.js file:</p>
+
+<pre><code class=" javascript">if( /fixtureSet1/.test( window.location.search) ){
+  $.fixture("/foo","//foo/fixtures/foo1.json');
+} else if(/fixtureSet2/.test( window.location.search)){
+  $.fixture("/foo","//foo/fixtures/foo1.json');
+} else {
+  // default fixtures (maybe no fixtures)
+}
+</code></pre></div>
+			<div id="disqus_thread"></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263436055
+</script>
+<script type="text/javascript" src="../steal/steal.js?jmvcdoc">
+</script>
+	
+
+</body>
