@@ -1,0 +1,95 @@
+.clui_selection_cmenu{
+	top: 0px;
+	left: 0px;
+	z-index: 10000;
+	position: absolute;
+	background-color: black;
+	color: white;
+}
+.clui_selection_cmenu .buttons div{
+	float: left;
+	border-right:1px solid white;
+}
+.clui_selection_cmenu .buttons{
+	border-bottom:1px solid white;
+}
+.clui_selection_cmenu .buttons div, .clui_selection_cmenu .top div{
+	padding:5px;
+}
+.clui_selection_cmenu .buttons div:hover{
+	cursor:pointer;
+	text-decoration:underline;
+}
+.clui_selection_cmenu .left{
+	border-right:1px solid white;
+	float:left;
+}
+.clui_selection_cmenu .top .text{
+	padding:5px 0;
+}
+.clui_selection_cmenu .right{
+	border-left:1px solid white;
+	float:right;
+}
+.clui_selection_range {
+	top: 0px;
+	left: 0px;
+	z-index: 10000;
+	background-color: yellow;
+	position: absolute;
+	opacity: 0.5;
+	height: 20px;
+	width: 20px;
+}
+.clui ion_cmenu{
+	top: 0px;
+	left: 0px;
+	z-index: 10000;
+	position: absolute;
+	background-color: black;
+	color: white;
+}
+.clui_selection_cmenu .buttons div{
+	float: left;
+	border-right:1px solid white;
+}
+.clui_selection_cmenu .buttons{
+	border-bottom:1px solid white;
+}
+.clui_selection_cmenu .buttons div, .clui_selection_cmenu .top div{
+	padding:5px;
+}
+.clui_selection_cmenu .buttons div:hover{
+	cursor:pointer;
+	text-decoration:underline;
+}
+.clui_selection_cmenu .left{
+	border-right:1px solid white;
+	float:left;
+}
+.clui_selection_cmenu .top .text{
+	padding:5px 0;
+}
+.clui_selection_cmenu .selected{
+	background-color:blue;
+	border-top:1px solid white;
+}
+.clui_selection_cmenu .left:hover, .clui_selection_cmenu .right:hover{
+	text-decoration:underline;
+	cursor:pointer;
+}
+.clui_select{
+	background-color:blue;
+	opacity:0.5;
+	position:absolute;
+}
+.clui_mag_glass{
+	position:absolute;
+	border:1px solid black;
+	padding:5px;
+	background-color:white;
+	-moz-border-radius: 25px;
+  	-webkit-border-radius: 25px;
+  	border-radius: 25px;
+}
+

@@ -1,0 +1,1 @@
+C({"name": "steal.File.prototype.clean", "params": {}, "ret": {"description": "", "type": "String"}, "type": "function", "parents": ["steal.File.prototype"], "comment": "<p>Removes hash and params</p>", "src": "steal/steal.js", "children": []})

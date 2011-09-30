@@ -47,7 +47,9 @@ steal('steal/generate',
 'jquery/dom/fixture',
 'jquery/dom/cookie',
 'jquery/dom/selection',
-'jquery/dom/route'
+'jquery/dom/route',
+'jquery/lang/string/deparam',
+'jquery/lang/object'
 )
 // funcunit should always be included last because it puts jquery in noconflict mode
 .then('funcunit')

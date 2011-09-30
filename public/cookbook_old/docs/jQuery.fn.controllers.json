@@ -1,0 +1,1 @@
+C({"name": "jQuery.fn.controllers", "params": {}, "ret": {"description": "<p>an array of controller instances.</p>", "type": "Array"}, "type": "function", "parents": ["jQuery.fn"], "comment": "<p>Gets all controllers in the jQuery element.</p>", "src": "../jquery/controller/controller.js", "children": []})

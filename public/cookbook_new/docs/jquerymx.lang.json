@@ -1,0 +1,1 @@
+C({"name": "jquerymx.lang", "type": "page", "comment": "<p>JavaScriptMVC has a number of language helpers.</p>", "title": "Language Helpers", "parents": ["jquerymx"], "src": "../jquery/lang/lang.js", "children": ["jQuery.String"]})

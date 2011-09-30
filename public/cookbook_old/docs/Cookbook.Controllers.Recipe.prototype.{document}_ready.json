@@ -1,0 +1,1 @@
+C({"name": "Cookbook.Controllers.Recipe.prototype.{document} ready", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Cookbook.Controllers.Recipe.prototype"], "comment": "<p>When the page loads, gets all recipes to be displayed.</p>", "src": "../cookbook/controllers/recipe_controller.js", "children": []})

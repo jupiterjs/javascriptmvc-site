@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+	<head>
+		<title>Cookbook.Recipe.Create</title>
+        <style type='text/css'>
+            body {font-family: verdana}
+        </style>
+	</head>
+	<body>
+	    <h1>Cookbook.Recipe.Create Demo</h1>
+		<form id='create' action=''></form>
+		<div id='recipes'></div>
+		<script type='text/javascript' 
+                src='../../../steal/steal.js'>
+        </script>
+		<script type='text/javascript'>
+			steal('cookbook/recipe/create','cookbook/fixtures',function(){
+				
+				$('#create').cookbook_recipe_create();
+				Cookbook.Models.Recipe.bind('created', function(ev, recipe){
+					$('<div>').html("<h3>"+recipe.name+"</h3><p>"+recipe.description+"</p>")
+					        .appendTo( $('#recipes') )
+				})
+				
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,1 @@
+C({"name": "Cookbook.Models.Recipe.static", "type": "static", "parents": ["Cookbook.Models.Recipe"], "comment": "", "src": "../cookbook/models/recipe.js", "children": ["Cookbook.Models.Recipe.static.findAll", "Cookbook.Models.Recipe.static.update", "Cookbook.Models.Recipe.static.destroy", "Cookbook.Models.Recipe.static.create"]})

@@ -1,0 +1,5 @@
+<%for(var i = 0; i < recipes.length ; i++){%>
+	<tr <%= recipes[i]%>>
+		<%= $.View('//cookbook/views/recipe/show',recipes[i])%>
+	</tr>
+<%}%>

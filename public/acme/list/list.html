@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+	<head>
+		<title>Acme.List</title>
+        <style type='text/css'>
+            body {font-family: verdana}
+            .error {border: solid 1px red;}
+            .error_text { color: red; font-size: 10px;}
+            td {padding: 3px;}
+        </style>
+	</head>
+	<body>
+	    <h1>Acme.List Demo</h1>
+		<div id='list'></div>
+		<script type='text/javascript' 
+                src='../../steal/steal.js'>
+        </script>
+		<script type='text/javascript'>
+			steal("acme/list",
+				"myrecipes/models",
+				"myrecipes/fixtures").then(function(){
+				
+				// 'selected' triggered when someone clicks a row
+				$("#list").acme_list({
+					model: Myrecipes.Models.Recipe//,
+//					template: "//pui/list/views/testers.ejs"
+				})
+				
+//				$("#list").bind('selected', function(ev, data){
+//					$("#out").html(data.name)
+//				})
+				
+			})
+		</script>
+	</body>
+</html>

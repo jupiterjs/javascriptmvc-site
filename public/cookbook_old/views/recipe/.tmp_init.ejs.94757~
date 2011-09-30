@@ -1,0 +1,26 @@
+<h2>recipes</h2>
+<table cellspacing='0px'>
+	<thead>
+	<tr>
+		<% for(var attr in Cookbook.Models.Recipe.attributes){%>
+			<% if(attr == 'id') continue;%>
+			<th><%= attr%> </th>	 
+		<%}%>
+		<th>Options</th>
+	</tr>
+	</thead>
+	<tbody>
+		<%= $.View('//cookbook/views/recipe/list',{recipes: recipes})%>
+	</tbody>
+</table>
+<h2>New recipe</h2>
+<form>
+	<% for(var attr in Cookbook.Models.Recipe.attributes){ %>
+		<% if(attr == 'id') continue;%>
+		<div>
+			<label><%= attr %> </label><br />
+			<input type="text" value="" name="<%= attr %>"/>
+		</div>
+	<%}%>
+	<input type='submit' value='Create'/>
+</form>
