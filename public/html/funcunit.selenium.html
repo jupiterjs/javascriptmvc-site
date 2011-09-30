@@ -1,0 +1,270 @@
+<head>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvcdoc/style.css" type="text/css"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<input id="search" type="input" class="jmvcdoc_search">
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#&amp;search=core"><span class="menuSpan">Core</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					JavaScriptMVC
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!FuncUnit" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					FuncUnit
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!funcunit.integrations" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Integrations
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!funcunit.selenium" class="result choice page open" style="padding-left: 20px">
+		    	Selenium
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.envjs" class="result choice page" style="padding-left: 20px">
+		    	EnvJS
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.phantomjs" class="result choice page" style="padding-left: 20px">
+		    	PhantomJS
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.jenkins" class="result choice page" style="padding-left: 20px">
+		    	Jenkins
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.maven" class="result choice page" style="padding-left: 20px">
+		    	Maven
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content">
+<div class="top">
+	<div class="content">
+	    <h1>Selenium&nbsp;
+	    	<span class="page type"><span class="typeEnd">page</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+	</div>
+</div>
+
+
+<p><a href="http://seleniumhq.org/">Selenium</a> is a browser automation tool. FuncUnit integrates with Selenium, 
+using it to open several browsers and report results.</p>
+
+<h2>Use</h2>
+
+<p>There is no installation step with Selenium. The jar files come prepackaged with FuncUnit.</p>
+
+<ol>
+<li>Write a functional test</li>
+<li>Run with Selenium</li>
+</ol>
+
+<pre><code class="javascript">.<span class="regexp">/js funcunit/</span>run selenium path/to/funcunit.html</code></pre>
+
+<h2>Configuration</h2>
+
+<p>The settings.js file is used to configure Selenium. Adding this file is described in <a href="#!funcunit.integrations">Integrations</a>.</p>
+
+<h3>Setting browsers</h3>
+
+<p>FuncUnit.browsers is an array that defines which browsers Selenium opens and runs your tests in. <br>
+This is defined in settings.js.  If this null it will default to a standard set of browsers for your OS 
+(FF and IE on Windows, FF on everything else).</p>
+
+<pre><code class="javascript">browsers: [<span class="string">"*firefox"</span>, <span class="string">"*iexplore"</span>, <span class="string">"*safari"</span>, <span class="string">"*googlechrome"</span>]</code></pre>
+
+<p>To define a custom path to a browser, put this in the string following the browser name.</p>
+
+<pre><code class="javascript">browsers: [<span class="string">"*custom /path/to/my/browser"</span>]</code></pre>
+
+<p>See the <a href="http://release.seleniumhq.org/selenium-remote-control/0.9.0/doc/java/com/thoughtworks/selenium/DefaultSelenium.html#DefaultSelenium">Selenium docs</a> 
+for more information on customizing browsers.</p>
+
+<h2>Filesystem for Faster Tests</h2>
+
+<p>You might want to use Selenium to open local FuncUnit pages, but test pages on your server.  This is possible, you 
+just have to change FuncUnit.href or FuncUnit.jmvcRoot.  This file can load locally while everything else is 
+using a server because it is a static file and loads static script files.</p>
+
+<p>Set jmvcRoot to point to the location you want your pages to load from.</p>
+
+<pre><code class="javascript">jmvcRoot: <span class="string">"localhost:8000"</span></code></pre>
+
+<p>Then make sure your test paths contain // in them to signify something relative to the jmvcRoot. <br>
+For example, S.open("//funcunit/test/myapp.html") would open a page at 
+http://localhost:8000/funcunit/test/myapp.html.</p>
+
+<p>To load the command page from filesystem, start your test like you normally do:</p>
+
+<pre><code class="javascript">funcunit\envjs path\to\funcunit.html</code></pre>
+
+<h2>Troubleshooting</h2>
+
+<h3>64-bit Java</h3>
+
+<p>Some users will find Selenium has trouble opening while using 64 bit java (on Windows).  You will see an error like <br>
+Could not start Selenium session: Failed to start new browser session.  This is because Selenium 
+looks in the 64-bit Program Files directory, and there is no Firefox there.  To fix this, change 
+browsers to include the path like this:</p>
+
+<pre><code class="javascript">FuncUnit.browsers = [<span class="string">"*firefox C:\\PROGRA~2\\MOZILL~1\\firefox.exe"</span>, <span class="string">"*iexplore"</span>]</code></pre>
+
+<h3>Running From Safari and Chrome</h3>
+
+<p>Certain browsers, like Safari and Chrome, don't run Selenium tests from filesystem because 
+of security resrictions.  To get around this you have to run pages served from a server.  The 
+downside of this is the test takes longer to start up, compared to loading from filesystem.</p>
+
+<p>To run served pages, you must 1) provide an absolute path in your envjs path and 2) provide an absolute path 
+in jmvcRoot.</p>
+
+<p>For example, to run cookbook FuncUnit tests from Chrome, set the browsers and jmvcRoot.</p>
+
+<pre><code class="javascript">browsers: [<span class="string">"*googlechrome"</span>],
+jmvcRoot: <span class="string">"http://localhost:8000/framework/"</span></code></pre>
+
+<p>Then start up Selenium.</p>
+
+<pre><code class="javascript">.<span class="regexp">/js funcunit/</span>run selenium http:<span class="comment">//localhost:8000/framework/cookbook/funcunit.html</span></code></pre>
+
+<p>To run Safari 5 in Windows, you should use the safariproxy browser string.</p>
+
+<pre><code class="javascript">browsers: [<span class="string">"*safariproxy"</span>]</code></pre>
+
+<p>Mac Safari is just "*safari".</p>
+
+<h3>Slow Mode</h3>
+
+<p>You can slow down the amount of time between tests by setting FuncUnit.speed.  By default, FuncUnit commands 
+in Selenium will run as soon as the previous command is complete.  If you set FuncUnit.speed to "slow" this 
+becomes 500ms between commands.  You may also provide a number of milliseconds.  Slow mode can be useful while debugging.</p>
+
+<h3>IE Troubleshooting</h3>
+
+<p>If IE isn't running test pages from filesystem, disable security settings for pages that run from the filesystem. </p>
+
+<ol>
+<li>Open the Internet Options in IE and select the "Advanced" tab</li>
+<li>Enable the option to "Allow active content to run in files on My Computer."</li>
+</ol>
+
+<p><img class="image_tag" src="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvc/images/iesecurity.png"></p>
+
+<p>If you're getting an IE popup blocker error, you may need to disable "Protected Mode"</p>
+
+<p><img class="image_tag" src="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvc/images/iepopups.png"></p></div>
+			<div id="disqus_thread"></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263436055
+</script>
+<script type="text/javascript" src="../steal/steal.js?jmvcdoc">
+</script>
+	
+
+</body>

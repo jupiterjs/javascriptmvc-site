@@ -1,0 +1,324 @@
+<head>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvcdoc/style.css" type="text/css"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<input id="search" type="input" class="jmvcdoc_search">
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#&amp;search=core"><span class="menuSpan">Core</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					JavaScriptMVC
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!examples" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Examples
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!srchr" class="result choice page" style="padding-left: 20px">
+		    	Srchr
+			</a>
+			
+		
+			
+		    <a href="#!contacts" class="result choice page" style="padding-left: 20px">
+		    	Contacts
+			</a>
+			
+		
+			
+		    <a href="#!playermx" class="result choice page open" style="padding-left: 20px">
+		    	PlayerMX
+			</a>
+			
+		
+			
+		    <a href="#!todo" class="result choice page" style="padding-left: 20px">
+		    	Todo
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content">
+<div class="top">
+	<div class="content">
+	    <h1>PlayerMX&nbsp;
+	    	<span class="page type"><span class="typeEnd">page</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+	</div>
+</div>
+
+
+<p>This article provides a walkthrough and insight into a simple video player application. Utilizing Popcorn.js and built on JMVC 3.2, we'll cover installing and running the application locally, as well as outlining the templated event engine.  </p>
+
+<p><strong>Topics:</strong> <br>
+Download/Install <br>
+Architecture <br>
+Running the app  </p>
+
+<h2>Download/Install</h2>
+
+<h3>Download via getjs</h3>
+
+<p>From a directory containing steal:</p>
+
+<p>./js steal/getjs https://github.com/jupiterjs/playermx playermx</p>
+
+<h3>Git via Github</h3>
+
+<p>From a directory of your choice:</p>
+
+<p><em>Clone files to your local drive</em> <br>
+<code>$ git clone https://github.com/jupiterjs/playermx.git</code>  </p>
+
+<p><em>Navigate to application directory and initialize submodules</em> <br>
+<code>$ cd playermx <br>
+$ git submodule init <br>
+$ git submodule update</code></p>
+
+<h2>Running</h2>
+
+<p>As we are only dealing with local js/html resources, it is completely possible to run this application from the file system. I recommend <a href="http://www.apple.com/safari">Safari</a> or <a href="http://www.mozilla.org/firefox">Firefox</a> for file system testing as they allow the browser to make XHRs locally. Safari will do this by default, but for Firefox you need to do the following:  </p>
+
+<p>Navigate to about:config <br>
+Set security.fireuri.strict to false  </p>
+
+<p>You should be able to open playermx/player.html in your browser and see the application run.  </p>
+
+<p><em>Note: Running from the file system has pros and cons in local development. Being able to run an application locally allows for convenience and provides an avenues for automated testing. For local debugging, however, sometimes it is easier with the help of a local server. Browsers do not track file system XHRs, so you may have a few silent errors when developing. I use and recommend <a href="http://www.mamp.info">MAMP</a> if you are a Mac developer, but you can use any localhost setup you feel comfortable with.</em></p>
+
+<h2>Architecture</h2>
+
+<p>Once you've downloaded the application, you'll notice 3 folders within your playermx directory. A few notes on the directory structure of this application:</p>
+
+<ul>
+<li>The 'jquery' folder refers to <a href="#!jquerymx">jquerymx</a> [2]. This is the JMVC core and what we'll be building our application on.</li>
+<li>The <a href="#!steal">steal</a> [1] folder is our dependency management system. This is how we include other resources such as scripts, stylesheets, templates or other JMVC resources and apps altogether.</li>
+<li>The 'player' folder is where we'll place our focus as this is the main directory for our application.  </li>
+</ul>
+
+<p>The application is broken up into one main application page, 'player.html', with a corresponding script, 'player.js' and two corresponding widgets. We'll touch player.js first.  </p>
+
+<h3>player.js</h3>
+
+<p>Player.js is our main application script. We'll load any widgets we want to use and initialize them from this file. [Steal] [1] allows each resource to have resources of its own, allowing for a clean separation of the code base.</p>
+
+<pre><code class=" javascript">steal(<span class="string">'./play.js'</span>,
+  <span class="string">'./position.js'</span>,
+
+  <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">var</span> video = Popcorn(<span class="string">"#trailer"</span>);
+
+    $(<span class="string">'#play'</span>).play({ video: video });
+    $(<span class="string">'#position'</span>).player_position({ video: video });
+});
+</code></pre>
+
+<p>The first line of player.js is our call to <a href="#!steal">steal</a> [1]. This is going to load all our dependencies. In this case, we load play.js and position.js, then execute a function.  </p>
+
+<p><em>Tip: ./play.js is a relative path.</em>  </p>
+
+<p>Our app is loading and playing a video clip, so we're going to utilize Popcorn.js to give us some control over our presentation. Play and Position are widgets we have created to isolate functionality within this app. Let's build these widgets using the video object returned from Popcorn.js.  </p>
+
+<h3>play.js</h3>
+
+<pre><code class=" javascript">steal(<span class="string">'player/popcorn'</span>,
+  <span class="string">'jquery/controller'</span>,
+
+  <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+</code></pre>
+
+<p>The purpose of this widget is to control the video playback. Lets setup some event listeners to handle the playing and pausing of our video. Using <a href="http://javascriptmvc.com/docs.html#&amp;who=jQuery.Controller">$.Controller</a>, we can create our widget at the target element outlined above. We'll name our controller 'Play', which will allow this to be accessed via $('selector').play({}). Our init method will check the initial state of our video and set the text accordingly.</p>
+
+<pre><code class=" javascript">    $.Controller(<span class="string">'Play'</span>, {
+      init : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+        <span class="keyword">if</span>( <span class="keyword">this</span>.options.video.video.paused ) {
+          <span class="keyword">this</span>.element.text(<span class="string">"play"</span>)
+        } <span class="keyword">else</span> {
+          <span class="keyword">this</span>.element.text(<span class="string">"stop"</span>)
+        }
+      },
+</code></pre>
+
+<p>Now to illustrate JMVC's templated event system, we can setup a few event handlers. Within player.js, we've passed a video object to our controller. We can listen to events directly on the passed object using JMVC's string interpolation syntax. In the below code, "{video}" refers to our model and "play" is the event we'll listen for.</p>
+
+<pre><code class=" javascript">      <span class="string">"{video} play"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+        <span class="keyword">this</span>.element.text(<span class="string">"stop"</span>).addClass(<span class="string">'stop'</span>)
+      },
+
+      <span class="string">"{video} pause"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+        <span class="keyword">this</span>.element.text(<span class="string">"play"</span>).removeClass(<span class="string">'stop'</span>)
+      },
+</code></pre>
+
+<p>We can also listen to general events within our widget. In this case, we'll listen to any clicks within 'Play' and in turn toggle the play/pause events respectively. The separation of the click handler and the play/pause handlers is for extensibility. We may have multiple widgets that control the playback of our video and each widget should be able to respond accordingly.</p>
+
+<pre><code class=" javascript">      click : <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+        <span class="keyword">if</span>( <span class="keyword">this</span>.options.video.video.paused ) {
+          <span class="keyword">this</span>.options.video.play()
+        } <span class="keyword">else</span> {
+          <span class="keyword">this</span>.options.video.pause()
+        }
+      }
+  });
+});
+</code></pre>
+
+<h3>position.js</h3>
+
+<pre><code class=" javascript">steal(<span class="string">'player/popcorn'</span>,
+  <span class="string">'jquery/controller'</span>,
+  <span class="string">'jquery/dom/dimensions'</span>,
+  <span class="string">'jquery/event/resize'</span>,
+  <span class="string">'jquery/event/drag/limit'</span>,
+</code></pre>
+
+<p>Similar to the creation of our 'Play' widget, let's make a widget to show a progression bar for our video. We want this to not only display playback position, but be interactive in what the user might expect. We'll utilize a few more of JMVC's built in events to handle this.  </p>
+
+<p>The init method is what we'll use to setup a few basic properties for our widget. 'this' in the following context, refers to our widget instance. We'll add a 'moving' property, which is our progress indicator. A simple div will suffice for this example and we'll set some basic css properties such as position and dimensions.</p>
+
+<pre><code class=" javascript">  <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    $.Controller(<span class="string">'PlayerPosition'</span>, {
+      init : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+        <span class="keyword">this</span>.moving = $(<span class="string">"&lt;div&gt;"</span>).css({
+          position: <span class="string">'absolute'</span>,
+          left: <span class="string">"0px"</span>
+        })
+
+        <span class="keyword">this</span>.element.css(<span class="string">"position"</span>,<span class="string">"relative"</span>)
+          .append(<span class="keyword">this</span>.moving);
+
+        <span class="keyword">this</span>.moving.outerWidth( <span class="keyword">this</span>.element.height() );
+        <span class="keyword">this</span>.moving.outerHeight( <span class="keyword">this</span>.element.height() );
+
+      },
+</code></pre>
+
+<p>We'll listen to the timeupdate event on our video model to recalculate our indicator position. We've separated the event listener from the resize method to allow for any other widgets that may be listening to timeupdate.</p>
+
+<pre><code class=" javascript">      <span class="string">"{video} timeupdate"</span> : <span class="function"><span class="keyword">function</span><span class="params">(video)</span>{</span>
+        <span class="keyword">this</span>.resize()
+      },
+      resize : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+        <span class="keyword">var</span> video = <span class="keyword">this</span>.options.video,
+          percent = video.currentTime() / video.duration(),
+          width = <span class="keyword">this</span>.element.width() - <span class="keyword">this</span>.moving.outerWidth();
+
+        <span class="keyword">this</span>.moving.css(<span class="string">"left"</span>, percent*width+<span class="string">"px"</span>)
+      },
+</code></pre>
+
+<p><em>Note: 'draginit' and 'dragend' are just a couple of events provided by the JMVC framework. Other special events can be found <a href="http://javascriptmvc.com/docs.html#&amp;who=jQuery.event.special">here</a>.</em>  </p>
+
+<p>We won't listen globally for our drag events, but rather scope them to our indicator div element. We can now fire our pause/play events, trusting other widgets to respond as needed. In this app, these events will get picked up by our 'Play' widget to start/stop the playback.</p>
+
+<pre><code class=" javascript">      <span class="string">"div draginit"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev, drag)</span>{</span>
+        <span class="keyword">this</span>.options.video.pause()
+        drag.limit(<span class="keyword">this</span>.element)
+      },
+      <span class="string">"div dragend"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev, drag)</span>{</span>
+        <span class="keyword">var</span> video = <span class="keyword">this</span>.options.video,
+          width = <span class="keyword">this</span>.element.width() - <span class="keyword">this</span>.moving.outerWidth()
+          percent = parseInt(<span class="keyword">this</span>.moving.css(<span class="string">"left"</span>), <span class="number">10</span>) / width;
+
+        video.currentTime(  percent * video.duration()  );
+        video.play()
+      }
+    });
+});
+</code></pre>
+
+<p>[1] https://github.com/jupiterjs/steal.git
+[2] https://github.com/jupiterjs/jquerymx.git</p></div>
+			<div id="disqus_thread"></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263436055
+</script>
+<script type="text/javascript" src="../steal/steal.js?jmvcdoc">
+</script>
+	
+
+</body>

@@ -1,0 +1,201 @@
+<head>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvcdoc/style.css" type="text/css"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<input id="search" type="input" class="jmvcdoc_search">
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#&amp;search=core"><span class="menuSpan">Core</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					JavaScriptMVC
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!DocumentJS" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					DocumentJS
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!DocumentJS.types" class="selected choice attribute" style="padding-left: 40px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					types
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!DocumentJS.types.function" class="selected choice class" style="padding-left: 40px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					function
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="javascript://" class="result choice static" style="padding-left: 60px">
+		    	static
+			</a>
+			
+		
+			
+		    <a href="#!DocumentJS.types.function.static.code" class="result choice function" style="padding-left: 80px">
+		    	code
+			</a>
+			
+		
+			
+		    <a href="#!DocumentJS.types.function.static.parent" class="result choice attribute" style="padding-left: 80px">
+		    	parent
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content"><div class="top">
+	<div class="content">
+	    <h1>DocumentJS.types.function&nbsp;
+	    	<span class="class type"><span class="typeEnd">class</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    <div class="tags">
+	        tags: <a href="#&amp;search=documentation">documentation</a>
+	    </div>
+	    
+	    
+		
+		
+	</div>
+</div>
+
+
+<p>Documents a function. Doc can guess at a functions name and params if the source following a comment matches something like:</p>
+
+<pre><code class="javascript">myFuncOne : <span class="function"><span class="keyword">function</span><span class="params">(param1, param2)</span>{</span>}  <span class="comment">//or</span>
+myFuncTwo = <span class="function"><span class="keyword">function</span><span class="params">(param1, param2)</span>{</span>}  </code></pre>
+
+<h3>Directives</h3>
+
+<p>Use the following directives to document a function.</p>
+
+<pre><code class="javascript"><a href="#!DocumentJS.types.function">@function </a> functionName                       -&gt; Forces a function
+<a href="#!DocumentJS.tags.param">@param </a> {optional:type} paramName Description -&gt; Describes a parameter
+<a href="#!DocumentJS.tags.return">@return </a> {type} Description                    -&gt; Describes the return value</code></pre>
+
+<h3>Example</h3>
+
+<pre><code class="javascript">/* Adds, Mr. or Ms. before someone's name
+ * <a href="#!DocumentJS.tags.param">@param </a> {String} name the persons name
+ * <a href="#!DocumentJS.tags.param">@param </a> {optional:Boolean} gender true if a man, false if female.  Defaults to true.
+ * <a href="#!DocumentJS.tags.return">@return </a> {String} returns the appropriate honorific before the person's name.
+ */  
+honorific = function(name, gender){</code></pre> 
+
+
+
+  <div class="params">
+  
+    
+ 
+ </div>
+
+</div>
+			<div id="disqus_thread"></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263436055
+</script>
+<script type="text/javascript" src="../steal/steal.js?jmvcdoc">
+</script>
+	
+
+</body>

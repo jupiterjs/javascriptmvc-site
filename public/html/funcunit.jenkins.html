@@ -1,0 +1,191 @@
+<head>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////opt/local/share/java/tomcat6/webapps/jmvc31/jmvcdoc/style.css" type="text/css"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<input id="search" type="input" class="jmvcdoc_search">
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#&amp;search=core"><span class="menuSpan">Core</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					JavaScriptMVC
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!FuncUnit" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					FuncUnit
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!funcunit.integrations" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Integrations
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!funcunit.selenium" class="result choice page" style="padding-left: 20px">
+		    	Selenium
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.envjs" class="result choice page" style="padding-left: 20px">
+		    	EnvJS
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.phantomjs" class="result choice page" style="padding-left: 20px">
+		    	PhantomJS
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.jenkins" class="result choice page open" style="padding-left: 20px">
+		    	Jenkins
+			</a>
+			
+		
+			
+		    <a href="#!funcunit.maven" class="result choice page" style="padding-left: 20px">
+		    	Maven
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content">
+<div class="top">
+	<div class="content">
+	    <h1>Jenkins&nbsp;
+	    	<span class="page type"><span class="typeEnd">page</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+	</div>
+</div>
+
+
+<p><a href="http://jenkins-ci.org/">Jenkins</a> is a continuous integration tool. It is used to run builds and 
+continuously check the health of the project.  If a test fails or the build breaks, it sends 
+emails to the dev team to immediately alert everyone of regressions.</p>
+
+<p>THe <a href="https://wiki.jenkins-ci.org/display/JENKINS/xUnit+Plugin">XUnit plugin</a> allows Jenkins to tie 
+into testing tools. The tool just has to create an XML output file in the standard 
+<a href="http://xunit.codeplex.com/wikipage?title=XmlFormat">XUnit format</a>.  Jenkins will fail the build 
+if the file shows errors.</p>
+
+<h2>Install</h2>
+
+<ol>
+<li>Install Jenkins</li>
+<li>Install the XUnit plugin</li>
+<li>Create a build</li>
+<li>Add the something similar to the following to a shell build step.  This script will run your 
+funcunit tests and copy the testresults.xml file into where jenkins wants it</li>
+</ol>
+
+<pre><code class="javascript">cd path/to/your/project
+.<span class="regexp">/js funcunit/</span>run phantomjs path/to/funcunit.html
+cp testresults.xml /Users/bmoschel/.jenkins/jobs/JMVC/workspace/</code></pre>
+
+<ol>
+<li>Click publish testing tools report and point XUnit to where to find this file</li>
+<li>Run a new build</li>
+</ol></div>
+			<div id="disqus_thread"></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263436055
+</script>
+<script type="text/javascript" src="../steal/steal.js?jmvcdoc">
+</script>
+	
+
+</body>
