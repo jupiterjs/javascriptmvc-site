@@ -1,0 +1,7 @@
+<% if(name != "index"){ %>
+<%= view("//jmvcdoc/views/top.ejs",this)%>
+<% } %>
+<%= link(comment) %>
+<% if (typeof apiHtml !== 'undefined') { %>
+	<%= apiHtml %>
+<% } %>
