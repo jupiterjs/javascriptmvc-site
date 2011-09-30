@@ -1,1 +1,0 @@
-C({"name": "jQuery.String", "type": "class", "comment": "<p>A collection of useful string helpers.</p>", "parents": ["jquerymx.lang"], "src": "../jquery/lang/lang.js", "children": ["jQuery.String.capitalize", "jQuery.String.camelize", "jQuery.String.classize", "jQuery.String.niceName", "jQuery.String.underscore", "jQuery.String.sub"]})

@@ -1,3 +1,0 @@
-<% for(var attr in this.attrs()) { %>
-	<td><%= this[attr] %></td>
-<% } %>

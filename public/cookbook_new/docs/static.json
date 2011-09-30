@@ -1,1 +1,0 @@
-C({"name": "static", "type": "static", "comment": "", "src": "../cookbook/models/recipe.js", "children": ["static.findAll", "static.findOne", "static.create", "static.update", "static.destroy"]})

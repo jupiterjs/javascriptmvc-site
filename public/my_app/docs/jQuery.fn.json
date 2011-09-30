@@ -1,1 +1,0 @@
-C({"name": "jQuery.fn", "type": "class", "comment": "", "construct": "<p>blah</p>", "ret": {"type": "jquery.fn", "description": ""}, "src": "../jquery/model/model.js", "children": ["jQuery.fn.models", "jQuery.fn.model"]})

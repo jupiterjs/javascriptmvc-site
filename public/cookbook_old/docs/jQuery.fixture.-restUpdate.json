@@ -1,1 +1,0 @@
-C({"name": "jQuery.fixture.-restUpdate", "params": {"settings": {"description": "", "type": "", "optional": false, "order": 0, "name": "settings"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.fixture"], "comment": "<p>Provides a rest update fixture function</p>", "src": "../jquery/dom/fixture/fixture.js", "children": []})

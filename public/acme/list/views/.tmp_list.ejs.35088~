@@ -1,7 +1,0 @@
-<table>
-	<%for(var i=0; i<testers.length; i++){ %>
-	<tr class='selectable' <%= testers[i] %>>
-		<%= $.View(template, testers[i]) %>
-	</tr>
-	<%}%>
-</table>
