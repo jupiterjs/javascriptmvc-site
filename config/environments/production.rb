@@ -1,6 +1,6 @@
 JmvcSite3::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-  config.middleware.insert_before(::ActionDispatch::Static, ::Refraction)
+  # config.middleware.insert_before(::ActionDispatch::Static, ::Refraction)
   # Code is not reloaded between requests
   config.cache_classes = true
 
