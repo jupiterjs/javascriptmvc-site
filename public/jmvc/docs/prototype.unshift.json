@@ -1,0 +1,1 @@
+C({"name": "prototype.unshift", "type": "function", "parents": ["prototype"], "comment": "<p>Adds an instance to the start of the list.</p>", "src": "../jquery/model/list/list.js", "children": []})

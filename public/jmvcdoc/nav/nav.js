@@ -105,4 +105,4 @@ $.Controller('Jmvcdoc.Nav',
 	}
 })
 
-});
+}, './views/results.ejs');

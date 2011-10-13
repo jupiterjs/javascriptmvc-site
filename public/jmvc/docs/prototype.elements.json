@@ -1,0 +1,1 @@
+C({"name": "prototype.elements", "params": {"context": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "context"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["prototype"], "comment": "<p>Gets all the elements that represent this list.</p>", "src": "../jquery/model/list/list.js", "children": []})

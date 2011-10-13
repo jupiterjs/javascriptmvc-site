@@ -12,7 +12,7 @@ steal('jquery/controller', 'jquery/view').then(function( $ ) {
 		var classPartsWithoutPrefixSlashes = classPartsWithoutPrefix.join('/'),
 			hasControllers = (classParts.length > 2) && classParts[1] == 'Controllers',
 			path = hasControllers? jQuery.String.underscore(classParts[0]): jQuery.String.underscore(classParts.join("/")),
-			controller_name = classPartsWithoutPrefix.join('/').toLowerCase(),
+			controller_name = jQuery.String.underscore(classPartsWithoutPrefix.join('/')).toLowerCase(),
 			suffix = (typeof view == "string" && /\.[\w\d]+$/.test(view)) ? "" : jQuery.View.ext;
 			
 		//calculate view
@@ -43,7 +43,7 @@ steal('jquery/controller', 'jquery/view').then(function( $ ) {
 			}
 			//load from name
 			var current = window;
-			var parts = this.Class.fullName.split(/\./);
+			var parts = this.constructor.fullName.split(/\./);
 			for ( var i = 0; i < parts.length; i++ ) {
 				if ( typeof current.Helpers == 'object' ) {
 					jQuery.extend(helpers, current.Helpers);

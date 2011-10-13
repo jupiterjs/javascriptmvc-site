@@ -14,22 +14,40 @@ $.Controller('Jmvcdoc.Search',
 },
 /* @Prototype */
 {
-	init : function(){
-		this.element.attr('disabled', false)
+	setup:function(el,options){
+		this.input = $(el);
+		this.input.wrap("<div>");
+		
+		var parent = this.input.parent();
+		this.remove = $("<span title='clear term' class='remove'></span>").appendTo(parent);
+		
+		this._super(parent,options);
 	},
-	"keyup" : function(){
+	init : function(){
+		this.input.attr('disabled', false)
+	},
+	"input keyup" : function(){
 		clearTimeout(this.searchTimer);
 		this.searchTimer = setTimeout(this.callback('search'),200)
 	},
 	search : function(){
-		
-		
 		$.route.attrs({
-			search: this.element.val()
+			search: this.input.val()
 		}, true);
 	},
 	"{clientState} search set" : function(clientState, ev, newVal){
-		this.element.val(newVal)
+		this.input.val(newVal);
+		
+		if(newVal && newVal != ""){
+			this.remove.show();
+		} else {
+			this.remove.hide();
+		}
+	},
+	".remove click":function(el, events){
+		$.route.attrs({
+			search: ""
+		}, true);
 	},
 	focusin : function(){
 		this.focused = true;

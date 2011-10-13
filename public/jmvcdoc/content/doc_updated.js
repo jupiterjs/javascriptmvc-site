@@ -46,13 +46,13 @@ steal('jquery','jmvcdoc/demo',function($){
 		});
 		
 		// add disqus comments
-		$("#disqus_thread").children().remove();
-		if ( docData.name != "index" && typeof(COMMENTS_LOCATION) != "undefined" && $("#disqus_thread").length ) {
-			window.disqus_title = docData.name;
-			window.disqus_url = "http://" + location.host + "/docs/" + docData.name + ".html";
-			window.disqus_identifier = docData.name;
-			steal.insertHead(COMMENTS_LOCATION);
-		}
+		// $("#disqus_thread").children().remove();
+		// if ( docData.name != "index" && typeof(COMMENTS_LOCATION) != "undefined" && $("#disqus_thread").length ) {
+			// window.disqus_title = docData.name;
+			// window.disqus_url = "http://" + location.host + "/docs/" + docData.name + ".html";
+			// window.disqus_identifier = docData.name;
+			// steal.insertHead(COMMENTS_LOCATION);
+		// }
 		
 	})
 	

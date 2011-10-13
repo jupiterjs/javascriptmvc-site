@@ -7,7 +7,7 @@ function( $ ) {
         // Any word character or a period is matched.
         matcher = /\:([\w\.]+)/g,
         // Regular expression for identifying &amp;key=value lists.
-        paramsMatcher = /^(?:&[\w\.]+=[\w\.]*)+/,
+        paramsMatcher = /^(?:&[^=]+=[^&]*)+/,
         // Converts a JS Object into a list of parameters that can be 
         // inserted into an html element tag.
 		makeProps = function( props ) {
@@ -263,7 +263,17 @@ function( $ ) {
                         delete cpy[name];
                         return data[name] === route.defaults[name] ? "" : data[name];
                     }),
-                    // The remaining elements of data are added as $amp; separated parameters to the url.
+                    after;
+					
+					// remove matching default values
+					for(name in route.defaults) {
+						if(cpy[name] === route.defaults[name]) {
+							delete cpy[name]
+						}
+					}
+					
+					// The remaining elements of data are added as 
+					// $amp; separated parameters to the url.
 				    after = $.param(cpy);
 				return res + (after ? "&" + after : "")
 			}
@@ -320,15 +330,22 @@ function( $ ) {
         /**
          * @attribute
          * @type Object
+		 * @hide
+		 * 
          * A list of routes recognized by the router indixed by the url used to add it.
          * Each route is an object with these members:
-         *  - test - A regular expression that will match the route when variable values 
-         *      are present; i.e. for :page/:type the regEx is /([\w\.]*)/([\w\.]*)/ which
-         *      will match for any value of :page and :type (word chars or period).
+         * 
+ 		 *  - test - A regular expression that will match the route when variable values 
+         *    are present; i.e. for :page/:type the regEx is /([\w\.]*)/([\w\.]*)/ which
+         *    will match for any value of :page and :type (word chars or period).
+		 * 
          *  - route - The original URL, same as the index for this entry in routes.
-         *  - names - An array of all the variable names in this route
-         *  - defaults - Default values provided for the variables or an empty object.
-         *  - length - The number of parts in the URL separated by '/'.
+         * 
+		 *  - names - An array of all the variable names in this route
+         * 
+		 *  - defaults - Default values provided for the variables or an empty object.
+         * 
+		 *  - length - The number of parts in the URL separated by '/'.
          */
 		routes: {},
 		/**
@@ -419,11 +436,17 @@ function( $ ) {
         // Deparameterizes the portion of the hash of interest and assign the
         // values to the $.route.data removing existing values no longer in the hash.
         setState = function() {
-			var hash = location.hash[1] === '!' ? 
-						location.hash.slice(2) : 
-						location.hash.slice(1); // everything after #!
-			curParams = $route.deparam( hash );
-			$route.attrs(curParams, true);
+			// commented out code handles people setting attrs before onready
+			//if( $.isEmptyObject( $route.data.serialize() ) ) {
+				var hash = location.hash[1] === '!' ? 
+					location.hash.slice(2) : 
+					location.hash.slice(1); // everything after #!
+				curParams = $route.deparam( hash );
+				$route.attrs(curParams, true);
+			//} else {
+			//	window.location.hash = "#!" + $route.param($route.data.serialize())
+			//}
+			
 		};
 
 	// If the hash changes, update the $.route.data

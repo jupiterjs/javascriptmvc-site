@@ -4,6 +4,7 @@ var isArray =  $.isArray,
 	isObject = function(obj){
 		return typeof obj === 'object' && obj !== null && obj;
 	},
+	makeArray = $.makeArray,
 	each = $.each,
 	hookup = function(val, prop, parent){
 		
@@ -24,15 +25,6 @@ var isArray =  $.isArray,
 		
 		return val;
 	},
-	getArgs = function(args){
-		if(args[0] && ( $.isArray(args[0])  )   ){
-			return args[0]
-		}
-		else{
-			return $.makeArray(args)
-		}
-	},
-	push = [].push,
 	id = 0,
 	collecting = null,
 	collect = function(){
@@ -59,6 +51,14 @@ var isArray =  $.isArray,
 			$(cur.t).trigger(cur.ev, cur.args)
 		}
 		
+	},
+	// which object to put it in
+	serialize = function(observe, how, where){
+		observe.each(function(name, val){
+			where[name] = isObject(val) && 
+				typeof val[how] == 'function' ?  val[how]() : val 
+		})
+		return where;
 	};
 	
 
@@ -68,14 +68,16 @@ var isArray =  $.isArray,
 /**
  * @class jQuery.Observe
  * @parent jquerymx.lang
- * 
+ * @test jquery/lang/observe/qunit.html
  * 
  * Observe provides observable behavior on 
- * JSON-like data structures.  You can
- * wrap a JS Object or Array with an Observe
- * and then listen to changes in the observe-able.
+ * JavaScript Objects and Arrays. 
  * 
- *     o = new $.Observe({ 
+ * ## Use
+ * 
+ * Create a new Observe with the data you want to observe:
+ * 
+ *     var data = { 
  *       addresses : [
  *         {
  *           city: 'Chicago',
@@ -87,22 +89,74 @@ var isArray =  $.isArray,
  *         }
  *         ],
  *       name : "Justin Meyer"
- *     });
+ *     },
+ *     o = new $.Observe(data);
  *     
- *     // listen for changes
- *     o.delegate("name","set", function(){
- *     })
+ * _o_ now represents an observable copy of _data_.  You
+ * can read the property values of _o_ with
+ * `observe.attr( name )` like:
+ * 
+ *     // read name
+ *     o.attr('name') //-> Justin Meyer
  *     
- *     // change a property
- *     o.attr('name','Brian Moschel')
- *     
- *     // update the 2nd address
+ * And set property names of _o_ with 
+ * `observe.attr( name, value )` like:
+ * 
+ *     // update name
+ *     o.attr('name', "Brian Moschel") //-> o
+ * 
+ * Observe handles nested data.  Nested Objects and
+ * Arrays are converted to $.Observe and 
+ * $.Observe.Lists.  This lets you read nested properties 
+ * and use $.Observe methods on them.  The following 
+ * updates the second address (Boston) to 'New York':
+ * 
  *     o.attr('addresses.1').attrs({
  *       city: 'New York',
  *       state: 'NY'
  *     })
  * 
+ * When a property value is changed, it creates events
+ * that you can listen to.  There are two ways to listen
+ * for events:
  * 
+ *   - [jQuery.Observe.prototype.bind bind] - listen for any type of change
+ *   - [jQuery.Observe.prototype.delegate delegate] - listen to a specific type of change
+ *     
+ * With `bind( "change" , handler( ev, attr, how, newVal, oldVal ) )`, you can listen
+ * to any change that happens within the 
+ * observe. The handler gets called with the property name that was
+ * changed, how it was changed ['add','remove','set'], the new value
+ * and the old value.
+ * 
+ *     o.bind('change', function( ev, attr, how, nevVal, oldVal ) {
+ *     
+ *     })
+ * 
+ * `delegate( attr, event, handler(ev, newVal, oldVal ) )` lets you listen
+ * to a specific even on a specific attribute. 
+ * 
+ *     // listen for name changes
+ *     o.delegate("name","set", function(){
+ *     
+ *     })
+ *     
+ * `attrs()` can be used to get all properties back from the observe:
+ * 
+ *     o.attrs() // -> 
+ *     { 
+ *       addresses : [
+ *         {
+ *           city: 'Chicago',
+ *           state: 'IL'
+ *         },
+ *         {
+ *           city: 'New York',
+ *           state : 'MA'
+ *         }
+ *         ],
+ *       name : "Brian Moschel"
+ *     }
  * 
  * @param {Object} obj a JavaScript Object that will be 
  * converted to an observable
@@ -126,7 +180,7 @@ $.Class('jQuery.Observe',
 			}
 		}
 		
-		this._data = obj;
+		this._data = obj || {};
 	},
 	/**
 	 * Get or set an attribute on the observe.
@@ -153,6 +207,9 @@ $.Class('jQuery.Observe',
 			this._set(attr, val);
 			return this;
 		}
+	},
+	each : function(){
+		return each.apply(null, [this._data].concat(makeArray(arguments)) )
 	},
 	/**
 	 * Removes a property
@@ -262,12 +319,7 @@ $.Class('jQuery.Observe',
 	 * get the raw data of this observable
 	 */
 	serialize : function(){
-		var obj = {}, val;
-		for(var prop in this._data){
-			val = this._data[prop];
-			obj[prop] =  isObject(val) ?  val.serialize() : val ;
-		}
-		return obj;
+		return serialize(this, 'serialize',{});
 	},
 	/**
 	 * Set multiple properties on the observable
@@ -275,7 +327,10 @@ $.Class('jQuery.Observe',
 	 * @param {Boolean} remove true if you should remove properties that are not in props
 	 */
 	attrs : function(props, remove){
-		// copy
+		if(props === undefined) {
+			return serialize(this,'attrs',{})
+		}
+		
 		props = $.extend(true, {}, props);
 		var prop,
 			collectingStarted = collect();
@@ -307,15 +362,20 @@ $.Class('jQuery.Observe',
 			sendCollection();
 		}
 	}
-})
+});
+// Helpers for list
+
 /**
  * @class jQuery.Observe.List
  * @inherits jQuery.Observe
  * @parent jQuery.Observe
- * An observable list
+ * 
+ * An observable list.  You can listen to when items are push, popped,
+ * spliced, shifted, and unshifted on this array.
+ * 
  * 
  */
-jQuery.Observe('jQuery.Observe.List', 
+var list = jQuery.Observe('jQuery.Observe.List', 
 /**
  * @prototype
  */
@@ -323,43 +383,53 @@ jQuery.Observe('jQuery.Observe.List',
 	init : function(instances){
 		this.length = 0;
 		this._namespace = ".list"+(++id);
-        this.push.apply(this, $.makeArray(instances || [] ) );
+        this.push.apply(this, makeArray(instances || [] ) );
 		this._data = this;
 	},
-	/**
-	 * Add items to the list
-	 */
-	push: function(){
-		var args = getArgs(arguments),
-			self = this;
-		
-		for(var i=0; i < args.length; i++){
-			var val = args[i];
-			if(isObject(val)){
-				args[i] = hookup(val, i, this)
-			} 
-		}
-		var res = push.apply( this, args )
-		//do this first so we could prevent?
-
-		send(this, "change", ["*","add",args] )
-		
-		return res;
-	},
 	serialize : function(){
-		var arr = [];
-		for(var i =0; i < this.length; i++){
-			arr.push( isObject(this[i]) ?  this[i].serialize() : this[i] );
-		}
-		return arr;
+		return serialize(this, 'serialize',[]);
+	},
+	each : function(){
+		return each.apply(null, [this].concat(makeArray(arguments)) )
 	},
 	/**
-	 * Remove items from the list
-	 * @param {Object} index
-	 * @param {Object} count
+	 * Remove items or add items from a specific point in the list.
+	 * 
+	 * ### Example
+	 * 
+	 * The following creates a list of numbers and replaces 2 and 3 with
+	 * "a", and "b".
+	 * 
+     *     var l = new $.Observe.List([0,1,2,3]);
+	 *     
+	 *     l.bind('change', function( ev, attr, how, newVals, oldVals, where ) { ... })
+	 *     
+	 *     l.splice(1,2, "a", "b"); // results in [0,"a","b",3]
+	 *     
+	 * This creates 2 change events.  The first event is the removal of 
+	 * numbers one and two where it's callback values will be:
+	 * 
+	 *   - attr - "*" - to indicate that multiple values have been changed at once
+	 *   - how - "remove"
+	 *   - newVals - undefined
+	 *   - oldVals - [1,2] -the array of removed values
+	 *   - where - 1 - the location of where these items where removed
+	 * 
+	 * The second change event is the addition of the "a", and "b" values where 
+	 * the callback values will be:
+	 * 
+	 *   - attr - "*" - to indicate that multiple values have been changed at once
+	 *   - how - "added"
+	 *   - newVals - ["a","b"]
+	 *   - oldVals - [1, 2] - the array of removed values
+	 *   - where - 1 - the location of where these items where added
+	 * 
+	 * @param {Number} index where to start removing or adding items
+	 * @param {Object} count the number of items to remove
+	 * @param {Object} [added] an object to add to 
 	 */
 	splice : function(index, count){
-		var args = $.makeArray(arguments);
+		var args = makeArray(arguments);
 
 		for(var i=0; i < args.length; i++){
 			var val = args[i];
@@ -368,21 +438,32 @@ jQuery.Observe('jQuery.Observe.List',
 			} 
 		}
 		if(count === undefined){
-			args[1] = this.length - index;
+			count = args[1] = this.length - index;
 		}
 		var removed = [].splice.apply(this, args);
 		if(count > 0){
-			send(this, "change",["*","remove",removed]);
+			send(this, "change",["*","remove",undefined, removed, index]);
 		}
 		if(args.length > 2){
-			send(this, "change",["*","remove",args.slice(2)]);
+			send(this, "change",["*","add",args.slice(2), removed, index]);
 		}
 		return removed;
 	},
+	/**
+	 * Updates an array with a new array.  It is able to handle
+	 * removes in the middle of the array.
+	 * @param {Object} props
+	 * @param {Object} remove
+	 */
 	attrs : function(props, remove){
+		if( props === undefined ){
+			return serialize(this, 'attrs',[]);
+		}
+		
 		// copy
-		var props = props.slice(0),
-			len = Math.min(props.length, this.length),
+		props = props.slice(0);
+		
+		var len = Math.min(props.length, this.length),
 			collectingStarted = collect();
 		for(var prop =0; prop < len; prop++) {
 			var curVal =  this[prop],
@@ -407,13 +488,119 @@ jQuery.Observe('jQuery.Observe.List',
 			sendCollection()
 		}
 	}
-})
+}),
+
+
+// create push and pop:
+	getArgs = function(args){
+		if(args[0] && ( $.isArray(args[0])  )   ){
+			return args[0]
+		}
+		else{
+			return makeArray(args)
+		}
+	},
+	push = [].push,
+	pop = [].pop;
+	
+	$.each({
+		/**
+		 * @function push
+		 * Add items to the end of the list.
+		 * 
+		 *     var l = new $.Observe.List([]);
+		 *     
+		 *     l.bind('change', function( 
+		 *         ev,        // the change event
+		 *         attr,      // the attr that was changed, for multiple items, "*" is used 
+		 *         how,       // "add"
+		 *         newVals,   // an array of new values pushed
+		 *         oldVals,   // undefined
+		 *         where      // the location where these items where added
+		 *         ) {
+		 *     
+		 *     })
+		 *     
+		 *     l.push('0','1','2');
+		 * 
+		 * @return {Number} the number of items in the array
+		 */
+		push : "length",
+		/**
+		 * @function unshift
+		 * Add items to the start of the list.  This is very similar to
+		 * [jQuery.Observe.prototype.push].
+		 */
+	 	unshift : 0
+	}, 
+	function(name, where){
+	 	list.prototype[name] = function(){
+			var args = getArgs(arguments),
+				self = this,
+				len = where ? this.length : 0;
+			
+			for(var i=0; i < args.length; i++){
+				var val = args[i];
+				if(isObject(val)){
+					args[i] = hookup(val, i, this)
+				} 
+			}
+			var res = [][name].apply( this, args )
+			//do this first so we could prevent?
+	
+			send(this, "change", ["*","add",args, undefined, len] )
+			
+			return res;
+		}
+	 });
+	
+$.each({
+		/**
+		 * @function pop
+		 * 
+		 * Removes an item from the end of the list.
+		 * 
+		 *     var l = new $.Observe.List([0,1,2]);
+		 *     
+		 *     l.bind('change', function( 
+		 *         ev,        // the change event
+		 *         attr,      // the attr that was changed, for multiple items, "*" is used 
+		 *         how,       // "remove"
+		 *         newVals,   // undefined
+		 *         oldVals,   // 2
+		 *         where      // the location where these items where added
+		 *         ) {
+		 *     
+		 *     })
+		 *     
+		 *     l.pop();
+		 * 
+		 * @return {Object} the element at the end of the list
+		 */
+		pop : "length",
+		/**
+		 * @function shift
+		 * Removes an item from the start of the list.  This is very similar to
+		 * [jQuery.Observe.prototype.pop].
+		 * 
+		 * @return {Object} the element at the start of the list
+		 */
+	 	shift : 0
+	}, 
+	function(name, where){
+	 	list.prototype[name] = function(){
+			var args = getArgs(arguments),
+				self = this,
+				len = where && this.length ? this.length - 1 : 0;
+			
+			var res = [][name].apply( this, args )
+			//do this first so we could prevent?
+	
+			send(this, "change", ["*","remove", undefined, [res], len] )
+			
+			return res;
+		}
+	 });
 
 });
 
-
-
-// add - property added
-// remove - property removed
-// set - property value changed
-// 

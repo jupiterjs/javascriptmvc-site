@@ -23,9 +23,9 @@ jQueryMX is divided into four core areas:
   - DOM Helpers
   - Language Helpers
   - Special events
-  - Model, View, Controller and Class
+  - Model, View, Controller and Class ( Read [mvc the walkthrough] )
  
-The following highlights this functionality.
+The following highlights jQueryMX's functionality.
 
 ## DOM Helpers
 
@@ -42,7 +42,7 @@ THe following are the other dom plugins:
   - [jQuery.fn.closest Closest] - Use the open child selector in event delegation.
   - [jQuery.fn.compare Compare] - Compare the location of two elements rapidly.
   - [jQuery.fn.curStyles CurStyles] - Get multiple css properties quickly.
-  - [jQuery.formParams FormParams] - Serializes a form into a JSON-like object.
+  - [jQuery.fn.formParams FormParams] - Serializes a form into a JSON-like object.
   - [jQuery.fn.selection Selection] - Gets or sets the current text selection.
   - [jQuery.fn.within Within] - Returns elements that have a point within their boundaries.
   - [jQuery.Range Range] - Text range utilities.
@@ -52,15 +52,15 @@ THe following are the other dom plugins:
 
 jQueryMX comes packed with jQuery [specialevents special events] and event helpers.
 
-  - Drag - Delegatable drag events.
-  - Drop - Delegatable drop events.
-  - Hover - Delegatable hover events.
-  - Destroyed - Know when an element is removed from the page.
-  - Resize - Listen to resize events on any element.
-  - Swipe - Delegatable swipe events.
-  - Key - Get the character from a key event.
-  - Default - Provide default behaviors for events.
-  - Pause-Resume - Pause and resume event propagation.
+  - [jQuery.Drag Drag] - Delegatable drag events.
+  - [jQuery.Drop Drop] - Delegatable drop events.
+  - [jQuery.Hover Hover] - Delegatable hover events.
+  - [jQuery.event.special.destroyed Destroyed] - Know when an element is removed from the page.
+  - [jQuery.event.special.resize Resize] - Listen to resize events on any element.
+  - [jQuery.event.swipe Swipe] - Delegatable swipe events.
+  - [jQuery.Event.prototype.key Key] - Get the character from a key event.
+  - [jQuery.event.special.default Default] - Provide default behaviors for events.
+  - [jquery.event.pause Pause-Resume] - Pause and resume event propagation.
 
 
 ## Language Helpers

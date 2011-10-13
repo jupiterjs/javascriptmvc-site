@@ -1,0 +1,1 @@
+C({"name": "prototype.slice", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["prototype"], "comment": "<p>Slice works just like an array's slice, except this\nreturns another instance of this model list's class.</p>", "src": "../jquery/model/list/list.js", "children": []})

@@ -43,6 +43,44 @@ test("Basic Observe",9,function(){
 	
 });
 
+test("list splice", function(){
+	var l = new $.Observe.List([0,1,2,3]),
+		first = true;
+  
+	l.bind('change', function( ev, attr, how, newVals, oldVals, where ) { 
+		equals (attr, "*")
+		equals(where, 1)
+		if(first){
+			equals( how, "remove" )
+			equals( newVals, undefined )
+		} else {
+			same( newVals, ["a","b"] )
+			equals( how, "add" )
+		}
+	
+		first = false;
+	})
+	
+	l.splice(1,2, "a", "b"); 
+	same(l.serialize(), [0,"a","b", 3])
+});
+
+test("list pop", function(){
+	var l = new $.Observe.List([0,1,2,3]);
+  
+	l.bind('change', function( ev, attr, how, newVals, oldVals, where ) { 
+		equals (attr, "*")
+		equals(where, 3)
+		
+		equals( how, "remove" )
+		equals( newVals, undefined )
+		same( oldVals, [3] )
+	})
+	
+	l.pop(); 
+	same(l.serialize(), [0,1,2])
+})
+
 test("changing an object unbinds", function(){
 	var state = new $.Observe({
 		category : 5,
@@ -176,6 +214,17 @@ test("attrs deep array ", function(){
 	}, true);
 	
 	ok(thing.arr === arr, "thing unmolested");
+});
+
+test('attrs semi-serialize', function(){
+	var first = {
+		foo : {bar: 'car'},
+		arr: [1,2,3, {four: '5'}
+		]
+	},
+	compare = $.extend(true, {}, first);
+	var res = new $.Observe(first).attrs();
+	same(res,compare, "test")
 })
 	
 test("attrs sends events after it is done", function(){

@@ -27,6 +27,11 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 		isFunction = $.isFunction,
 		extend = $.extend,
 		Str = $.String,
+		each = $.each,
+		
+		STR_PROTOTYPE = 'prototype',
+		STR_CONSTRUCTOR = 'constructor',
+		slice = Array[STR_PROTOTYPE].slice,
 		
 		// Binds an element, returns a function that unbinds
 		delegate = function( el, selector, ev, callback ) {
@@ -48,7 +53,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 			var method = typeof name == "string" ? context[name] : name;
 			return function() {
 				context.called = name;
-    			return method.apply(context, [this.nodeName ? $(this) : this].concat(Array.prototype.slice.call(arguments, 0) ) );
+    			return method.apply(context, [this.nodeName ? $(this) : this].concat( slice.call(arguments, 0) ) );
 			};
 		},
 		// matches dots
@@ -88,7 +93,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 	 * down auto-magically. Read about [http://jupiterjs.com/news/writing-the-perfect-jquery-plugin 
 	 * the theory behind controller] and 
 	 * a [http://jupiterjs.com/news/organize-jquery-widgets-with-jquery-controller walkthrough of its features]
-	 * on Jupiter's blog.  The [mvc.controller MVC in JavaScriptMVC tutorial] also has a great walkthrough.
+	 * on Jupiter's blog. [mvc.controller Get Started with jQueryMX] also has a great walkthrough.
 	 * 
 	 * Controller inherits from [jQuery.Class $.Class] and makes heavy use of 
 	 * [http://api.jquery.com/delegate/ event delegation]. Make sure 
@@ -317,15 +322,16 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 	{
 		/**
 		 * Does 2 things:
-		 * <ol>
-		 *     <li>Creates a jQuery helper for this controller.</li>
-		 *     <li>Calculates and caches which functions listen for events.</li>
-		 * </ol>   
-		 * <h3>jQuery Helper Naming Examples</h3>
-		 * @codestart
-		 * "TaskController" -> $().task_controller()
-		 * "Controllers.Task" -> $().controllers_task()
-		 * @codeend
+		 * 
+		 *   - Creates a jQuery helper for this controller.</li>
+		 *   - Calculates and caches which functions listen for events.</li>
+		 *    
+		 * ### jQuery Helper Naming Examples
+		 * 
+		 * 
+		 *     "TaskController" -> $().task_controller()
+		 *     "Controllers.Task" -> $().controllers_task()
+		 * 
 		 */
 		setup: function() {
 			// Allow contollers to inherit "defaults" from superclasses as it done in $.Class
@@ -361,7 +367,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 
 					var args = makeArray(arguments),
 						//if the arg is a method on this controller
-						isMethod = typeof options == "string" && isFunction(controller.prototype[options]),
+						isMethod = typeof options == "string" && isFunction(controller[STR_PROTOTYPE][options]),
 						meth = args[0];
 					return this.each(function() {
 						//check if created
@@ -395,8 +401,8 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 			// calculate and cache actions
 			this.actions = {};
 
-			for ( funcName in this.prototype ) {
-				if (funcName == 'constructor' || !isFunction(this.prototype[funcName]) ) {
+			for ( funcName in this[STR_PROTOTYPE] ) {
+				if (funcName == 'constructor' || !isFunction(this[STR_PROTOTYPE][funcName]) ) {
 					continue;
 				}
 				if ( this._isAction(funcName) ) {
@@ -841,10 +847,10 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 		 */
 		destroy: function() {
 			if ( this._destroyed ) {
-				throw this.Class.shortName + " controller instance has been deleted";
+				throw this[STR_CONSTRUCTOR].shortName + " controller already deleted";
 			}
 			var self = this,
-				fname = this.Class.pluginName || this.Class._fullName,
+				fname = this[STR_CONSTRUCTOR].pluginName || this[STR_CONSTRUCTOR]._fullName,
 				controllers;
 			
 			// mark as destroyed
@@ -854,7 +860,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 			this.element.removeClass(fname);
 
 			// unbind bindings
-			$.each(this._bindings, function( key, value ) {
+			each(this._bindings, function( key, value ) {
 				value(self.element[0]);
 			});
 			// clean up
@@ -897,7 +903,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 
 
 	//set commong events to be processed as a basicProcessor
-	$.each("change click contextmenu dblclick keydown keyup keypress mousedown mousemove mouseout mouseover mouseup reset resize scroll select submit focusin focusout mouseenter mouseleave".split(" "), function( i, v ) {
+	each("change click contextmenu dblclick keydown keyup keypress mousedown mousemove mouseout mouseover mouseup reset resize scroll select submit focusin focusout mouseenter mouseleave".split(" "), function( i, v ) {
 		processors[v] = basicProcessor;
 	});
 	/**
@@ -908,45 +914,47 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 	//controllers can be strings or classes
 	var i, isAControllerOf = function( instance, controllers ) {
 		for ( i = 0; i < controllers.length; i++ ) {
-			if ( typeof controllers[i] == 'string' ? instance.Class._shortName == controllers[i] : instance instanceof controllers[i] ) {
+			if ( typeof controllers[i] == 'string' ? instance[STR_CONSTRUCTOR]._shortName == controllers[i] : instance instanceof controllers[i] ) {
 				return true;
 			}
 		}
 		return false;
 	};
-
-	/**
-	 * @function controllers
-	 * Gets all controllers in the jQuery element.
-	 * @return {Array} an array of controller instances.
-	 */
-	$.fn.controllers = function() {
-		var controllerNames = makeArray(arguments),
-			instances = [],
-			controllers, c, cname;
-		//check if arguments
-		this.each(function() {
-
-			controllers = $.data(this, "controllers");
-			for ( cname in controllers ) {
-				if ( controllers.hasOwnProperty(cname) ) {
-					c = controllers[cname];
-					if (!controllerNames.length || isAControllerOf(c, controllerNames) ) {
-						instances.push(c);
+	$.fn.extend({
+		/**
+		 * @function controllers
+		 * Gets all controllers in the jQuery element.
+		 * @return {Array} an array of controller instances.
+		 */
+		controllers: function() {
+			var controllerNames = makeArray(arguments),
+				instances = [],
+				controllers, c, cname;
+			//check if arguments
+			this.each(function() {
+	
+				controllers = $.data(this, "controllers");
+				for ( cname in controllers ) {
+					if ( controllers.hasOwnProperty(cname) ) {
+						c = controllers[cname];
+						if (!controllerNames.length || isAControllerOf(c, controllerNames) ) {
+							instances.push(c);
+						}
 					}
 				}
-			}
-		});
-		return instances;
-	};
-	/**
-	 * @function controller
-	 * Gets a controller in the jQuery element.  With no arguments, returns the first one found.
-	 * @param {Object} controller (optional) if exists, the first controller instance with this class type will be returned.
-	 * @return {jQuery.Controller} the first controller.
-	 */
-	$.fn.controller = function( controller ) {
-		return this.controllers.apply(this, arguments)[0];
-	};
+			});
+			return instances;
+		},
+		/**
+		 * @function controller
+		 * Gets a controller in the jQuery element.  With no arguments, returns the first one found.
+		 * @param {Object} controller (optional) if exists, the first controller instance with this class type will be returned.
+		 * @return {jQuery.Controller} the first controller.
+		 */
+		controller: function( controller ) {
+			return this.controllers.apply(this, arguments)[0];
+		}
+	});
+	
 
 });

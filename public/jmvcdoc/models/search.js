@@ -22,6 +22,13 @@ steal('jquery/class').then('./favorites.js',function(){
 					this._data = data;
 					success(data)
 					return;
+				} else {
+					//clear everything that starts with jmvcDoc, try to remove the old data ...
+					for(var prop in localStorage){
+						if(prop.indexOf("jmvcDoc") == 0){
+							localStorage.removeItem(prop)
+						}
+					}
 				}
 				
 			}
@@ -72,7 +79,7 @@ steal('jquery/class').then('./favorites.js',function(){
 							success(data)
 							return;
 						}
-					}
+					} 
 					
 				}				
 				

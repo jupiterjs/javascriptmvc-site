@@ -66,7 +66,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			return new listType();
 		},
 		getId = function(inst){
-			return inst[inst.Class.id]
+			return inst[inst.constructor.id]
 		},
 		unique = function(items){
 	        var collect = [];
@@ -91,7 +91,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 				reject = function(data){
 					deferred.rejectWith(self, [data])
 				},
-				args = [self.serialize(), resolve, reject];
+				args = [self.serialize(), resolve, reject],
+				constructor = self.constructor;
 				
 			if(type == 'destroy'){
 				args.shift();
@@ -104,7 +105,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			deferred.then(success);
 			deferred.fail(error);
 			
-			self.Class[type].apply(self.Class, args);
+			constructor[type].apply(constructor, args);
 				
 			return deferred.promise();
 		},
@@ -119,7 +120,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			}
 		},
 		bind = $method('bind'),
-		unbind = $method('unbind');
+		unbind = $method('unbind'),
+		STR_CONSTRUCTOR = 'constructor';
 	/**
 	 * @class jQuery.Model
 	 * @parent jquerymx
@@ -139,7 +141,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 	 * Model inherits from [jQuery.Class $.Class] and make use
 	 * of REST services and [http://api.jquery.com/category/deferred-object/ deferreds]
 	 * so these concepts are worth exploring.  Also, 
-	 * the [mvc.model MVC in JavaScriptMVC] has a good walkthrough of $.Model.
+	 * the [mvc.model Get Started with jQueryMX] has a good walkthrough of $.Model.
 	 * 
 	 * 
 	 * ## Get and modify data from the server
@@ -497,8 +499,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * API for services.  
 			 * 
 			 * Update is called by [jQuery.Model.prototype.save] or [jQuery.Model.prototype.update] 
-			 * on an existing model instance.  If you want to be able to call save on an instance
-			 * you have to implement update.
+			 * on an existing model instance.  
 			 * 
 			 * The easist way to implement update is to just give it the url to put data to:
 			 * 
@@ -552,8 +553,13 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * 
 			 * @param {String} id the id of the model instance
 			 * @param {Object} attrs Attributes on the model instance
-			 * @param {Function} success(attrs) the callback function, it must be called with an object 
-			 * that has the id of the new instance and any other attributes the service needs to add.
+			 * @param {Function} success(attrs) the callback function.  It optionally accepts 
+			 * an object of attribute / value pairs of property changes the client doesn't already 
+			 * know about. For example, when you update a name property, the server might 
+			 * update other properties as well (such as updatedAt). The server should send 
+			 * these properties as the response to updates.  Passing them to success will 
+			 * update the model instance with these properties.
+			 * 
 			 * @param {Function} error a function to callback if something goes wrong.  
 			 */
 			return function(id, attrs, success, error){
@@ -701,7 +707,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			//add missing converters and serializes
 			each(["convert","serialize"],function( i, name ) {
 				if ( superClass[name] != self[name] ) {
-					self[name] = extend( superClass[name], self[name] );
+					self[name] = extend({}, superClass[name], self[name] );
 				}
 			});
 
@@ -733,11 +739,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			var converters = {},
 				convertName = "* "+this._shortName+".model";
 				
-			converters[convertName+"s"] = this.callback('models');
-			converters[convertName] = this.callback('model');	
-				
-			//converters[convertName+"s"] = this.models = this.callback(this.models);
-			//converters[convertName] = this.model = this.callback(this.model);
+			converters[convertName+"s"] = this.proxy('models');
+			converters[convertName] = this.proxy('model');	
 			
 			$.ajaxSetup({
 				converters : converters
@@ -1082,7 +1085,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		setup: function( attributes ) {
 			// so we know not to fire events
 			this._init = true;
-			this.attrs(extend({},this.Class.defaults,attributes));
+			this.attrs(extend({},this.constructor.defaults,attributes));
 			delete this._init;
 		},
 		/**
@@ -1147,12 +1150,13 @@ steal('jquery/class', 'jquery/lang/string', function() {
 						}
 
 					});
-				};
+				},
+				validations = this.constructor.validations;
 
-			each(attrs || this.Class.validations || {}, function( attr, funcs ) {
+			each(attrs || validations || {}, function( attr, funcs ) {
 				if ( typeof attr == 'number' ) {
 					attr = funcs;
-					funcs = self.Class.validations[attr];
+					funcs = validations[attr];
 				}
 				addErrors(attr, funcs || []);
 			});
@@ -1309,7 +1313,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			// provides getter / setters
 			// 
 			if ( this[setName] && 
-				(value = this[setName](value, this.callback('_updateProperty', property, value, old, success, errorCallback), errorCallback)) === undefined ) {
+				(value = this[setName](value, this.proxy('_updateProperty', property, value, old, success, errorCallback), errorCallback)) === undefined ) {
 				return;
 			}
 			this._updateProperty(property, value, old, success, errorCallback);
@@ -1323,7 +1327,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		 * @param {Object} success
 		 */
 		_updateProperty: function( property, value, old, success, errorCallback ) {
-			var Class = this.Class,
+			var Class = this.constructor,
 				val, type = Class.attributes[property] || Class.addAttr(property, Class.guessType(value)),
 				//the converter
 				converter = Class.convert[type] || Class.convert['default'],
@@ -1332,7 +1336,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 				global = "updated.",
 				args,
 				globalArgs,
-				callback = success;
+				callback = success,
+				list = Class.list;
 
 			val = this[property] = (value === null ? //if the value is null or undefined
 			null : // it should be null
@@ -1357,14 +1362,14 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			callback && callback.apply(this, args);
 
 			//if this class has a global list, add / remove from the list.
-			if ( property === Class.id && val !== null && Class.list ) {
+			if ( property === Class.id && val !== null && list ) {
 				// if we didn't have an old id, add ourselves
 				if (!old ) {
-					Class.list.push(this);
+					list.push(this);
 				} else if ( old != val ) {
 					// if our id has changed ... well this should be ok
-					Class.list.remove(old);
-					Class.list.push(this);
+					list.remove(old);
+					list.push(this);
 				}
 			}
 
@@ -1382,7 +1387,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		 */
 		removeAttr: function(attr){
 			var old = this[attr],
-				deleted = false;
+				deleted = false,
+				attrs = this.constructor.attributes;
 			
 			//- pop it off the object
 			if(this[attr]){
@@ -1390,8 +1396,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			}
 			
 			//- pop it off the Class attributes collection
-			if(this.Class.attributes[attr]){
-				delete this.Class.attributes[attr];
+			if(attrs[attr]){
+				delete attrs[attr];
 				deleted = true;
 			}
 			
@@ -1418,16 +1424,18 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		 * @return {Object} the current attributes of the model
 		 */
 		attrs: function( attributes ) {
-			var key;
+			var key,
+				constructor  = this.constructor,
+				attrs = constructor.attributes;
 			if (!attributes ) {
 				attributes = {};
-				for ( key in this.Class.attributes ) {
-					if ( this.Class.attributes.hasOwnProperty(key) ) {
+				for ( key in attrs ) {
+					if ( attrs.hasOwnProperty(key) ) {
 						attributes[key] = this.attr(key);
 					}
 				}
 			} else {
-				var idName = this.Class.id;
+				var idName = constructor.id;
 				//always set the id last
 				for ( key in attributes ) {
 					if ( key != idName ) {
@@ -1442,7 +1450,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			return attributes;
 		},
 		serialize : function(){
-			var Class = this.Class,
+			var Class = this.constructor,
 				attrs = Class.attributes,
 				type,
 				converter,
@@ -1521,8 +1529,9 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		 * @return {String}
 		 */
 		identity: function() {
-			var id = getId(this);
-			return (this.Class._fullName + '_' + (this.Class.escapeIdentity ? encodeURIComponent(id) : id)).replace(/ /g, '_');
+			var id = getId(this), 
+				constructor = this.constructor;
+			return (constructor._fullName + '_' + (constructor.escapeIdentity ? encodeURIComponent(id) : id)).replace(/ /g, '_');
 		},
 		/**
 		 * Returns elements that represent this model instance.  For this to work, your element's should
@@ -1551,6 +1560,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			return $("." + this.identity(), context);
 		},
 		/**
+		 * @hide
 		 * Publishes to OpenAjax.hub
 		 * 
 		 *     $.Model('Task', {
@@ -1570,10 +1580,10 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		 * @param {Object} [data] if missing, uses the instance in {data: this}
 		 */
 		publish: function( event, data ) {
-			this.Class.publish(event, data || this);
+			this.constructor.publish(event, data || this);
 		},
 		hookup: function( el ) {
-			var shortName = this.Class._shortName,
+			var shortName = this.constructor._shortName,
 				models = $.data(el, "models") || $.data(el, "models", {});
 			$(el).addClass(shortName + " " + this.identity());
 			models[shortName] = this;
@@ -1607,11 +1617,12 @@ steal('jquery/class', 'jquery/lang/string', function() {
 	 */
 	"destroyed"], function( i, funcName ) {
 		$.Model.prototype[funcName] = function( attrs ) {
-			var stub;
+			var stub,
+				constructor = this.constructor;
 			
 			// remove from the list if instance is destroyed
-			if ( funcName === 'destroyed' && this.Class.list ) {
-				this.Class.list.remove(getId(this));
+			if ( funcName === 'destroyed' && constructor.list ) {
+				constructor.list.remove(getId(this));
 			}
 			
 			// update attributes if attributes have been passed
@@ -1622,8 +1633,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			this.publish(funcName, this);
 			
 			// call event on the instance's Class
-			$([this.Class]).triggerHandler(funcName, this);
-			return [this].concat(makeArray(arguments)); // return like this for this.callback chains
+			$([constructor]).triggerHandler(funcName, this);
+			return [this].concat(makeArray(arguments)); // return like this for this.proxy chains
 		};
 	});
 
@@ -1652,8 +1663,8 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			each($.data(this, "models") || {}, function( name, instance ) {
 				//either null or the list type shared by all classes
 				kind = kind === undefined ? 
-					instance.Class.List || null : 
-					(instance.Class.List === kind ? kind : null);
+					instance.constructor.List || null : 
+					(instance.constructor.List === kind ? kind : null);
 				collection.push(instance);
 			});
 		});

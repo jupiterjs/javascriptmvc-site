@@ -1,5 +1,5 @@
 @page migrate Migrating from 3.0 and 3.1
-@parent tutorials 6
+@parent tutorials 7
 
 There are many new feature in JavaScriptMVC 3.2 that help you build great JavaScript applications.
 Although 3.2 is not strictly backwards compatible it is possible to upgrade from
@@ -66,8 +66,9 @@ Note that unlike the old document controllers a global controller will not liste
 
 ## Listening to model and history changes
  
-The notifications via Openajax have been dropped in favour of the Observable mechanism.
+The notifications via OpenAJAX have been dropped in favor of the [jQuery.Observe Observable] mechanism.
 
- 
+
 ## Controller History
 
+Controller history was dropped in 3.2 in favor of [jQuery.route routes].
