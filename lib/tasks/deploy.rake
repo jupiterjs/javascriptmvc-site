@@ -14,6 +14,31 @@
 
 require 'find'
 
+namespace :option do
+	task :crawl do
+		announce 'Running crawl script...'
+
+		Dir.chdir('../javascriptmvc') do
+			sh './js jmvc/scripts/crawl.js'
+		end
+
+		echo 'Done.'
+	end
+
+	task :examples do
+		announce 'Updating example applications...'
+
+		Dir.chdir('public') do
+			sh './js steal/getjs player'
+			sh './js steal/getjs srchr'
+			sh './js steal/getjs todo'
+			sh './js steal/getjs contacts'
+		end
+
+		echo 'Done.'
+	end
+end
+
 namespace :deploy do
 	def announce(message)
 		puts
@@ -29,29 +54,6 @@ namespace :deploy do
 		puts
 	end
 
-	def crawl
-		announce 'Running crawl script...'
-
-		Dir.chdir('../javascriptmvc') do
-			sh './js jmvc/scripts/crawl.js'
-		end
-
-		echo 'Done.'
-	end
-
-	def examples
-		announce 'Updating example applications...'
-
-		Dir.chdir('public') do
-			sh './js steal/getjs player'
-			sh './js steal/getjs srchr'
-			sh './js steal/getjs todo'
-			sh './js steal/getjs contacts'
-		end
-
-		echo 'Done.'
-	end
-
 	task :update do
 		announce 'Updating source from git...'
 
@@ -64,21 +66,11 @@ namespace :deploy do
 		echo 'Done.'
 	end
 
-	task :build, :opt1, :opt2 do |t, args|
+	task :build do
 		announce 'Building docs...'
 
 		Dir.chdir('../javascriptmvc') do
-			#sh './js jmvc/scripts/doc.js'
-		end
-
-		options = [args[:opt1], args[:opt2]]
-
-		if options.include? 'crawl'
-			#crawl
-		end
-
-		if options.include? 'examples'
-			#examples
+			sh './js jmvc/scripts/doc.js'
 		end
 
 		echo 'Done.'
@@ -87,7 +79,7 @@ namespace :deploy do
 	task :copy do
 		announce 'Copying files to local directory...'
 
-		ignored_extensions = ['.jar', '.bat']
+		ignored_extensions = []
 		ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
 
 		Find.find('../javascriptmvc') do |file|
