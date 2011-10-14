@@ -40,10 +40,10 @@ namespace :deploy do
 					new_path = 'public/' + dirname.gsub(/\.\.\/javascriptmvc/, '').gsub(/^\//, '') + '/' + basename
 
 					if File.directory? file
-						FileUtils.rm_rf new_path
-						FileUtils.mkdir new_path
+						FileUtils.rm_rf new_path, :noop => true
+						FileUtils.mkdir new_path, :noop => true
 					elsif
-						FileUtils.cp file, new_path
+						FileUtils.cp file, new_path, :noop => true
 					end
 			end
 		end
