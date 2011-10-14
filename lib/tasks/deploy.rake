@@ -127,7 +127,7 @@ namespace :deploy do
 	task :staging => [:prepare] do
 		announce 'Deploying to staging...'
 
-		#sh 'git push staging master'
+		sh 'git push staging master'
 		echo 'Done.'
 	end
 

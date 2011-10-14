@@ -1,0 +1,1 @@
+steal("funcunit").then('./disabler_test.js')
