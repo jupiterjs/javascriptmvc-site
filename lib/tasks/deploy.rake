@@ -50,7 +50,7 @@ namespace :deploy do
 
 	def echo(message)
 		puts
-		puts 'Done.'
+		puts message
 		puts
 	end
 
