@@ -1,3 +1,17 @@
+# This is a temporary build script and makes the following assumptions:
+# - The javascriptmvc directory is one directory up. For example, from this root directory: cd ../javascriptmvc
+# - Two git remotes are assumed to exist:
+# => heroku: git@heroku.com:javascriptmvc.git
+# => staging: git@heroku.com:growing-mountain-3217.git //or any heroku instance you choose
+
+# You can run from this app's root directory with:
+# => rake deploy:staging //deploys to staging remote
+# => rake deploy:production //deploys to heroku remote
+
+# Optional commands(by default these do not run)
+# => rake deploy:staging["crawl","examples"] //runs crawl and getjs for example applications. Array can be any combination of "crawl" and "examples".
+
+
 require 'find'
 
 namespace :deploy do
@@ -15,6 +29,29 @@ namespace :deploy do
 		puts
 	end
 
+	def crawl
+		announce 'Running crawl script...'
+
+		Dir.chdir('../javascriptmvc') do
+			sh './js jmvc/scripts/crawl.js'
+		end
+
+		echo 'Done.'
+	end
+
+	def examples
+		announce 'Updating example applications...'
+
+		Dir.chdir('public') do
+			sh './js steal/getjs player'
+			sh './js steal/getjs srchr'
+			sh './js steal/getjs todo'
+			sh './js steal/getjs contacts'
+		end
+
+		echo 'Done.'
+	end
+
 	task :update do
 		announce 'Updating source from git...'
 
@@ -27,11 +64,21 @@ namespace :deploy do
 		echo 'Done.'
 	end
 
-	task :build do
+	task :build, :opt1, :opt2 do |t, args|
 		announce 'Building docs...'
 
 		Dir.chdir('../javascriptmvc') do
-			sh './js jmvc/scripts/doc.js'
+			#sh './js jmvc/scripts/doc.js'
+		end
+
+		options = [args[:opt1], args[:opt2]]
+
+		if options.include? 'crawl'
+			#crawl
+		end
+
+		if options.include? 'examples'
+			#examples
 		end
 
 		echo 'Done.'
@@ -66,6 +113,7 @@ namespace :deploy do
 
 	task :commit do
 		announce 'Committing changes...'
+		sh 'git add .'
 		sh 'git commit -am "Updating from source."'
 
 		echo 'Done.'
