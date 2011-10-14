@@ -1,1 +1,0 @@
-C({"name": "prototype.each", "type": "function", "parents": ["prototype"], "comment": "<p>Iterates through the list, calling callback on each item in the list.</p>", "params": {"callback": {"order": 0, "description": "", "name": "callback", "type": "Function", "optional": false}}, "src": "../jquery/model/list/list.js", "children": []})

@@ -1,7 +1,7 @@
 require 'find'
 
 namespace :deploy do
-	def print_status(message)
+	def announce(message)
 		puts
 		puts '========================================='
 		puts message
@@ -9,29 +9,39 @@ namespace :deploy do
 		puts
 	end
 
+	def echo(message)
+		puts
+		puts 'Done.'
+		puts
+	end
+
 	task :update do
-		print_status 'Updating source from git...'
+		announce 'Updating source from git...'
 
 		Dir.chdir('../javascriptmvc') do
 			sh 'git checkout jmvc/docs.html'
 			sh 'git pull origin master'
 			sh 'git submodule update --recursive'
 		end
+
+		echo 'Done.'
 	end
 
 	task :build do
-		print_status 'Building docs...'
+		announce 'Building docs...'
 
 		Dir.chdir('../javascriptmvc') do
 			sh './js jmvc/scripts/doc.js'
 		end
+
+		echo 'Done.'
 	end
 
 	task :copy do
-		print_status 'Copying files to local directory...'
+		announce 'Copying files to local directory...'
 
 		ignored_extensions = ['.jar', '.bat']
-		ignored_files = ['.git', '.gitignore', 'js', '.DS_Store', '.gitmodules']
+		ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
 
 		Find.find('../javascriptmvc') do |file|
 			basename = File.basename file
@@ -43,34 +53,41 @@ namespace :deploy do
 					new_path = 'public/' + dirname.gsub(/\.\.\/javascriptmvc/, '').gsub(/^\//, '') + '/' + basename
 
 					if File.directory? file
-						FileUtils.rm_rf new_path, :noop => false
-						FileUtils.mkdir new_path, :noop => false
+						FileUtils.rm_rf new_path
+						FileUtils.mkdir new_path
 					elsif
-						FileUtils.cp file, new_path, :noop => false
+						FileUtils.cp file, new_path
 					end
 			end
 		end
+
+		echo 'Done.'
 	end
 
 	task :commit do
-		print_status 'Committing changes...'
+		announce 'Committing changes...'
 
-		#sh 'git commit -am "Updating from source."'
+		sh 'git commit -am "Updating from source."'
+		echo 'Done.'
 	end
 
 	task :prepare => [:update, :build, :copy, :commit] do
-		print_status 'Preparing to deploy...'
+		puts
+		puts 'Preparing to deploy...'
+		puts
 	end
 
 	task :staging => [:prepare] do
-		print_status 'Deploying to staging...'
+		announce 'Deploying to staging...'
 
 		#sh 'git push staging master'
+		echo 'Done.'
 	end
 
 	task :production => [:prepare] do
-		print_status 'Deploying to production...'
+		announce 'Deploying to production...'
 
 		#sh 'git push heroku master'
+		echo 'Done.'
 	end
 end

@@ -1,1 +1,0 @@
-C({"name": "jquerymx.jQuery.Event.prototype.pause", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jquery.event.pause", "jquerymx"], "comment": "<p>Pauses an event (to be resumed later);</p>", "src": "../jquery/event/pause/pause.js", "children": []})

@@ -1,1 +1,0 @@
-C({"name": "prototype.shift", "type": "function", "parents": ["prototype"], "comment": "<p>Shifts the first instance off the list</p>", "src": "../jquery/model/list/list.js", "children": []})
