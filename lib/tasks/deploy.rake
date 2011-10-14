@@ -66,8 +66,15 @@ namespace :deploy do
 
 	task :commit do
 		announce 'Committing changes...'
-
 		sh 'git commit -am "Updating from source."'
+
+		echo 'Done.'
+
+		announce 'Cleaning up git...'
+		sh 'git fsck'
+		sh 'git gc'
+		sh 'git repack'
+
 		echo 'Done.'
 	end
 
