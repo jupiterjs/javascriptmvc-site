@@ -1031,7 +1031,7 @@
 		one : function(event, listener){
 			steal.bind(event,function(){
 				listener.apply(this, arguments);
-				steal.unbind(arguments.callee);
+				steal.unbind(event, arguments.callee);
 			});
 			return steal;
 		},
@@ -1897,9 +1897,6 @@ if (support.interactive) {
 	});
 	
 }
-
-	// ===========  STEAL.BROWSERS ==========
-	win.location && /mode=commandline/.test(win.location.search) && steal(decodeURIComponent(win.location.search).replace(/-/g, "/").match(/client=([\w|\/]+)/)[1]+"/client.js")
 	
 	// ===========  OPTIONS ==========
 	
@@ -1967,6 +1964,18 @@ if (support.interactive) {
 			if(typeof oldsteal == 'object'){
 				extend(steal.options, oldsteal);
 			}
+			
+			// if it looks like steal[xyz]=bar, add those to the options
+			var search = win.location && decodeURIComponent(win.location.search);
+			search && search.replace(/steal\[([^\]]+)\]=([^&]+)/g, function( whoe, prop, val ) {
+				// support array like params
+				var commaSeparated = val.split(",");
+				if(commaSeparated.length > 1){
+					val = commaSeparated;
+				}
+				steal.options[prop] = val;
+			});
+			
 			// CALCULATE CURRENT LOCATION OF THINGS ...
 			steal.rootUrl(steal.options.rootUrl);
 			
@@ -2009,12 +2018,15 @@ if (support.interactive) {
 						ignore: true
 					});
 				}
-				//if you have a startFile load it
+				if( steal.options.startFiles ){
+					if(typeof steal.options.startFiles === "string"){
+						steal.options.startFiles = [steal.options.startFiles];
+					}
+					steals.push.apply(steals, steal.options.startFiles)
+				}
+				
 				if (steal.options.startFile) {
-					//steal(steal.options.startFile);
 					steals.push(steal.options.startFile)
-				//steal._start = new steal.fn.init(steal.options.startFile);
-				//steal.queue(steal._start);
 				}
 				
 				if (steals.length) {

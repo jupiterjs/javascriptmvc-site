@@ -1,4 +1,4 @@
-steal('jquery', function(){
+steal(function(){
 	steal.client = {}
 	steal.client.dataQueue = []
 	var id=0;
@@ -35,7 +35,7 @@ steal('jquery', function(){
 					// kills phantom process
 					setTimeout(function(){
 						alert('phantomexit')
-					}, 100)
+					}, 500)
 				}
 			}
 		})
@@ -46,4 +46,4 @@ steal('jquery', function(){
 		return res;
 	};
 	setTimeout(steal.client.sendData, 1000);
-}, 'steal/browser/client.js')
+})

@@ -158,7 +158,6 @@ h5 {
 	left:4px;
 	position:relative;
 	top:8px;
-	border:none;
 }
 #defaults a {
     color: white;
@@ -303,7 +302,7 @@ h5 {
 .jmvcdoc_search .remove{
 	display:none;
 	position:absolute;
-	top:3px;
+	top:4px;
 	right:11px;
 }
 .remove:hover {

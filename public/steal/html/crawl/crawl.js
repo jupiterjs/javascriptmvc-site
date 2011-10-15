@@ -6,8 +6,8 @@ var queue = [],
 	s = steal,
 	getDocType  = function(url){
 		var content;
-		if(steal.File(url).domain() === null){
-			content = readFile(steal.File(url).clean());
+		if(s.File(url).domain() === null){
+			content = readFile(s.File(url).clean());
 		} else {
 			content = readUrl(url);
 		}
@@ -17,7 +17,8 @@ var queue = [],
 /**
  * @function steal.html.crawl
  * @parent steal.html
- * Loads an ajax driven page and generates the html for google to crawl.
+ * Loads an ajax driven page and generates the html for google to crawl. Check out the [ajaxy tutorial] 
+ * for a more complete walkthrough.
  * 
  * This crawler indexes an entire Ajax site.  It
  * 
@@ -40,6 +41,18 @@ var queue = [],
  * You can change where the contents of the file are writen to by changing
  * the second parameter passed to <code>crawl</code>.
  * 
+ * By default uses EnvJS, but you can use PhantomJS for more advanced pages:
+
+@codestart
+steal('steal/html', function(){
+	steal.html.crawl("ajaxy/ajaxy.html", 
+	{
+		out: 'ajaxy/out',
+		browser: 'phantomjs'
+	})
+})
+@codeend
+ * 
  * @param {Object} url the starting page to crawl
  * @param {String|Object} opts the location to put the crawled content.
  */
@@ -47,12 +60,12 @@ steal.html.crawl = function(url, opts){
 	if(typeof opts == 'string'){
 		opts = {out: opts}
 	}
+	var browserType = opts.browser || 'envjs';
+	s.File(opts.out).mkdirs();
 	
-	steal.File(opts.out).mkdirs();
-	
-	steal.html.load(url, function(hash){
+	s.html.load(url, browserType, function(hash){
 		var docType = getDocType(url),
-			data = steal.html.crawl.getPageData(this),
+			data = s.html.crawl.getPageData(this),
 			total = docType+"\n"+data.html;
 		// print(" HTML: "+total)
 		// add this url to cache so it doesn't generate twice
@@ -64,8 +77,8 @@ steal.html.crawl = function(url, opts){
 		}
 		print("  > "+ opts.out+"/"+hash+".html")
 		// write out the page
-		steal.File(opts.out+"/"+hash+".html").save(data.html);
-		var next = steal.html.crawl.addLinks();
+		s.File(opts.out+"/"+hash+".html").save(data.html);
+		var next = s.html.crawl.addLinks();
 		
 
 		if(next){

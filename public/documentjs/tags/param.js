@@ -78,17 +78,15 @@ steal.then(function() {
 					n = nameParts[1]
 				}
 				// check if parens 
-
 				var nameParts = n.match(/([^\(\s]+)(\([^\)]+\))/) 
-
+				
 				if ( nameParts && this.params[nameParts[1]]) {
-					var order = this.params[nameParts[1]].order;
 					delete this.params[nameParts[1]];
 				}
 				var param = this.params[n] ? 
 					this.params[n] : 
 					this.params[n] = {
-							order: order === undefined ? ordered(this.params).length : order
+							order: ordered(this.params).length
 						};
 
 				
