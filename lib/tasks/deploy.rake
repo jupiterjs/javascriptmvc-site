@@ -134,7 +134,7 @@ namespace :deploy do
 	task :production => [:prepare] do
 		announce 'Deploying to production...'
 
-		#sh 'git push heroku master'
+		sh 'git push heroku master'
 		echo 'Done.'
 	end
 end
