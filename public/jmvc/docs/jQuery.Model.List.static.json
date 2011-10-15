@@ -1,0 +1,1 @@
+C({"name": "jQuery.Model.List.static", "type": "static", "parents": ["jQuery.Model.List"], "comment": "", "src": "../jquery/model/list/list.js", "children": ["jQuery.Model.List.static.update", "jQuery.Model.List.static.destroy"]})

@@ -3,7 +3,7 @@
 
 Here is the list of the example JavaScriptMVC applications. They cover specific JavaScriptMVC features and are ordered by complexity. If you need an introduction to the JavaScriptMVC framework it is best to read them in order.
 
-## [todo Todo] - [open application &#x21D7;](todo)
+## [todo Todo] - [open application &#x21D7;](todo/todo.html)
 
 In this guide, we're going to be installing and walking through the simplest [JavaScriptMVC](http://javascriptmvc.com/)
 application imaginable &mdash; a TODO list manager.
