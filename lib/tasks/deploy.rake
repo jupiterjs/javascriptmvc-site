@@ -67,11 +67,12 @@ namespace :deploy do
 	end
 
 	task :build do
-		announce 'Building docs...'
-
+		announce 'Building docs and compressing site...'
 		Dir.chdir('../javascriptmvc') do
 			sh './js jmvc/scripts/doc.js'
+			sh './js jmvc/site/scripts/build.js'
 		end
+		
 
 		echo 'Done.'
 	end
