@@ -1,4 +1,4 @@
-## 3.2 ()
+## 3.2 (10/15/11)
 
 ### JavaScriptMVC
 
@@ -49,12 +49,15 @@
   - pluginName works right
   - Controller's can bind on constructors or other functions.
   - plugin helper code happens in setup
+  - update rebinds event handlers
 
 #### Model
 
   - added beta $.Model.Store
   - Removed associations, added convert
   - removed wrap and wrapMany in favor of model and models.
+  - Model.List creates updated events instead of update events.
+  - Model uses static update and destroy for ajax events.
   
 ### FuncUnit
 
