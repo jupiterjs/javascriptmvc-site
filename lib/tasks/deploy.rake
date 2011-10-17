@@ -128,7 +128,8 @@ namespace :deploy do
 	task :staging => [:prepare] do
 		announce 'Deploying to staging...'
 
-		sh 'git push staging master'
+		#a hack while we migrate to github
+		sh 'git push staging master --force'
 		echo 'Done.'
 	end
 
