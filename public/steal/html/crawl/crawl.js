@@ -71,10 +71,6 @@ steal.html.crawl = function(url, opts){
 		// add this url to cache so it doesn't generate twice
 		hash = hash.substr(2);
 		found[hash] = true;
-		// if hash is empty, rename it to index
-		if( hash === "" ) {
-			hash = "index";
-		}
 		print("  > "+ opts.out+"/"+hash+".html")
 		// write out the page
 		s.File(opts.out+"/"+hash+".html").save(data.html);
