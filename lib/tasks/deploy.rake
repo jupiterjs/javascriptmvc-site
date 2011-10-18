@@ -86,6 +86,7 @@ namespace :deploy do
 		Dir.chdir('../javascriptmvc') do
 			sh './js jmvc/scripts/doc.js'
 			sh './js jmvc/site/scripts/build.js'
+      sh './js documentjs/jmvcdoc/scripts/build.js'
 		end
 		
 
