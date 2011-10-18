@@ -1,0 +1,258 @@
+<head><script type="text/javascript" src="http://localhost:5555?[]&amp;_=0.8381222041789442"></script>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////Users/alexisabril/Projects/javascriptmvc/documentjs/jmvcdoc/style.css" type="text/css"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/alexisabril/Projects/javascriptmvc/jmvc/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!jQuery.Range.static.current&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!jQuery.Range.static.current&amp;disqus_version=1318875915&amp;1318909410847" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1318875915/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1318875915/build/system/disqus.js?" charset="UTF-8"></script></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<div class="jmvcdoc_search"><input id="search" type="input"><span title="clear term" class="remove"></span></div>
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					JavaScriptMVC
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!examples" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Examples
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!contacts" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Contacts
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!contacts.dc" class="result choice page" style="padding-left: 20px">
+		    	Divide and Conquer
+			</a>
+			
+		
+			
+		    <a href="#!contacts.designing" class="result choice page open" style="padding-left: 20px">
+		    	Designing Modules
+			</a>
+			
+		
+			
+		    <a href="#!contacts.glue" class="result choice page" style="padding-left: 20px">
+		    	Gluing Modules Together
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content">
+<div class="top">
+	<div class="content">
+	    <h1>Designing Modules&nbsp;
+	    	<span class="page type"><span class="typeEnd">page</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+	</div>	
+</div>
+
+
+<p>Widgets should be dumb to whats going on around them. They should be self contained and provide an easy to use API for developers.  The first step in designing a widget is to define the input and outputs.</p>
+
+<h2>Defining Inputs and Outputs</h2>
+
+<p>Inputs are anything a widget consumes from the outside world.  This can include parameters passed (optional or required) or DOM events expected.  For example, a grid widget consumes parameters like page offset, initial sort, and column names.</p>
+
+<p>Outputs are anything a widget visibly produces for the outside world.  This can include DOM created, events triggered, callback functions executed, data changed, etc.  For example, a grid widget might produce "pageChanged" or "columnSorted" events.</p>
+
+<p>Let's examine the inputs and outputs of the <em>MXUI.Data.Grid</em> widget.</p>
+
+<p><img class="image_tag" src="file:////Users/alexisabril/Projects/javascriptmvc/tutorials/images/inputs_outputs.jpg"></p>
+
+<h2>Anatomy of the List Module</h2>
+
+<p>One of the reusable modules in the Contacts app is List. The List is a simple widget that takes a model, gets and lists data, and listens for updates to the items to update and/or destroy rows.</p>
+
+<pre><code class=" javascript">$(<span class="string">"#category .list_wrapper"</span>).mxui_data_list({
+    model : Contacts.Models.Category,
+    show : <span class="string">"//contacts/views/categoryList"</span>,
+    create: <span class="string">"//contacts/views/categoryCreate"</span>
+})
+</code></pre>
+
+<p>In this app, the category, location, and company sections are all filters for the contacts grid. Upon clicking one of these rows, the grid is filtered with the selection. These lists are all managed using <em>MXUI.Data.List</em>.  We'll walk through how this widget works to illustrate creating reusable, self contained modules.</p>
+
+<h3>Getting the List Data</h3>
+
+<p>When initialized, you pass the List a [jQuery.model model] class.  JavaScriptMVC models have a standard API to perform CRUD operations.  Every model implements a <a href="#!jQuery.Model.static.findAll">findAll</a> method, which we can leverage to fetch data.</p>
+
+<pre><code class=" javascript"><span class="keyword">this</span>.options.model.findAll(<span class="keyword">this</span>.options.params, <span class="keyword">this</span>.callback(<span class="string">'list'</span>))
+</code></pre>
+
+<p>If you look at the models in <em>contacts/models</em>, you'll notice findAll is missing. By default, models will request data using REST standards, as described in <a href="#!jquery.model.encapsulate">Service Encapsulation</a>. Every model has a findAll method, implemented in the based [jquery.model jQuery.Model] class.</p>
+
+<h3>Drawing the List</h3>
+
+<p>One of List's parameters is a 'list' template.  After the model has completed its <em>findAll</em>, we will take its results and draw the UI.</p>
+
+<pre><code class=" javascript"><span class="keyword">this</span>.element.html(<span class="keyword">this</span>.options.list,{
+    items : <span class="keyword">this</span>.options.sort ? items.sort(<span class="keyword">this</span>.options.sort) : items,
+    options: <span class="keyword">this</span>.options
+});
+</code></pre>
+
+<h3>Capturing Updates</h3>
+
+<p>In a live application, data changes.  The List should be aware of these changes and update its UI accordingly.  List listens for updates for its given model and refreshes UI with the latest data.</p>
+
+<pre><code class=" javascript"><span class="string">"{model} updated"</span> : <span class="function"><span class="keyword">function</span><span class="params">(model, ev, item)</span>{</span>
+    <span class="keyword">var</span> el = item.elements(<span class="keyword">this</span>.element).html(<span class="keyword">this</span>.options.show, item);
+    <span class="keyword">if</span>(<span class="keyword">this</span>.options.updated){
+        <span class="keyword">this</span>.options.updated(<span class="keyword">this</span>.element, el, item)
+    }
+},
+</code></pre>
+
+<p>In the <a href="#!contacts.glue">Gluing Modules Together</a> section, we will discuss using this type of observer architecture.</p>
+
+<h3>Responding to Clicks</h3>
+
+<p>As items are clicked in the list, a "selected" visual state is applied to the item.</p>
+
+<pre><code class=" javascript"><span class="string">".item {activateEvent}"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span>
+    <span class="keyword">if</span>(el.hasClass(<span class="string">"activated"</span>)){
+        <span class="keyword">this</span>._deactivate(el)
+    } <span class="keyword">else</span> {
+        <span class="keyword">var</span> old = <span class="keyword">this</span>.find(<span class="string">".activated"</span>);
+        <span class="keyword">this</span>._deactivate(old);
+        <span class="keyword">this</span>._activate(el);
+    }
+},
+_deactivate: <span class="function"><span class="keyword">function</span><span class="params">(el)</span>{</span>
+    el.removeClass(<span class="string">"activated"</span>);
+    el.trigger(<span class="string">"deactivate"</span>, el.model());
+},
+_activate: <span class="function"><span class="keyword">function</span><span class="params">(el)</span>{</span>
+    el.addClass(<span class="string">"activated"</span>);
+    el.trigger(<span class="string">"activate"</span>, el.model());
+}
+</code></pre>
+
+<p>In the above code, we  trigger an <em>activate</em> event.  This event is one of List's outputs that we listen to using <a href="#!jquery.controller.listening">event delegation</a>.  As opposed to applications listening for "click" events, we use activate to provide a level of abstraction.  This allows the widget to provide other ways to activate a row, such as keyboard navigation or clicking.  We could even expand this widget to use touch events for mobile devices, and applications wouldn't have to change.  For more information on this you can read the <a href="#!mvc.controller">Controller</a> documentation. </p>
+
+<p>The mission of this widget was simple: create a list of data that updates itself as the items change.  You and I have probably written this a dozen times in our applications.  This List widget provides a reusable API because it has generic and well defined inputs and outputs.</p>
+
+<p>Next up, we will discuss how to <a href="#!contacts.glue">glue</a> our isolated modules into a full application.</p></div>
+			<div id="disqus_thread">We were unable to load Disqus. If you are a moderator please see our <a href="http://docs.disqus.com/help/83/">documentation on identifier and urls</a>.</div>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'></script>"));
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script><script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263779778
+</script>
+<script type="text/javascript" src="../steal/steal.js?documentjs/jmvcdoc">
+</script>
+<script type="text/javascript">
+  window.disqus_identifier = window.location.hash;
+  window.disqus_url = window.location.toString();
+  steal('jquery/dom/route', 'http://jmvcs3.disqus.com/embed.js').then(function(){
+    $.route.delegate('who', 'change', function(ev, attr, how, newVal, oldVal) {
+	if (window.location.protocol !== "file:") { // avoid this for crawl script
+		DISQUS.reset({
+			reload: true,
+			config: function(){
+				this.page.identifier = window.location.hash;
+				this.page.url = window.location.toString();
+			}
+		});
+	}
+    })
+  });
+</script>
+<style type="text/css">
+  body > iframe { width: 0;} 
+  #dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
+</style>
+	
+
+</body>

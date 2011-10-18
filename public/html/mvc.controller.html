@@ -1,0 +1,473 @@
+<head><script type="text/javascript" src="http://localhost:5555?[]&amp;_=0.4232119135558605"></script>
+	<title>JavaScriptMVC</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/style.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+<link rel="stylesheet" href="file:////Users/alexisabril/Projects/javascriptmvc/documentjs/jmvcdoc/style.css" type="text/css"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/alexisabril/Projects/javascriptmvc/jmvc/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!jQuery.Range.static.current&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!jQuery.Range.static.current&amp;disqus_version=1318875915&amp;1318909410847" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1318875915/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1318875915/build/system/disqus.js?" charset="UTF-8"></script></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="topCorner">
+			<div class="right"></div>
+			<div class="left"></div>
+		</div>
+		<div class="content">
+			<div id="searchRoundCorners">
+				<div class="jmvcdoc_search"><input id="search" type="input"><span title="clear term" class="remove"></span></div>
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu">
+					<li class="ui-menu-item">
+						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../follow.html" title="Follow"><span class="menuSpan red">Follow</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+					</li>
+					<li class="ui-menu-item">
+						<a class="menuLink" href="../code.html" title="Code"><span class="menuSpan red">Code</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="logo-text"><a href="http://javascriptmvc.com"><img src="../documentjs/jmvcdoc/images/logo80x30.png" class="logo-image"></a></div>
+		</div>
+		<div class="bottomCorner">
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					JavaScriptMVC
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!tutorials" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Tutorials
+					
+				</a>
+				
+		</div>
+			
+		<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!mvc" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					Get Started with jQueryMX
+					
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!mvc.class" class="result choice page" style="padding-left: 20px">
+		    	Class
+			</a>
+			
+		
+			
+		    <a href="#!mvc.model" class="result choice page" style="padding-left: 20px">
+		    	Model
+			</a>
+			
+		
+			
+		    <a href="#!mvc.view" class="result choice page" style="padding-left: 20px">
+		    	View
+			</a>
+			
+		
+			
+		    <a href="#!mvc.controller" class="result choice page open" style="padding-left: 20px">
+		    	Controller
+			</a>
+			
+		
+	</div>
+</div>
+
+
+</div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content">
+<div class="top">
+	<div class="content">
+	    <h1>Controller&nbsp;
+	    	<span class="page type"><span class="typeEnd">page</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+	</div>	
+</div>
+
+
+<p>JavaScriptMVC's controllers are many things.  They are a jQuery plugin factory.  They can be used as a traditional view, making pagination widgets and grid controls.  Or, they can be used as a traditional controller, initializing and controllers and hooking them up to models.  Mostly, controller's are a really great way of organizing your application's code.</p>
+
+<p>Controllers provide a number of handy features such as:</p>
+
+<ul>
+<li>jQuery plugin creation</li>
+<li>automatic binding</li>
+<li>default options</li>
+<li>automatic determinism</li>
+</ul>
+
+<p>But controller's most important feature is not obvious to any but the most hard-core JS ninjas.  The following code creates a tooltip like widget that displays itself until the document is clicked.</p>
+
+<pre><code class=" javascript">$.fn.tooltip = <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+  <span class="keyword">var</span> el = <span class="keyword">this</span>[<span class="number">0</span>];
+
+  $(document).click(<span class="function"><span class="keyword">function</span><span class="params">(ev)</span>{</span>
+    <span class="keyword">if</span>(ev.target !== el){
+      $(el).remove()
+    }
+  })
+
+  $(el).show();
+  <span class="keyword">return</span> <span class="keyword">this</span>;
+})
+</code></pre>
+
+<p>To use it, you'd add the element to be displayed to the page, and then call tooltip on it like:</p>
+
+<pre><code class=" javascript">$(<span class="string">"&lt;div class='tooltip'&gt;Some Info&lt;/div&gt;"</span>)
+    .appendTo(document.body)
+    .tooltip()
+</code></pre>
+
+<p>But, this code has a problem.  Can you spot it?  Here's a hint. What if your application is long lived and lots of these tooltip elements are created?  </p>
+
+<p>The problem is this code leaks memory!  Every tooltip element, and any tooltip child elements, are kept in memory forever.  This is because the click handler is not removed from the document and has a closure reference to the element.  </p>
+
+<p>This is a frighteningly easy mistake to make.  jQuery removes all event handlers from elements that are removed from the page so developers often don't have to worry about unbinding event handlers.  But in this case, we bound to something outside the widget's element, the document, and did not unbind the event handler.</p>
+
+<p>But within a Model-View-Controller architecture, Controllers listen to the View and Views listen to the Model.  You are constantly listening to events outside the widget's element.  For example, the <code>nextPrev</code> widget from the <code>$.Model</code> section listens to updates in the paginate model:</p>
+
+<pre><code class=" javascript">paginate.bind(<span class="string">'updated.attr'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+  self.find(<span class="string">'.prev'</span>)[<span class="keyword">this</span>.canPrev() ? <span class="string">'addClass'</span> : <span class="string">'removeClass'</span>](<span class="string">'enabled'</span>)
+  self.find(<span class="string">'.next'</span>)[<span class="keyword">this</span>.canNext() ? <span class="string">'addClass'</span> : <span class="string">'removeClass'</span>](<span class="string">'enabled'</span>);
+})
+</code></pre>
+
+<p>But, it doesn't unbind from paginate!  Forgetting to remove event handlers is potentially a source of errors.  However, both the tooltip and nextPrev would not error.  Instead both will silently kill an application's performance.  Fortunately, $.Controller makes this <strong>easy</strong> and <strong>organized</strong>.  We can write tooltip like:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">'Tooltip'</span>,{
+  init: <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">this</span>.element.show()
+  },
+  <span class="string">"{document} click"</span>: <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span>
+    <span class="keyword">if</span>(ev.target !== <span class="keyword">this</span>.element[<span class="number">0</span>]){
+      <span class="keyword">this</span>.element.remove()
+    }
+  }
+})
+</code></pre>
+
+<p>When the document is clicked and the element is removed from the DOM, $.Controller will automatically unbind the document click handler.  </p>
+
+<p>$.Controller can do the same thing for the nextPrev widget binding to the the paginate model:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">'Nextprev'</span>,{
+  <span class="string">".next click"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">var</span> paginate = <span class="keyword">this</span>.options.paginate;
+    paginate.attr(<span class="string">'offset'</span>, paginate.offset+paginate.limit);
+  },
+  <span class="string">".prev click"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">var</span> paginate = <span class="keyword">this</span>.options.paginate;
+    paginate.attr(<span class="string">'offset'</span>, paginate.offset-paginate.limit );
+  },
+  <span class="string">"{paginate} updated.attr"</span> : <span class="function"><span class="keyword">function</span><span class="params">(ev, paginate)</span>{</span>
+    <span class="keyword">this</span>.find(<span class="string">'.prev'</span>)[paginate.canPrev() ? <span class="string">'addClass'</span> : <span class="string">'removeClass'</span>](<span class="string">'enabled'</span>)
+    <span class="keyword">this</span>.find(<span class="string">'.next'</span>)[paginate.canNext() ? <span class="string">'addClass'</span> : <span class="string">'removeClass'</span>](<span class="string">'enabled'</span>);
+  }
+})
+
+<span class="comment">// create a nextprev control</span>
+$(<span class="string">'#pagebuttons'</span>).nextprev({ paginate: <span class="keyword">new</span> Paginate() })
+</code></pre>
+
+<p>If the element <code>#pagebuttons</code> is removed from the page, the Nextprev controller instance will automatically unbind from the paginate model. </p>
+
+<p>Now that your appetite for error free code is properly whetted, the following details how $.Controller works.</p>
+
+<h3>Overview</h3>
+
+<p>$.Controller inherits from $.Class.  To create a Controller class, call <code>$.Controller( NAME, classProperties, instanceProperties )</code> with the name of your controller, static methods, and instance methods.  The following is the start of a reusable list widget:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">"List"</span>, {
+  defaults : {}
+},{
+  init : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>  },
+  <span class="string">"li click"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>  }
+})
+</code></pre>
+
+<p>When a controller class is created, it creates a jQuery helper method of a similar name.  The helper method is primarily use to create new instances of controller on elements in the page.  The helper method name is the controller's name underscored, with any periods replaced with underscores.  For example, the helper for <code>$.Controller('App.FooBar')</code> is <code>$(el).app<em>foo</em>bar()</code>.</p>
+
+<h3>Controller Instantiation</h3>
+
+<p>To create a controller instance, you can call <code>new Controller(element, options)</code> with a HTMLElment or jQuery-wrapped element and an optional options object to configure the controller.  For example:</p>
+
+<pre><code class=" javascript"><span class="keyword">new</span> List($(<span class="string">'ul#tasks'</span>), {model : Task});
+</code></pre>
+
+<p>You can also use the jQuery helper method to create a List controller instance on the <code>#tasks</code> element like:</p>
+
+<pre><code class=" javascript">$(<span class="string">'ul#tasks'</span>).list({model : Task})
+</code></pre>
+
+<p>When a controller is created, it calls the controller's prototype init method with:</p>
+
+<ul>
+<li><code>this.element</code> set to the jQuery-wrapped HTML element </li>
+<li><code>this.options</code> set to the options passed to the controller merged with the class's <code>defaults</code> object. </li>
+</ul>
+
+<p>The following updates the List controller to request tasks from the model and render them with an optional template passed to the list:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">"List"</span>, {
+  defaults : {
+    template: <span class="string">"items.ejs"</span>
+  }
+},{
+  init : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">this</span>.element.html( <span class="keyword">this</span>.options.template, <span class="keyword">this</span>.options.model.findAll() ); 
+  },
+  <span class="string">"li click"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>  }
+})
+</code></pre>
+
+<p>We can now configure Lists to render tasks with a template we provide.  How flexible!</p>
+
+<pre><code class=" javascript">$(<span class="string">'#tasks'</span>).list({model: Task, template: <span class="string">"tasks.ejs"</span>});
+$(<span class="string">'#users'</span>).list({model: User, template: <span class="string">"users.ejs"</span>})
+</code></pre>
+
+<p>If we don't provide a template, List will default to using items.ejs.</p>
+
+<h3>Event Binding</h3>
+
+<p>As mentioned in $.Controller's introduction, it's most powerful feature is it's ability to bind and unbind event handlers.  </p>
+
+<p>When a controller is created, it looks for action methods.  Action methods are methods that look like event handlers.  For example, <code>"li click"</code>.  These actions are bound using <code>jQuery.bind</code> or <code>jQuery.delegate</code>.  When the controller is destroyed, by removing the controller's element from the page or calling destroy on the controller, these events are unbound, preventing memory leaks.</p>
+
+<p>The following are examples of actions with descriptions of what the listen for:</p>
+
+<ul>
+<li><code>"li click"</code> - clicks on or within <code>li</code> elements within the controller element.</li>
+<li><code>"mousemove"</code> - mousemoves within the controller element.</li>
+<li><code>"{window} click"</code> - clicks on or within the window.</li>
+</ul>
+
+<p>Action functions get called back with the jQuery-wrapped element or object that the event happened on and the event.  For example:</p>
+
+<pre><code class=" javascript"><span class="string">"li click"</span>: <span class="function"><span class="keyword">function</span><span class="params">( el, ev )</span> {</span>
+  assertEqual(el[<span class="number">0</span>].nodeName, <span class="string">"li"</span> )
+  assertEqual(ev.type, <span class="string">"click"</span>)
+}
+</code></pre>
+
+<h3>Templated Actions</h3>
+
+<p>$.Controller supports templated actions.  Templated actions can be used to bind to other objects, customize the event type, or customize the selector.</p>
+
+<p>Controller replaces the parts of your actions that look like <code>{OPTION}</code> with a value in the controller's options or the window. </p>
+
+<p>The following is a skeleton of a menu that lets you customize the menu to show sub-menus on different events:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">"Menu"</span>,{
+  <span class="string">"li {openEvent}"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="comment">// show subchildren</span>
+  }
+});
+
+<span class="comment">//create a menu that shows children on click</span>
+$(<span class="string">"#clickMenu"</span>).menu({openEvent: <span class="string">'click'</span>});
+
+<span class="comment">//create a menu that shows children on mouseenter</span>
+$(<span class="string">"#hoverMenu"</span>).menu({openEvent: <span class="string">'mouseenter'</span>});
+</code></pre>
+
+<p>We could enhance the menu further to allow customization of the menu element tag:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">"Menu"</span>,{
+  defaults : {menuTag : <span class="string">"li"</span>}
+},{
+  <span class="string">"{menuTag} {openEvent}"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="comment">// show subchildren</span>
+  }
+});
+
+$(<span class="string">"#divMenu"</span>).menu({menuTag : <span class="string">"div"</span>})
+</code></pre>
+
+<p>Templated actions let you bind to elements or objects outside the controller's element.  For example, the Task model from the $.Model section produces a "created" event when a new Task is created.  We can make our list widget listen to tasks being created and automatically add these tasks to the list like:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">"List"</span>, {
+  defaults : {
+    template: <span class="string">"items.ejs"</span>
+  }
+},{
+  init : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">this</span>.element.html( <span class="keyword">this</span>.options.template, <span class="keyword">this</span>.options.model.findAll() ); 
+  },
+  <span class="string">"{Task} created"</span> : <span class="function"><span class="keyword">function</span><span class="params">(Task, ev, newTask)</span>{</span>
+    <span class="keyword">this</span>.element.append(<span class="keyword">this</span>.options.template, [newTask])
+  }
+})
+</code></pre>
+
+<p>The <code>"{Task} create"</code> gets called with the Task model, the created event, and the newly created Task. The function uses the template to render a list of tasks (in this case there is only one) and add the resulting html to the element.</p>
+
+<p>But, it's much better to make List work with any model.  Instead of hard coding tasks, we'll make controller take a model as an option:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">"List"</span>, {
+  defaults : {
+    template: <span class="string">"items.ejs"</span>,
+    model: <span class="literal">null</span>
+  }
+},{
+  init : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">this</span>.element.html( <span class="keyword">this</span>.options.template, <span class="keyword">this</span>.options.model.findAll() ); 
+  },
+  <span class="string">"{model} created"</span> : <span class="function"><span class="keyword">function</span><span class="params">(Model, ev, newItem)</span>{</span>
+    <span class="keyword">this</span>.element.append(<span class="keyword">this</span>.options.template, [newItem])
+  }
+});
+
+<span class="comment">// create a list of tasks</span>
+$(<span class="string">'#tasks'</span>).list({model: Task, template: <span class="string">"tasks.ejs"</span>});
+</code></pre>
+
+<h2>Putting it all together - an abstract CRUD list.</h2>
+
+<p>Now we will enhance the list to not only add items when they are created, but update them and remove them when they are destroyed.  To do this, we start by listening to updated and destroyed:</p>
+
+<pre><code class=" javascript"><span class="string">"{model} updated"</span> : <span class="function"><span class="keyword">function</span><span class="params">(Model, ev, updatedItem)</span>{</span>
+  <span class="comment">// find and update the LI for updatedItem</span>
+},
+<span class="string">"{model} destroyed"</span> : <span class="function"><span class="keyword">function</span><span class="params">(Model, ev, destroyedItem)</span>{</span>
+  <span class="comment">// find and remove the LI for destroyedItem</span>
+}
+</code></pre>
+
+<p>You'll notice here we have a problem.  Somehow, we need to find the element that represents particular model instance.  To do this, we need to label the element as belonging to the model instance.  Fortunately, $.Model and $.View make labeling an element with an instance and finding that element very easy.  </p>
+
+<p>To label the element with a model instance within an EJS view, you simply write the model instance to the element.  The following might be <code>tasks.ejs</code></p>
+
+<pre><code class=" javascript">&lt;% <span class="keyword">for</span>(<span class="keyword">var</span> i =<span class="number">0</span> ; i &lt; <span class="keyword">this</span>.length; i++){ %&gt;
+  &lt;% <span class="keyword">var</span> task = <span class="keyword">this</span>[i]; %&gt;
+  &lt;li &lt;%= task %&gt; &gt; &lt;%= task.name %&gt; &lt;/li&gt;
+&lt;% } %&gt;
+</code></pre>
+
+<p><code>tasks.ejs</code> iterates through a list of tasks.  For each task, it creates an <code>li</code> element with the task's name.  But, it also adds the task to the element's jQuery data with: <code>&lt;li &lt;%= task %&gt; &gt;</code>.</p>
+
+<p>To later get that element given a model instance, you can call <code>modelInstance.elements([CONTEXT])</code>.  This returns the jQuery-wrapped elements the represent the model instance.  </p>
+
+<p>Putting it together, list becomes:</p>
+
+<pre><code class=" javascript">$.Controller(<span class="string">"List"</span>, {
+  defaults : {
+    template: <span class="string">"items.ejs"</span>,
+    model: <span class="literal">null</span>
+  }
+},{
+  init : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">this</span>.element.html( <span class="keyword">this</span>.options.template, <span class="keyword">this</span>.options.model.findAll() ); 
+  },
+  <span class="string">"{model} created"</span> : <span class="function"><span class="keyword">function</span><span class="params">(Model, ev, newItem)</span>{</span>
+    <span class="keyword">this</span>.element.append(<span class="keyword">this</span>.options.template, [newItem])
+  },
+  <span class="string">"{model} updated"</span> : <span class="function"><span class="keyword">function</span><span class="params">(Model, ev, updatedItem)</span>{</span>
+    updatedItem.elements(<span class="keyword">this</span>.element)
+      .replaceWith(<span class="keyword">this</span>.options.template, [updatedItem])
+  },
+  <span class="string">"{model} destroyed"</span> : <span class="function"><span class="keyword">function</span><span class="params">(Model, ev, destroyedItem)</span>{</span>
+    destroyedItem.elements(<span class="keyword">this</span>.element)
+      .remove()
+  }
+});
+
+<span class="comment">// create a list of tasks</span>
+$(<span class="string">'#tasks'</span>).list({model: Task, template: <span class="string">"tasks.ejs"</span>});
+</code></pre>
+
+<p>It's almost frighteningly easy to create abstract, reusable, memory safe widgets with JavaScriptMVC.</p>
+
+<p>Boo!</p></div>
+			<div id="disqus_thread">We were unable to load Disqus. If you are a moderator please see our <a href="http://docs.disqus.com/help/83/">documentation on identifier and urls</a>.</div>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://jupiterit.com">� Jupiter IT - JavaScriptMVC Training and Support</a>
+	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'></script>"));
+	GOOGLE_ANALYTICS_TRACKER_ID = "UA-xxxxxxxx-x";
+</script><script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 263779778
+</script>
+<script type="text/javascript" src="../steal/steal.js?documentjs/jmvcdoc">
+</script>
+<script type="text/javascript">
+  window.disqus_identifier = window.location.hash;
+  window.disqus_url = window.location.toString();
+  steal('jquery/dom/route', 'http://jmvcs3.disqus.com/embed.js').then(function(){
+    $.route.delegate('who', 'change', function(ev, attr, how, newVal, oldVal) {
+	if (window.location.protocol !== "file:") { // avoid this for crawl script
+		DISQUS.reset({
+			reload: true,
+			config: function(){
+				this.page.identifier = window.location.hash;
+				this.page.url = window.location.toString();
+			}
+		});
+	}
+    })
+  });
+</script>
+<style type="text/css">
+  body > iframe { width: 0;} 
+  #dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
+</style>
+	
+
+</body>
