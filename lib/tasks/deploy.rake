@@ -9,7 +9,7 @@
 # => rake deploy:production //deploys to heroku remote
 
 # Optional commands(by default these do not run)
-# => rake deploy:staging["crawl","examples"] //runs crawl and getjs for example applications. Array can be any combination of "crawl" and "examples".
+# => rake deploy:staging["crawl","examples","jquerymx"] //runs crawl and getjs for example applications. Array can be any combination of "crawl" and "examples".
 
 
 require 'find'
@@ -37,6 +37,17 @@ namespace :option do
 
 		echo 'Done.'
 	end
+
+  task :jquerymx do
+    announce 'Building jquerymx...'
+
+    Dir.chdir('public') do
+      sh './js jquery/build.js'
+      sh './js jquery/buildAll.js'
+    end
+
+    echo 'Done.'
+  end
 end
 
 namespace :deploy do
