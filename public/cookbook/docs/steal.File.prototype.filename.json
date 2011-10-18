@@ -1,0 +1,1 @@
+C({"name": "steal.File.prototype.filename", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["steal.File.prototype"], "comment": "<p>Returns everything after the last /</p>", "src": "steal/steal.js", "children": []})

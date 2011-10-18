@@ -1,3 +1,2 @@
 // steal model files
-
-steal("jquery/model")
+steal("jquery/model", './recipe.js')

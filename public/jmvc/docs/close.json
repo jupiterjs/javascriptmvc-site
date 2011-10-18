@@ -1,1 +1,0 @@
-C({"name": "close", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Kills the server.</p>", "src": "../steal/browser/utils/rhinoServer.js", "children": []})

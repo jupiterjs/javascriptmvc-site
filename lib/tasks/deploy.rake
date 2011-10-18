@@ -60,7 +60,11 @@ namespace :deploy do
 		Dir.chdir('../javascriptmvc') do
 			sh 'git checkout jmvc/docs.html'
 			sh 'git pull origin master'
-			sh 'git submodule update --recursive'
+      sh 'cd steal && git pull origin master'
+      sh 'cd funcunit && git pull origin master'
+      sh 'cd funcunit/syn && git pull origin master'
+      sh 'cd documentjs && git pull origin master'
+      sh 'cd jquery && git pull origin master'
 		end
 
 		echo 'Done.'

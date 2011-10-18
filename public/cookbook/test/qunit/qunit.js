@@ -1,2 +1,1 @@
-steal("funcunit/qunit", "cookbook")
-  .then("./cookbook_test.js");
+steal("funcunit/qunit", "./cookbook_test.js", './recipe_test.js');

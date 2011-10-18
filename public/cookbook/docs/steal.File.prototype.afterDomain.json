@@ -1,0 +1,1 @@
+C({"name": "steal.File.prototype.afterDomain", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["steal.File.prototype"], "comment": "<p>Returns the part of the path that is after the domain part</p>", "src": "steal/steal.js", "children": []})
