@@ -1,96 +1,46 @@
-# This is a temporary build script and makes the following assumptions:
-# - The javascriptmvc directory is one directory up. For example, from this root directory: cd ../javascriptmvc
-# - Two git remotes are assumed to exist:
-# => heroku: git@heroku.com:javascriptmvc.git
-# => staging: git@heroku.com:growing-mountain-3217.git //or any heroku instance you choose
-
-# You can run from this app's root directory with:
-# => rake deploy:staging //deploys to staging remote
-# => rake deploy:production //deploys to heroku remote
-
-# Optional commands(by default these do not run)
-# => rake deploy:staging["crawl","examples","jquerymx"] //runs crawl and getjs for example applications. Array can be any combination of "crawl" and "examples".
-
-
 require 'find'
 
-namespace :option do
-	task :crawl do
-		announce 'Running crawl script...'
+def announce(message)
+	puts
+	puts '========================================================================'
+	puts message
+	puts '========================================================================'
+	puts
+end
 
-		Dir.chdir('../javascriptmvc') do
-			sh './js jmvc/scripts/crawl.js'
-		end
-
-		echo 'Done.'
-	end
-
-	task :examples do
-		announce 'Updating example applications...'
-
-		Dir.chdir('public') do
-			sh './js steal/getjs player'
-			sh './js steal/getjs srchr'
-			sh './js steal/getjs todo'
-			sh './js steal/getjs contacts'
-		end
-
-		echo 'Done.'
-	end
-
-  task :jquerymx do
-    announce 'Building jquerymx...'
-
-    Dir.chdir('public') do
-      sh './js jquery/build.js'
-      sh './js jquery/buildAll.js'
-    end
-
-    echo 'Done.'
-  end
+def echo(message)
+	puts
+	puts message
+	puts
 end
 
 namespace :deploy do
-	def announce(message)
-		puts
-		puts '========================================='
-		puts message
-		puts '========================================='
-		puts
-	end
-
-	def echo(message)
-		puts
-		puts message
-		puts
-	end
-
 	task :update do
-		announce 'Updating source from git...'
+		announce 'Pulling latest JavaScriptMVC-Site...'
 
-		Dir.chdir('../javascriptmvc') do
-			sh 'git checkout jmvc/docs.html'
-			sh 'git pull origin master'
-      sh 'cd steal && git pull origin master'
-      sh 'cd funcunit && git pull origin master'
-      sh 'cd funcunit/syn && git pull origin master'
-      sh 'cd documentjs && git pull origin master'
-      sh 'cd jquery && git pull origin master'
-		end
-
-		echo 'Done.'
+		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git'
+		sh 'git submodule update --init --recursive'
+		sh 'git submodule foreach git pull'
 	end
 
 	task :build do
 		announce 'Building docs and compressing site...'
-		Dir.chdir('../javascriptmvc') do
+
+		Dir.chdir('javascriptmvc') do
 			sh './js jmvc/scripts/doc.js'
 			sh './js jmvc/site/scripts/build.js'
       sh './js documentjs/jmvcdoc/scripts/build.js'
 		end
-		
+	end
 
-		echo 'Done.'
+	task :commit_jmvc do
+		announce 'Committing JavaScriptMVC changes...'
+
+		Dir.chdir('javascriptmvc') do
+			sh 'git add .'
+			sh 'git commit -m "Updating JavaScriptMVC with latest build. - Automated message from JavaScriptMVC-Site."'
+			sh 'git push git@github.com:jupiterjs/javascriptmvc.git'
+		end
 	end
 
 	task :copy do
@@ -99,11 +49,12 @@ namespace :deploy do
 		ignored_extensions = []
 		ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
 
-		Find.find('../javascriptmvc') do |file|
+		Find.find('javascriptmvc') do |file|
 			basename = File.basename file
 			dirname = File.dirname file
 			extname = File.extname file
 
+			#TODO: Simplify the below logic.
 			if (File.directory?(file) && (/\.git/ =~ file).nil? || (/\.git/ =~ dirname).nil?) &&
 				(!ignored_extensions.include?(extname) && !ignored_files.include?(basename))
 					new_path = 'public/' + dirname.gsub(/\.\.\/javascriptmvc/, '').gsub(/^\//, '') + '/' + basename
@@ -116,26 +67,20 @@ namespace :deploy do
 					end
 			end
 		end
-
-		echo 'Done.'
 	end
 
-	task :commit do
-		announce 'Committing changes...'
+	task :commit_site do
+		announce 'Committing site changes...'
 		sh 'git add .'
-		sh 'git commit -am "Updating from source."'
-
-		echo 'Done.'
+		sh 'git commit -m "Updating from source."'
 
 		announce 'Cleaning up git...'
 		sh 'git fsck'
 		sh 'git gc'
 		sh 'git repack'
-
-		echo 'Done.'
 	end
 
-	task :prepare => [:update, :build, :copy, :commit] do
+	task :prepare => [:update, :build, :commit_jmvc, :copy, :commit] do
 		puts
 		puts 'Preparing to deploy...'
 		puts
@@ -144,15 +89,12 @@ namespace :deploy do
 	task :staging => [:prepare] do
 		announce 'Deploying to staging...'
 
-		#a hack while we migrate to github
-		sh 'git push staging master --force'
-		echo 'Done.'
+		sh 'git push git@heroku.com:staging-javascriptmvc.git'
 	end
 
 	task :production => [:prepare] do
 		announce 'Deploying to production...'
 
-		sh 'git push origin master --force'
-		echo 'Done.'
+		sh 'git push git@heroku.com:javascriptmvc.git'
 	end
 end
