@@ -20,7 +20,12 @@ namespace :deploy do
 
 		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git'
 		sh 'git submodule update --init --recursive'
-		sh 'git submodule foreach git pull'
+		sh 'git submodule foreach git pull origin master'
+
+		Dir.chdir('javascriptmvc') do
+			sh 'git submodule update --init --recursive'
+			sh 'git submodule foreach git pull origin master'
+		end
 	end
 
 	task :build do
@@ -39,7 +44,7 @@ namespace :deploy do
 		Dir.chdir('javascriptmvc') do
 			sh 'git add .'
 			sh 'git commit -m "Updating JavaScriptMVC with latest build. - Automated message from JavaScriptMVC-Site."'
-			sh 'git push git@github.com:jupiterjs/javascriptmvc.git'
+			sh 'git push origin master'
 		end
 	end
 
