@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+	<head>
+		<title>runner</title>
+        <style type='text/css'>
+            body {font-family: verdana}
+            .error {border: solid 1px red;}
+            .error_text { color: red; font-size: 10px;}
+            td {padding: 3px;}
+			iframe {
+				width: 900px;
+				height: 300px;
+			}
+			textarea {
+				width: 900px;
+			}
+			.selection-cursor {
+				border-left: 2px solid red;
+			}
+			.selection-highlight{
+				background-color:green;
+				opacity:0.2;
+			}
+        </style>
+	</head>
+	<body>
+		<div>
+		<iframe id='runHere'></iframe>
+		</div>
+		<textarea id='code' rows='12'></textarea>
+		<a href='javascript://' id='run'>go</a>
+		<script type='text/javascript' 
+                src='../../steal/steal.js'>   
+        </script>
+		<script type='text/javascript'>
+steal.plugins('funcit/runner', 'funcit/lastselection').then(function(){
+	$(document).ready(function(){
+		$("#code").lastselection();
+		$("#run").click(function(){
+			var to, 
+				first = true, 
+				lineCounter = {}, 
+				count;
+			$("#runHere").funcit_runner($("#code").val(), function(i, stmnt){
+				if(to){
+					clearTimeout(to);
+					to = null;
+				}
+				to = setTimeout(function(){
+					// skip the first statement, because it will always be the last synchronous statement
+					if (first) {
+						first = false;
+						return;
+					}
+					
+					if(lineCounter[i]){
+						count = lineCounter[i.toString()];
+					}
+					else {
+						count = 0;
+					}
+					lineCounter[i.toString()] = count+1;
+					
+					// places cursor at the end of the given statement
+					var chains = (new Funcit.Parse(stmnt)).statement().chains(),
+						$st = chains.eq(count),
+						start = {line: $st[0].line, from: $st[0].thru}
+						end = {line: $st[0].line, from: $st[0].thru+$st[0].second.length};
+						
+					steal.dev.log($st[0], end, count, i)
+					$("#code").lastselection('highlight', start, end);
+					steal.dev.log('running', i, stmnt );
+				}, 0)
+			});
+			
+		})
+	})
+	
+})
+		</script>
+	</body>
+</html>

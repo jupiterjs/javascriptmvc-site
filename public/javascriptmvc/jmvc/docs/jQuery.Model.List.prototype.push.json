@@ -1,0 +1,1 @@
+C({"name": "jQuery.Model.List.prototype.push", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Adds a instance or instances to the list</p>\n\n<pre><code>list.push(new Recipe({id: 5, name: \"Water\"}))\n</code></pre>", "src": "../jquery/model/list/list.js", "children": []})

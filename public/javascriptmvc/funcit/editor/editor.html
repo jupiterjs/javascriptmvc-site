@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+            "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+	<head>
+		<title>editor</title>
+        <style type='text/css'>
+            body {font-family: verdana}
+            .error {border: solid 1px red;}
+            .error_text { color: red; font-size: 10px;}
+            td {padding: 3px;}
+			textarea {
+				width: 99%;
+				margin: 0px;
+				background: transparent;
+				line-height: 16px;
+			}
+			#editor {
+				margin: 0px;
+				padding: 0px;
+				border: 0px;
+			}
+			.selection-cursor{
+				border-left: solid 2px red;
+			} 
+        </style>
+	</head>
+	<body>
+		<div id='wrapper'></div>
+	    <textarea id='editor'></textarea>
+		<script type='text/javascript' 
+                src='../../steal/steal.js'>   
+        </script>
+		<script type='text/javascript'>
+steal.plugins('funcit/editor','jquery/view/ejs').then(function(){
+	$(document).ready(function(){
+		var editor = $('#editor').funcit_editor();
+		editor.funcit_editor('val',"//funcit/views/init.ejs",{
+			module : "General",
+			test : "change me!"
+		})
+	})
+})
+		</script>
+	</body>
+</html>

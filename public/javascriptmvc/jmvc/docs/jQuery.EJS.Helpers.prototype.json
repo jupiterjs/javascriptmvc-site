@@ -1,0 +1,1 @@
+C({"name": "jQuery.EJS.Helpers.prototype", "type": "prototype", "parents": ["jQuery.EJS.Helpers"], "comment": "", "src": "../jquery/view/ejs/ejs.js", "children": ["jQuery.EJS.Helpers.prototype.plugin", "jQuery.EJS.Helpers.prototype.view"]})

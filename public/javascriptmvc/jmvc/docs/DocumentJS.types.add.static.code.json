@@ -1,0 +1,1 @@
+C({"name": "DocumentJS.types.add.static.code", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["DocumentJS.types.add.static"], "comment": "<p>Code parser.</p>", "src": "../documentjs/types/add.js", "children": []})

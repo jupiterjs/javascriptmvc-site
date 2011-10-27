@@ -1,0 +1,1 @@
+C({"name": "jQuery.Class.prototype", "type": "prototype", "parents": ["jQuery.Class"], "comment": "", "src": "../jquery/class/class.js", "children": ["jQuery.Class.prototype.setup", "jQuery.Class.prototype.init", "jQuery.Class.prototype.constructor", "jQuery.Class.prototype.proxy"]})
