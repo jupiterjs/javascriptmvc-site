@@ -78,6 +78,7 @@ namespace :deploy do
 		announce 'Committing site changes...'
 		sh 'git add .'
 		sh 'git commit -m "Updating from source."'
+		sh 'git push git@github.com:jupiterjs/javascriptmvc-site.git master'
 
 		announce 'Cleaning up git...'
 		sh 'git fsck'
