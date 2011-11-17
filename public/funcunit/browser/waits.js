@@ -143,13 +143,15 @@ $.extend(FuncUnit.prototype, {
 	 * //waits until #foo exists before clicking it.
 	 * S("#foo").exists().click()
 	 * @codeend
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
 	 * @param {Function} [callback] a callback that is run after the selector exists, but before the next action.
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return {FuncUnit} returns the funcUnit for chaining. 
 	 */
-	exists: function( callback ) {
+	exists: function( timeout, callback, message ) {
 		return this.size(function(size){
 			return size > 0;
-		}, callback);
+		}, timeout, callback, message);
 	},
 	/**
 	 * Waits until no elements are matched by the selector.  Missing is equivalent to calling
@@ -158,11 +160,13 @@ $.extend(FuncUnit.prototype, {
 	 * //waits until #foo leaves before continuing to the next action.
 	 * S("#foo").missing()
 	 * @codeend
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
 	 * @param {Function} [callback] a callback that is run after the selector exists, but before the next action
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return {FuncUnit} returns the funcUnit for chaining. 
 	 */
-	missing: function( callback ) {
-		return this.size(0, callback)
+	missing: function( timeout, callback, message ) {
+		return this.size(0, timeout, callback, message)
 	},
 	/**
 	 * Waits until the funcUnit selector is visible.  
@@ -170,20 +174,22 @@ $.extend(FuncUnit.prototype, {
 	 * //waits until #foo is visible.
 	 * S("#foo").visible()
 	 * @codeend
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
 	 * @param {Function} [callback] a callback that runs after the funcUnit is visible, but before the next action.
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return [funcUnit] returns the funcUnit for chaining.
 	 */
-	visible: function( callback ) {
+	visible: function( timeout, callback, message ) {
 		var self = this,
 			sel = this.selector,
 			ret;
 		this.selector += ":visible"
 		return this.size(function(size){
 			return size > 0;
-		}, function(){
+		}, timeout, function(){
 			self.selector = sel;
 			callback && callback.apply(this, arguments);
-		})
+		}, message)
 		
 	},
 	/**
@@ -192,23 +198,25 @@ $.extend(FuncUnit.prototype, {
 	 * //waits until #foo is invisible.
 	 * S("#foo").invisible()
 	 * @codeend
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
 	 * @param {Function} [callback] a callback that runs after the selector is invisible, but before the next action.
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return [funcUnit] returns the funcUnit selector for chaining.
 	 */
-	invisible: function( callback ) {
+	invisible: function( timeout, callback ) {
 		var self = this,
 			sel = this.selector,
 			ret;
 		this.selector += ":visible"
-		return this.size(0, function(){
+		return this.size(0, timeout, function(){
 			self.selector = sel;
 			callback && callback.apply(this, arguments);
-		})
+		}, message)
 	},
 	/**
 	 * Waits a timeout before calling the next action.  This is the same as
 	 * [FuncUnit.prototype.wait].
-	 * @param {Number} [timeout]
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
 	 * @param {Object} callback
 	 */
 	wait: function( timeout, callback ) {
@@ -228,5 +236,12 @@ $.extend(FuncUnit.prototype, {
 		return this;
 	}
 })
+
+// using a single entry point to normalize processing the arguments
+var makeWait = function(fname){
+	FuncUnit.prototype[fname] = function(timeout, callback, message){
+		
+	}
+}
 
 })(window.jQuery || window.FuncUnit.jQuery)

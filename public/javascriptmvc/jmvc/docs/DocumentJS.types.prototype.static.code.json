@@ -1,1 +1,0 @@
-C({"name": "DocumentJS.types.prototype.static.code", "params": {}, "ret": {"description": "<p>prototype data.</p>", "type": "Object"}, "type": "function", "parents": ["DocumentJS.types.prototype.static"], "comment": "", "src": "documentjs/types/prototype.js", "line": 33, "children": []})

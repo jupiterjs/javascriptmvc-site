@@ -80,13 +80,14 @@ $.Controller.extend('Mxui.Util.Selectable',{
 				return null;
 			} else if(cur.is(selectOn)){
 				return cur;
-			} else {
+			} else if(cur && cur.length){
 				return closestUntil(cur.parent());
 			}
 		}
 		
 		if(this.options.enableDeselection && !closestUntil($(event.target))){
 			this.find(this.options.selectOn).removeClass('selected activated');
+			this.lastSelected = null;
 			
 			if ( this.options.deSelectionCallback){
 				var matchedItems  = this.find(this.options.selectOn);

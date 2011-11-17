@@ -62,8 +62,11 @@ namespace :deploy do
 			#TODO: Simplify the below logic.
 			if (File.directory?(file) && (/\.git/ =~ file).nil? || (/\.git/ =~ dirname).nil?) &&
 				(!ignored_extensions.include?(extname) && !ignored_files.include?(basename))
-					new_path = 'public/' + dirname.gsub(/\.\.\/javascriptmvc/, '').gsub(/^\//, '') + '/' + basename
+					#puts dirname
+					new_path = 'public/' + dirname.gsub(/javascriptmvc(\/)?/, '') + '/' + basename
+					new_path = new_path.gsub(/\/\//, '/')
 
+					puts new_path
 					if File.directory? file
 						FileUtils.rm_rf new_path
 						FileUtils.mkdir new_path

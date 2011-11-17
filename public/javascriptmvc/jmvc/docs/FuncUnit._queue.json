@@ -1,1 +1,0 @@
-C({"name": "FuncUnit._queue", "type": "attribute", "parents": ["FuncUnit"], "comment": "<p>A queue of methods.  Each method in the queue are run in order.  After the method is complete, it \ncalls FuncUnit._done, which pops the next method off the queue and runs it.</p>", "src": "funcunit/browser/queue.js", "line": 17, "children": []})
