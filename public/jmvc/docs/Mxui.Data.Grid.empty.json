@@ -1,0 +1,1 @@
+c({"name": "Mxui.Data.Grid.empty", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Data.Grid"], "comment": "<p>Remove all children from the table</p>", "src": "mxui/data/grid/grid.js", "line": 200, "children": []})

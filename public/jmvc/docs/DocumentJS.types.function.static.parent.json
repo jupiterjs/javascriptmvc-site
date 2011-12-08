@@ -1,1 +1,1 @@
-C({"name": "DocumentJS.types.function.static.parent", "type": "attribute", "parents": ["DocumentJS.types.function.static"], "comment": "<p>Possible scopes for @function.</p>", "src": "documentjs/types/function.js", "line": 83, "children": []})
+c({"name": "DocumentJS.types.function.static.parent", "type": "attribute", "parents": ["DocumentJS.types.function.static"], "comment": "<p>Possible scopes for @function.</p>", "src": "documentjs/types/function.js", "line": 83, "children": []})

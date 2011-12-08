@@ -1,0 +1,1 @@
+c({"name": "Mxui.Data.Tree.prototype", "type": "prototype", "parents": ["Mxui.Data.Tree"], "comment": "", "src": "mxui/data/tree/tree.js", "line": 45, "children": ["Mxui.Data.Tree.prototype.elFor", "Mxui.Data.Tree.prototype.toggleFor", "Mxui.Data.Tree.prototype.iconFor", "Mxui.Data.Tree.prototype.containerFor"]})

@@ -1,0 +1,1 @@
+c({"name": "Mxui.Data.Order", "type": "class", "comment": "<p>Adds sort ordering to widgets</p>", "src": "mxui/data/order/order.js", "line": 6, "children": ["Mxui.Data.Order.static", "Mxui.Data.Order.prototype"]})

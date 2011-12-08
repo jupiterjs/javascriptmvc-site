@@ -1,0 +1,1 @@
+c({"name": "Mxui.Nav.Menu.types", "type": "attribute", "parents": ["Mxui.Nav.Menu"], "comment": "<p>A list of other types we want to mixin to each menu</p>", "src": "mxui/nav/menu/menu.js", "line": 23, "children": []})

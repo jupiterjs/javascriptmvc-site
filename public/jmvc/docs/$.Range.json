@@ -1,1 +1,1 @@
-C({"name": "$.Range", "children": ["jQuery.fn.range"]})
+c({"name": "$.Range", "children": ["jQuery.fn.range"]})

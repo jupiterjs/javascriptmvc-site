@@ -1,7 +1,7 @@
 (function(){
 	
 	//if there is an old FuncUnit, use that for settings
-	var oldFunc = window.FuncUnit;
+	var oldFuncUnit = window.FuncUnit;
 
 /**
 @class FuncUnit
@@ -172,7 +172,7 @@ Results are reported on the commandline.  Failed tests can be made to fail your 
 or integrated with CI tools like [funcunit.jenkins Jenkins].
 
  */
-	FuncUnit = jQuery.sub();
+	FuncUnit = oldFuncUnit.jQuery.sub();
 	var origFuncUnit = FuncUnit;
 	// override the subbed init method
 	// context can be an object with frame and forceSync:
@@ -220,7 +220,18 @@ or integrated with CI tools like [funcunit.jenkins Jenkins].
 	
 	var getContext = function(context){
 			if (typeof context == "number" || typeof context == "string") {
-				var frame = FuncUnit.win.frames[context];
+				var frame;
+				if(typeof context === "number"){
+					frame = FuncUnit.win.frames[context];
+				} else {
+					// in FF8, if you replace a frame with a frame of the same name, you can no longer 
+					// look up the frame by its name, so we have to iterate and find it ourself
+					for(var i=0; i < FuncUnit.win.frames.length; i++){
+						if(FuncUnit.win.frames[i].name && FuncUnit.win.frames[i].name === context) {
+							frame = FuncUnit.win.frames[i];
+						}
+					}
+				}
 				if(frame){
 					context = frame.document;
 				} else {
@@ -253,9 +264,8 @@ or integrated with CI tools like [funcunit.jenkins Jenkins].
 			return new origFuncUnit.fn.init( selector, context, true );
 		}
 	
-	window.jQuery.extend(FuncUnit, oldFunc, origFuncUnit)
+	oldFuncUnit.jQuery.extend(FuncUnit, oldFuncUnit, origFuncUnit)
 	FuncUnit.prototype = origFuncUnit.prototype;
-	FuncUnit.jQuery = jQuery.noConflict(true);
 	S = FuncUnit;
 	
 	

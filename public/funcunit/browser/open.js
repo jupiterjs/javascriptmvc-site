@@ -109,26 +109,25 @@ $.extend(FuncUnit,{
 	</table>
 	 * 
 	 * @param {String} path a full or partial url to open.  If a partial is given, 
-	 * @param {Function} callback
+	 * @param {Function} success
 	 * @param {Number} timeout
 	 */
-	open: function( path, callback, timeout ) {
+	open: function( path, success, timeout ) {
 		var fullPath = FuncUnit.getAbsolutePath(path), 
 		temp;
-		if(typeof callback != 'function'){
-			timeout = callback;
-			callback = undefined;
+		if(typeof success != 'function'){
+			timeout = success;
+			success = undefined;
 		}
 		FuncUnit.add({
 			method: function(success, error){ //function that actually does stuff, if this doesn't call success by timeout, error will be called, or can call error itself
 				steal.dev.log("Opening " + path)
 				FuncUnit._open(fullPath, error);
 				FuncUnit._onload(function(){
-					FuncUnit._opened();
 					success()
 				}, error);
 			},
-			callback: callback,
+			success: success,
 			error: "Page " + path + " not loaded in time!",
 			timeout: timeout || 30000
 		});
@@ -148,7 +147,7 @@ $.extend(FuncUnit,{
 			else{
 				// giving a large height forces it to not open in a new tab and just opens to the window's height
 				var width = $(window).width();
-				FuncUnit.win = window.open(url, "funcunit",  "height=1000,toolbar=yes,status=yes,left="+width/2);
+				FuncUnit.win = window.open(url, "funcunit",  "height=1000,toolbar=yes,status=yes,width="+width/2+",left="+width/2);
 				// This is mainly for opera. Other browsers will hit the unload event and close the popup.
 				// This block breaks in IE (which never reaches it) because after closing a window, it throws access 
 				// denied any time you try to access it, even after reopening.
@@ -296,6 +295,32 @@ $.extend(FuncUnit,{
 	 */
 	eval: function(str){
 		return FuncUnit.win.eval(str)
+	},
+	// return true if document is currently loaded, false if its loading
+	// actions check this
+	documentLoaded: function(){
+		var loaded = FuncUnit.win.document.readyState === "complete" && 
+				     FuncUnit.win.location.href != "about:blank";
+		return loaded;
+	},
+	// return true if new document found
+	checkForNewDocument: function(){
+		var documentFound = FuncUnit.win.document !== currentDocument && // new document 
+							!FuncUnit.win.___FUNCUNIT_OPENED && // hasn't already been marked loaded
+							FuncUnit.documentLoaded(); // fully loaded
+		if(documentFound){
+			// reset flags
+			lookingForNewDocument = false;
+			currentDocument = FuncUnit.win.document;
+			
+			// mark it as opened
+			FuncUnit.win.___FUNCUNIT_OPENED = true;
+			
+			// reset confirm, prompt, alert
+			FuncUnit._opened();
+		}
+		
+		return documentFound;
 	}
 });
 
@@ -350,35 +375,17 @@ $.extend(FuncUnit,{
 			if(FuncUnit.win && FuncUnit.win.document == null){
 				return
 			}
-			/*opera.postError("looking "+lookingForNewDocument)
-			opera.postError("equal "+( FuncUnit.win.document === currentDocument) )
-			opera.postError("rest "+newDocument+" "+
-			            FuncUnit.win.document.readyState+" "+
-						"fuo"+" "+
-						FuncUnit.win.___FUNCUNIT_OPENED );*/
-						
-			if (lookingForNewDocument){
-				if( FuncUnit.win.document !== currentDocument && 
-				    FuncUnit.win.document.readyState === "complete" && 
-				    FuncUnit.win.location.href != "about:blank" &&
-					! FuncUnit.win.___FUNCUNIT_OPENED ) {
+			
+			if (lookingForNewDocument && FuncUnit.checkForNewDocument() ) {
 				
-					// reset flags
-					lookingForNewDocument = false;
-					currentDocument = FuncUnit.win.document;
+				ls = loadSuccess;
+				
+				loadSuccess = null;
+				if (ls) {
+					FuncUnit.win.focus();
+					FuncUnit.win.document.documentElement.tabIndex = 0;
 					
-					// mark it as opened
-					FuncUnit.win.___FUNCUNIT_OPENED = true;
-					
-					ls = loadSuccess;
-					
-					loadSuccess = null;
-					if (ls) {
-						FuncUnit.win.focus();
-						FuncUnit.win.document.documentElement.tabIndex = 0;
-						
-						ls();
-					}
+					ls();
 				}
 			}
 			

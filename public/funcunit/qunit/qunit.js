@@ -664,7 +664,6 @@ extend(QUnit, {
 		output += "</table>";
 
 		runLoggingCallbacks( 'log', QUnit, details );
-
 		config.current.assertions.push({
 			result: !!result,
 			message: output
@@ -787,7 +786,7 @@ QUnit.load = function() {
 	// if (config.autostart) {
 		// QUnit.start();
 	// }
-	process()
+	process(true)
 };
 
 // on ready because that is when the window is loaded AND when 
@@ -795,6 +794,7 @@ QUnit.load = function() {
 steal.bind("ready", function(){
 	QUnit.config.autorun = false;
 	QUnit.config.reorder = false;
+	QUnit.config.testTimeout = false;
 	QUnit.load();
 })
 
@@ -1593,9 +1593,6 @@ QUnit.diff = (function() {
 	};
 })();
 
+
+
 })
-
-
-if(steal.options.browser){
-	steal('funcunit/browser/events.js');
-};

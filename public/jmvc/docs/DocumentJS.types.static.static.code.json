@@ -1,1 +1,1 @@
-C({"name": "DocumentJS.types.static.static.code", "params": {}, "ret": {"description": "<p>prototype data.</p>", "type": "Object"}, "type": "function", "parents": ["DocumentJS.types.static.static"], "comment": "", "src": "documentjs/types/static.js", "line": 38, "children": []})
+c({"name": "DocumentJS.types.static.static.code", "params": {}, "ret": {"description": "<p>prototype data.</p>", "type": "Object"}, "type": "function", "parents": ["DocumentJS.types.static.static"], "comment": "", "src": "documentjs/types/static.js", "line": 38, "children": []})

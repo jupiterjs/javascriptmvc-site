@@ -1,1 +1,1 @@
-C({"name": "DocumentJS.types.prototype.static.parent", "type": "attribute", "parents": ["DocumentJS.types.prototype.static"], "comment": "<p>Possible scopes for @prototype.</p>", "src": "documentjs/types/prototype.js", "line": 41, "children": []})
+c({"name": "DocumentJS.types.prototype.static.parent", "type": "attribute", "parents": ["DocumentJS.types.prototype.static"], "comment": "<p>Possible scopes for @prototype.</p>", "src": "documentjs/types/prototype.js", "line": 41, "children": []})

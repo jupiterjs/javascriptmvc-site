@@ -1,0 +1,1 @@
+c({"name": "canMovePrev", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Return true if there are items before the current page</p>", "src": "mxui/data/data.js", "line": 46, "children": []})

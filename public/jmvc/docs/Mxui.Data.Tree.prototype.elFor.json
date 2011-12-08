@@ -1,0 +1,1 @@
+c({"name": "Mxui.Data.Tree.prototype.elFor", "params": {"parentId": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "parentId"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Data.Tree.prototype"], "comment": "<p>Finds the name element</p>", "src": "mxui/data/tree/tree.js", "line": 113, "children": []})

@@ -1,0 +1,1 @@
+c({"name": "canMoveNext", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Returns true if there are items after the current page</p>", "src": "mxui/data/data.js", "line": 37, "children": []})

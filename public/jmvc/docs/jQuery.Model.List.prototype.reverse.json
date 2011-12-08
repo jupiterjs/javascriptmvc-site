@@ -1,0 +1,1 @@
+c({"name": "jQuery.Model.List.prototype.reverse", "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Reverse the list in place</p>\n\n<pre><code>list.reverse()\n</code></pre>", "src": "jquery/model/list/list.js", "line": 770, "children": []})
