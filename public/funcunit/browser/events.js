@@ -1,56 +1,19 @@
-(function(){
+steal(function(){
 
-	if(steal.options.instrument){
-		steal('funcunit/coverage/report/production.js')
-		QUnit.done = function(){
-			var stats = steal.instrument.compileStats()
-			$("<div id='coverage'></div>").appendTo(document.body).coverage({stats: stats});
-			var offsetTop = $('#coverage').offset().top;
-			$(document.body).scrollTop(offsetTop);
-			
-			// send to console
-			if(steal.options.browser){
-				steal.client.trigger("coverage", steal.instrument.compileStats());
-			}
-		}
-	}
-	
-	// if there's a failed assertion, don't run the rest of this test, just fail and move on
-	QUnit.log = function(data){
-		if(data.result === false) {
-			FuncUnit._queue = [];
-			start();
-		}
-	}
-	
 	if(steal.options.browser === "phantomjs"){
-		var ifrm = document.createElement("iframe");
-		ifrm.id = 'funcunit_app';
-		ifrm.setAttribute("width", "960");
-		ifrm.setAttribute("height", "800");
-		document.body.insertBefore(ifrm, document.body.firstChild);
+		var ifrm = document.createElement("IFRAME"); 
+		ifrm.setAttribute("id", "funcunit_app");
+		document.body.appendChild(ifrm);
 	}
 
-	if(steal.options.browser){
-		var evts = ['begin', 'testStart', 'testDone', 'moduleStart', 'moduleDone', 'done', 'log'], 
-			type,
-			orig = {};
-		
-		for (var i = 0; i < evts.length; i++) {
-			type = evts[i];
-			(function(type){
-				if(QUnit[type]){
-					orig[type] = QUnit[type];
-				}
-				QUnit[type] = function(data){
-					if(orig[type]){
-						orig[type].apply(this, arguments);
-					}
-					
-					steal.client.trigger(type, data);
-				};
-			})(type);
-		}
-	}
+	var evts = ['begin', 'testStart', 'testDone', 'moduleStart', 'moduleDone', 'done', 'log'], type;
 	
-})()
+	for (var i = 0; i < evts.length; i++) {
+		type = evts[i];
+		(function(type){
+			QUnit[type] = function(data){
+				steal.client.trigger(type, data);
+			};
+		})(type);
+	}
+})

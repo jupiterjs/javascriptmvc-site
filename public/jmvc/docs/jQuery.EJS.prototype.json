@@ -1,1 +1,1 @@
-c({"name": "jQuery.EJS.prototype", "type": "prototype", "parents": ["jQuery.EJS"], "comment": "", "src": "jquery/view/ejs/ejs.js", "line": 194, "children": ["jQuery.EJS.prototype.render"]})
+C({"name": "jQuery.EJS.prototype", "type": "prototype", "parents": ["jQuery.EJS"], "comment": "", "src": "../jquery/view/ejs/ejs.js", "children": ["jQuery.EJS.prototype.render"]})

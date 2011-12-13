@@ -1,7 +1,5 @@
 steal('jquery/event/livehack').then(function($){
-// TODO remove this, phantom supports touch AND click, but need to make funcunit support touch so its testable
-var isPhantom = /Phantom/.test(navigator.userAgent),
-	supportTouch = !isPhantom && "ontouchend" in document,
+var supportTouch = "ontouchend" in document,
 	scrollEvent = "touchmove scroll",
 	touchStartEvent = supportTouch ? "touchstart" : "mousedown",
 	touchStopEvent = supportTouch ? "touchend" : "mouseup",

@@ -3,7 +3,6 @@ steal('jquery/controller',
 	'jquery/view/ejs',
 	'documentjs/jmvcdoc/models/search.js',
 		'documentjs/jmvcdoc/resources/helpers.js',
-		'documentjs/jmvcdoc/tooltip.js',
 		'../style.css',function($){
 
 /**
@@ -43,19 +42,15 @@ $.Controller('Jmvcdoc.Nav',
 		var list = focus.children().slice(0),
 			i=0,
 			args,
-			children,
-			hasStaticOrPrototype = false;
+			children;
 		// get static children notes
 		while(i < list.length){
-			// if we have static or prototype, we need to insert those into the
-			// list after the prototype
 			if(/static|prototype/.test( list[i].type ) ) {
 				args = [i+1,0];
 				children = list[i].children()
 				args.push.apply(args, children);
 				list.splice.apply(list, args);
-				i = i+children.length+1;
-				hasStaticOrPrototype = true;
+				i = i+children.length+1
 			} else {
 				i++;
 			}
@@ -63,13 +58,12 @@ $.Controller('Jmvcdoc.Nav',
 		
 		// get selected parents ...
 		
-		// make list's html:
+
 		
 		this.element.html("//documentjs/jmvcdoc/nav/views/results.ejs", {
 			list: list,
 			selected: path,
-			hide: false,
-			hasStaticOrPrototype : hasStaticOrPrototype
+			hide: false
 		}, DocumentationHelpers);
 		
 		// highlight selected guy ...
@@ -98,28 +92,8 @@ $.Controller('Jmvcdoc.Nav',
 	"a mouseover": function( el ) {
 		this._highlight(el)
 	},
-	"#results a mouseover" : function(el){
-		var name = el.attr('data-name');
-		// track which tooltip we should be showing
-		this.showTooltip = name;
-		
-		Doc.findOne({
-			name: name
-		}, this.proxy(function(data){
-			
-			if(data.description && this.showTooltip == name){
-				$("#tooltip").show().tooltip({message: data.description, of:  el})
-			}
-			
-			
-			//console.log(data.description)
-		}))
-		
-	},
 	"a mouseout": function( el ) {
 		el.removeClass("highlight")
-		this.showTooltip = null;
-		$("#tooltip").hide()
 	},
 	_highlight: function( el ) {
 		if (!this._isInvalidMenuItem(el) ) {

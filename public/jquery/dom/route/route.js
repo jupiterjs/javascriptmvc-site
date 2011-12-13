@@ -42,9 +42,7 @@ function( $ ) {
 		},
         // 
 		onready = true,
-		location = window.location,
-		encode = encodeURIComponent,
-		decode = decodeURIComponent;
+		location = window.location;
 
 	/**
 	 * @class jQuery.route
@@ -211,7 +209,7 @@ function( $ ) {
 		var names = [],
 			test = url.replace(matcher, function( whole, name ) {
 				names.push(name)
-				return "([^\\/\\&]*)"  // The '\\' is for string-escaping giving single '\' for regEx escaping
+				return "([\\w\\.]*)"  // The '\\' is for string-escaping giving single '\' for regEx escaping
 			});
 
 		// Add route in a form that can be easily figured out
@@ -263,7 +261,7 @@ function( $ ) {
                     // If the default value is found an empty string is inserted.
 				    res = route.route.replace(matcher, function( whole, name ) {
                         delete cpy[name];
-                        return data[name] === route.defaults[name] ? "" : encode( data[name] );
+                        return data[name] === route.defaults[name] ? "" : data[name];
                     }),
                     after;
 					
@@ -304,7 +302,7 @@ function( $ ) {
 				var // Since RegEx backreferences are used in route.test (round brackets)
                     // the parts will contain the full matched string and each variable (backreferenced) value.
                     parts = url.match(route.test),
-                    // start will contain the full matched string; parts contain the variable values.
+                    // start will contain the full mathced string; parts contain the variable values.
 					start = parts.shift(),
                     // The remainder will be the &amp;key=value list at the end of the URL.
 					remainder = url.substr(start.length),
@@ -316,7 +314,7 @@ function( $ ) {
                 // Overwrite each of the default values in obj with those in parts if that part is not empty.
 				for ( var p = 0; p < parts.length; p++ ) {
 					if ( parts[p] ) {
-						obj[route.names[p]] = decode( parts[p] );
+						obj[route.names[p]] = parts[p]
 					}
 				}
 				return obj;
@@ -392,9 +390,8 @@ function( $ ) {
 			}, props)) + ">" + name + "</a>";
 		},
 		/**
-		 * Returns true if the options represent the current page.
+		 * Returns if the options represent the current page.
 		 * @param {Object} options
-         * @return {Boolean}
 		 */
 		current: function( options ) {
 			return location.hash == "#!" + $route.param(options)

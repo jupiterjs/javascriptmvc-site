@@ -24,7 +24,7 @@ test("steal one js", function(){
 	// doesn't this imply the next ...
 	steal.rootUrl("../../");
 		 
-	stop();
+	stop(1000);
 	
 	steal("./files/steal.js", function(){
 		start();
@@ -36,7 +36,7 @@ test("steal one function", function(){
 	steal.rootUrl("../../")
 		.cur("foo/bar.js");
 	
-	stop();
+	stop(1000);
 	steal(function(){
 		start();
 		ok(true, "function called")
@@ -47,7 +47,7 @@ test("steal one function", function(){
 test("loading plugin from jmvcroot", function(){
 	PLUGINLOADED = false;
 	DEPENCENCYLOADED = false;
-	stop();
+	stop(1000);
 	steal.rootUrl("../../").then('steal/test/files/plugin',function(){
 		equals(PLUGINLOADED, true)
 		equals(DEPENCENCYLOADED, true)
@@ -58,7 +58,7 @@ test("loading plugin from jmvcroot", function(){
 // unless the path has nothing on it, it should add a .js to the end and load the literal file
 test("not using extension", function(){
 	REQUIRED = false;
-	stop();
+	stop(1000);
 	steal.rootUrl("../../").then('./files/require',function(){
 		equals(REQUIRED, true);
 	start();
@@ -67,7 +67,7 @@ test("not using extension", function(){
 	
 test("loading file from jmvcroot", function(){
 	REQUIRED = false;
-	stop();
+	stop(1000);
 	steal.rootUrl("../../").then('steal/test/files/require.js',function(){
 		equals(REQUIRED, true)
 		start();
@@ -76,7 +76,7 @@ test("loading file from jmvcroot", function(){
 
 test("loading two files", function(){
 	ORDER = [];
-	stop();
+	stop(1000);
 	steal.rootUrl("../../").then('./files/file1.js',function(){
 		same(ORDER,[1,2,"then2","then1"])
 		start();
@@ -87,7 +87,7 @@ test("steal one file with different rootUrl", function(){
 	// doesn't this imply the next ...
 	steal.rootUrl("../");
 	REQUIRED = undefined;
-	stop();
+	stop(1000);
 	
 	// still loading relative to the page
 	steal("./files/steal.js", function(){
@@ -98,7 +98,7 @@ test("steal one file with different rootUrl", function(){
 
 test("loading same file twice", function(){
 	ORDER = [];
-	stop();
+	stop(1000);
 	steal.rootUrl("../../").then('./files/duplicate.js', './files/duplicate.js',function(){
 		same(ORDER,[1])
 		start();
@@ -107,7 +107,7 @@ test("loading same file twice", function(){
 
 test("loading same file twice with absolute paths", function(){
 	ORDER = [];
-	stop();
+	stop(1000);
 	steal.rootUrl("../../").then('./files/loadDuplicate.js').then('//steal/test/files/duplicate.js',function(){
 		same(ORDER,[1])
 		start();
@@ -120,7 +120,7 @@ test("steal one file with different cur", function(){
 	steal.rootUrl("../../")
 		.cur("foo/bar.js");
 	REQUIRED = undefined;
-	stop();
+	stop(1000);
 	
 	// still loading relative to the page
 	steal("../steal/test/files/steal.js", function(){
@@ -128,18 +128,14 @@ test("steal one file with different cur", function(){
 		equals(REQUIRED,"steal", "loaded the file")
 	})
 });
-
-test("parts", function(){
 	
-})
-
-test("file domain", function() {
+test("domain", function() {
 	equals(null, new steal.File("file://C:/Development").domain(), "problems from file")
 	equals('something.com', new steal.File('http://something.com/asfdkl;a').domain(), "something.com is the correct http domain.")
 	equals('127.0.0.1:3006', new steal.File('https://127.0.0.1:3006/asdf').domain(), "something.com is the correct https domain.")
 })
 
-test("file joinFrom", function() {
+test("joinFrom", function() {
 	var result;
 	equals(
 	steal.File('a/b.c').joinFrom('/d/e'), "/d/e/a/b.c", "/d/e/a/b.c is correctly joined.");
@@ -284,11 +280,10 @@ test("File.isDomainAbsolute()", function() {
 	ok(!result, "/a/b/c/d/e domain is absolute.");
 })
 
-// this function was moved to steal/rhino/file.js
-// test("File.afterDomain", function() {
-	// result = new steal.File("http://abc.com/d/e").afterDomain();
-	// equals(result, "/d/e", "/d/e is the correct after domain result.");
-// })
+test("File.afterDomain", function() {
+	result = new steal.File("http://abc.com/d/e").afterDomain();
+	equals(result, "/d/e", "/d/e is the correct after domain result.");
+})
 
 test("File.toReferenceFromSameDomain()", function() {
 	result = new steal.File("http://abc.com/d/e").toReferenceFromSameDomain("http://abc.com/d/e/f/g/h");
@@ -339,7 +334,7 @@ test("File.ext", function(){
 	})
 
 	test("request async", function(){
-		stop();
+		stop(1000);
 		var count = 0;
 		steal.request({
 			src : src('steal/test/files/something.txt?' + Math.random())  // add random to force IE to behave
@@ -391,7 +386,7 @@ test("File.ext", function(){
 		steal.require({
 			src : src('steal/test/files/require.js'),
 			type: "js"
-		}, function(){
+		},{}, function(){
 			start();
 			ok(REQUIRED, "loaded the file")
 		})
@@ -402,7 +397,7 @@ test("File.ext", function(){
 		steal.require({
 			src : src('steal/test/files/require.css'),
 			type: "css"
-		}, function(){
+		},{}, function(){
 			setTimeout(function(){
 				start();
 				ok( bId('qunit-header').clientHeight > 65, "Client height changed to "+bId('qunit-header').clientHeight );
@@ -415,7 +410,7 @@ test("File.ext", function(){
 	test("require weirdType", function(){
 		stop();
 		
-		steal.type("foo js", function(options, success, error){
+		steal.type("foo js", function(options, original, success, error){
 			var parts = options.text.split(" ")
 			options.text = parts[0]+"='"+parts[1]+"'";
 			success();
@@ -424,7 +419,7 @@ test("File.ext", function(){
 		steal.require({
 			src : src('steal/test/files/require.foo'),
 			type: "foo"
-		}, function(){
+		},{}, function(){
 			start();
 			equals(REQUIRED,"FOO", "loaded the file")
 			
@@ -435,11 +430,11 @@ test("File.ext", function(){
 	// because require won't add buildType.  Require just gets stuff
 	// and that is how it should stay.
 	test("buildType set", function(){
-		stop();
+		stop(10000);
 		
 		steal.rootUrl("../");
 		
-		steal.type("foo js", function(options, success, error){
+		steal.type("foo js", function(options, original, success, error){
 			var parts = options.text.split(" ")
 			options.text = parts[0]+"='"+parts[1]+"'";
 			success();
@@ -493,7 +488,7 @@ test("File.ext", function(){
 				path: "ob5"
 			}
 		
-		stop();
+		stop(1000);
 		steal.when(ob1,"loaded", ob2,"loaded" ,ob3,"complete");
 		ob1.loaded();
 		ob2.loaded();
@@ -536,7 +531,7 @@ test("File.ext", function(){
 				path: "ob5"
 			};
 			
-		stop();
+		stop(1000);
 		steal.when(ob1,"loaded", ob2,"loaded" ,ob3,"complete");
 		
 		setTimeout(function(){
@@ -632,7 +627,7 @@ test("File.ext", function(){
 		var options = steal.getScriptOptions(script);
 		
 		equals(options.rootUrl, url,"root url is right");
-		equals(options.startFile,"foo","app right");
+		equals(options.app,"foo","app right");
 		
 		script.src = "../steal.js?bar.js";
 

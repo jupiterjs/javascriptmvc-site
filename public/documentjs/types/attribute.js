@@ -48,7 +48,7 @@ steal.then(function() {
 	/*
 	 * Possible scopes for @attribute.
 	 */
-		parent: /static|proto|class|page/,
+		parent: /static|proto|class/,
 		useName: false
 	});
 })

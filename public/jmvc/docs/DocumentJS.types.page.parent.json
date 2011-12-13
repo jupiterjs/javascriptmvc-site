@@ -1,1 +1,1 @@
-c({"name": "DocumentJS.types.page.parent", "type": "attribute", "parents": ["DocumentJS.types.page"], "comment": "<p>Possible scopes for @page.</p>", "src": "documentjs/types/page.js", "line": 47, "children": []})
+C({"name": "DocumentJS.types.page.parent", "type": "attribute", "parents": ["DocumentJS.types.page"], "comment": "<p>Possible scopes for @page.</p>", "src": "../documentjs/types/page.js", "children": []})

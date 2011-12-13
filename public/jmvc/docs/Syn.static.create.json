@@ -1,1 +1,1 @@
-c({"name": "Syn.static.create", "type": "attribute", "parents": ["Syn.static"], "comment": "<p>An object of eventType -> function that create that event.</p>", "hide": true, "src": "funcunit/syn/synthetic.js", "line": 470, "children": []})
+C({"name": "Syn.static.create", "type": "attribute", "parents": ["Syn.static"], "comment": "<p>An object of eventType -> function that create that event.</p>", "hide": true, "src": "../funcunit/syn/synthetic.js", "children": []})

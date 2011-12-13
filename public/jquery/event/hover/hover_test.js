@@ -27,7 +27,7 @@ test("hovering", function(){
 	Syn("mouseover",{pageX: off.top, pageY: off.left}, hover[0])
 	ok(hoverinits, 'hoverinit');
 	ok(hoverenters === 0,"hoverinit hasn't been called");
-	stop();
+	stop(1000);
 	
 	setTimeout(function(){
 		ok(hoverenters === 1,"hoverenter has been called");

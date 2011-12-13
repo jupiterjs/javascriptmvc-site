@@ -5,7 +5,8 @@ steal('jquery/model').then(function( $ ) {
 			return args[0]
 		} else if ( args[0] instanceof $.Model.List ) {
 			return $.makeArray(args[0])
-		} else {
+		}
+		else {
 			return $.makeArray(args)
 		}
 	},
@@ -446,8 +447,7 @@ steal('jquery/model').then(function( $ ) {
 		 * 
 		 *     var match = list.get($('#content')[0])
 		 * 
-		 * @param {Object} args elements or ids to retrieve.
-         * @return {$.Model.List} A sub-Model.List with the elements that were queried.
+		 * @param {Object} args element or id to remove
 		 */
 		get: function() {
 			if (!this.length ) {
@@ -465,10 +465,8 @@ steal('jquery/model').then(function( $ ) {
 
 			for ( var i = 0; i < args.length; i++ ) {
 				if ( args[i].nodeName && (matches = args[i].className.match(test)) ) {
-                // If this is a dom element
 					val = this._data[matches[1]]
 				} else {
-                // Else an id was provided as a number or string.
 					val = this._data[typeof args[i] == 'string' || typeof args[i] == 'number' ? args[i] : args[i][idName]]
 				}
 				val && list.push(val)
@@ -480,14 +478,13 @@ steal('jquery/model').then(function( $ ) {
 		 *
 		 * To remove by id:
 		 *
-		 *     var match = list.remove(23);
+		 *     var match = list.get(23);
 		 *
 		 * or to remove by element:
 		 * 
-		 *     var match = list.remove($('#content')[0])
+		 *     var match = list.get($('#content')[0])
 		 *
-		 * @param {Object} args elements or ids to remove.
-         * @return {$.Model.List} A Model.List of the elements that were removed.
+		 * @param {Object} args element or id to remove
 		 */
 		remove: function( args ) {
 			if (!this.length ) {
@@ -694,15 +691,13 @@ steal('jquery/model').then(function( $ ) {
 		},
 		/**
 		 * @function push
-		 * Adds an instance or instances to the list
+		 * Adds a instance or instances to the list
 		 * 
 		 *     list.push(new Recipe({id: 5, name: "Water"}))
-         *     
-         * @param args {Object} The instance(s) to push onto the list.
-         * @return {Number} The number of elements in the list after the new element was pushed in.
 		 */
 		push: function() {
-			var args = getArgs(arguments);
+			var args = getArgs(arguments),
+				self = this;
 			//listen to events on this only if someone is listening on us, this means remove won't
 			//be called if we aren't listening for removes
 			if ( this[expando] !== undefined ) {
@@ -767,15 +762,7 @@ steal('jquery/model').then(function( $ ) {
 			 *     list.sort(sortfunc)
 			 * 
 			 */
-			sort: [].sort,
-			/**
-			 * @function reverse
-			 * Reverse the list in place
-			 *
-			 *     list.reverse()
-			 * 
-			 */
-			reverse: [].reverse
+			sort: [].sort
 		}
 
 		each(modifiers, function( name, func ) {

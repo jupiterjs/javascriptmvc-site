@@ -9,7 +9,7 @@ module("jquery/model/associations",{
 		$.Model("MyTest.Loan");
 		$.Model("MyTest.Issue");
 		
-		$.Model("MyTest.Customer",
+		$.Model.extend("MyTest.Customer",
 		{
 			attributes : {
 				person : "MyTest.Person.model",

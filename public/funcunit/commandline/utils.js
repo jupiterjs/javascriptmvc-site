@@ -62,25 +62,14 @@ steal(function(){
 		}
 	}
 	
-	// if coverage is true, use this to change the URL
-	FuncUnit._getPageUrl = function(page, coverage, ignores){
-		if(!/https?:|file:/.test(page)){ // if theres no protocol, turn it into a filesystem urls
+	FuncUnit._getPageUrl = function(page){
+		if(typeof phantom === "undefined" && !/http:|file:/.test(page)){ // if theres no protocol, turn it into a filesystem url
 			var cwd = (new java.io.File (".")).getCanonicalPath();
 			page = "file://"+cwd+"/"+page;
 		}
 		
 		//convert spaces to %20.
-		var newPage = /https?:/.test(page) ? page: page.replace(/ /g,"%20");
-		
-		if(coverage){
-			var ignores = ["true"];
-			newPage = newPage+"?steal[instrument]=";
-			if(ignores){
-				ignores = ignores.join(",")
-			}
-			newPage += ignores;
-		}
-		
+		var newPage = /http:/.test(page) ? page: page.replace(/ /g,"%20");
 		return newPage;
 	}
 })

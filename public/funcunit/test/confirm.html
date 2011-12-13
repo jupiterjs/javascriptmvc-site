@@ -1,9 +1,8 @@
 <html>
 	<head></head>
 	<body>
-		<script type='text/javascript' src='../../steal/steal.js'></script>
+		<script src="jquery.js" type='text/javascript'></script>
 		<script type='text/javascript'>
-		steal('funcunit/browser/resources/jquery.js', function(){
 			$(function(){
 				
 				window.confirm = function(string){
@@ -30,7 +29,6 @@
 					}
 				});
 			});
-		})
 		</script>
 		
 		<a href="#" id="confirm">Confirm!</a>

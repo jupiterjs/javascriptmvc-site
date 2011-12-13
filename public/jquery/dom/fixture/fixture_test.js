@@ -1,11 +1,10 @@
-
 steal("jquery/dom/fixture", "jquery/model",'funcunit/qunit',function(){
 
 module("jquery/dom/fixture");
 
 
 test("static fixtures", function(){
-	stop();
+	stop(3000);
 	
 	$.fixture("GET something", "//jquery/dom/fixture/fixtures/test.json");
 	$.fixture("POST something", "//jquery/dom/fixture/fixtures/test.json");
@@ -185,14 +184,7 @@ test("rand", function(){
 test("_getData", function(){
 	var data = $.fixture._getData("/thingers/{id}", "/thingers/5");
 	equals(data.id, 5, "gets data");
-	var data = $.fixture._getData("/thingers/5?hi.there", "/thingers/5?hi.there");
-	deepEqual(data, {}, "gets data");
 })
-
-test("_getData with double character value", function(){
-	var data = $.fixture._getData("/days/{id}/time_slots.json", "/days/17/time_slots.json");
-	equals(data.id, 17, "gets data");
-});
 
 test("_compare", function(){
 	var same = $.Object.same(
@@ -242,7 +234,7 @@ test("fixture function gets id", function(){
 			name: "justin"
 		}
 	})
-	stop();
+	stop(3000);
 	$.get("/thingers/5", {}, function(data){
 		start();
 		ok(data.id)
@@ -279,51 +271,8 @@ test("replacing and removing a fixture", function(){
 		
 		
 	},'json')
-});
-
-return; // future fixture stuff
-
-// returning undefined means you want to control timing?
-$.fixture('GET /foo', function(orig, settings, headers, cb){
-	setTimeout(function(){
-		cb(200, "success",{json : "{}"},{})
-	},1000);
 })
 
-// fixture that hooks into model / vice versa?
-
-// fixture that creates a nice store
-
-var store = $.fixture.store(1000, function(){
-	
-})
-
-store.find()
-
-// make cloud
-
-var clouds =  $.fixture.store(1, function(){
-	return {
-		name: "ESCCloud",
-		DN : "ESCCloud-ESCCloud",
-		type : "ESCCloud"
-	}
-});
-
-var computeCluster = $.fixture.store(5, function(i){
-	return {
-		name : "",
-		parentDN : clouds.find()[0].DN,
-		type: "ComputeCluster",
-		DN : "ComputeCluster-ComputeCluster"+i
-	}
-});
-
-$.fixture("GET /computeclusters", function(){
-	return []
-});
-
-// hacking models?
 
 
 

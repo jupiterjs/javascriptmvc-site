@@ -14,9 +14,9 @@
  * prefix in FuncUnit.xmlLogClassPrefix.
  */
  
-steal('funcunit/commandline/output/json2.js', function(){
-	var classPrefix,
-		filename,
+(function() {
+	var classPrefix = FuncUnit.xmlLogClassPrefix ? FuncUnit.xmlLogClassPrefix : '',
+		filename = FuncUnit.xmlLogFilename ? FuncUnit.xmlLogFilename : false,
 		fstream, out;
 	
 	var writeToLog = function (line, postfix) {
@@ -38,16 +38,6 @@ steal('funcunit/commandline/output/json2.js', function(){
 		return text;
 	}
 	
-	var render = function( from, to, data ) {
-		var text = readFile(from),
-			res = new steal.EJS({
-				text: text,
-				name: from
-			}).render(data),
-			file = steal.File(to);
-		steal.File(to).save(res);
-	}
-	
 	var globalStartTime = new Date();
 	var globalTestCounter = 0;
 	var globalErrorCounter = 0;
@@ -58,12 +48,9 @@ steal('funcunit/commandline/output/json2.js', function(){
 	var moduleFailureCounter = 0;
 	var moduleErrorCounter = 0;
 	var moduleAssertionCounter = 0;
-	var failureArr = [];
 
 	steal.extend(FuncUnit,{
 		begin: function(){
-			classPrefix = FuncUnit.xmlLogClassPrefix ? FuncUnit.xmlLogClassPrefix : '';
-			filename = FuncUnit.xmlLogFilename ? FuncUnit.xmlLogFilename : false;
 			if(filename) {
 				fstream = new java.io.FileWriter(filename, false);
 				out = new java.io.BufferedWriter(fstream);
@@ -77,8 +64,6 @@ steal('funcunit/commandline/output/json2.js', function(){
 			moduleLogOutput += '    <testcase class="' + xmlEncode(classPrefix + moduleName) + '" name="' + xmlEncode(name) + '">' + "\n";
 			moduleTestCounter++;
 			globalTestCounter++;
-			failureArr = [];
-			
 		},
 		log: function(result, message){
 			if (!message) {
@@ -91,14 +76,17 @@ steal('funcunit/commandline/output/json2.js', function(){
 			moduleAssertionCounter++;    		
 
 			if(!result) {
-				failureArr.push(xmlEncode(message));
+				if(message.substring(0, 12) == 'Died on test') {
+					moduleLogOutput += '      <error type="JS">' + xmlEncode(message) + '</error>' + "\n";
+					moduleErrorCounter++;
+					globalErrorCounter++;
+				} else {		        
+					moduleLogOutput += '      <failure type="JS">' + xmlEncode(message) + '</failure>' + "\n";
+					moduleFailureCounter++;
+				}    		    
 			}
 		},
 		testDone: function(name, failures, total){
-			if(failureArr.length > 0){
-				moduleFailureCounter++;
-				moduleLogOutput += '      <failure type="JS">' + "\n" + failureArr.join("\n") + "\n" + '</failure>' + "\n";
-			}
 			moduleLogOutput += '    </testcase>' + "\n";
 		},
 		moduleStart: function(name){
@@ -150,6 +138,7 @@ steal('funcunit/commandline/output/json2.js', function(){
 			}
 
 			writeToLog('</testsuites>');
+			
 			if(filename) {
 				out.close();
 			}
@@ -163,35 +152,6 @@ steal('funcunit/commandline/output/json2.js', function(){
 		},
 		browserDone: function(name, failures, total){
 			print("\n" + name+" done :-)");
-		},
-		coverage: function(stats){
-			var percentage = function(num){
-				return Math.round(num*1000)/10+"%";
-			}
-			print("\n"+'Coverage Statistics:'+"\n")
-			print("% Lines\t\t% Blocks\t\tFile Name")
-			for(var file in stats.files){
-				var fileStats = stats.files[file];
-				print(percentage(fileStats.lineCoverage)+"\t\t"+percentage(fileStats.blockCoverage)+"\t\t"+file)
-			}
-			var total = stats.total
-			print("\nSummary:")
-			print(percentage(total.lineCoverage)+" Line Coverage of "+total.lines+" lines")
-			print(percentage(total.blockCoverage)+" Block Coverage of "+total.blocks+" blocks")
-			
-			
-			var fstream = new java.io.FileWriter('funcunit/coverage/coverage.json', false),
-				out = new java.io.BufferedWriter(fstream);
-			out.write(JSON.stringify(stats));
-			out.close();
-			// this.convertCoverageToCobertura(stats);
-		},
-		convertCoverageToCobertura: function(stats){
-			// eval('stats = '+readFile('funcunit/coverage/coverage.json'))
-			steal("steal/generate/ejs.js", 'steal/rhino/file.js', function(){
-				render('funcunit/coverage/cobertura.ejs', 'coverage.xml', stats)
-			})
 		}
 	});
-})
-
+})();

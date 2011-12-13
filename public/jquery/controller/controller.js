@@ -80,7 +80,6 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/controller/controller.js
 	 * @test jquery/controller/qunit.html
 	 * @inherits jQuery.Class
-	 * @description jQuery widget factory.
 	 * 
 	 * jQuery.Controller helps create organized, memory-leak free, rapidly performing
 	 * jQuery widgets.  Its extreme flexibility allows it to serve as both
@@ -1025,7 +1024,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 
 
 
-	//set common events to be processed as a basicProcessor
+	//set commong events to be processed as a basicProcessor
 	each("change click contextmenu dblclick keydown keyup keypress mousedown mousemove mouseout mouseover mouseup reset resize scroll select submit focusin focusout mouseenter mouseleave".split(" "), function( i, v ) {
 		processors[v] = basicProcessor;
 	});

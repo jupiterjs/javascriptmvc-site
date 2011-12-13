@@ -27,13 +27,27 @@
 	 * })
 	 * @codeend
 	 * @param {Number|Function} [size] number or a checking function.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} a callback that will run after this action completes.
 	 * @return {Number} if the size parameter is not provided, size returns the number
 	 * of elements matched.
 	 */
 	'size' : 0,
+	/**
+	 * @function data
+	 * Gets data from jQuery.data or waits until data
+	 * equals some value.  
+	 * @codestart
+	 * S("#something").data("abc") //gets the abc data
+	 * 
+	 * S("#something").data("abc","some") //waits until the data == some
+	 * @codeend
+	 * @param {String} data The data to get, or wait for.
+	 * @param {Object|Function} [value] If provided uses this as a check before continuing to the next action.
+	 * @param {Function} a callback that will run after this action completes.
+	 * @return {Object} if the size parameter is not provided, returns
+	 * the object.
+	 */
+	'data': 1, 
 	/**
 	 * @function attr
 	 * Gets the value of an attribute from an element or waits until the attribute
@@ -46,10 +60,8 @@
 	 * S("#something").attr("abc","some") 
 	 * @codeend
 	 * @param {String} data The attribute to get, or wait for.
-	 * @param {String|Function} [value] If provided uses this as a check before continuing to the next action
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {String|Function} [value] If provided uses this as a check before continuing to the next action.
+	 * @param {Function} a callback that will run after this action completes.
 	 * @return {Object} if the attr parameter is not provided, returns
 	 * the attribute.
 	 */
@@ -68,9 +80,7 @@
 	 * @codeend
 	 * @param {String} className The part of the className to search for.
 	 * @param {Boolean|Function} [value] If provided uses this as a check before continuing to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {Boolean|funcUnit} if the value parameter is not provided, returns
 	 * if the className is found in the element's className.  If a value paramters is provided, returns funcUnit for chaining.
 	 */
@@ -90,9 +100,7 @@
 	 * @codeend
 	 * 
 	 * @param {String|Function} [html] If provided uses this as a check before continuing to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if the html parameter is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the html of the selector.
 	 */
@@ -112,9 +120,7 @@
 	 * @codeend
 	 * 
 	 * @param {String|Function} [text] If provided uses this as a check before continuing to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if the text parameter is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the html of the selector.
 	 */
@@ -134,9 +140,7 @@
 	 * @codeend
 	 * 
 	 * @param {String|Function} [val] If provided uses this as a check before continuing to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if the val parameter is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the html of the selector.
 	 */
@@ -155,9 +159,7 @@
 	 * 
 	 * @param {String} prop A css property to get or wait until it is a specified value.
 	 * @param {String|Function} [val] If provided uses this as a check before continuing to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if the val parameter is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the css of the selector.
 	 */
@@ -176,9 +178,7 @@
 	 * 
 	 * @param {Object|Function} [offset] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if the offset parameter is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the css of the selector.
 	 */
@@ -197,9 +197,7 @@
 	 * 
 	 * @param {Object|Function} [position] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if the position parameter is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the offset of the selector.
 	 */
@@ -218,9 +216,7 @@
 	 * 
 	 * @param {Number|Function} [scrollTop] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if scrollTop is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the scrollTop of the selector.
 	 */ 
@@ -239,9 +235,7 @@
 	 * 
 	 * @param {Number|Function} [scrollLeft] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if scrollLeft is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the scrollLeft of the selector.
 	 */ 
@@ -260,9 +254,7 @@
 	 * 
 	 * @param {Number|Function} [height] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if height is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the height of the selector.
 	 */
@@ -281,9 +273,7 @@
 	 * 
 	 * @param {Number|Function} [width] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if width is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the width of the selector.
 	 */
@@ -302,9 +292,7 @@
 	 * 
 	 * @param {Number|Function} [innerHeight] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if innerHeight is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the innerHeight of the selector.
 	 */
@@ -323,9 +311,7 @@
 	 * 
 	 * @param {Number|Function} [innerWidth] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if innerWidth is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the innerWidth of the selector.
 	 */
@@ -344,9 +330,7 @@
 	 * 
 	 * @param {Number|Function} [outerHeight] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if outerHeight is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the outerHeight of the selector.
 	 */
@@ -365,9 +349,7 @@
 	 * 
 	 * @param {Number|Function} [outerWidth] If provided uses this as a check before continuing to the next action.  Or you can 
 	 * provide a function that returns true to continue to the next action.
-	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
-	 * @param {Function} [success] a callback that will run after this action completes.
-	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
+	 * @param {Function} [callback] a callback that will run after this action completes.
 	 * @return {String|funcUnit} if outerWidth is provided, 
 	 * returns the funcUnit selector for chaining, otherwise returns the outerWidth of the selector.
 	 */
@@ -379,49 +361,27 @@
 		var orig = FuncUnit.fn[fname];
 		//makes a read / wait function
 		FuncUnit.prototype[fname] = function(){
-			//assume last arg is success
+			//assume last arg is callback
 			var args = FuncUnit.makeArray(arguments), 
+				callback,
 				isWait = args.length > argIndex,
-				success;
+				callback;
 			
 			args.unshift(this.selector,this.context,fname)
 			if(isWait){
 				//get the args greater and equal to argIndex
 				var tester = args[argIndex+3],
 					timeout = args[argIndex+4],
-					success = args[argIndex+5],
-					message = args[argIndex+6],
+					callback = args[argIndex+5],
 					testVal = tester,
 					errorMessage = "waiting for "+fname +" on " + this.selector,
-					frame = this.frame,
-					logMessage = "Checking "+fname+" on '"+this.selector+"'";
+					frame = this.frame;
 				
-				// can pass in an object or list of arguments
-				if(typeof tester == 'object'){
-					timeout = tester.timeout;
-					success = tester.success;
-					message = tester.message;
-					if(tester.errorMessage){
-						errorMessage = tester.errorMessage
-					}
-					if(typeof tester.logMessage !== "undefined"){
-						logMessage = tester.logMessage
-					}
-					tester = tester.condition;
-				}
 				if(typeof timeout == 'function'){
-					success = timeout;
-					message = success;
+					callback = timeout;
 					timeout = undefined;
 				}
-				if(typeof timeout == 'string'){
-					message = timeout;
-					timeout = undefined;
-					success = undefined;
-				}
-				if(typeof message !== 'string'){
-					message = undefined;
-				}
+				
 				args.splice(argIndex+3, args.length- argIndex - 3);
 				
 				if(typeof tester != 'function'){
@@ -432,27 +392,18 @@
 							(testVal instanceof RegExp && testVal.test(val) );
 					}
 				}
-				if(message){
-					errorMessage = message;
-				}
 				FuncUnit.repeat({
 					method : function(print){
-						// keep getting new collection because the page might be updating, we need to keep re-checking
-						if(this.bind.prevObject && this.bind.prevTraverser){
-							var prev = this.bind;
-							this.bind = this.bind.prevObject[this.bind.prevTraverser](this.bind.prevTraverserSelector)
-							this.bind.prevTraverser = prev.prevTraverser;
-							this.bind.prevTraverserSelector = prev.prevTraverserSelector;
-						} else {
+						// only need to perform this check for .exists, .invisible, etc
+						if(fname === "size"){
+							// keep getting new collection because the page might be updating, we need to keep re-checking
 							// pass false so it will only do one synchronous request
 							this.bind = S(this.selector, {
 								frame: frame, 
 								forceSync: true
 							})
 						}
-						if(logMessage){
-							print(logMessage)
-						}
+						print("Checking "+fname+" on "+this.selector)
 						var methodArgs = [];
 						// might need an argument
 						if(argIndex > 0){
@@ -462,32 +413,9 @@
 						FuncUnit._ignoreGetterError = true;
 						var ret = this.bind[fname].apply(this.bind, methodArgs)
 						FuncUnit._ignoreGetterError = false;
-						
-						var passed = tester.call(this.bind, ret);
-						
-						// unless this is a "size" command, require size to be non-zero (don't pass through if there's no elements)
-						if(this.bind.length === 0 && fname !== "size"){
-							passed = false;
-						}
-						
-						if(passed){
-							// if document is still loading
-							if(!FuncUnit.documentLoaded()){
-								passed = false;
-							} else {
-								// after every successful wait, check for a new document (if someone clicked a link), 
-								// and overwrite alert/confirm/prompt
-								FuncUnit.checkForNewDocument();
-							}
-						}
-						return passed;
+						return tester.call(this.bind, ret);
 					},
-					success : function(){
-						if(message){
-							ok(true, message)
-						}
-						success && success.apply(this, arguments);
-					},
+					callback : callback,
 					error : errorMessage,
 					timeout : timeout,
 					bind: this,
@@ -497,7 +425,7 @@
 			}else{
 				// throw a warning if user tries to use a getter after the start of the test (if there are other async methods)
 				if(!FuncUnit._ignoreGetterError && !FuncUnit._incallback && FuncUnit._haveAsyncQueries()){
-					console && console.error("You can't run getters after actions and waits. Please put your getters in a callback or at the beginning of the test.")
+					console && console.error("You can't run getters outside callbacks and after actions and waits. Please put your getters in a callback or at the beginning of the test.")
 				}
 				// just call the original jQ method
 				var methodArgs = [];

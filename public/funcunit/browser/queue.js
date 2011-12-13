@@ -42,16 +42,6 @@
 	}
 	/**
 	 * @hide
-	 * Return last item in the queue.
-	 */
-	FuncUnit._lastQueuedItem = function(){
-		if(!FuncUnit._queue.length){
-			return null;
-		}
-		return FuncUnit._queue[FuncUnit._queue.length-1];
-	}
-	/**
-	 * @hide
 	 * Return true if there are already async methods queued.  If true, getters need throw errors.
 	 */
 	FuncUnit._haveAsyncQueries = function(){
@@ -67,7 +57,7 @@
 	 * @param {Object} handler An object that contains the method to run along with other properties:
 
  - method : the method to be called.  It will be provided a success and error function to call
- - success : an optional callback to be called after the function is done
+ - callback : an optional callback to be called after the function is done
  - error : an error message if the command fails
  - timeout : the time until success should be called
  - bind : an object that will be 'this' of the success
@@ -138,9 +128,9 @@
 						//mark in callback so the next set of add get added to the front
 						
 						FuncUnit._incallback = true;
-						if (next.success) {
+						if (next.callback) {
 							// callback's "this" is the collection
-							next.success.apply(next.bind, arguments);
+							next.callback.apply(next.bind, arguments);
 						}
 						FuncUnit._incallback = false;
 						

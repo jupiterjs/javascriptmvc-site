@@ -8,11 +8,3 @@ steal(function(){
 		});
 	};
 })
-
-// used for instrumentation
-
-// in firefox, console window has chrome:// url
-// accessing properties causes error
-try{
-	top.opener.steal = window.steal;
-}catch(e){}

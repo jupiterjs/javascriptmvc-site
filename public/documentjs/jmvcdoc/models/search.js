@@ -1,7 +1,5 @@
 steal('jquery/class').then('./favorites.js',function(){
-	var data,
-		// a map of names to deferreds
-		findOneDeferreds = {};
+	var data;
 	
 	$.ajaxSetup({
 		converters: {
@@ -26,14 +24,9 @@ steal('jquery/class').then('./favorites.js',function(){
 					return;
 				} else {
 					//clear everything that starts with jmvcDoc, try to remove the old data ...
-					i = 0;
-					while (i < localStorage.length) {
-						var prop = localStorage.key(i);
-						if (prop.indexOf("jmvcDoc") == 0) {
+					for(var prop in localStorage){
+						if(prop.indexOf("jmvcDoc") == 0){
 							localStorage.removeItem(prop)
-						}
-						else {
-							i++;
 						}
 					}
 				}
@@ -88,38 +81,27 @@ steal('jquery/class').then('./favorites.js',function(){
 						}
 					} 
 					
-				}
-				var def = findOneDeferreds[params.name]
-				// check if we are already requesting
-				if(def) {
-					def.done(success);
-					def.fail(error);
-					return def;
-				} else {
-					def = findOneDeferreds[params.name] = $.Deferred();
-					def.done(success);
-					def.fail(error);
-					def.done(function(data){
+				}				
+				
+				return $.ajax({
+					url: ( this.location || DOCS_LOCATION) + params.name.replace(/ /g, "_").replace(/&#46;/g, ".") + ".json",
+					success: function(data){
+						success(data);
+						
 						if(window.localStorage && window.JMVCDOC_TIMESTAMP){
 							data.timestamp = JMVCDOC_TIMESTAMP;
 							setTimeout(function(){
 								window.localStorage["jmvcDoc"+params.name] = $.toJSON(data)
-								delete findOneDeferreds[params.name];
-							},10)
+							},1000)
 							
 						}
-					});
-					$.ajax({
-						url: ( this.location || DOCS_LOCATION) + params.name.replace(/ /g, "_")
-							.replace(/&#46;/g, ".") + ".json",
-						error: function(){
-							def.reject.apply(def, arguments)
-						},
-						dataType: "script"
-					});
-					
-					return def;
-				}
+						
+						
+					},
+					error: error,
+					jsonpCallback: "C",
+					dataType: "jsonp addFavorites"
+				});
 			}
 			
 			var res;
@@ -129,13 +111,6 @@ steal('jquery/class').then('./favorites.js',function(){
 			if( res ) {
 				return new this(res);
 			}
-		},
-		foundOne : function(data){
-			data.isFavorite = Favorites.isFavorite(data)
-			
-			// look up and resolve deferred ...
-			var def = findOneDeferreds[data.name];
-			def.resolve(data);
 		},
 		/**
 		 * Used for search
@@ -300,5 +275,5 @@ $.Class('Search', {
 	}
 }, {})
 	
-	window.c = Doc.foundOne;
-});
+	
+})

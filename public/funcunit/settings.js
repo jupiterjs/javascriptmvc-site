@@ -15,10 +15,5 @@ FuncUnit = {
 	xmlLogFilename: 'testresults.xml',  
 
 	// a prefix for the xml log file classes
-	xmlLogClassPrefix: 'Qunit.',
-	
-	// any files or directories that coverage calculations should ignore
-	coverageIgnore: ['*/test', "*_test.js", "*jquery.js", "*qunit.js"]
-	// uncomment this to ignore all JMVC directories
-	// coverageIgnore: ["!jmvc"]
+	xmlLogClassPrefix: 'Qunit.'
 }

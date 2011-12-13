@@ -96,9 +96,5 @@ DocumentationHelpers = {
 		url = url.href ? url.href : url;
 		var parts = url.match(/(https?:\/\/|file:\/\/)[^\/]*\/(.*)/);
 		return url = parts[2] ? parts[2] : url;
-	},
-	source : function(comment){
-		var matches = comment.src.match(/([^\/]+)\/(.+)/);
-		return DOCS_SRC_MAP[matches[1]]+"/blob/master/"+matches[2]+"#L"+comment.line
 	}
 }

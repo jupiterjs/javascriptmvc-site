@@ -18,13 +18,16 @@ steal('steal/build').then(function( steal ) {
 			currentPackage = [];
 
 		opener.each('css', function( link, text, i ) {
-			steal.print("   " + link.rootSrc)
+			steal.print(link.src)
 			scriptsConverted.push(link.rootSrc)
-			var converted = convert(text, link.rootSrc, folder);
+
+			var loc = steal.File(pageFolder).join(link.src),
+				converted = convert(text, loc, folder);
+			
 			currentPackage.push(converted)
+
 		});
 		steal.print("")
-		
 		if ( currentPackage.length ) {
 			steal.print("STYLE BUNDLE > " + folder + "/production.css")
             //now that we have all the css minify and save it
@@ -46,25 +49,26 @@ steal('steal/build').then(function( steal ) {
 	var convert = function( css, cssLocation, prodLocation ) {
 		//how do we go from prod to css
 		var cssLoc = new steal.File(cssLocation).dir(),
-			newCSS = css.replace(/url\(['"]?([^'"\)]*)['"]?\)/g, function( whole, part ) {
+			newCSss = css.replace(/url\(['"]?([^'"\)]*)['"]?\)/g, function( whole, part ) {
 
 				//check if url is relative
-				if (isAbsoluteOrData(part) ) {
+				if (!isRelative(part) ) {
 					return whole
 				}
 
 				//it's a relative path from cssLocation, need to convert to
 				// prodLocation
-				var rootImagePath = steal.File(part).joinFrom(cssLoc),
-					fin = steal.File(rootImagePath).toReferenceFromSameDomain(prodLocation);
-				//print("  -> "+rootImagePath);
-				// steal.print("  " + part + " > " + fin);
+				var imagePath = steal.File(part).joinFrom(cssLoc),
+					fin = steal.File(imagePath).toReferenceFromSameDomain(prodLocation);
+				//print("  -> "+imagePath);
+				steal.print("  " + part + " > " + fin);
 				return "url(" + fin + ")";
 			});
-		return newCSS;
+		return newCSss;
 	},
-	isAbsoluteOrData = function( part ) {
-		return /^(data:|http:\/\/|https:\/\/|\/)/.test(part)
+	isRelative = function( part ) {
+		// http://, https://, / 
+		return !/^(http:\/\/|https:\/\/|\/)/.test(part)
 	},
     calcSavings = function(raw_len, minified_len) {
         var diff_len = raw_len - minified_len, x = Math.pow(10,1);
@@ -76,4 +80,4 @@ steal('steal/build').then(function( steal ) {
         var e = Math.floor(Math.log(bytes)/Math.log(1024));
         return (bytes/Math.pow(1024,Math.floor(e))).toFixed(1)+' '+s[e];
     };
-},'steal/build/styles/cssmin.js','steal/build/styles/fingerprint.js');
+},'steal/build/styles/cssmin.js');

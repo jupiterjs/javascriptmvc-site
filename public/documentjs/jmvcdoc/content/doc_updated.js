@@ -3,9 +3,6 @@ steal('jquery','documentjs/jmvcdoc/demo', function($){
 	var disqusIsLoaded = false,
 	    commentsTimeout;
 	$(document).bind('docUpdated', function(ev, docData){
-		
-		
-		$('#disqus_thread').hide();
 		var target = $(ev.target);
 		
 		// favorite link
@@ -49,15 +46,13 @@ steal('jquery','documentjs/jmvcdoc/demo', function($){
 			imageTagEl.attr("src", absolutePath);
 		});
 		
-		if ( steal.options.env == 'production' && docData.name != "index" && typeof(COMMENTS_LOCATION) != "undefined" && $("#disqus_thread").length ){
-			
+		if ( docData.name != "index" && typeof(COMMENTS_LOCATION) != "undefined" && $("#disqus_thread").length ){
 			if(!disqusIsLoaded){
 				//window.disqus_developer = 1;
 	      window.disqus_identifier = window.location.hash;
 	      window.disqus_url = window.location.toString();
 				$.getScript(COMMENTS_LOCATION);
 				disqusIsLoaded = true;
-				$('#disqus_thread').show();
 			}else{
 				clearTimeout(commentsTimeout);
 				commentsTimeout = setTimeout(function(){
@@ -68,8 +63,7 @@ steal('jquery','documentjs/jmvcdoc/demo', function($){
 		          this.page.url = window.location.toString();
 		        }
 		      });
-					$('#disqus_thread').show();
-				}, 1500);
+				}, 3000);
 			}
 		}
 	})

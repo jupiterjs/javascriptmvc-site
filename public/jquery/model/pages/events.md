@@ -56,10 +56,11 @@ Task.bind('created', function(ev, task){
 })
 @codeend
 
-Typically, you'll subscribe with templated events like:
+Typically, you'll subscribe with the
+<code>jquery/controller/subscribe</code> plugin like:
 
 @codestart
-$.Controller("Todo",{
+$.Controller("Subscriber",{
   
   ...
   

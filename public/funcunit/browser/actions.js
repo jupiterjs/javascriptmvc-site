@@ -32,7 +32,7 @@
 	 * You can pass it any of the serializable parameters you'd send to 
 	 * [http://developer.mozilla.org/en/DOM/event.initMouseEvent initMouseEvent], but command keys are 
 	 * controlled by [FuncUnit.prototype.type].
-	 * @param {Function} [success] a callback that runs after the click, but before the next action.
+	 * @param {Function} [callback] a callback that runs after the click, but before the next action.
 	 * @return {funcUnit} returns the funcunit object for chaining.
 	 */
 	'click',
@@ -41,7 +41,7 @@
 	 * Double clicks an element by [FuncUnit.prototype.click clicking] it twice and triggering a dblclick event.
 	 * @param {Object} options options to add to the mouse events.  This works
 	 * the same as [FuncUnit.prototype.click]'s options.
-	 * @param {Function} [success] a callback that runs after the double click, but before the next action.
+	 * @param {Function} [callback] a callback that runs after the double click, but before the next action.
 	 * @return {funcUnit} returns the funcunit object for chaining.
 	 */
 	'dblclick',
@@ -51,15 +51,14 @@
 	 * support it.
 	 * @param {Object} options options to add to the mouse events.  This works
 	 * the same as [FuncUnit.prototype.click]'s options.
-	 * @param {Function} [success] a callback that runs after the click, but before the next action.
+	 * @param {Function} [callback] a callback that runs after the click, but before the next action.
 	 * @return {funcUnit} returns the funcunit object for chaining.
 	 */
 	'rightClick'],
 		makeClick = function(name){
-			FuncUnit.prototype[name] = function(options, success){
-				this._addExists();
+			FuncUnit.prototype[name] = function(options, callback){
 				if(typeof options == 'function'){
-					success = options;
+					callback = options;
 					options = {};
 				}
 				var selector = this.selector, 
@@ -70,8 +69,8 @@
 						steal.dev.log("Clicking " + selector)
 						this.bind.triggerSyn("_" + name, options, success);
 					},
-					success: success,
-					error: "Could not " + name + " '" + this.selector+"'",
+					callback: callback,
+					error: "Could not " + name + " " + this.selector,
 					bind: this,
 					type: "action"
 				});
@@ -83,11 +82,7 @@
 		makeClick(clicks[i])
 	}
 	
-	$.extend(FuncUnit.prototype, {
-		// perform check even if last queued item is a wait beacuse certain waits don't guarantee the element is visible (like text)
-		_addExists: function(){
-			this.exists(false);
-		},
+	$.extend(FuncUnit.prototype, { 
 		/**
 		 * Types text into an element.  This makes use of [Syn.type] and works in 
 		 * a very similar way.
@@ -118,11 +113,10 @@
 		 * For a list of the characters you can type, check [Syn.keycodes].
 		 * 
 		 * @param {String} text the text you want to type
-		 * @param {Function} [success] a callback that is run after typing, but before the next action.
+		 * @param {Function} [callback] a callback that is run after typing, but before the next action.
 		 * @return {FuncUnit} returns the funcUnit object for chaining.
 		 */
-		type: function( text, success ) {
-			this._addExists();
+		type: function( text, callback ) {
 			var selector = this.selector, 
 				context = this.context;
 			FuncUnit.add({
@@ -130,15 +124,14 @@
 					steal.dev.log("Typing "+text+" on "+selector)
 					this.bind.triggerSyn("_type", text, success);
 				},
-				success : success,
+				callback : callback,
 				error : "Could not type " + text + " into " + this.selector,
 				bind : this,
 				type: "action"
 			});
 			return this;
 		},
-		trigger: function(evName, success){
-			this._addExists();
+		trigger: function(evName){
 			FuncUnit.add({
 				method : function(success, error){
 					steal.dev.log("Triggering "+evName+" on "+this.bind.selector)
@@ -146,7 +139,6 @@
 					FuncUnit.win.jQuery(this.bind.selector).trigger(evName)
 					success()
 				},
-				success : success,
 				error : "Could not trigger " + evName,
 				bind : this,
 				type: "action"
@@ -184,11 +176,10 @@
 		 *   duration: 2000
 		 * }) 
 		 * @codeend
-		 * @param {Function} [success] a callback that runs after the drag, but before the next action.
+		 * @param {Function} [callback] a callback that runs after the drag, but before the next action.
 		 * @return {funcUnit} returns the funcunit object for chaining.
 		 */
-		drag: function( options, success ) {
-			this._addExists();
+		drag: function( options, callback ) {
 			if(typeof options == 'string'){
 				options = {to: options}
 			}
@@ -201,7 +192,7 @@
 					steal.dev.log("dragging " + selector)
 					this.bind.triggerSyn("_drag", options, success);
 				},
-				success: success,
+				callback: callback,
 				error: "Could not drag " + this.selector,
 				bind: this,
 				type: "action"
@@ -240,11 +231,10 @@
 		 *   duration: 2000
 		 * }) 
 		 * @codeend
-		 * @param {Function} [success] a callback that runs after the drag, but before the next action.
+		 * @param {Function} [callback] a callback that runs after the drag, but before the next action.
 		 * @return {funcUnit} returns the funcunit object for chaining.
 		 */
-		move: function( options, success ) {
-			this._addExists();
+		move: function( options, callback ) {
 			if(typeof options == 'string'){
 				options = {to: options}
 			}
@@ -257,7 +247,7 @@
 					steal.dev.log("moving " + selector)
 					this.bind.triggerSyn("_move", options, success);
 				},
-				success: success,
+				callback: callback,
 				error: "Could not move " + this.selector,
 				bind: this,
 				type: "action"
@@ -268,10 +258,9 @@
 		 * Scrolls an element in a particular direction by setting the scrollTop or srollLeft.
 		 * @param {String} direction "left" or "top"
 		 * @param {Number} amount number of pixels to scroll
-		 * @param {Function} success
+		 * @param {Function} callback
 		 */
-		scroll: function( direction, amount, success ) {
-			this._addExists();
+		scroll: function( direction, amount, callback ) {
 			var selector = this.selector, 
 				context = this.context,
 				direction = /left|right|x/i.test(direction)? "Left" : "Right";
@@ -283,7 +272,7 @@
 					})
 					success();
 				},
-				success: success,
+				callback: callback,
 				error: "Could not scroll " + this.selector,
 				bind: this,
 				type: "action"
