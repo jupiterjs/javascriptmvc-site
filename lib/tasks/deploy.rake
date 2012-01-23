@@ -34,7 +34,16 @@ namespace :deploy do
 		Dir.chdir('javascriptmvc') do
 			sh './js jmvc/scripts/doc.js'
 			sh './js jmvc/site/scripts/build.js'
-      sh './js documentjs/jmvcdoc/scripts/build.js'
+			sh './js documentjs/jmvcdoc/scripts/build.js'
+		end
+	end
+
+	task :jquerymx do
+		announce 'Building jquerymx...'
+
+		Dir.chdir('public') do
+			sh './js jquery/build.js'
+			sh './js jquery/buildAll.js'
 		end
 	end
 
