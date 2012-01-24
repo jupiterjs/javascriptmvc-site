@@ -1,11 +1,11 @@
 // loaded into the commandline environment (shared by envjs, selenium)
 
-steal('funcunit/commandline/output/default.js', function(){
+steal('funcunit/commandline/output', function(){
 	var totalFailed = 0,
 		total = 0,
 		browserFailed, browserTotal;
 		
-		// bind all events
+	// bind all events
 	FuncUnit.bindEvents = function(browser){
 		browser.bind("begin", function(data){
 			FuncUnit.begin();
@@ -46,6 +46,9 @@ steal('funcunit/commandline/output/default.js', function(){
 		// for selenium, all browsers are done running
 		.bind('allDone', function(data){
 			
+		})
+		.bind('coverage', function(data){
+			FuncUnit.coverage(data)
 		})
 	
 	}

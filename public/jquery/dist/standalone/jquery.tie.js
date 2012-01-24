@@ -15,6 +15,10 @@
  * 
  */
 $.Controller("jQuery.Tie",{
+	setup : function(el){
+		this._super(el,{})
+		return $.makeArray(arguments);
+	},
 	init : function(el, inst, attr, type){
 		// if there's a controller
 		if(!type){

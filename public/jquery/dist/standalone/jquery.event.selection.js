@@ -10,7 +10,7 @@
 	
 	event.setupHelper( ["selectionStart","selectionEnd","selectionEnding","selectionMoving","selectionMove"], "mousedown", function(ev){
 		//now start checking mousemoves to update location
-		var delegate = ev.liveFired || ev.currentTarget,
+		var delegate = ev.delegateTarget || ev.currentTarget,
 			selector = ev.handleObj.selector,
 			ready = false,
 			el = this,

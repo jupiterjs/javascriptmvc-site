@@ -1,7 +1,7 @@
 module("jquery/model", { 
 	setup: function() {
         var ids = 0;
-	    $.Model.extend("Person",{
+	    $.Model("Person",{
 			findAll: function( params, success, error ) {
 				success("findAll");
 			},
@@ -282,7 +282,7 @@ test("auto methods",function(){
 	   create : steal.root.join("jquery/model/test")+"/create.json",
 	   update : "POST "+steal.root.join("jquery/model/test")+"/update{id}.json"
 	},{})
-	stop(5000);
+	stop();
 	School.findAll({type:"schools"}, function(schools){
 		ok(schools,"findAll Got some data back");
 		equals(schools[0].constructor.shortName,"School","there are schools")
@@ -318,7 +318,7 @@ test("isNew", function(){
 test("findAll string", function(){
 	$.fixture.on = false;
 	$.Model("Test.Thing",{
-		findAll : steal.root.join("jquery/model/test/qunit/findAll.json")
+		findAll : steal.root.join("jquery/model/test/qunit/findAll.json")+''
 	},{});
 	stop();
 	Test.Thing.findAll({},function(things){
@@ -462,4 +462,129 @@ test("identity should replace spaces with underscores", function(){
 	});
 	equals(t.identity(), "task_id_with_spaces")
 });
+
+test("save error args", function(){
+	var Foo = $.Model('Testin.Models.Foo',{
+		create : "/testinmodelsfoos.json"
+	},{
+		
+	})
+	var st = '{type: "unauthorized"}';
+	
+	$.fixture("/testinmodelsfoos.json", function(){
+		return [401,st]
+	});
+	stop();
+	var inst = new Foo({}).save(function(){
+		ok(false, "success should not be called")
+	}, function(jQXHR){
+		ok(true, "error called")
+		ok(jQXHR.getResponseHeader,"jQXHR object")
+		start()
+	})
+	
+	
+	
+});
+
+test("hookup and elements", function(){
+	$.Model('Escaper',{
+		escapeIdentity : true
+	},{});
+	
+	var ul = $('<ul><li></li></ul>'),
+		li = ul.find('li');
+	
+	var esc = new Escaper({id: " some crazy #/ %ing stuff"});
+	
+	li.model(esc);
+	
+	var res  = esc.elements(ul);
+	
+	equals(res.length,1)
+	equals(res[0], li[0])
+})
+
+test('aborting create update and destroy', function(){
+	stop();
+	var delay = $.fixture.delay;
+	$.fixture.delay = 1000;
+	
+	$.fixture("POST /abort", function(){
+		ok(false, "we should not be calling the fixture");
+		return {};
+	})
+	
+	$.Model('Abortion',{
+		create : "POST /abort",
+		update : "POST /abort",
+		destroy: "POST /abort"
+	},{});
+	
+	var deferred = new Abortion({name: "foo"}).save(function(){
+		ok(false, "success create")
+	}, function(){
+		ok(true, "create error called");
+		
+		
+		deferred = new Abortion({name: "foo",id: 5})
+			.save(function(){},function(){
+				ok(true, "error called in update")
+				
+				deferred = new Abortion({name: "foo",id: 5}).destroy(function(){},
+					function(){
+						ok(true,"destroy error called")
+						$.fixture.delay = delay;
+						start();
+					})
+				
+				setTimeout(function(){
+					deferred.abort();
+				},10)
+				
+			})
+		
+		setTimeout(function(){
+		deferred.abort();
+	},10)
+	});
+	setTimeout(function(){
+		deferred.abort();
+	},10)
+	
+	
+});
+
+test("object definitions", function(){
+	
+	$.Model('ObjectDef',{
+		findAll : {
+			url : "/test/place"
+		},
+		findOne : {
+			url : "/objectdef/{id}",
+			timeout : 1000
+		},
+		create : {
+			
+		},
+		update : {
+			
+		},
+		destroy : {
+			
+		}
+	},{})
+	
+	$.fixture("GET /objectdef/{id}", function(original){
+		equals(original.timeout,1000,"timeout set");
+		return {yes: true}
+	});
+	stop();
+	ObjectDef.findOne({id: 5}, function(){
+		start();
+	})
+})
+
+
 

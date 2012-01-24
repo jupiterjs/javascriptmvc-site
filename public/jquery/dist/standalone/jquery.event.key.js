@@ -83,7 +83,7 @@
 	 * listens to and prevents backspaces being pressed in inputs:
 	 * 
 	 *     $("input").keypress(function(ev){
-	 *       if(ev.key() == '\b') {
+	 *       if(ev.keyName() == '\b') {
 	 *        ev.preventDefault();
 	 *       }
 	 *     });
@@ -111,7 +111,7 @@
 	 *  
 	 * @return {String} The string representation of of the key pressed.
 	 */
-	jQuery.Event.prototype.key  = function(){
+	jQuery.Event.prototype.keyName  = function(){
 		var event = this,
 			keycode,
 			test = /\w/;

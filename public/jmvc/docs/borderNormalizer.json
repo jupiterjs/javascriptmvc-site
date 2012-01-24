@@ -1,0 +1,1 @@
+c({"name": "borderNormalizer", "type": "attribute", "comment": "<p>We must take into account the fact that border\nmay not be a number.</p>", "src": "mxui/layout/fit/fit.js", "line": 69, "children": []})

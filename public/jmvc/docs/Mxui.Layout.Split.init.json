@@ -1,1 +1,0 @@
-c({"name": "Mxui.Layout.Split.init", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Layout.Split"], "comment": "<p>Init method called by JMVC base controller.</p>", "src": "mxui/layout/split/split.js", "line": 55, "children": []})

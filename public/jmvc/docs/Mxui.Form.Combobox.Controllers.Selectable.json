@@ -1,0 +1,1 @@
+c({"name": "Mxui.Form.Combobox.Controllers.Selectable", "inherits": "jQuery.Controller", "type": "class", "comment": "<p>Maintains a selectable behavior</p>", "src": "mxui/form/combobox/controllers/selectable_controller.js", "line": 10, "children": ["Mxui.Form.Combobox.Controllers.Selectable.selectNext"]})

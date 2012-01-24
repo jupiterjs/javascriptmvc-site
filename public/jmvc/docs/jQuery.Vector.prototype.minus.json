@@ -1,1 +1,1 @@
-C({"name": "jQuery.Vector.prototype.minus", "params": {}, "ret": {"description": "", "type": "jQuery.Vector"}, "type": "function", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Like plus but subtracts 2 vectors</p>", "src": "../jquery/lang/vector/vector.js", "children": []})
+c({"name": "jQuery.Vector.prototype.minus", "params": {}, "ret": {"description": "", "type": "jQuery.Vector"}, "type": "function", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Like plus but subtracts 2 vectors</p>", "src": "jquery/lang/vector/vector.js", "line": 50, "children": []})

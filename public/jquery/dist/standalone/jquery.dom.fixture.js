@@ -33,7 +33,7 @@
 			var url = settings.fixture;
 			
 			if (/^\/\//.test(url) ) {
-				url = steal.root.join(settings.fixture.substr(2));
+				url = steal.root.mapJoin(settings.fixture.substr(2))+'';
 			}
 			
 			settings.url = url;
@@ -423,9 +423,10 @@
 		// gets data from a url like "/todo/{id}" given "todo/5"
 		_getData : function(fixtureUrl, url){
 			var order = [],
-				res = new RegExp(fixtureUrl.replace(replacer, function(whole, part){
+				fixtureUrlAdjusted = fixtureUrl.replace('.', '\\.').replace('?', '\\?'),
+				res = new RegExp(fixtureUrlAdjusted.replace(replacer, function(whole, part){
 			  		order.push(part)
-			 		 return "([^\/])+"
+			 		 return "([^\/]+)"
 				})+"$").exec(url),
 				data = {};
 			
@@ -891,4 +892,6 @@
 	 *     }
 	 * 
 	 */
+	 //Expose this for fixture debugging
+	 $.fixture.overwrites = overwrites;
 })(jQuery);

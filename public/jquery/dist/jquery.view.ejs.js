@@ -11,48 +11,18 @@
 		replacer: /\{([^\}]+)\}/g,
 		dot: /\./
 	},
+		// gets the nextPart property from current
+		// add - if true and nextPart doesnt exist, create it as an empty object
 		getNext = function(current, nextPart, add){
 			return current[nextPart] !== undefined ? current[nextPart] : ( add && (current[nextPart] = {}) );
 		},
+		// returns true if the object can have properties (no nulls)
 		isContainer = function(current){
 			var type = typeof current;
-			return type && (  type == 'function' || type == 'object' );
+			return current && ( type == 'function' || type == 'object' );
 		},
-		getObject = function( objectName, roots, add ) {
-			
-			var parts = objectName ? objectName.split(regs.dot) : [],
-				length =  parts.length,
-				currents = $.isArray(roots) ? roots : [roots || window],
-				current,
-				ret, 
-				i,
-				c = 0,
-				type;
-			
-			if(length == 0){
-				return currents[0];
-			}
-			while(current = currents[c++]){
-				for (i =0; i < length - 1 && isContainer(current); i++ ) {
-					current = getNext(current, parts[i], add);
-				}
-				if( isContainer(current) ) {
-					
-					ret = getNext(current, parts[i], add); 
-					
-					if( ret !== undefined ) {
-						
-						if ( add === false ) {
-							delete current[parts[i]];
-						}
-						return ret;
-						
-					}
-					
-				}
-			}
-		},
-
+		// a reference
+		getObject,
 		/** 
 		 * @class jQuery.String
 		 * @parent jquerymx.lang
@@ -79,10 +49,11 @@
 			
 			/**
 			 * @function getObject
-			 * Gets an object from a string.
+			 * Gets an object from a string.  It can also modify objects on the
+			 * 'object path' by removing or adding properties.
 			 * 
 			 *     Foo = {Bar: {Zar: {"Ted"}}}
-		 	 *     $.String.getobject("Foo.Bar.Zar") //-> "Ted"
+		 	 *     $.String.getObject("Foo.Bar.Zar") //-> "Ted"
 			 * 
 			 * @param {String} name the name of the object to look for
 			 * @param {Array} [roots] an array of root objects to look for the 
@@ -92,7 +63,49 @@
 			 *  not modify the root object
 			 * @return {Object} The object.
 			 */
-			getObject : getObject,
+			getObject : getObject = function( name, roots, add ) {
+			
+				// the parts of the name we are looking up
+				// ['App','Models','Recipe']
+				var parts = name ? name.split(regs.dot) : [],
+					length =  parts.length,
+					current,
+					ret, 
+					i,
+					r = 0,
+					type;
+				
+				// make sure roots is an array
+				roots = $.isArray(roots) ? roots : [roots || window];
+				
+				if(length == 0){
+					return roots[0];
+				}
+				// for each root, mark it as current
+				while( current = roots[r++] ) {
+					// walk current to the 2nd to last object
+					// or until there is not a container
+					for (i =0; i < length - 1 && isContainer(current); i++ ) {
+						current = getNext(current, parts[i], add);
+					}
+					// if we can get a property from the 2nd to last object
+					if( isContainer(current) ) {
+						
+						// get (and possibly set) the property
+						ret = getNext(current, parts[i], add); 
+						
+						// if there is a value, we exit
+						if( ret !== undefined ) {
+							// if add is false, delete the property
+							if ( add === false ) {
+								delete current[parts[i]];
+							}
+							return ret;
+							
+						}
+					}
+				}
+			},
 			/**
 			 * Capitalizes a string
 			 * @param {String} s the string.
@@ -163,18 +176,21 @@
 			 * @param {Boolean} [remove] if a match is found, remove the property from the object
 			 */
 			sub: function( s, data, remove ) {
-				var obs = [];
+				var obs = [],
+					remove = typeof remove == 'boolean' ? !remove : remove;
 				obs.push(s.replace(regs.replacer, function( whole, inside ) {
 					//convert inside to type
-					var ob = getObject(inside, data, typeof remove == 'boolean' ? !remove : remove),
-						type = typeof ob;
-					if((type === 'object' || type === 'function') && type !== null){
+					var ob = getObject(inside, data, remove);
+					
+					// if a container, push into objs (which will return objects found)
+					if( isContainer(ob) ){
 						obs.push(ob);
 						return "";
 					}else{
 						return ""+ob;
 					}
 				}));
+				
 				return obs.length <= 1 ? obs[0] : obs;
 			},
 			_regs : regs
@@ -182,10 +198,11 @@
 })(jQuery);
 (function( $ ) {
 
-	// converts to an ok dom id
+	// a path like string into something that's ok for an element ID
 	var toId = function( src ) {
 		return src.replace(/^\/\//, "").replace(/[\/\.]/g, "_");
 	},
+		makeArray = $.makeArray,
 		// used for hookup ids
 		id = 1;
 	// this might be useful for testing if html
@@ -196,6 +213,8 @@
 	 * @plugin jquery/view
 	 * @test jquery/view/qunit.html
 	 * @download dist/jquery.view.js
+	 * 
+	 * @description A JavaScript template framework.
 	 * 
 	 * View provides a uniform interface for using templates with 
 	 * jQuery. When template engines [jQuery.View.register register] 
@@ -243,7 +262,7 @@
 	 * <tr><td>[jQuery.fn.before before] </td><td> <code>$('#bar').before('temp.jaml',{});</code></td></tr>
 	 * <tr><td>[jQuery.fn.html html] </td><td> <code>$('#bar').html('temp.jaml',{});</code></td></tr>
 	 * <tr><td>[jQuery.fn.prepend prepend] </td><td> <code>$('#bar').prepend('temp.jaml',{});</code></td></tr>
-	 * <tr><td>[jQuery.fn.replaceWith replaceWith] </td><td> <code>$('#bar').replaceWidth('temp.jaml',{});</code></td></tr>
+	 * <tr><td>[jQuery.fn.replaceWith replaceWith] </td><td> <code>$('#bar').replaceWith('temp.jaml',{});</code></td></tr>
 	 * <tr><td>[jQuery.fn.text text] </td><td> <code>$('#bar').text('temp.jaml',{});</code></td></tr>
 	 * </table>
 	 * 
@@ -398,37 +417,12 @@
 	 * @param {Object} [callback] Optional callback function.  If present, the template is 
 	 * retrieved asynchronously.  This is a good idea if you aren't compressing the templates
 	 * into your view.
-	 * @return {String} The rendered result of the view or if deferreds are passed, a deferred that will contain
+	 * @return {String} The rendered result of the view or if deferreds 
+	 * are passed, a deferred that will resolve to
 	 * the rendered result of the view.
 	 */
-
-	var $view, render, checkText, get, getRenderer, isDeferred = function( obj ) {
-		return obj && $.isFunction(obj.always) // check if obj is a $.Deferred
-	},
-		// gets an array of deferreds from an object
-		// this only goes one level deep
-		getDeferreds = function( data ) {
-			var deferreds = [];
-
-			// pull out deferreds
-			if ( isDeferred(data) ) {
-				return [data]
-			} else {
-				for ( var prop in data ) {
-					if ( isDeferred(data[prop]) ) {
-						deferreds.push(data[prop]);
-					}
-				}
-			}
-			return deferreds;
-		},
-		// gets the useful part of deferred
-		// this is for Models and $.ajax that give arrays
-		usefulPart = function( resolved ) {
-			return $.isArray(resolved) && resolved.length === 3 && resolved[1] === 'success' ? resolved[0] : resolved
-		};
-
-	$view = $.View = function( view, data, helpers, callback ) {
+	var $view = $.View = function( view, data, helpers, callback ) {
+		// if helpers is a function, it is actually a callback
 		if ( typeof helpers === 'function' ) {
 			callback = helpers;
 			helpers = undefined;
@@ -447,40 +441,56 @@
 
 			// wait for the view and all deferreds to finish
 			$.when.apply($, deferreds).then(function( resolved ) {
-				var objs = $.makeArray(arguments),
+				// get all the resolved deferreds
+				var objs = makeArray(arguments),
+					// renderer is last [0] is the data
 					renderer = objs.pop()[0],
-					result; //get the view render function
+					// the result of the template rendering with data
+					result; 
+				
 				// make data look like the resolved deferreds
 				if ( isDeferred(data) ) {
 					data = usefulPart(resolved);
 				}
 				else {
+					// go through each prop in data again,
+					// replace the defferreds with what they resolved to
 					for ( var prop in data ) {
 						if ( isDeferred(data[prop]) ) {
 							data[prop] = usefulPart(objs.shift());
 						}
 					}
 				}
+				// get the rendered result
 				result = renderer(data, helpers);
 
 				//resolve with the rendered view
-				deferred.resolve(result); // this does not work as is...
+				deferred.resolve(result); 
+				// if there's a callback, call it back with the result
 				callback && callback(result);
 			});
 			// return the deferred ....
 			return deferred.promise();
 		}
 		else {
-
-			var response, async = typeof callback === "function",
+			// no deferreds, render this bad boy
+			var response, 
+				// if there's a callback function
+				async = typeof callback === "function",
+				// get the 'view' type
 				deferred = get(view, async);
 
+			// if we are async, 
 			if ( async ) {
+				// return the deferred
 				response = deferred;
+				// and callback callback with the rendered result
 				deferred.done(function( renderer ) {
 					callback(renderer(data, helpers))
 				})
 			} else {
+				// otherwise, the deferred is complete, so
+				// set response to the result of the rendering
 				deferred.done(function( renderer ) {
 					response = renderer(data, helpers);
 				});
@@ -488,32 +498,87 @@
 
 			return response;
 		}
-	};
-	// makes sure there's a template
-	checkText = function( text, url ) {
-		if (!text.match(/[^\s]/) ) {
-			
-			throw "$.View ERROR: There is no template or an empty template at " + url;
-		}
-	};
-	get = function( url, async ) {
-		return $.ajax({
-			url: url,
-			dataType: "view",
-			async: async
-		});
-	};
+	}, 
+		// makes sure there's a template, if not, has steal provide a warning
+		checkText = function( text, url ) {
+			if (!text.match(/[^\s]/) ) {
+				
+				throw "$.View ERROR: There is no template or an empty template at " + url;
+			}
+		},
+		// returns a 'view' renderer deferred
+		// url - the url to the view template
+		// async - if the ajax request should be synchronous
+		get = function( url, async ) {
+			return $.ajax({
+				url: url,
+				dataType: "view",
+				async: async
+			});
+		},
+		// returns true if something looks like a deferred
+		isDeferred = function( obj ) {
+			return obj && $.isFunction(obj.always) // check if obj is a $.Deferred
+		},
+		// gets an array of deferreds from an object
+		// this only goes one level deep
+		getDeferreds = function( data ) {
+			var deferreds = [];
+
+			// pull out deferreds
+			if ( isDeferred(data) ) {
+				return [data]
+			} else {
+				for ( var prop in data ) {
+					if ( isDeferred(data[prop]) ) {
+						deferreds.push(data[prop]);
+					}
+				}
+			}
+			return deferreds;
+		},
+		// gets the useful part of deferred
+		// this is for Models and $.ajax that resolve to array (with success and such)
+		// returns the useful, content part
+		usefulPart = function( resolved ) {
+			return $.isArray(resolved) && resolved.length === 3 && resolved[1] === 'success' ? resolved[0] : resolved
+		};
+
+
 
 	// you can request a view renderer (a function you pass data to and get html)
+	// Creates a 'view' transport.  These resolve to a 'view' renderer
+	// a 'view' renderer takes data and returns a string result.
+	// For example: 
+	//
+	//  $.ajax({dataType : 'view', src: 'foo.ejs'}).then(function(renderer){
+	//     renderer({message: 'hello world'})
+	//  })
 	$.ajaxTransport("view", function( options, orig ) {
-		var view = orig.url,
-			suffix = view.match(/\.[\w\d]+$/),
-			type, el, id, renderer, url = view,
-			jqXHR, response = function( text ) {
+		// the url (or possibly id) of the view content
+		var url = orig.url,
+			// check if a suffix exists (ex: "foo.ejs")
+			suffix = url.match(/\.[\w\d]+$/),
+			type, 
+			// if we are reading a script element for the content of the template
+			// el will be set to that script element
+			el, 
+			// a unique identifier for the view (used for caching)
+			// this is typically derived from the element id or
+			// the url for the template
+			id, 
+			// the AJAX request used to retrieve the template content
+			jqXHR, 
+			// used to generate the response 
+			response = function( text ) {
+				// get the renderer function
 				var func = type.renderer(id, text);
+				// cache if if we are caching
 				if ( $view.cache ) {
 					$view.cached[id] = func;
 				}
+				// return the objects for the response's dataTypes 
+				// (in this case view)
 				return {
 					view: func
 				};
@@ -521,41 +586,47 @@
 
 		// if we have an inline template, derive the suffix from the 'text/???' part
 		// this only supports '<script></script>' tags
-		if ( el = document.getElementById(view) ) {
-			suffix = el.type.match(/\/[\d\w]+$/)[0].replace(/^\//, '.');
+		if ( el = document.getElementById(url) ) {
+			suffix = "."+el.type.match(/\/(x\-)?(.+)/)[2];
 		}
 
-		//if there is no suffix, add one
+		// if there is no suffix, add one
 		if (!suffix ) {
 			suffix = $view.ext;
 			url = url + $view.ext;
 		}
 
-		//convert to a unique and valid id
+		// convert to a unique and valid id
 		id = toId(url);
 
-		//if a absolute path, use steal to get it
+		// if a absolute path, use steal to get it
+		// you should only be using // if you are using steal
 		if ( url.match(/^\/\//) ) {
-			if ( typeof steal === "undefined" ) {
-				url = "/" + url.substr(2);
-			}
-			else {
-				url = steal.root.mapJoin(url.substr(2));
-			}
+			var sub = url.substr(2);
+			url = typeof steal === "undefined" ? 
+				url = "/" + sub : 
+				steal.root.mapJoin(sub) +'';
 		}
 
-		//get the template engine
+		//set the template engine type 
 		type = $view.types[suffix];
 
+		// return the ajax transport contract: http://api.jquery.com/extending-ajax/
 		return {
 			send: function( headers, callback ) {
+				// if it is cached, 
 				if ( $view.cached[id] ) {
+					// return the catched renderer
 					return callback(200, "success", {
 						view: $view.cached[id]
 					});
+				
+				// otherwise if we are getting this from a script elment
 				} else if ( el ) {
+					// resolve immediately with the element's innerHTML
 					callback(200, "success", response(el.innerHTML));
 				} else {
+					// make an ajax request for text
 					jqXHR = $.ajax({
 						async: orig.async,
 						url: url,
@@ -565,7 +636,9 @@
 							callback(404);
 						},
 						success: function( text ) {
+							// make sure we got some text back
 							checkText(text, url);
+							// cache and send back text
 							callback(200, "success", response(text))
 						}
 					});
@@ -662,9 +735,9 @@
 			this.types["." + info.suffix] = info;
 
 			if ( window.steal ) {
-				steal.type(info.suffix + " view js", function( options, orig, success, error ) {
+				steal.type(info.suffix + " view js", function( options, success, error ) {
 					var type = $view.types["." + options.type],
-						id = toId(options.rootSrc);
+						id = toId(options.rootSrc+'');
 
 					options.text = type.script(id, options.text)
 					success();
@@ -703,9 +776,9 @@
 
 	});
 	if ( window.steal ) {
-		steal.type("view js", function( options, orig, success, error ) {
+		steal.type("view js", function( options, success, error ) {
 			var type = $view.types["." + options.type],
-				id = toId(options.rootSrc);
+				id = toId(options.rootSrc+'');
 
 			options.text = "steal('" + (type.plugin || "jquery/view/" + options.type) + "').then(function($){" + "$.View.preload('" + id + "'," + options.text + ");\n})";
 			success();
@@ -714,15 +787,26 @@
 
 	//---- ADD jQUERY HELPERS -----
 	//converts jquery functions to use views	
-	var convert, modify, isTemplate, isHTML, getCallback, hookupView, funcs;
+	var convert, modify, isTemplate, isHTML, isDOM, getCallback, hookupView, funcs,
+		// text and val cannot produce an element, so don't run hookups on them
+		noHookup = {'val':true,'text':true};
 
 	convert = function( func_name ) {
+		// save the old jQuery helper
 		var old = $.fn[func_name];
 
+		// replace it wiht our new helper
 		$.fn[func_name] = function() {
-			var args = $.makeArray(arguments),
-				callbackNum, callback, self = this,
+			
+			var args = makeArray(arguments),
+				callbackNum, 
+				callback, 
+				self = this,
 				result;
+			
+			// if the first arg is a deferred
+			// wait until it finishes, and call
+			// modify with the result
 			if ( isDeferred(args[0]) ) {
 				args[0].done(function( res ) {
 					modify.call(self, [res], old);
@@ -742,22 +826,28 @@
 					$view.apply($view, args);
 					return this;
 				}
+				// call view with args (there might be deferreds)
 				result = $view.apply($view, args);
+				
+				// if we got a string back
 				if (!isDeferred(result) ) {
+					// we are going to call the old method with that string
 					args = [result];
 				} else {
+					// if there is a deferred, wait until it is done before calling modify
 					result.done(function( res ) {
 						modify.call(self, [res], old);
 					})
 					return this;
 				}
 			}
-			return modify.call(this, args, old);
-
+			return noHookup[func_name] ? old.apply(this,args) : 
+				modify.call(this, args, old);
 		};
 	};
 
-	// modifies the html of the element
+	// modifies the content of the element
+	// but also will run any hookup
 	modify = function( args, old ) {
 		var res, stub, hooks;
 
@@ -784,15 +874,27 @@
 	};
 
 	// returns true or false if the args indicate a template is being used
+	// $('#foo').html('/path/to/template.ejs',{data})
+	// in general, we want to make sure the first arg is a string
+	// and the second arg is data
 	isTemplate = function( args ) {
+		// save the second arg type
 		var secArgType = typeof args[1];
-
-		return typeof args[0] == "string" && (secArgType == 'object' || secArgType == 'function') && !args[1].nodeType && !args[1].jquery;
+		
+		// the first arg is a string
+		return typeof args[0] == "string" && 
+				// the second arg is an object or function
+		       (secArgType == 'object' || secArgType == 'function') && 
+			   // but it is not a dom element
+			   !isDOM(args[1]);
 	};
-
+	// returns true if the arg is a jQuery object or HTMLElement
+	isDOM = function(arg){
+		return arg.nodeType || arg.jquery
+	};
 	// returns whether the argument is some sort of HTML data
 	isHTML = function( arg ) {
-		if ( arg.jquery || arg.nodeType === 1 ) {
+		if ( isDOM(arg) ) {
 			// if jQuery object or DOM node we're good
 			return true;
 		} else if ( typeof arg === "string" ) {
@@ -805,7 +907,7 @@
 		}
 	};
 
-	//returns the callback if there is one (for async view use)
+	//returns the callback arg number if there is one (for async view use)
 	getCallback = function( args ) {
 		return typeof args[3] === 'function' ? 3 : typeof args[2] === 'function' && 2;
 	};
@@ -852,7 +954,7 @@
 	/**
 	 *  @add jQuery.fn
 	 */
-	funcs = [
+	$.each([
 	/**
 	 *  @function prepend
 	 *  @parent jQuery.View
@@ -966,12 +1068,12 @@
 	 *  If rendering a view template this parameter always has to be present
 	 *  (use the empty object initializer {} for no data).
 	 */
-	"replaceWith", "val"];
+	"replaceWith", "val"],function(i, func){
+		convert(func);
+	});
 
 	//go through helper funcs and convert
-	for ( var i = 0; i < funcs.length; i++ ) {
-		convert(funcs[i]);
-	}
+
 
 })(jQuery);
 (function( $ ) {
@@ -1010,258 +1112,328 @@
 	};
 })(jQuery);
 (function( $ ) {
+
+	// HELPER METHODS ==============
 	var myEval = function( script ) {
 		eval(script);
 	},
-		chop = function( string ) {
-			return string.substr(0, string.length - 1);
-		},
+		// removes the last character from a string
+		// this is no longer needed
+		// chop = function( string ) {
+		//	return string.substr(0, string.length - 1);
+		//},
 		rSplit = $.String.rsplit,
 		extend = $.extend,
 		isArray = $.isArray,
+		// regular expressions for caching
+		returnReg = /\r\n/g,
+		retReg = /\r/g,
+		newReg = /\n/g,
+		nReg = /\n/,
+		slashReg = /\\/g,
+		quoteReg = /"/g,
+		singleQuoteReg = /'/g,
+		tabReg = /\t/g,
+		leftBracket = /\{/g,
+		rightBracket = /\}/g,
+		quickFunc = /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
+		// escapes characters starting with \
 		clean = function( content ) {
-			var converted = content.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/"/g, '\\"').replace(/\t/g, '\\t');
-			return converted;
+			return content.replace(slashReg, '\\\\').replace(newReg, '\\n').replace(quoteReg, '\\"').replace(tabReg, '\\t');
 		},
-		// from prototype  http://www.prototypejs.org/
+		// escapes html
+		// - from prototype  http://www.prototypejs.org/
 		escapeHTML = function( content ) {
-			return content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&#34;').replace(/'/g, "&#39;");
+			return content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quoteReg, '&#34;').replace(singleQuoteReg, "&#39;");
 		},
+		$View = $.View,
+		bracketNum = function(content){
+			var lefts = content.match(leftBracket),
+				rights = content.match(rightBracket);
+				
+			return (lefts ? lefts.length : 0) - 
+				   (rights ? rights.length : 0);
+		},
+		/**
+		 * @class jQuery.EJS
+		 * 
+		 * @plugin jquery/view/ejs
+		 * @parent jQuery.View
+		 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/view/ejs/ejs.js
+		 * @test jquery/view/ejs/qunit.html
+		 * 
+		 * 
+		 * Ejs provides <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">ERB</a> 
+		 * style client side templates.  Use them with controllers to easily build html and inject
+		 * it into the DOM.
+		 * 
+		 * ###  Example
+		 * 
+		 * The following generates a list of tasks:
+		 * 
+		 * @codestart html
+		 * &lt;ul>
+		 * &lt;% for(var i = 0; i < tasks.length; i++){ %>
+		 *     &lt;li class="task &lt;%= tasks[i].identity %>">&lt;%= tasks[i].name %>&lt;/li>
+		 * &lt;% } %>
+		 * &lt;/ul>
+		 * @codeend
+		 * 
+		 * For the following examples, we assume this view is in <i>'views\tasks\list.ejs'</i>.
+		 * 
+		 * 
+		 * ## Use
+		 * 
+		 * ### Loading and Rendering EJS:
+		 * 
+		 * You should use EJS through the helper functions [jQuery.View] provides such as:
+		 * 
+		 *   - [jQuery.fn.after after]
+		 *   - [jQuery.fn.append append]
+		 *   - [jQuery.fn.before before]
+		 *   - [jQuery.fn.html html], 
+		 *   - [jQuery.fn.prepend prepend],
+		 *   - [jQuery.fn.replaceWith replaceWith], and 
+		 *   - [jQuery.fn.text text].
+		 * 
+		 * or [jQuery.Controller.prototype.view].
+		 * 
+		 * ### Syntax
+		 * 
+		 * EJS uses 5 types of tags:
+		 * 
+		 *   - <code>&lt;% CODE %&gt;</code> - Runs JS Code.
+		 *     For example:
+		 *     
+		 *         <% alert('hello world') %>
+		 *     
+		 *   - <code>&lt;%= CODE %&gt;</code> - Runs JS Code and writes the _escaped_ result into the result of the template.
+		 *     For example:
+		 *     
+		 *         <h1><%= 'hello world' %></h1>
+		 *         
+		 *   - <code>&lt;%== CODE %&gt;</code> - Runs JS Code and writes the _unescaped_ result into the result of the template.
+		 *     For example:
+		 *     
+		 *         <h1><%== '<span>hello world</span>' %></h1>
+		 *         
+		 *   - <code>&lt;%%= CODE %&gt;</code> - Writes <%= CODE %> to the result of the template.  This is very useful for generators.
+		 *     
+		 *         <%%= 'hello world' %>
+		 *         
+		 *   - <code>&lt;%# CODE %&gt;</code> - Used for comments.  This does nothing.
+		 *     
+		 *         <%# 'hello world' %>
+		 *        
+		 * ## Hooking up controllers
+		 * 
+		 * After drawing some html, you often want to add other widgets and plugins inside that html.
+		 * View makes this easy.  You just have to return the Contoller class you want to be hooked up.
+		 * 
+		 * @codestart
+		 * &lt;ul &lt;%= Mxui.Tabs%>>...&lt;ul>
+		 * @codeend
+		 * 
+		 * You can even hook up multiple controllers:
+		 * 
+		 * @codestart
+		 * &lt;ul &lt;%= [Mxui.Tabs, Mxui.Filler]%>>...&lt;ul>
+		 * @codeend
+		 * 
+		 * To hook up a controller with options or any other jQuery plugin use the
+		 * [jQuery.EJS.Helpers.prototype.plugin | plugin view helper]:
+		 * 
+		 * @codestart
+		 * &lt;ul &lt;%= plugin('mxui_tabs', { option: 'value' }) %>>...&lt;ul>
+		 * @codeend
+		 * 
+		 * Don't add a semicolon when using view helpers.
+		 * 
+		 * 
+		 * <h2>View Helpers</h2>
+		 * View Helpers return html code.  View by default only comes with 
+		 * [jQuery.EJS.Helpers.prototype.view view] and [jQuery.EJS.Helpers.prototype.text text].
+		 * You can include more with the view/helpers plugin.  But, you can easily make your own!
+		 * Learn how in the [jQuery.EJS.Helpers Helpers] page.
+		 * 
+		 * @constructor Creates a new view
+		 * @param {Object} options A hash with the following options
+		 * <table class="options">
+		 *     <tbody><tr><th>Option</th><th>Default</th><th>Description</th></tr>
+		 *     <tr>
+		 *      <td>text</td>
+		 *      <td>&nbsp;</td>
+		 *      <td>uses the provided text as the template. Example:<br/><code>new View({text: '&lt;%=user%>'})</code>
+		 *      </td>
+		 *     </tr>
+		 *     <tr>
+		 *      <td>type</td>
+		 *      <td>'<'</td>
+		 *      <td>type of magic tags.  Options are '&lt;' or '['
+		 *      </td>
+		 *     </tr>
+		 *     <tr>
+		 *      <td>name</td>
+		 *      <td>the element ID or url </td>
+		 *      <td>an optional name that is used for caching.
+		 *      </td>
+		 *     </tr>
+		 *    </tbody></table>
+		 */
 		EJS = function( options ) {
-			//returns a renderer function
+			// If called without new, return a function that 
+			// renders with data and helpers like
+			// EJS({text: '<%= message %>'})({message: 'foo'});
+			// this is useful for steal's build system
 			if ( this.constructor != EJS ) {
 				var ejs = new EJS(options);
 				return function( data, helpers ) {
 					return ejs.render(data, helpers);
 				};
 			}
-			//so we can set the processor
+			// if we get a function directly, it probably is coming from
+			// a steal-packaged view
 			if ( typeof options == "function" ) {
-				this.template = {};
-				this.template.process = options;
+				this.template = {
+					fn: options
+				};
 				return;
 			}
 			//set options on self
 			extend(this, EJS.options, options);
 			this.template = compile(this.text, this.type, this.name);
 		};
-	/**
-	 * @class jQuery.EJS
-	 * 
-	 * @plugin jquery/view/ejs
-	 * @parent jQuery.View
-	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/view/ejs/ejs.js
-	 * @test jquery/view/ejs/qunit.html
-	 * 
-	 * 
-	 * Ejs provides <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">ERB</a> 
-	 * style client side templates.  Use them with controllers to easily build html and inject
-	 * it into the DOM.
-	 * 
-	 * ###  Example
-	 * 
-	 * The following generates a list of tasks:
-	 * 
-	 * @codestart html
-	 * &lt;ul>
-	 * &lt;% for(var i = 0; i < tasks.length; i++){ %>
-	 *     &lt;li class="task &lt;%= tasks[i].identity %>">&lt;%= tasks[i].name %>&lt;/li>
-	 * &lt;% } %>
-	 * &lt;/ul>
-	 * @codeend
-	 * 
-	 * For the following examples, we assume this view is in <i>'views\tasks\list.ejs'</i>.
-	 * 
-	 * 
-	 * ## Use
-	 * 
-	 * ### Loading and Rendering EJS:
-	 * 
-	 * You should use EJS through the helper functions [jQuery.View] provides such as:
-	 * 
-	 *   - [jQuery.fn.after after]
-	 *   - [jQuery.fn.append append]
-	 *   - [jQuery.fn.before before]
-	 *   - [jQuery.fn.html html], 
-	 *   - [jQuery.fn.prepend prepend],
-	 *   - [jQuery.fn.replaceWith replaceWith], and 
-	 *   - [jQuery.fn.text text].
-	 * 
-	 * or [jQuery.Controller.prototype.view].
-	 * 
-	 * ### Syntax
-	 * 
-	 * EJS uses 5 types of tags:
-	 * 
-	 *   - <code>&lt;% CODE %&gt;</code> - Runs JS Code.
-	 *     For example:
-	 *     
-	 *         <% alert('hello world') %>
-	 *     
-	 *   - <code>&lt;%= CODE %&gt;</code> - Runs JS Code and writes the _escaped_ result into the result of the template.
-	 *     For example:
-	 *     
-	 *         <h1><%= 'hello world' %></h1>
-	 *         
-	 *   - <code>&lt;%== CODE %&gt;</code> - Runs JS Code and writes the _unescaped_ result into the result of the template.
-	 *     For example:
-	 *     
-	 *         <h1><%== '<span>hello world</span>' %></h1>
-	 *         
-	 *   - <code>&lt;%%= CODE %&gt;</code> - Writes <%= CODE %> to the result of the template.  This is very useful for generators.
-	 *     
-	 *         <%%= 'hello world' %>
-	 *         
-	 *   - <code>&lt;%# CODE %&gt;</code> - Used for comments.  This does nothing.
-	 *     
-	 *         <%# 'hello world' %>
-	 *        
-	 * ## Hooking up controllers
-	 * 
-	 * After drawing some html, you often want to add other widgets and plugins inside that html.
-	 * View makes this easy.  You just have to return the Contoller class you want to be hooked up.
-	 * 
-	 * @codestart
-	 * &lt;ul &lt;%= Mxui.Tabs%>>...&lt;ul>
-	 * @codeend
-	 * 
-	 * You can even hook up multiple controllers:
-	 * 
-	 * @codestart
-	 * &lt;ul &lt;%= [Mxui.Tabs, Mxui.Filler]%>>...&lt;ul>
-	 * @codeend
-	 * 
-	 * <h2>View Helpers</h2>
-	 * View Helpers return html code.  View by default only comes with 
-	 * [jQuery.EJS.Helpers.prototype.view view] and [jQuery.EJS.Helpers.prototype.text text].
-	 * You can include more with the view/helpers plugin.  But, you can easily make your own!
-	 * Learn how in the [jQuery.EJS.Helpers Helpers] page.
-	 * 
-	 * @constructor Creates a new view
-	 * @param {Object} options A hash with the following options
-	 * <table class="options">
-	 *     <tbody><tr><th>Option</th><th>Default</th><th>Description</th></tr>
-	 *     <tr>
-	 *      <td>url</td>
-	 *      <td>&nbsp;</td>
-	 *      <td>loads the template from a file.  This path should be relative to <i>[jQuery.root]</i>.
-	 *      </td>
-	 *     </tr>
-	 *     <tr>
-	 *      <td>text</td>
-	 *      <td>&nbsp;</td>
-	 *      <td>uses the provided text as the template. Example:<br/><code>new View({text: '&lt;%=user%>'})</code>
-	 *      </td>
-	 *     </tr>
-	 *     <tr>
-	 *      <td>element</td>
-	 *      <td>&nbsp;</td>
-	 *      <td>loads a template from the innerHTML or value of the element.
-	 *      </td>
-	 *     </tr>
-	 *     <tr>
-	 *      <td>type</td>
-	 *      <td>'<'</td>
-	 *      <td>type of magic tags.  Options are '&lt;' or '['
-	 *      </td>
-	 *     </tr>
-	 *     <tr>
-	 *      <td>name</td>
-	 *      <td>the element ID or url </td>
-	 *      <td>an optional name that is used for caching.
-	 *      </td>
-	 *     </tr>
-	 *     <tr>
-	 *      <td>cache</td>
-	 *      <td>true in production mode, false in other modes</td>
-	 *      <td>true to cache template.
-	 *      </td>
-	 *     </tr>
-	 *     
-	 *    </tbody></table>
-	 */
-	$.EJS = EJS;
+	// add EJS to jQuery if it exists
+	window.jQuery && (jQuery.EJS = EJS);
 	/** 
 	 * @Prototype
 	 */
-	EJS.prototype = {
-		constructor: EJS,
-		/**
-		 * Renders an object with extra view helpers attached to the view.
-		 * @param {Object} object data to be rendered
-		 * @param {Object} extra_helpers an object with additonal view helpers
-		 * @return {String} returns the result of the string
-		 */
-		render: function( object, extraHelpers ) {
-			object = object || {};
-			this._extra_helpers = extraHelpers;
-			var v = new EJS.Helpers(object, extraHelpers || {});
-			return this.template.process.call(object, object, v);
-		}
-	};
-	/* @Static */
-
-
-	EJS.
+	EJS.prototype.
 	/**
-	 * Used to convert what's in &lt;%= %> magic tags to a string
-	 * to be inserted in the rendered output.
+	 * Renders an object with view helpers attached to the view.
 	 * 
-	 * Typically, it's a string, and the string is just inserted.  However,
-	 * if it's a function or an object with a hookup method, it can potentially be 
-	 * be ran on the element after it's inserted into the page.
-	 * 
-	 * This is a very nice way of adding functionality through the view.
-	 * Usually this is done with [jQuery.EJS.Helpers.prototype.plugin]
-	 * but the following fades in the div element after it has been inserted:
-	 * 
-	 * @codestart
-	 * &lt;%= function(el){$(el).fadeIn()} %>
-	 * @codeend
-	 * 
-	 * @param {String|Object|Function} input the value in between the
-	 * write majic tags: &lt;%= %>
-	 * @return {String} returns the content to be added to the rendered
-	 * output.  The content is different depending on the type:
-	 * 
-	 *   * string - a bac
-	 *   * foo - bar
+	 *     new EJS({text: "<%= message %>"}).render({
+	 *       message: "foo"
+	 *     },{helper: function(){ ... }})
+	 *     
+	 * @param {Object} object data to be rendered
+	 * @param {Object} [extraHelpers] an object with view helpers
+	 * @return {String} returns the result of the string
 	 */
-	text = function( input ) {
-		if ( typeof input == 'string' ) {
-			return input;
-		}
-		if ( input === null || input === undefined ) {
-			return '';
-		}
-		var hook = (input.hookup &&
-		function( el, id ) {
-			input.hookup.call(input, el, id);
-		}) || (typeof input == 'function' && input) || (isArray(input) &&
-		function( el, id ) {
-			for ( var i = 0; i < input.length; i++ ) {
-				var stub;
-				stub = input[i].hookup ? input[i].hookup(el, id) : input[i](el, id);
-			}
-		});
-		if ( hook ) {
-			return "data-view-id='" + $.View.hookup(hook) + "'";
-		}
-		return input.toString ? input.toString() : "";
+	render = function( object, extraHelpers ) {
+		object = object || {};
+		this._extra_helpers = extraHelpers;
+		var v = new EJS.Helpers(object, extraHelpers || {});
+		return this.template.fn.call(object, object, v);
 	};
-	EJS.clean = function( text ) {
-		//return sanatized text
-		if ( typeof text == 'string' ) {
-			return escapeHTML(text);
-		} else if ( typeof text == 'number' ) {
-			return text;
-		} else {
-			return EJS.text(text);
+	/**
+	 * @Static
+	 */
+
+	extend(EJS, {
+		/**
+		 * Used to convert what's in &lt;%= %> magic tags to a string
+		 * to be inserted in the rendered output.
+		 * 
+		 * Typically, it's a string, and the string is just inserted.  However,
+		 * if it's a function or an object with a hookup method, it can potentially be 
+		 * be ran on the element after it's inserted into the page.
+		 * 
+		 * This is a very nice way of adding functionality through the view.
+		 * Usually this is done with [jQuery.EJS.Helpers.prototype.plugin]
+		 * but the following fades in the div element after it has been inserted:
+		 * 
+		 * @codestart
+		 * &lt;%= function(el){$(el).fadeIn()} %>
+		 * @codeend
+		 * 
+		 * @param {String|Object|Function} input the value in between the
+		 * write magic tags: &lt;%= %>
+		 * @return {String} returns the content to be added to the rendered
+		 * output.  The content is different depending on the type:
+		 * 
+		 *   * string - the original string
+		 *   * null or undefined - the empty string ""
+		 *   * an object with a hookup method - the attribute "data-view-id='XX'", where XX is a hookup number for jQuery.View
+		 *   * a function - the attribute "data-view-id='XX'", where XX is a hookup number for jQuery.View
+		 *   * an array - the attribute "data-view-id='XX'", where XX is a hookup number for jQuery.View
+		 */
+		text: function( input ) {
+			// if it's a string, return
+			if ( typeof input == 'string' ) {
+				return input;
+			}
+			// if has no value
+			if ( input === null || input === undefined ) {
+				return '';
+			}
+
+			// if it's an object, and it has a hookup method
+			var hook = (input.hookup &&
+			// make a function call the hookup method
+
+			function( el, id ) {
+				input.hookup.call(input, el, id);
+			}) ||
+			// or if it's a function, just use the input
+			(typeof input == 'function' && input) ||
+			// of it its an array, make a function that calls hookup or the function
+			// on each item in the array
+			(isArray(input) &&
+			function( el, id ) {
+				for ( var i = 0; i < input.length; i++ ) {
+					input[i].hookup ? input[i].hookup(el, id) : input[i](el, id);
+				}
+			});
+			// finally, if there is a funciton to hookup on some dom
+			// pass it to hookup to get the data-view-id back
+			if ( hook ) {
+				return "data-view-id='" + $View.hookup(hook) + "'";
+			}
+			// finally, if all else false, toString it
+			return input.toString ? input.toString() : "";
+		},
+		/**
+		 * Escapes the text provided as html if it's a string.  
+		 * Otherwise, the value is passed to EJS.text(text).
+		 * 
+		 * @param {String|Object|Array|Function} text to escape.  Otherwise,
+		 * the result of [jQuery.EJS.text] is returned.
+		 * @return {String} the escaped text or likely a $.View data-view-id attribute.
+		 */
+		clean: function( text ) {
+			//return sanatized text
+			if ( typeof text == 'string' ) {
+				return escapeHTML(text);
+			} else if ( typeof text == 'number' ) {
+				return text;
+			} else {
+				return EJS.text(text);
+			}
+		},
+		/**
+		 * @attribute options
+		 * Sets default options for all views.
+		 * 
+		 *     $.EJS.options.type = '['
+		 * 
+		 * Only one option is currently supported: type.
+		 * 
+		 * Type is the left hand magic tag.
+		 */
+		options: {
+			type: '<',
+			ext: '.ejs'
 		}
-	}
-	//returns something you can call scan on
+	});
+	// ========= SCANNING CODE =========
+	// Given a scanner, and source content, calls block  with each token
+	// scanner - an object of magicTagName : values
+	// source - the source you want to scan
+	// block - function(token, scanner), called with each token
 	var scan = function( scanner, source, block ) {
-		var source_split = rSplit(source, /\n/),
+		// split on /\n/ to have new lines on their own line.
+		var source_split = rSplit(source, nReg),
 			i = 0;
 		for (; i < source_split.length; i++ ) {
 			scanline(scanner, source_split[i], block);
@@ -1279,6 +1451,10 @@
 				}
 			}
 		},
+		// creates a 'scanner' object.  This creates
+		// values for the left and right magic tags
+		// it's splitter property is a regexp that splits content
+		// by all tags
 		makeScanner = function( left, right ) {
 			var scanner = {};
 			extend(scanner, {
@@ -1296,25 +1472,54 @@
 			replace(/\[/g, "\\[").replace(/\]/g, "\\]") + ")");
 			return scanner;
 		},
-		// compiles a template
+		// compiles a template where
+		// source - template text
+		// left - the left magic tag
+		// name - the name of the template (for debugging)
+		// returns an object like: {out : "", fn : function(){ ... }} where
+		//   out -  the converted JS source of the view
+		//   fn - a function made from the JS source
 		compile = function( source, left, name ) {
-			source = source.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-			//normalize line endings
+			// make everything only use \n
+			source = source.replace(returnReg, "\n").replace(retReg, "\n");
+			// if no left is given, assume <
 			left = left || '<';
+
+			// put and insert cmds are used for adding content to the template
+			// currently they are identical, I am not sure why
 			var put_cmd = "___v1ew.push(",
 				insert_cmd = put_cmd,
-				buff = new EJS.Buffer(['var ___v1ew = [];'], []),
+				// the text that starts the view code (or block function)
+				startTxt = 'var ___v1ew = [];',
+				// the text that ends the view code (or block function)
+				finishTxt = "return ___v1ew.join('')",
+				// initialize a buffer
+				buff = new EJS.Buffer([startTxt], []),
+				// content is used as the current 'processing' string
+				// this is the content between magic tags
 				content = '',
+				// adds something to be inserted into the view template
+				// this comes out looking like __v1ew.push("CONENT")
 				put = function( content ) {
 					buff.push(put_cmd, '"', clean(content), '");');
 				},
+				// the starting magic tag
 				startTag = null,
+				// cleans the running content
 				empty = function() {
 					content = ''
-				};
+				},
+				// what comes after clean or text
+				doubleParen = "));",
+				// a stack used to keep track of how we should end a bracket }
+				// once we have a <%= %> with a leftBracket
+				// we store how the file should end here (either '))' or ';' )
+				endStack =[];
 
+			// start going token to token
 			scan(makeScanner(left, left === '[' ? ']' : '>'), source || "", function( token, scanner ) {
 				// if we don't have a start pair
+				var bn;
 				if ( startTag === null ) {
 					switch ( token ) {
 					case '\n':
@@ -1323,10 +1528,14 @@
 						buff.cr();
 						empty();
 						break;
+						// set start tag, add previous content (if there is some)
+						// clean content
 					case scanner.left:
 					case scanner.eLeft:
 					case scanner.eeLeft:
 					case scanner.cmnt:
+						// a new line, just add whatever content w/i a clean
+						// reset everything
 						startTag = token;
 						if ( content.length > 0 ) {
 							put(content);
@@ -1334,8 +1543,8 @@
 						empty();
 						break;
 
-						// replace <%% with <%
 					case scanner.dLeft:
+						// replace <%% with <%
 						content += scanner.left;
 						break;
 					default:
@@ -1344,24 +1553,70 @@
 					}
 				}
 				else {
+					//we have a start tag
 					switch ( token ) {
 					case scanner.right:
+						// %>
 						switch ( startTag ) {
 						case scanner.left:
-							if ( content[content.length - 1] == '\n' ) {
-								content = chop(content);
-								buff.push(content, ";");
-								buff.cr();
+							// <%
+							
+							// get the number of { minus }
+							bn = bracketNum(content);
+							// how are we ending this statement
+							var last = 
+								// if the stack has value and we are ending a block
+								endStack.length && bn == -1 ? 
+								// use the last item in the block stack
+								endStack.pop() : 
+								// or use the default ending
+								";";
+							
+							// if we are ending a returning block
+							// add the finish text which returns the result of the
+							// block 
+							if(last === doubleParen) {
+								buff.push(finishTxt)
 							}
-							else {
-								buff.push(content, ";");
+							// add the remaining content
+							buff.push(content, last);
+							
+							// if we have a block, start counting 
+							if(bn === 1 ){
+								endStack.push(";")
 							}
 							break;
 						case scanner.eLeft:
-							buff.push(insert_cmd, "(jQuery.EJS.clean(", content, ")));");
+							// <%= clean content
+							bn = bracketNum(content);
+							if( bn ) {
+								endStack.push(doubleParen)
+							}
+							if(quickFunc.test(content)){
+								var parts = content.match(quickFunc)
+								content = "function(__){var "+parts[1]+"=$(__);"+parts[2]+"}"
+							}
+							buff.push(insert_cmd, "jQuery.EJS.clean(", content,bn ? startTxt : doubleParen);
 							break;
 						case scanner.eeLeft:
-							buff.push(insert_cmd, "(jQuery.EJS.text(", content, ")));");
+							// <%== content
+							
+							// get the number of { minus } 
+							bn = bracketNum(content);
+							// if we have more {, it means there is a block
+							if( bn ){
+								// when we return to the same # of { vs } end wiht a doubleParen
+								endStack.push(doubleParen)
+							} 
+							
+							buff.push(insert_cmd, "jQuery.EJS.text(", content, 
+								// if we have a block
+								bn ? 
+								// start w/ startTxt "var _v1ew = [])"
+								startTxt : 
+								// if not, add doubleParent to close push and text
+								doubleParen
+								);
 							break;
 						}
 						startTag = null;
@@ -1382,82 +1637,58 @@
 			}
 			var template = buff.close(),
 				out = {
-					out: 'try { with(_VIEW) { with (_CONTEXT) {' + template + " return ___v1ew.join('');}}}catch(e){e.lineNumber=null;throw e;}"
+					out: 'try { with(_VIEW) { with (_CONTEXT) {' + template + " "+finishTxt+"}}}catch(e){e.lineNumber=null;throw e;}"
 				};
 			//use eval instead of creating a function, b/c it is easier to debug
-			myEval.call(out, 'this.process = (function(_CONTEXT,_VIEW){' + out.out + '});\r\n//@ sourceURL=' + name + ".js");
+			myEval.call(out, 'this.fn = (function(_CONTEXT,_VIEW){' + out.out + '});\r\n//@ sourceURL=' + name + ".js");
+
 			return out;
 		};
 
 
-	// a line and script buffer
-	// we use this so we know line numbers when there
+	// A Buffer used to add content to.
+	// This is useful for performance and simplifying the 
+	// code above.
+	// We also can use this so we know line numbers when there
 	// is an error.  
-	// pre and post are setup and teardown for the buffer
+	// pre_cmd - code that sets up the buffer
+	// post - code that finalizes the buffer
 	EJS.Buffer = function( pre_cmd, post ) {
+		// the current line we are on
 		this.line = [];
+		// the combined content added to this buffer
 		this.script = [];
+		// content at the end of the buffer
 		this.post = post;
-
 		// add the pre commands to the first line
 		this.push.apply(this, pre_cmd);
 	};
 	EJS.Buffer.prototype = {
-		//need to maintain your own semi-colons (for performance)
+		// add content to this line
+		// need to maintain your own semi-colons (for performance)
 		push: function() {
 			this.line.push.apply(this.line, arguments);
 		},
-
+		// starts a new line
 		cr: function() {
 			this.script.push(this.line.join(''), "\n");
 			this.line = [];
 		},
 		//returns the script too
 		close: function() {
-			var stub;
-
+			// if we have ending line content, add it to the script
 			if ( this.line.length > 0 ) {
 				this.script.push(this.line.join(''));
 				this.line = [];
 			}
-
-			stub = this.post.length && this.push.apply(this, this.post);
-
-			this.script.push(";"); //makes sure we always have an ending /
+			// if we have ending content, add it
+			this.post.length && this.push.apply(this, this.post);
+			// always end in a ;
+			this.script.push(";");
 			return this.script.join("");
 		}
 
 	};
-
-
-	//type, cache, folder
-	/**
-	 * @attribute options
-	 * Sets default options for all views
-	 * <table class="options">
-	 * <tbody><tr><th>Option</th><th>Default</th><th>Description</th></tr>
-	 * <tr>
-	 * <td>type</td>
-	 * <td>'<'</td>
-	 * <td>type of magic tags.  Options are '&lt;' or '['
-	 * </td>
-	 * </tr>
-	 * <tr>
-	 * <td>cache</td>
-	 * <td>true in production mode, false in other modes</td>
-	 * <td>true to cache template.
-	 * </td>
-	 * </tr>
-	 * </tbody></table>
-	 * 
-	 */
-	EJS.options = {
-		type: '<',
-		ext: '.ejs'
-	};
-
-
-
 
 	/**
 	 * @class jQuery.EJS.Helpers
@@ -1490,15 +1721,19 @@
 	 * 	<div <%= upperHtml('javascriptmvc') %>></div>
 	 * 
 	 * 
-	 * @constructor Creates a view helper.  This function is called internally.  You should never call it.
-	 * @param {Object} data The data passed to the view.  Helpers have access to it through this._data
+	 * @constructor Creates a view helper.  This function 
+	 * is called internally.  You should never call it.
+	 * @param {Object} data The data passed to the 
+	 * view.  Helpers have access to it through this._data
 	 */
 	EJS.Helpers = function( data, extras ) {
 		this._data = data;
 		this._extras = extras;
 		extend(this, extras);
 	};
-	/* @prototype*/
+	/**
+	 * @prototype
+	 */
 	EJS.Helpers.prototype = {
 		/**
 		 * Hooks up a jQuery plugin on.
@@ -1518,12 +1753,12 @@
 		view: function( url, data, helpers ) {
 			helpers = helpers || this._extras;
 			data = data || this._data;
-			return $.View(url, data, helpers); //new EJS(options).render(data, helpers);
+			return $View(url, data, helpers); //new EJS(options).render(data, helpers);
 		}
 	};
 
-
-	$.View.register({
+	// options for steal's build
+	$View.register({
 		suffix: "ejs",
 		//returns a function that renders the view
 		script: function( id, src ) {
@@ -1533,13 +1768,10 @@
 			}).template.out + " })";
 		},
 		renderer: function( id, text ) {
-			var ejs = new EJS({
+			return EJS({
 				text: text,
 				name: id
 			});
-			return function( data, helpers ) {
-				return ejs.render.call(ejs, data, helpers);
-			};
 		}
 	});
 })(jQuery)

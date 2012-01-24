@@ -1,0 +1,1 @@
+c({"name": "Mxui.Layout.Modal.prototype", "type": "prototype", "parents": ["Mxui.Layout.Modal"], "comment": "", "src": "mxui/layout/modal/modal.js", "line": 113, "children": ["Mxui.Layout.Modal.prototype.hide", "Mxui.Layout.Modal.prototype.show"]})

@@ -1,0 +1,1 @@
+c({"name": "$.fn.mxui_layout_fit", "params": {"options": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "options"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "", "parents": ["Mxui"], "src": "mxui/layout/fit/fit.js", "line": 203, "children": []})

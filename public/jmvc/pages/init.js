@@ -15,30 +15,30 @@
 	</div>	
 </div>
 
-JavaScriptMVC (JMVC) is a MIT licensed client-side JavaScript toolset that helps you 
-build a maintainable, error-free, lightweight 
-application in the shortest amount of time. It packages best-of-breed
-libraries and tools that are guaranteed (and tested) to work together.  It
+JavaScriptMVC (JMVC) is a MIT licensed, client-side, JavaScript framework that 
+builds maintainable, error-free, lightweight 
+applications as quick as possible. It packs best-of-breed
+libraries and tools that are guaranteed to work together.  It
 supports every browser that jQuery supports.
+
+If you are new to the framework, this page followed by 
+the [tutorials] is the best place to start.
 
 JMVC's goodies are broken down into four sub-projects:
 
   - [jquerymx jQueryMX] - jQuery MVC and DOM extensions
   - [stealjs StealJS] - JavaScript and CSS dependency management and build tools
-  - [FuncUnit] - Functional and Unit Testing framework
-  - [DocumentJS] - Documentation Engine
+  - [FuncUnit] - Functional and unit testing framework
+  - [DocumentJS] - Documentation engine
 
-JavaScriptMVC is extremely modular. You can use each sub-project together or 
-separately (via the [http://javascriptmvc.com/builder.html download builder]). This means
-that you can start small, using only [jQuery.Controller $.Controller] and add in parts
+JavaScriptMVC is extremely modular. Use each sub-project together or 
+separately (via the [http://javascriptmvc.com/builder.html download builder]). Start 
+small, using only [jQuery.Controller $.Controller] and add in parts
 of the framework as necessary. 
 
-If you are new to the framework, this page followed by 
-the [tutorials tutorials and Guides] is the best place to start.
-
-The remainder of this page highlights what is in each project. Click 
+The remainder of this page highlights each sub-project. Click 
 the the project links on the left for a more in-depth overview 
-of each project.
+of the sub-project.
 
 ## jQueryMX
 
@@ -46,11 +46,11 @@ of each project.
 the missing functionality necessary to implement and organize
 large-scale jQuery applications. For example, it includes things like:
 
-  - A [jQuery.Class class] system
   - Special events like [jQuery.Drag drag]-[jQuery.Drop drop] and [jQuery.event.special.resize resize]
   - Language helpers like [jQuery.toJSON toJSON] and an [jQuery.Observe observable system]
   - DOM extensions for things like [jQuery.Range text ranges] and [jQuery.cookie cookies]
   - Browser history [jQuery.route routing].
+  - A [jQuery.Class class-like] system
   
 jQueryMX also puts the MVC in JavaScript with $.Model,
 $.View, and $.Controller.  [jQuery.Model Models] connect to your
@@ -64,9 +64,9 @@ and even independently of other parts of jQueryMX.  For example, you can use $.C
 
 ## StealJS
 
-[stealjs StealJS] is a "code manager" that keeps your code beautiful and organized
-while developing and FAST for users in production.  Its collection of command-line and
-browser-based utilities enable you to:
+[stealjs StealJS] is a "code manager" that keeps code beautiful and organized
+while developing and FAST for users in production.  It's a collection of 
+command-line and browser-based utilities enabling you to:
 
   - [steal load] JS, CSS, LESS, and CoffeeScript files and build them into a single production file.
   - [steal.generate generate] an application file/folder structure, complete with test, build and documentation scripts.
@@ -95,15 +95,12 @@ anything.  It's extensible.  And with Markdown support, it's easy to document yo
 
  */
 steal(
-'./api.js',
-'./download.js',
 './learn.js',
 './why.js',
 './help.js',
 './developingwithgit.js',
 './folders.js',
-'./developingjmvc.js',
-'./rapidstart.js')
+'./developingjmvc.js')
 
 
 

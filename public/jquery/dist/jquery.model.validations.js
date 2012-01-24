@@ -11,48 +11,18 @@
 		replacer: /\{([^\}]+)\}/g,
 		dot: /\./
 	},
+		// gets the nextPart property from current
+		// add - if true and nextPart doesnt exist, create it as an empty object
 		getNext = function(current, nextPart, add){
 			return current[nextPart] !== undefined ? current[nextPart] : ( add && (current[nextPart] = {}) );
 		},
+		// returns true if the object can have properties (no nulls)
 		isContainer = function(current){
 			var type = typeof current;
-			return type && (  type == 'function' || type == 'object' );
+			return current && ( type == 'function' || type == 'object' );
 		},
-		getObject = function( objectName, roots, add ) {
-			
-			var parts = objectName ? objectName.split(regs.dot) : [],
-				length =  parts.length,
-				currents = $.isArray(roots) ? roots : [roots || window],
-				current,
-				ret, 
-				i,
-				c = 0,
-				type;
-			
-			if(length == 0){
-				return currents[0];
-			}
-			while(current = currents[c++]){
-				for (i =0; i < length - 1 && isContainer(current); i++ ) {
-					current = getNext(current, parts[i], add);
-				}
-				if( isContainer(current) ) {
-					
-					ret = getNext(current, parts[i], add); 
-					
-					if( ret !== undefined ) {
-						
-						if ( add === false ) {
-							delete current[parts[i]];
-						}
-						return ret;
-						
-					}
-					
-				}
-			}
-		},
-
+		// a reference
+		getObject,
 		/** 
 		 * @class jQuery.String
 		 * @parent jquerymx.lang
@@ -79,10 +49,11 @@
 			
 			/**
 			 * @function getObject
-			 * Gets an object from a string.
+			 * Gets an object from a string.  It can also modify objects on the
+			 * 'object path' by removing or adding properties.
 			 * 
 			 *     Foo = {Bar: {Zar: {"Ted"}}}
-		 	 *     $.String.getobject("Foo.Bar.Zar") //-> "Ted"
+		 	 *     $.String.getObject("Foo.Bar.Zar") //-> "Ted"
 			 * 
 			 * @param {String} name the name of the object to look for
 			 * @param {Array} [roots] an array of root objects to look for the 
@@ -92,7 +63,49 @@
 			 *  not modify the root object
 			 * @return {Object} The object.
 			 */
-			getObject : getObject,
+			getObject : getObject = function( name, roots, add ) {
+			
+				// the parts of the name we are looking up
+				// ['App','Models','Recipe']
+				var parts = name ? name.split(regs.dot) : [],
+					length =  parts.length,
+					current,
+					ret, 
+					i,
+					r = 0,
+					type;
+				
+				// make sure roots is an array
+				roots = $.isArray(roots) ? roots : [roots || window];
+				
+				if(length == 0){
+					return roots[0];
+				}
+				// for each root, mark it as current
+				while( current = roots[r++] ) {
+					// walk current to the 2nd to last object
+					// or until there is not a container
+					for (i =0; i < length - 1 && isContainer(current); i++ ) {
+						current = getNext(current, parts[i], add);
+					}
+					// if we can get a property from the 2nd to last object
+					if( isContainer(current) ) {
+						
+						// get (and possibly set) the property
+						ret = getNext(current, parts[i], add); 
+						
+						// if there is a value, we exit
+						if( ret !== undefined ) {
+							// if add is false, delete the property
+							if ( add === false ) {
+								delete current[parts[i]];
+							}
+							return ret;
+							
+						}
+					}
+				}
+			},
 			/**
 			 * Capitalizes a string
 			 * @param {String} s the string.
@@ -163,18 +176,21 @@
 			 * @param {Boolean} [remove] if a match is found, remove the property from the object
 			 */
 			sub: function( s, data, remove ) {
-				var obs = [];
+				var obs = [],
+					remove = typeof remove == 'boolean' ? !remove : remove;
 				obs.push(s.replace(regs.replacer, function( whole, inside ) {
 					//convert inside to type
-					var ob = getObject(inside, data, typeof remove == 'boolean' ? !remove : remove),
-						type = typeof ob;
-					if((type === 'object' || type === 'function') && type !== null){
+					var ob = getObject(inside, data, remove);
+					
+					// if a container, push into objs (which will return objects found)
+					if( isContainer(ob) ){
 						obs.push(ob);
 						return "";
 					}else{
 						return ""+ob;
 					}
 				}));
+				
 				return obs.length <= 1 ? obs[0] : obs;
 			},
 			_regs : regs
@@ -250,7 +266,7 @@ $.extend($.Model, {
    /**
     * @function jQuery.Model.static.validate
     * @parent jquery.model.validations
-    * Validates each of the specified attributes with the given function.  See [validation] for more on validations.
+    * Validates each of the specified attributes with the given function.  See [jquery.model.validations validation] for more on validations.
     * @param {Array|String} attrNames Attribute name(s) to to validate
     * @param {Function} validateProc Function used to validate each given attribute. Returns nothing if valid and an error message otherwise. Function is called in the instance context and takes the value to validate.
     * @param {Object} options (optional) Options for the validations.  Valid options include 'message' and 'testIf'.
@@ -258,23 +274,28 @@ $.extend($.Model, {
    validate: validate,
    
    /**
-    * @attribute validationMessages
+    * @attribute jQuery.Model.static.validationMessages
     * @parent jquery.model.validations
     * The default validation error messages that will be returned by the builtin
     * validation methods. These can be overwritten by assigning new messages
     * to $.Model.validationMessages.&lt;message> in your application setup.
     * 
-    * The following messages are available:
-    *  * format
-    *  * inclusion
-    *  * lengthShort
-    *  * lengthLong
-    *  * presence
-    *  * range
+    * The following messages (with defaults) are available:
     * 
-    * It is important to ensure that you steal jquery/model/validations 
-    * before overwriting the messages, otherwise the changes will
+    *  * format - "is invalid"
+    *  * inclusion - "is not a valid option (perhaps out of range)"
+    *  * lengthShort - "is too short"
+    *  * lengthLong - "is too long"
+    *  * presence - "can't be empty"
+    *  * range - "is out of range"
+    * 
+    * It is important to steal jquery/model/validations before 
+    * overwriting the messages, otherwise the changes will
     * be lost once steal loads it later.
+    * 
+    * ## Example
+    * 
+    *     $.Model.validationMessages.format = "is invalid dummy!"
     */
    validationMessages : {
        format      : "is invalid",
@@ -289,7 +310,7 @@ $.extend($.Model, {
     * @function jQuery.Model.static.validateFormatOf
     * @parent jquery.model.validations
     * Validates where the values of specified attributes are of the correct form by
-    * matching it against the regular expression provided.  See [validation] for more on validations.
+    * matching it against the regular expression provided.  See [jquery.model.validations validation] for more on validations.
     * @param {Array|String} attrNames Attribute name(s) to to validate
     * @param {RegExp} regexp Regular expression used to match for validation
     * @param {Object} options (optional) Options for the validations.  Valid options include 'message' and 'testIf'.
@@ -309,7 +330,7 @@ $.extend($.Model, {
     * @function jQuery.Model.static.validateInclusionOf
     * @parent jquery.model.validations
     * Validates whether the values of the specified attributes are available in a particular
-    * array.   See [validation] for more on validations.
+    * array.   See [jquery.model.validations validation] for more on validations.
     * @param {Array|String} attrNames Attribute name(s) to to validate
     * @param {Array} inArray Array of options to test for inclusion
     * @param {Object} options (optional) Options for the validations.  Valid options include 'message' and 'testIf'.
@@ -328,7 +349,7 @@ $.extend($.Model, {
    /**
     * @function jQuery.Model.static.validateLengthOf
     * @parent jquery.model.validations
-    * Validates that the specified attributes' lengths are in the given range.  See [validation] for more on validations.
+    * Validates that the specified attributes' lengths are in the given range.  See [jquery.model.validations validation] for more on validations.
     * @param {Array|String} attrNames Attribute name(s) to to validate
     * @param {Number} min Minimum length (inclusive)
     * @param {Number} max Maximum length (inclusive)
@@ -347,7 +368,7 @@ $.extend($.Model, {
    /**
     * @function jQuery.Model.static.validatePresenceOf
     * @parent jquery.model.validations
-    * Validates that the specified attributes are not blank.  See [validation] for more on validations.
+    * Validates that the specified attributes are not blank.  See [jquery.model.validations validation] for more on validations.
     * @param {Array|String} attrNames Attribute name(s) to to validate
     * @param {Object} options (optional) Options for the validations.  Valid options include 'message' and 'testIf'.
     *
@@ -362,7 +383,7 @@ $.extend($.Model, {
    /**
     * @function jQuery.Model.static.validateRangeOf
     * @parent jquery.model.validations
-    * Validates that the specified attributes are in the given numeric range.  See [validation] for more on validations.
+    * Validates that the specified attributes are in the given numeric range.  See [jquery.model.validations validation] for more on validations.
     * @param {Array|String} attrNames Attribute name(s) to to validate
     * @param {Number} low Minimum value (inclusive)
     * @param {Number} hi Maximum value (inclusive)

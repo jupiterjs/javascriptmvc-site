@@ -1,5 +1,6 @@
 @page jquerymx jQueryMX
 @parent index 0
+@description jQuery Model View Controller and extensions.
 
 jQueryMX is a collection of useful jQuery libraries that provide 
 the missing functionality necessary to 
@@ -189,7 +190,7 @@ $.Model('Task', {
   attributes : {
     'createdAt' : 'date' 
   }
-});
+},{});
 
 var task = new Task({ createdAt : 1303087131164});
 

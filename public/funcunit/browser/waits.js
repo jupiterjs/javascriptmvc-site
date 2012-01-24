@@ -12,13 +12,13 @@ FuncUnit.
  * })
  * @codeend
  * @param {Number} [time] The timeout in milliseconds.  Defaults to 5000.
- * @param {Function} [callback] A callback that will run 
+ * @param {Function} [success] A callback that will run 
  * 		after the wait has completed, 
  * 		but before any more queued actions.
  */
-wait = function(time, callback){
+wait = function(time, success){
 	if(typeof time == 'function'){
-		callback = time;
+		success = time;
 		time = undefined;
 	}
 	time = time != null ? time : 5000
@@ -27,7 +27,7 @@ wait = function(time, callback){
 			steal.dev.log("Waiting "+time)
 			setTimeout(success, time)
 		},
-		callback : callback,
+		success : success,
 		error : "Couldn't wait!",
 		timeout : time + 1000
 	});
@@ -80,7 +80,7 @@ branch = function(check1, success1, check2, success2, timeout){
  * @function repeat
  * Takes a function that will be called over and over until it is successful.
  * method : function(){},
-	callback : callback,
+	success : success,
 	error : errorMessage,
 	timeout : timeout,
 	bind: this
@@ -123,7 +123,7 @@ FuncUnit.repeat = function(options){
 			
 			
 		},
-		callback : options.callback,
+		success : options.success,
 		error : options.error,
 		timeout : options.timeout,
 		stop : stop,
@@ -143,26 +143,41 @@ $.extend(FuncUnit.prototype, {
 	 * //waits until #foo exists before clicking it.
 	 * S("#foo").exists().click()
 	 * @codeend
-	 * @param {Function} [callback] a callback that is run after the selector exists, but before the next action.
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
+	 * @param {Function} [success] a success that is run after the selector exists, but before the next action.
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return {FuncUnit} returns the funcUnit for chaining. 
 	 */
-	exists: function( callback ) {
-		return this.size(function(size){
-			return size > 0;
-		}, callback);
+	exists: function( timeout, success, message ) {
+		var logMessage = "Waiting for '"+this.selector+"' to exist";
+		if(timeout === false){ // pass false to suppress this wait (make it not print any logMessage)
+			logMessage = false
+		}
+		return this.size({
+			condition: function(size){
+				return size > 0;
+			},
+			timeout: timeout,
+			success: success,
+			message: message,
+			errorMessage: "Exist failed: element with selector '"+this.selector+"' not found",
+			logMessage: logMessage
+		})
 	},
 	/**
 	 * Waits until no elements are matched by the selector.  Missing is equivalent to calling
-	 * <code>.size(0, callback);</code>
+	 * <code>.size(0, success);</code>
 	 * @codestart
 	 * //waits until #foo leaves before continuing to the next action.
 	 * S("#foo").missing()
 	 * @codeend
-	 * @param {Function} [callback] a callback that is run after the selector exists, but before the next action
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
+	 * @param {Function} [success] a callback that is run after the selector exists, but before the next action
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return {FuncUnit} returns the funcUnit for chaining. 
 	 */
-	missing: function( callback ) {
-		return this.size(0, callback)
+	missing: function( timeout,success, message ) {
+		return this.size(0, timeout, success, message)
 	},
 	/**
 	 * Waits until the funcUnit selector is visible.  
@@ -170,21 +185,18 @@ $.extend(FuncUnit.prototype, {
 	 * //waits until #foo is visible.
 	 * S("#foo").visible()
 	 * @codeend
-	 * @param {Function} [callback] a callback that runs after the funcUnit is visible, but before the next action.
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
+	 * @param {Function} [success] a callback that runs after the funcUnit is visible, but before the next action.
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return [funcUnit] returns the funcUnit for chaining.
 	 */
-	visible: function( callback ) {
+	visible: function( timeout, success, message ) {
 		var self = this,
 			sel = this.selector,
 			ret;
-		this.selector += ":visible"
 		return this.size(function(size){
-			return size > 0;
-		}, function(){
-			self.selector = sel;
-			callback && callback.apply(this, arguments);
-		})
-		
+			return this.is(":visible") === true;
+		}, timeout, success, message)
 	},
 	/**
 	 * Waits until the selector is invisible.  
@@ -192,38 +204,52 @@ $.extend(FuncUnit.prototype, {
 	 * //waits until #foo is invisible.
 	 * S("#foo").invisible()
 	 * @codeend
-	 * @param {Function} [callback] a callback that runs after the selector is invisible, but before the next action.
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
+	 * @param {Function} [success] a callback that runs after the selector is invisible, but before the next action.
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 * @return [funcUnit] returns the funcUnit selector for chaining.
 	 */
-	invisible: function( callback ) {
+	invisible: function( timeout, success, message ) {
 		var self = this,
 			sel = this.selector,
 			ret;
-		this.selector += ":visible"
-		return this.size(0, function(){
-			self.selector = sel;
-			callback && callback.apply(this, arguments);
-		})
+		return this.size(function(size){
+			return this.is(":visible") === false;
+		}, timeout, success, message)
 	},
 	/**
-	 * Waits a timeout before calling the next action.  This is the same as
-	 * [FuncUnit.prototype.wait].
-	 * @param {Number} [timeout]
-	 * @param {Object} callback
+	 * Waits until some condition is true before calling the next action.  Or if no checker function is provided, waits a 
+	 * timeout before calling the next queued method.  This can be used as a flexible wait condition to check various things in the tested page:
+	 * @codestart
+	 * 
+	 * S('#testData').wait(function(){
+	 * 	 return S.win.$(this).data('idval') === 1000;
+	 * }, "Data value matched");
+	 * @codeend
+	 * @param {Number|Function} [checker] a checking function.  It runs repeatedly until the condition becomes true or the timeout period passes.  
+	 * If a number is provided, a time in milliseconds to wait before running the next queued method.
+	 * @param {Number} [timeout] overrides FuncUnit.timeout.  If provided, the wait will fail if not completed before this timeout.
+	 * @param {Function} [success] a callback that will run after this action completes.
+	 * @param {String} [message] if provided, an assertion will be passed when this wait condition completes successfully
 	 */
-	wait: function( timeout, callback ) {
-		FuncUnit.wait(timeout, callback)
-		return this;
+	wait: function( checker, timeout, success, message ) {
+		if(typeof checker === "number"){
+			timeout = checker;
+			FuncUnit.wait(timeout, success)
+			return this;	
+		} else {
+			return this.size(checker, timeout, success, message)
+		}
 	},
 	/**
-	 * Calls the callback function after all previous asynchronous actions have completed.  Then
+	 * Calls the success function after all previous asynchronous actions have completed.  Then
 	 * is called with the funcunit object.
-	 * @param {Object} callback
+	 * @param {Object} success
 	 */
-	then : function(callback){
+	then : function(success){
 		var self = this;
 		FuncUnit.wait(0, function(){
-			callback.call(this, this);
+			success.call(this, this);
 		});
 		return this;
 	}

@@ -1,0 +1,1 @@
+c({"name": "Mxui.Form.Combobox.prototype.clearSelection", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Form.Combobox.prototype"], "comment": "<p>Clears Combobox's current selection.</p>", "src": "mxui/form/combobox/combobox.js", "line": 808, "children": []})

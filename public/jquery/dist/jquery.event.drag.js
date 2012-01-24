@@ -77,28 +77,36 @@
 			}
 			return vec.update(arr);
 		},
-/*
-	 * Returns the 2nd value of the vector
-	 * @return {Number}
-	 */
-		x: getSetZero,
-		width: getSetZero,
 		/**
 		 * Returns the first value of the vector
 		 * @return {Number}
 		 */
-		y: getSetOne,
-		height: getSetOne,
+		x: getSetZero,
 		/**
-		 * Same as x()
+		 * same as x()
+		 * @return {Number}
+		 */
+		left: getSetZero,
+		/**
+		 * Returns the first value of the vector
+		 * @return {Number}
+		 */
+		width: getSetZero,
+		/**
+		 * Returns the 2nd value of the vector
+		 * @return {Number}
+		 */
+		y: getSetOne,
+		/**
+		 * Same as y()
 		 * @return {Number}
 		 */
 		top: getSetOne,
 		/**
-		 * same as y()
+		 * Returns the 2nd value of the vector
 		 * @return {Number}
 		 */
-		left: getSetZero,
+		height: getSetOne,
 		/**
 		 * returns (x,y)
 		 * @return {String}
@@ -158,8 +166,15 @@
 	var event = jQuery.event,
 
 		//helper that finds handlers by type and calls back a function, this is basically handle
-		findHelper = function( events, types, callback ) {
-			var t, type, typeHandlers, all, h, handle, namespaces, namespace;
+		// events - the events object
+		// types - an array of event types to look for
+		// callback(type, handlerFunc, selector) - a callback
+		// selector - an optional selector to filter with, if there, matches by selector
+		//     if null, matches anything, otherwise, matches with no selector
+		findHelper = function( events, types, callback, selector ) {
+			var t, type, typeHandlers, all, h, handle, 
+				namespaces, namespace,
+				match;
 			for ( t = 0; t < types.length; t++ ) {
 				type = types[t];
 				all = type.indexOf(".") < 0;
@@ -172,9 +187,24 @@
 
 				for ( h = 0; h < typeHandlers.length; h++ ) {
 					handle = typeHandlers[h];
-					if (!handle.selector && (all || namespace.test(handle.namespace)) ) {
-						callback(type, handle.origHandler || handle.handler);
+					
+					match = (all || namespace.test(handle.namespace));
+					
+					if(match){
+						if(selector){
+							if (handle.selector === selector  ) {
+								callback(type, handle.origHandler || handle.handler);
+							}
+						} else if (selector === null){
+							callback(type, handle.origHandler || handle.handler, handle.selector);
+						}
+						else if (!handle.selector ) {
+							callback(type, handle.origHandler || handle.handler);
+							
+						} 
 					}
+					
+					
 				}
 			}
 		};
@@ -187,32 +217,16 @@
 	 * @return {Array} an array of event handlers
 	 */
 	event.find = function( el, types, selector ) {
-		var events = $.data(el, "events"),
+		var events = ( $._data(el) || {} ).events,
 			handlers = [],
 			t, liver, live;
 
 		if (!events ) {
 			return handlers;
 		}
-
-		if ( selector ) {
-			if (!events.live ) {
-				return [];
-			}
-			live = events.live;
-
-			for ( t = 0; t < live.length; t++ ) {
-				liver = live[t];
-				if ( liver.selector === selector && $.inArray(liver.origType, types) !== -1 ) {
-					handlers.push(liver.origHandler || liver.handler);
-				}
-			}
-		} else {
-			// basically re-create handler's logic
-			findHelper(events, types, function( type, handler ) {
-				handlers.push(handler);
-			});
-		}
+		findHelper(events, types, function( type, handler ) {
+			handlers.push(handler);
+		}, selector);
 		return handlers;
 	};
 	/**
@@ -221,7 +235,7 @@
 	 * @param {Array} types event types
 	 */
 	event.findBySelector = function( el, types ) {
-		var events = $.data(el, "events"),
+		var events = $._data(el).events,
 			selectors = {},
 			//adds a handler for a given selector and event
 			add = function( selector, event, handler ) {
@@ -234,15 +248,15 @@
 			return selectors;
 		}
 		//first check live:
-		$.each(events.live || [], function( i, live ) {
+		/*$.each(events.live || [], function( i, live ) {
 			if ( $.inArray(live.origType, types) !== -1 ) {
 				add(live.selector, live.origType, live.origHandler || live.handler);
 			}
-		});
+		});*/
 		//then check straight binds
-		findHelper(events, types, function( type, handler ) {
-			add("", type, handler);
-		});
+		findHelper(events, types, function( type, handler, selector ) {
+			add(selector || "", type, handler);
+		}, null);
 
 		return selectors;
 	};
@@ -426,14 +440,14 @@
 			//ev.preventDefault();
 			//create Drag
 			var drag = new $.Drag(),
-				delegate = ev.liveFired || element,
+				delegate = ev.delegateTarget || element,
 				selector = ev.handleObj.selector,
 				self = this;
 			this.current = drag;
 
 			drag.setup({
 				element: element,
-				delegate: ev.liveFired || element,
+				delegate: ev.delegateTarget || element,
 				selector: ev.handleObj.selector,
 				moved: false,
 				_distance: this.distance,

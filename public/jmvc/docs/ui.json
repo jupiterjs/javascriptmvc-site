@@ -1,1 +1,0 @@
-c({"name": "ui", "type": "attribute", "comment": "<p>jQuery UI Position 1.8rc2</p>\n\n<p>Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)\nDual licensed under the MIT (MIT-LICENSE.txt)\nand GPL (GPL-LICENSE.txt) licenses.</p>\n\n<p>http://docs.jquery.com/UI/Position</p>", "src": "mxui/layout/positionable/positionable.js", "line": 172, "children": []})

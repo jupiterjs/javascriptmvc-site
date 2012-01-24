@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Accordion.{title} dropout", "params": {"el": {"description": "", "type": "", "optional": false, "order": 0, "name": "el"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Nav.Accordion"], "comment": "<p>Occurs when an item was dropped out.</p>", "src": "mxui/nav/accordion/accordion.js", "line": 251, "children": []})

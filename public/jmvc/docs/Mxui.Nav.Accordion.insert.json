@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Accordion.insert", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Nav.Accordion"], "comment": "<p>Occurs when insert was triggered.</p>", "src": "mxui/nav/accordion/accordion.js", "line": 216, "children": []})

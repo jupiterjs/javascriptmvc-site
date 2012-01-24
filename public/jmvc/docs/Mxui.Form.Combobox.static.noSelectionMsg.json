@@ -1,0 +1,1 @@
+c({"name": "Mxui.Form.Combobox.static.noSelectionMsg", "type": "attribute", "parents": ["Mxui.Form.Combobox.static"], "comment": "<p>When 'showNoSelectionOption' is enabled, you need to give the item a name.</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 118, "children": []})

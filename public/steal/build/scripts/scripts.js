@@ -12,11 +12,12 @@ steal('steal/build', 'steal/parse').then(function( steal ) {
 	 * @param {Object} dependencies array of files and the dependencies they contain under the hood
 	 */
 	var scripts = (steal.build.builders.scripts = function( opener, options, dependencies ) {
+		options.compressor = options.compressor || "localClosure";
 		steal.print("\nBUILDING SCRIPTS --------------- ");
 		var start = new Date();
 		
 		// get the compressor
-		var compressor = scripts.compressors[options.compressor || "localClosure"](),
+		var compressor = scripts.compressors[options.compressor](),
 
 			// packages that can be compressed somewhere
 			packages = {},
@@ -89,13 +90,17 @@ steal('steal/build', 'steal/parse').then(function( steal ) {
 			if ( stl.compress !== false || options.all ) {
 				currentPackage.scripts.push("'"+stl.rootSrc+"'")
 				// put the result in the package
-				currentCollection.push(text+";\nsteal.loaded('"+stl.rootSrc+"');");
+				text += ";\nsteal.loaded('"+stl.rootSrc+"');";
 				if(options.compressor === "localClosure"){ // only closure needs lineNumbers
-					currentLineMap.push({
-						src: stl.rootSrc,
-						lines: text.match(/\n/g).length+2
-					})
+					text = scripts.clean(text, stl.rootSrc); // have to remove steal.dev stuff for accurate line nbrs
+					var lines = text.match(/\n/g).length + 1,
+						mapObj = {
+							src: stl.rootSrc,
+							lines: lines	
+						}
+					currentLineMap.push(mapObj);
 				}
+				currentCollection.push(text);
 			} 
 			else { // compress is false, don't compress it
 				var compressed = compressCollection(currentCollection, currentLineMap);
@@ -133,7 +138,8 @@ steal('steal/build', 'steal/parse').then(function( steal ) {
 				steal.print("SCRIPT BUNDLE > " + options.to + p);
 			}
 		}
-	});
+	}),
+		stealDevTest = /steal\.dev/;
 	
 	/**
 	 * Create package's content.
@@ -175,12 +181,30 @@ steal('steal/build', 'steal/parse').then(function( steal ) {
 	}
 	
 	// removes  dev comments from text
-	scripts.clean = function( text ) {
+	scripts.clean = function( text, file ) {
 		var parsedTxt = String(java.lang.String(text)
-			.replaceAll("(?s)\/\/@steal-remove-start(.*?)\/\/@steal-remove-end", "")),
-			positions = [],
-		   	p = steal.parse(parsedTxt),
-		    tokens, i, position;
+			.replaceAll("(?s)\/\/!steal-remove-start(.*?)\/\/!steal-remove-end", ""));
+		
+		// the next part is slow, try to skip if possible
+		// if theres not a standalone steal.dev, skip
+
+		if(! stealDevTest.test(parsedTxt) ) {
+			return parsedTxt;
+		}	
+		
+		var positions = [],
+		   	p,
+		    tokens, 
+			i, 
+			position;
+
+		try{
+			p = steal.parse(parsedTxt);
+		} catch(e){
+			print("Parsing problem");
+			print(e);
+			return parsedTxt;
+		}
 
 		while (tokens = p.until(["steal", ".", "dev", ".", "log", "("], ["steal", ".", "dev", ".", "warn", "("])) {
 			var end = p.partner("(");
@@ -296,8 +320,14 @@ steal('steal/build', 'steal/parse').then(function( steal ) {
 					else {
 					
 						var errMatch;
-						while (errMatch = /\:(\d+)\:\sERROR/g.exec(options.err)) {
-							var lineNbr = parseInt(errMatch[1], 10), found = false, item, lineCount = 0, i = 0, realLine;
+						while (errMatch = /\:(\d+)\:\s(.*)/g.exec(options.err)) {
+							var lineNbr = parseInt(errMatch[1], 10), 
+								found = false, 
+								item, 
+								lineCount = 0, 
+								i = 0, 
+								realLine,
+								error = errMatch[2];
 							while (!found) {
 								item = currentLineMap[i];
 								lineCount += item.lines;
@@ -308,13 +338,13 @@ steal('steal/build', 'steal/parse').then(function( steal ) {
 								i++;
 							}
 							
-							print('ERROR in ' + item.src + ' at line ' + realLine + ':\n');
+							steal.print('ERROR in ' + item.src + ' at line ' + realLine + ': ' + error + '\n');
 							var text = readFile(item.src), split = text.split(/\n/), start = realLine - 2, end = realLine + 2;
 							if (start < 0) 
 								start = 0;
 							if (end > split.length - 1) 
 								end = split.length - 1;
-							print(split.slice(start, end).join('\n') + '\n')
+							steal.print(split.slice(start, end).join('\n') + '\n')
 						}
 					}
 				}

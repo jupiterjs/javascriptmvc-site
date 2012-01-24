@@ -1,0 +1,1 @@
+c({"name": "Mxui.Form.Combobox.prototype.cleanData", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Form.Combobox.prototype"], "comment": "<p>Initializes/empties this Controller's modelList.</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 254, "children": []})

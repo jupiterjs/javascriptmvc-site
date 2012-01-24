@@ -1,0 +1,1 @@
+c({"name": "Mxui.Form.Combobox.static.watermarkText", "type": "attribute", "parents": ["Mxui.Form.Combobox.static"], "comment": "<p>Text that appears if nothing is selected.</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 106, "children": []})

@@ -1,0 +1,1 @@
+c({"name": "Mxui.Form.Combobox.prototype.clearWatermark", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Form.Combobox.prototype"], "comment": "<p>Only remove the text if it is the watermarkText.</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 204, "children": []})

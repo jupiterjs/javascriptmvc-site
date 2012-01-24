@@ -62,7 +62,11 @@ $.fn.withinBox = function(left, top, width, height, cache){
 
         if(this == document.documentElement) return  this.ret.push(this);
 
-        var offset = cache ? jQuery.data(this,"offset", q.offset()) : q.offset();
+        var offset = cache ? 
+			jQuery.data(this,"offset") || 
+			jQuery.data(this,"offset", q.offset()) : 
+			q.offset();
+
 
         var ew = q.width(), eh = q.height();
 
@@ -158,10 +162,7 @@ jQuery.fn.compare = function(element){ //usually
 
 })(jQuery);
 (function($){
-	var event = $.event, 
-		callHanders = function(){
-			
-		};
+	var event = $.event;
 	//somehow need to keep track of elements with selectors on them.  When element is removed, somehow we need to know that
 	//
 	/**
@@ -527,7 +528,9 @@ jQuery.fn.compare = function(element){ //usually
 			}
 		},
 		end: function( event, moveable ) {
-			var responder, la, endName = this.lowerName+'end';
+			var responder, la, 
+				endName = this.lowerName+'end',
+				dropData;
 			
 			// call dropon
 			//go through the actives ... if you are over one, call dropped on it
@@ -539,7 +542,8 @@ jQuery.fn.compare = function(element){ //usually
 			}
 			// call dropend
 			for(var r =0; r<this._elements.length; r++){
-				$.data(this._elements[r],"_dropData").callHandlers(endName, null, event, moveable);
+				dropData = $.data(this._elements[r],"_dropData");
+				dropData && dropData.callHandlers(endName, null, event, moveable);
 			}
 
 			this.clear();

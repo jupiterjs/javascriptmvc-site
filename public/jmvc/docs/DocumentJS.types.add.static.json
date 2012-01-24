@@ -1,1 +1,1 @@
-C({"name": "DocumentJS.types.add.static", "type": "static", "parents": ["DocumentJS.types.add"], "comment": "", "src": "../documentjs/types/add.js", "children": ["DocumentJS.types.add.static.code", "DocumentJS.types.add.static.init", "DocumentJS.types.add.static.useName"]})
+c({"name": "DocumentJS.types.add.static", "type": "static", "parents": ["DocumentJS.types.add"], "comment": "", "src": "documentjs/types/add.js", "line": 29, "children": ["DocumentJS.types.add.static.code", "DocumentJS.types.add.static.init", "DocumentJS.types.add.static.useName"]})
