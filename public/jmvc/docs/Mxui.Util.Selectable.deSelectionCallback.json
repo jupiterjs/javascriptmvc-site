@@ -1,0 +1,1 @@
+c({"name": "Mxui.Util.Selectable.deSelectionCallback", "type": "attribute", "parents": ["Mxui.Util.Selectable"], "comment": "<p>Provides a call back function to be executed when de-select occurs \nand other related/dependent context can be set accordingly</p>", "src": "mxui/util/selectable/selectable.js", "line": 57, "children": []})

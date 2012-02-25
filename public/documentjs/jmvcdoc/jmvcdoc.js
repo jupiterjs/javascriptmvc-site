@@ -1,6 +1,5 @@
 steal.loadedProductionCSS = true;
 steal(
-    'documentjs/jmvcdoc/models/search.js',
 	'documentjs/jmvcdoc/content',
 	'documentjs/jmvcdoc/nav',
 	'documentjs/jmvcdoc/search',
@@ -14,7 +13,9 @@ steal(
 		if ( pageName && location.hash == "" ) {
 			window.location.hash = "&who=" + pageName
 		}
-	$.route(":who",{who: "index"})("/search/:search");
+	$.route.ready(false)
+		(":who",{who: "index"})
+		("/search/:search");
 	
 		
 	$('#nav').jmvcdoc_nav();
@@ -22,8 +23,12 @@ steal(
 	$("#search").jmvcdoc_search({clientState : $.route.data});
 	//Doc.location = steal.root.join("jmvc/docs/")
 	
-	//$.route.ready(false);
-	
+	$.route.ready(false);
+	if(! steal.isRhino ){
+		Doc.load(function(){
+			$.route.ready(true);
+		});
+	}
 	
 	
   })

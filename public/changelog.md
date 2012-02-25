@@ -23,6 +23,7 @@
 
 ### jQueryMX
 
+- upgraded jQuery to v1.7.1
 - updated docs for plugin hookups
 - removed OpenAjax integration from $.Model
 - fixed bug with unique in model
@@ -33,6 +34,7 @@
 - resize event correctly propagates extra data
 - fixed drop so it handles elements removed from the DOM
 - $.Model.serialize() calls converter with the Class scope
+- _jQuery.Event.prototype.key_ is now _jQuery.Event.prototype.keyName_
 
 ### FuncUnit
 
