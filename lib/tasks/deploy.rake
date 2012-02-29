@@ -16,9 +16,9 @@ end
 
 namespace :deploy do
 	task :update do
-		announce 'Pulling latest JavaScriptMVC-Site...'
+		announce 'Pulling latest DoneJS-Site...'
 
-		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git'
+		sh 'git pull git@github.donejs/javascriptmvc-site.git'
 		sh 'git submodule update --init --recursive'
 		sh 'git submodule foreach git pull origin master'
 
