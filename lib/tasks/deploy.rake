@@ -106,12 +106,12 @@ namespace :deploy do
 	task :staging => [:prepare] do
 		announce 'Deploying to staging...'
 
-		sh 'git push git@heroku.com:staging-donejs.git'
+		sh 'git push git@heroku.com:staging-donejs.git donejs:master'
 	end
 
 	task :production => [:prepare] do
 		announce 'Deploying to production...'
 
-		sh 'git push git@heroku.com:donejs.git'
+		sh 'git push git@heroku.com:donejs.git donejs:master'
 	end
 end
