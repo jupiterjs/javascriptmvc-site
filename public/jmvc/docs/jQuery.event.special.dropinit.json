@@ -1,1 +1,0 @@
-c({"name": "jQuery.event.special.dropinit", "type": "attribute", "parents": ["jQuery.event.special"], "comment": "<p>Called when a drag motion starts and the drop elements are initialized.</p>\n\n<p>Drop events are covered in more detail in [jQuery.Drop].</p>", "src": "jquery/event/drop/drop.js", "line": 26, "children": []})

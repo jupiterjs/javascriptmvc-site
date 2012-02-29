@@ -1,1 +1,0 @@
-c({"name": "DocumentJS.tags.param.add", "params": {"line": {"description": "", "type": "String", "optional": false, "order": 0, "name": "line"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["DocumentJS.tags.param"], "comment": "<p>Adds @param data to the constructor function</p>", "src": "documentjs/tags/param.js", "line": 54, "children": []})

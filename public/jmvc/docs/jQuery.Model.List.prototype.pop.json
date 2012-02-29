@@ -1,1 +1,0 @@
-c({"name": "jQuery.Model.List.prototype.pop", "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Removes the last instance of the list, and returns that instance.</p>\n\n<pre><code>list.pop()\n</code></pre>", "src": "jquery/model/list/list.js", "line": 730, "children": []})

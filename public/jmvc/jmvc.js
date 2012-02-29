@@ -1,4 +1,11 @@
-steal('steal/generate',
+steal('can/construct',
+	'can/control',
+	'can/model',
+	'can/observe',
+	'can/route',
+	'can/view/ejs')
+
+/*steal('steal/generate',
 	'steal/get',
 	'steal/build',
 	'steal/build/pluginify',
@@ -56,3 +63,4 @@ steal('steal/generate',
 )
 // funcunit should always be included last because it puts jquery in noconflict mode
 .then('funcunit')
+*/

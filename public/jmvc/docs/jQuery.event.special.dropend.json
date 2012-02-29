@@ -1,1 +1,0 @@
-c({"name": "jQuery.event.special.dropend", "type": "attribute", "parents": ["jQuery.event.special"], "comment": "<p>Called when the drag is done for this drop.</p>\n\n<p>Drop events are covered in more detail in [jQuery.Drop].</p>", "src": "jquery/event/drop/drop.js", "line": 38, "children": []})

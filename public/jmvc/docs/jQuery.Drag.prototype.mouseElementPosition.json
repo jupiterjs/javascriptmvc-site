@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drag.prototype.mouseElementPosition", "type": "attribute", "parents": ["jQuery.Drag.prototype"], "comment": "<p>The position of start of the cursor on the element</p>", "src": "jquery/event/drag/drag.js", "line": 248, "children": []})

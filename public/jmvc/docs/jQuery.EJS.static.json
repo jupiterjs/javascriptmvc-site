@@ -1,1 +1,0 @@
-c({"name": "jQuery.EJS.static", "type": "static", "parents": ["jQuery.EJS"], "comment": "", "src": "jquery/view/ejs/ejs.js", "line": 216, "children": ["jQuery.EJS.static.text", "jQuery.EJS.static.clean", "jQuery.EJS.static.options"]})

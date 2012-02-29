@@ -692,7 +692,7 @@
 						File.cur(path);
 						
 						// call the function, someday soon this will be requireJS-like
-						options(steal.send || win.jQuery || steal); 
+						options(steal.send || win.jQuery || win.Zepto || steal); 
 					},
 					rootSrc: path,
 					orig: options,
@@ -1005,7 +1005,7 @@
 		makeOptions : function(options){
 			
 			var ext = File(options.src).ext();
-			if (!ext) {
+			if (!ext && !options.type) {
 				// if first character of path is a . or /, just load this file
 				if (options.src.indexOf(".") == 0 || options.src.indexOf("/") == 0) {
 					options.src = options.src + ".js"
@@ -2064,13 +2064,18 @@ if (support.interactive) {
 				steals.push.apply(steals, startFiles)
 			}
 			// either instrument is in this page (if we're the window opened from steal.browser), or its opener has it
-			if ( options.instrument || (!options.browser && win.top && win.top.opener && 
-					win.top.opener.steal && win.top.opener.steal.options.instrument) ) {
-				// force startFiles to load before instrument
-				steals.push(function(){}, {
-					src: "steal/instrument",
-					waits: true
-				});
+			try {
+				if ( options.instrument || (!options.browser && win.top && win.top.opener && 
+						win.top.opener.steal && win.top.opener.steal.options.instrument) ) {
+					// force startFiles to load before instrument
+					steals.push(function(){}, {
+						src: "steal/instrument",
+						waits: true
+					});
+				}
+			} catch(e){
+				// This would throw permission denied if 
+				// the child window was from a different domain
 			}
 			//we only load things with force = true
 			if (options.env == 'production' && options.loadProduction) {

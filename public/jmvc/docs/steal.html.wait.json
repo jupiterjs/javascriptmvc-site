@@ -1,1 +1,0 @@
-c({"name": "steal.html.wait", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Waits for the html to finish</p>", "parents": ["steal.html"], "src": "steal/html/html.js", "line": 55, "children": []})

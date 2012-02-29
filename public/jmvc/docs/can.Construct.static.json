@@ -1,0 +1,1 @@
+c({"name": "can.Construct.static", "type": "static", "parents": ["can.Construct"], "comment": "", "src": "can/construct/construct.js", "line": 20, "children": ["can.Construct.static.newInstance", "can.Construct.static.setup", "can.Construct.static.extend", "can.Construct.static.namespace", "can.Construct.static.shortName", "can.Construct.static.fullName"]})

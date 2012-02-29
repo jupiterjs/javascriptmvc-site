@@ -1,1 +1,1 @@
-c({"name": "jQuery.View.cached", "type": "attribute", "parents": ["jQuery.View"], "comment": "<p>Cached are put in this object</p>", "hide": true, "src": "jquery/view/view.js", "line": 481, "children": []})
+c({"name": "jQuery.View.cached", "type": "attribute", "parents": ["jQuery.View"], "comment": "<p>Cached are put in this object</p>", "hide": true, "src": "can/view/view.js", "line": 301, "children": []})

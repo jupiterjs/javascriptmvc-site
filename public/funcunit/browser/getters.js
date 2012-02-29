@@ -397,7 +397,7 @@
 					logMessage = "Checking "+fname+" on '"+this.selector+"'";
 				
 				// can pass in an object or list of arguments
-				if(typeof tester == 'object'){
+				if(typeof tester == 'object' && !(tester instanceof RegExp)){
 					timeout = tester.timeout;
 					success = tester.success;
 					message = tester.message;
@@ -416,6 +416,7 @@
 				}
 				if(typeof timeout == 'string'){
 					message = timeout;
+					console.log(message)
 					timeout = undefined;
 					success = undefined;
 				}
@@ -427,8 +428,7 @@
 				if(typeof tester != 'function'){
 					errorMessage += " !== "+testVal
 					tester = function(val){
-						
-						return QUnit.equiv(val, testVal) || 
+						return FuncUnit.unit.equiv(val, testVal) || 
 							(testVal instanceof RegExp && testVal.test(val) );
 					}
 				}
@@ -484,7 +484,7 @@
 					},
 					success : function(){
 						if(message){
-							ok(true, message)
+							FuncUnit.unit.assertOK(true, message)
 						}
 						success && success.apply(this, arguments);
 					},

@@ -1,1 +1,0 @@
-c({"name": "steal.parse.ignoreComments", "type": "attribute", "parents": ["steal.parse"], "comment": "<p>A boolean you can set to ignore comments. <br />\nComments are ignored by default.</p>\n\n<pre><code>p.ignoreComments = true\n</code></pre>", "src": "steal/parse/parse.js", "line": 81, "children": []})

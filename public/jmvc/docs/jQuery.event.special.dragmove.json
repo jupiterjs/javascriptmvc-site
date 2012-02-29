@@ -1,1 +1,0 @@
-c({"name": "jQuery.event.special.dragmove", "type": "attribute", "parents": ["jQuery.event.special"], "comment": "<p>Called when the drag is moved.</p>\n\n<p>Drag events are covered in more detail in [jQuery.Drag].</p>", "src": "jquery/event/drag/drag.js", "line": 556, "children": []})

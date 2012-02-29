@@ -1,7 +1,7 @@
 @page mvc.class Class
 @parent mvc 0
 
-JMVC's Controller and Model inherit from its Class helper - [jQuery.Class $.Class]. To create a class, call <code>$.Class(NAME, [classProperties, ] instanceProperties])</code>. 
+Can's Control and Model inherit from its Class helper - [Can.Construct]. To create a class, call <code>$.Class(NAME, [classProperties, ] instanceProperties])</code>. 
 
     $.Class("Animal",{
       breathe : function(){

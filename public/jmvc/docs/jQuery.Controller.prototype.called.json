@@ -1,1 +1,0 @@
-c({"name": "jQuery.Controller.prototype.called", "type": "attribute", "parents": ["jQuery.Controller.prototype"], "comment": "<p>String name of current function being called on controller instance.  This is \nused for picking the right view in render.</p>", "hide": true, "src": "jquery/controller/controller.js", "line": 674, "children": []})

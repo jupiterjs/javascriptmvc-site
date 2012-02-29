@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drag.prototype.currentDelta", "params": {}, "ret": {"description": "", "type": "Vector"}, "type": "function", "parents": ["jQuery.Drag.prototype"], "comment": "<p>Returns the position of the movingElement by taking its top and left.</p>", "hide": true, "src": "jquery/event/drag/drag.js", "line": 293, "children": []})

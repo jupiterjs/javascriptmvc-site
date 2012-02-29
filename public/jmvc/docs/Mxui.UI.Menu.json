@@ -1,1 +1,0 @@
-c({"name": "Mxui.UI.Menu", "inherits": "Mxui.Nav.Menu", "type": "class", "comment": "<p>Mxui.UI.Menu is a jQuery.UI themed menu.</p>", "src": "mxui/nav/menu/menu.js", "line": 142, "children": []})

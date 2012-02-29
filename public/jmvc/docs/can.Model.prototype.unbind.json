@@ -1,0 +1,1 @@
+c({"name": "can.Model.prototype.unbind", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.Model.prototype"], "comment": "", "src": "can/model/model.js", "line": 363, "children": []})

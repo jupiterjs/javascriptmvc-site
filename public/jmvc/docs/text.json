@@ -1,1 +1,0 @@
-c({"name": "text", "type": "attribute", "comment": "<p>text = text.replace(/\n    &lt;\n    (?:mailto:)?\n    (\n        [-.\\w]+\n        \\@\n        [-a-z0-9]+(.[-a-z0-9]+)*.[a-z]+\n    )\n    >\n/gi, <em>DoAutoLinks</em>callback());</p>", "src": "documentjs/showdown.js", "line": 1078, "children": []})

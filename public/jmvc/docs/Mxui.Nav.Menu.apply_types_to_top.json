@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Menu.apply_types_to_top", "type": "attribute", "parents": ["Mxui.Nav.Menu"], "comment": "<p>If you want the top level menu to have 'types' mixed in.</p>", "src": "mxui/nav/menu/menu.js", "line": 43, "children": []})

@@ -166,7 +166,7 @@ test("page down, page up, home, end", function(){
 		setTimeout(runNext,1)
 
 	} );
-	stop();
+	stop(1000);
 
 	st.g("scrolldiv").focus();
 	runNext();

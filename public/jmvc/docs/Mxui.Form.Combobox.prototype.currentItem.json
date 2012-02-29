@@ -1,1 +1,0 @@
-c({"name": "Mxui.Form.Combobox.prototype.currentItem", "type": "attribute", "parents": ["Mxui.Form.Combobox.prototype"], "comment": "<p>if (!this.options.maxHeight ) {\n            this.options.maxHeight = this.Class.defaults.maxHeight;\n        }</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 179, "children": []})

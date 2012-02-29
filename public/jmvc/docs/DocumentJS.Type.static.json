@@ -1,1 +1,0 @@
-c({"name": "DocumentJS.Type.static", "type": "static", "parents": ["DocumentJS.Type"], "comment": "", "src": "documentjs/types/type.js", "line": 18, "children": ["DocumentJS.Type.static.create", "DocumentJS.Type.static.getParent", "DocumentJS.Type.static.hasType", "DocumentJS.Type.static.guessType", "DocumentJS.Type.static.process"]})

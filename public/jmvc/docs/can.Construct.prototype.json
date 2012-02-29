@@ -1,0 +1,1 @@
+c({"name": "can.Construct.prototype", "type": "prototype", "parents": ["can.Construct"], "comment": "", "src": "can/construct/construct.js", "line": 277, "children": ["can.Construct.prototype.setup", "can.Construct.prototype.init", "can.Construct.prototype.constructor"]})

@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drag.prototype.horizontal", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Drag.prototype"], "comment": "<p>Isolates the drag to horizontal movement.</p>", "src": "jquery/event/drag/drag.js", "line": 497, "children": []})

@@ -1,1 +1,0 @@
-c({"name": "Mxui.Util.Selectable.parent", "type": "attribute", "parents": ["Mxui.Util.Selectable"], "comment": "<p>Parent element unto which is utmost container to de-select in</p>", "src": "mxui/util/selectable/selectable.js", "line": 46, "children": []})

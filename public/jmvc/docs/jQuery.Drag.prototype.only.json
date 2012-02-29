@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drag.prototype.only", "params": {"only": {"description": "", "type": "", "optional": false, "order": 0, "name": "only"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Drag.prototype"], "comment": "<p>Respondables will not be alerted to this drag.</p>", "src": "jquery/event/drag/drag.js", "line": 504, "children": []})

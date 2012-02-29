@@ -1,1 +1,0 @@
-c({"name": "DocumentJS.tags.image", "type": "class", "comment": "<p>Adds an image.</p>\n\n<h3>Example:</h3>\n\n<pre><code class='javascript'>/* \n * @image jmvc/images/page_type_example.png 640 480\n */</code></pre> ", "tags": ["documentation"], "parents": ["DocumentJS.tags"], "src": "documentjs/tags/image.js", "line": 1, "children": []})

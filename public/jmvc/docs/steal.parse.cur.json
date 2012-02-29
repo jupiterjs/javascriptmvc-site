@@ -1,1 +1,0 @@
-c({"name": "steal.parse.cur", "params": {}, "ret": {"description": "<p>A token like:</p>\n\n<pre><code>{from: 22, to: 24, value: \"hi\", type: \"string\"}\n</code></pre>", "type": "token"}, "type": "function", "parents": ["steal.parse"], "comment": "<p>Returns the current token.</p>", "src": "steal/parse/parse.js", "line": 115, "children": []})

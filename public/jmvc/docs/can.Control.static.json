@@ -1,0 +1,1 @@
+c({"name": "can.Control.static", "type": "static", "parents": ["can.Control"], "comment": "", "src": "can/control/control.js", "line": 295, "children": ["can.Control.static.setup", "can.Control.static.pluginName", "can.Control.static._isAction", "can.Control.static._action", "can.Control.static.processors", "can.Control.static.defaults"]})

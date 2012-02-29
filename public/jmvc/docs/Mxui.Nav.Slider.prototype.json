@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Slider.prototype", "type": "prototype", "parents": ["Mxui.Nav.Slider"], "comment": "", "src": "mxui/nav/slider/slider.js", "line": 71, "children": ["Mxui.Nav.Slider.prototype.val"]})

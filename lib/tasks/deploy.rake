@@ -18,11 +18,11 @@ namespace :deploy do
 	task :update do
 		announce 'Pulling latest DoneJS-Site...'
 
-		sh 'git pull git@github.donejs/javascriptmvc-site.git'
+		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git'
 		sh 'git submodule update --init --recursive'
 		sh 'git submodule foreach git pull origin master'
 
-		Dir.chdir('javascriptmvc') do
+		Dir.chdir('donejs') do
 			sh 'git submodule update --init --recursive'
 			sh 'git submodule foreach git pull origin master'
 		end
@@ -31,28 +31,27 @@ namespace :deploy do
 	task :build do
 		announce 'Building docs and compressing site...'
 
-		Dir.chdir('javascriptmvc') do
+		Dir.chdir('donejs') do
 			sh './js jmvc/scripts/doc.js'
-			sh './js jmvc/site/scripts/build.js'
-			sh './js documentjs/jmvcdoc/scripts/build.js'
+			# sh './js jmvc/site/scripts/build.js'
+			# sh './js documentjs/jmvcdoc/scripts/build.js'
 		end
 	end
 
-	task :jquerymx do
-		announce 'Building jquerymx...'
+	task :canjs do
+		announce 'Building canjs...'
 
-		Dir.chdir('public') do
-			sh './js jquery/build.js'
-			sh './js jquery/buildAll.js'
+		Dir.chdir('donejs') do
+			sh './js can/util/make.js'
 		end
 	end
 
-	task :commit_jmvc do
-		announce 'Committing JavaScriptMVC changes...'
+	task :commit_donejs do
+		announce 'Committing DoneJS changes...'
 
-		Dir.chdir('javascriptmvc') do
+		Dir.chdir('donejs') do
 			sh 'git add .'
-			sh 'git commit -m "Updating JavaScriptMVC with latest build. - Automated message from JavaScriptMVC-Site."'
+			sh 'git commit -m "Updating DoneJS with latest build. - Automated message from DoneJS-Site."'
 			sh 'git push origin master'
 		end
 	end
@@ -63,7 +62,7 @@ namespace :deploy do
 		ignored_extensions = []
 		ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
 
-		Find.find('javascriptmvc') do |file|
+		Find.find('donejs') do |file|
 			basename = File.basename file
 			dirname = File.dirname file
 			extname = File.extname file
@@ -72,7 +71,7 @@ namespace :deploy do
 			if (File.directory?(file) && (/\.git/ =~ file).nil? || (/\.git/ =~ dirname).nil?) &&
 				(!ignored_extensions.include?(extname) && !ignored_files.include?(basename))
 					#puts dirname
-					new_path = 'public/' + dirname.gsub(/javascriptmvc(\/)?/, '') + '/' + basename
+					new_path = 'public/' + dirname.gsub(/donejs(\/)?/, '') + '/' + basename
 					new_path = new_path.gsub(/\/\//, '/')
 
 					puts new_path
@@ -90,7 +89,7 @@ namespace :deploy do
 		announce 'Committing site changes...'
 		sh 'git add .'
 		sh 'git commit -m "Updating from source."'
-		sh 'git push git@github.com:jupiterjs/javascriptmvc-site.git master'
+		sh 'git push git@github.com:jupiterjs/javascriptmvc-site.git donejs'
 
 		announce 'Cleaning up git...'
 		sh 'git fsck'
@@ -98,7 +97,7 @@ namespace :deploy do
 		sh 'git repack'
 	end
 
-	task :prepare => [:update, :build, :commit_jmvc, :copy, :commit] do
+	task :prepare => [:update, :canjs, :build, :commit_donejs, :copy, :commit_site] do
 		puts
 		puts 'Preparing to deploy...'
 		puts
@@ -107,12 +106,12 @@ namespace :deploy do
 	task :staging => [:prepare] do
 		announce 'Deploying to staging...'
 
-		sh 'git push git@heroku.com:staging-javascriptmvc.git'
+		sh 'git push git@heroku.com:staging-donejs.git'
 	end
 
 	task :production => [:prepare] do
 		announce 'Deploying to production...'
 
-		sh 'git push git@heroku.com:javascriptmvc.git'
+		sh 'git push git@heroku.com:donejs.git'
 	end
 end

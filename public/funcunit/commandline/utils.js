@@ -13,9 +13,14 @@ steal(function(){
 	 * 1. Manually before funcunit.js 
 	 * 2. FuncUnit.load will try to load settings.js if there hasn't been one loaded
 	 */
-	FuncUnit._loadSettingsFile = function(page){
-		var backupFunc = FuncUnit;
-		load('funcunit/settings.js')
+	FuncUnit._loadSettingsFile = function(page, settings){
+		var backupFunc = FuncUnit,
+			path = 'funcunit/settings.js';
+		if(settings){
+			path = settings;
+		}
+		load(path);
+		print('loading settings.js from '+path)
 		steal.extend(FuncUnit, backupFunc)
 		load('funcunit/commandline/output/output.js')
 	}
@@ -34,8 +39,9 @@ steal(function(){
 			}
 		}
 		if(!/https?:|file:/.test(page)){ // if theres no protocol, turn it into a filesystem urls
-			var cwd = (new java.io.File (".")).getCanonicalPath();
-			page = "file://"+cwd+"/"+page;
+			var cwd = (new java.io.File (".")).getCanonicalPath()+"";
+			cwd = cwd.replace(/\\/, '/');
+			page = "file:///"+cwd+"/"+page;
 		}
 		
 		//convert spaces to %20.

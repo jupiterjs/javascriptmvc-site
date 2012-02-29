@@ -105,7 +105,7 @@ test("focus triggers focus events", function(){
 
 
 test("focus on an element then another in another page", function(){
-	stop();
+	stop(10000);
 	var rootJoin  = st.rootJoin;
 	
 	var page1 = rootJoin("funcunit/syn/test/qunit/page1.html"),

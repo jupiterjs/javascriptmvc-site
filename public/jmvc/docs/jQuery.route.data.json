@@ -1,1 +1,0 @@
-c({"name": "jQuery.route.data", "type": "attribute", "parents": ["jQuery.route"], "comment": "<p>A $.Observe that represents the state of the history.</p>", "hide": true, "src": "jquery/dom/route/route.js", "line": 340, "children": []})

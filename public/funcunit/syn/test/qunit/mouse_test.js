@@ -1,10 +1,3 @@
-(function(){
-	
-	var didSomething = false;
-	window.doSomething = function(){
-		didSomething = true;
-	}
-
 module("funcunit/synthetic/mouse",{
 	setup: function() {
 		st.g("qunit-test-area").innerHTML = "<form id='outer'><div id='inner'>"+
@@ -162,10 +155,18 @@ test("Click! Event Order", 4, function(){
 })
 
 test("Click Anchor Runs HREF JavaScript", function(){
+	var didSomething = false,
+		doSomething = window.doSomething;
+	window.doSomething = function(){
+		didSomething = true;
+	}
 
+	
 	Syn.trigger("click",{},st.g("jsHref"))
 	
 	ok( didSomething, "link href JS run" );
+	
+	window.doSomething = doSomething;
 })
 
 test("Click! Anchor has href", function(){
@@ -324,6 +325,3 @@ test("h3 click in popup", 1,function(){
 			
 	},500);
 });
-
-
-})()

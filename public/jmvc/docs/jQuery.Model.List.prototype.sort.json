@@ -1,1 +1,0 @@
-c({"name": "jQuery.Model.List.prototype.sort", "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Sorts the instances in the list.</p>\n\n<pre><code>list.sort(sortfunc)\n</code></pre>", "src": "jquery/model/list/list.js", "line": 762, "children": []})

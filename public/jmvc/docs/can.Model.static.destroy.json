@@ -1,0 +1,1 @@
+c({"name": "can.Model.static.destroy", "params": {"str": {"description": "", "type": "", "optional": false, "order": 0, "name": "str"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.Model.static"], "comment": "", "src": "can/model/model.js", "line": 115, "children": []})

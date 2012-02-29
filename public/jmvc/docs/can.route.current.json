@@ -1,0 +1,1 @@
+c({"name": "can.route.current", "params": {"options": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "options"}}, "ret": {"description": "", "type": "Boolean"}, "type": "function", "parents": ["can.route"], "comment": "<p>Returns true if the options represent the current page.</p>", "src": "can/route/route.js", "line": 406, "children": []})

@@ -1,1 +1,0 @@
-c({"name": "jQuery.route.deparam", "params": {"url": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "url"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.route"], "comment": "<p>Populate the JS data object from a given URL.</p>", "src": "jquery/dom/route/route.js", "line": 295, "children": []})

@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drag.prototype.cleanup", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Drag.prototype"], "comment": "<p>Cleans up drag element after drag drop.</p>", "hide": true, "src": "jquery/event/drag/drag.js", "line": 404, "children": []})

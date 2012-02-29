@@ -1,1 +1,0 @@
-c({"name": "Syn.prototype", "type": "prototype", "parents": ["Syn"], "comment": "", "src": "funcunit/syn/synthetic.js", "line": 630, "children": ["Syn.prototype.then", "Syn.prototype.delay", "Syn.prototype.click", "Syn.prototype._rightClick", "Syn.prototype.dblclick"]})

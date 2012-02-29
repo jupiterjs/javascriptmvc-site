@@ -1,1 +1,0 @@
-c({"name": "jQuery.event.special.dragout", "type": "attribute", "parents": ["jQuery.event.special"], "comment": "<p>When the drag leaves a drop point.</p>\n\n<p>Drag events are covered in more detail in [jQuery.Drag].</p>", "src": "jquery/event/drag/drag.js", "line": 562, "children": []})
