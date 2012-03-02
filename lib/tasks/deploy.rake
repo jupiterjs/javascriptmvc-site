@@ -20,12 +20,12 @@ namespace :deploy do
 
 		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git'
 		sh 'git submodule update --init --recursive'
-		sh 'git submodule foreach git pull origin master'
+		#sh 'git submodule foreach git pull origin master'
 
-		Dir.chdir('donejs') do
-			sh 'git submodule update --init --recursive'
-			sh 'git submodule foreach git pull origin master'
-		end
+		#Dir.chdir('donejs') do
+			sh 'cd donejs && git submodule update --init --recursive'
+			sh 'cd donejs && git submodule foreach git pull origin master'
+		#end
 	end
 
 	task :build do
