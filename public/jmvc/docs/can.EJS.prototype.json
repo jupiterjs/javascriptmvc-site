@@ -1,1 +1,1 @@
-c({"name": "can.EJS.prototype", "type": "prototype", "parents": ["can.EJS"], "comment": "", "src": "can/view/ejs/ejs.js", "line": 238, "children": ["can.EJS.prototype.render"]})
+c({"name": "can.EJS.prototype", "type": "prototype", "parents": ["can.EJS"], "comment": "", "src": "can/view/ejs/ejs.js", "line": 232, "children": ["can.EJS.prototype.render"]})

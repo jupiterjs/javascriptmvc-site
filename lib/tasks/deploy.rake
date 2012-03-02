@@ -20,7 +20,7 @@ namespace :deploy do
 
 		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git'
 		sh 'git submodule update --init --recursive'
-		#sh 'git submodule foreach git pull origin master'
+		sh 'cd donejs && git pull origin master'
 
 		#Dir.chdir('donejs') do
 			sh 'cd donejs && git submodule update --init --recursive'
@@ -52,7 +52,7 @@ namespace :deploy do
 		Dir.chdir('donejs') do
 			sh 'git add .'
 			sh 'git commit -m "Updating DoneJS with latest build. - Automated message from DoneJS-Site."'
-			sh 'git push origin donejs'
+			sh 'git push origin master'
 		end
 	end
 
