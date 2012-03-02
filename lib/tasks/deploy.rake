@@ -52,7 +52,7 @@ namespace :deploy do
 		Dir.chdir('donejs') do
 			sh 'git add .'
 			sh 'git commit -m "Updating DoneJS with latest build. - Automated message from DoneJS-Site."'
-			sh 'git push origin master'
+			sh 'git push origin donejs'
 		end
 	end
 
