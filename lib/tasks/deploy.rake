@@ -22,37 +22,18 @@ namespace :deploy do
 		sh 'git submodule update --init --recursive'
 		sh 'cd donejs && git pull origin master'
 
-		#Dir.chdir('donejs') do
-			sh 'cd donejs && git submodule update --init --recursive'
-			sh 'cd donejs && git submodule foreach git pull origin master'
-		#end
+		sh 'cd donejs && git submodule update --init --recursive'
+		sh 'cd donejs && git submodule foreach git pull origin master'
 	end
 
 	task :build do
 		announce 'Building docs and compressing site...'
 
 		Dir.chdir('donejs') do
+			sh './js can/util/make.js'
 			sh './js jmvc/scripts/doc.js'
 			# sh './js jmvc/site/scripts/build.js'
 			# sh './js documentjs/jmvcdoc/scripts/build.js'
-		end
-	end
-
-	task :canjs do
-		announce 'Building canjs...'
-
-		Dir.chdir('donejs') do
-			sh './js can/util/make.js'
-		end
-	end
-
-	task :commit_donejs do
-		announce 'Committing DoneJS changes...'
-
-		Dir.chdir('donejs') do
-			sh 'git add .'
-			sh 'git commit -m "Updating DoneJS with latest build. - Automated message from DoneJS-Site."'
-			sh 'git push origin master'
 		end
 	end
 
@@ -86,9 +67,12 @@ namespace :deploy do
 	end
 
 	task :commit_site do
-		announce 'Committing site changes...'
-		sh 'git add .'
-		sh 'git commit -m "Updating from source."'
+		announce 'Committing site/donejs changes...'
+
+		sh 'cd donejs && git commit -am "Updating DoneJS with latest build. - Automated message from DoneJS-Site."'		
+		sh 'cd donejs && git push git@github.com:jupiterjs/donejs.git master'
+
+		sh 'git commit -am "Updating from source."'
 		sh 'git push git@github.com:jupiterjs/javascriptmvc-site.git donejs'
 
 		announce 'Cleaning up git...'
@@ -97,7 +81,7 @@ namespace :deploy do
 		sh 'git repack'
 	end
 
-	task :prepare => [:update, :canjs, :build, :commit_donejs, :copy, :commit_site] do
+	task :prepare => [:update, :build, :copy] do
 		puts
 		puts 'Preparing to deploy...'
 		puts
