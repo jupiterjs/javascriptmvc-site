@@ -7,7 +7,7 @@
 steal("can/util/string",function( $ ) {
 
 	
-	var initializing = false;
+	var initializing = 0;
 
 	/** 
 	 * @add can.Construct 
@@ -51,6 +51,7 @@ steal("can/util/string",function( $ ) {
 		newInstance: function() {
 			// get a raw instance objet (init is not called)
 			var inst = this.instance(),
+				arg = arguments,
 				args;
 				
 			// call setup if there is a setup
@@ -59,7 +60,7 @@ steal("can/util/string",function( $ ) {
 			}
 			// call init if there is an init, if setup returned args, use those as the arguments
 			if ( inst.init ) {
-				inst.init.apply(inst, can.isArray(args) ? args : arguments);
+				inst.init.apply(inst, args || arguments);
 			}
 			return inst;
 		},
@@ -127,9 +128,9 @@ steal("can/util/string",function( $ ) {
 		},
 		instance: function() {
 			// prevent running init
-			initializing = true;
+			initializing = 1;
 			var inst = new this();
-			initializing = false;
+			initializing = 0;
 			// allow running init
 			return inst;
 		},
@@ -188,13 +189,12 @@ steal("can/util/string",function( $ ) {
 			// The dummy class constructor
 			function Constructor() {
 				// All construction is actually done in the init method
-				if ( initializing ) return;
-
-				// we are being called w/o new, we are extending
-				if ( this.constructor !== Constructor && arguments.length ) { 
-					return arguments.callee.extend.apply(arguments.callee, arguments)
-				} else { //we are being called w/ new
-					return this.constructor.newInstance.apply(this.constructor, arguments)
+				if ( ! initializing ) {
+					// we are being called w/o new, we are extending
+					return this.constructor !== Constructor && arguments.length ?
+						arguments.callee.extend.apply(arguments.callee, arguments) :
+						//we are being called w/ new
+						this.constructor.newInstance.apply(this.constructor, arguments);
 				}
 			}
 			// Copy old stuff onto class (can probably be merged w/ inherit)
@@ -209,7 +209,7 @@ steal("can/util/string",function( $ ) {
 			// do namespace stuff
 			if ( fullName ) {
 
-				var parts = fullName.split(/\./),
+				var parts = fullName.split('.'),
 					shortName = parts.pop(),
 					current = can.String.getObject(parts.join('.'), window, true),
 					namespace = current,
@@ -266,13 +266,13 @@ steal("can/util/string",function( $ ) {
 			Constructor.prototype.constructor = Constructor;
 
 			
-
 			// call the class setup
-			var args = Constructor.setup.apply(Constructor, [_super_class].concat(can.makeArray(arguments)) );
+			var t = [_super_class].concat(can.makeArray(arguments)),
+				args = Constructor.setup.apply(Constructor, t );
 			
 			// call the class init
 			if ( Constructor.init ) {
-				Constructor.init.apply(Constructor, args || [_super_class].concat(can.makeArray(arguments)) );
+				Constructor.init.apply(Constructor, args || t );
 			}
 
 			/* @Prototype*/
@@ -419,4 +419,4 @@ steal("can/util/string",function( $ ) {
 
 
 
-})();
+})

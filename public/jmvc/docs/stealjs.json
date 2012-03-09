@@ -1,1 +1,1 @@
-c({"name": "stealjs", "children": ["steal", "steal.dev"]})
+c({"name": "stealjs", "children": ["steal"]})

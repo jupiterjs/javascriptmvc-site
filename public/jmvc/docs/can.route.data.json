@@ -1,1 +1,0 @@
-c({"name": "can.route.data", "type": "attribute", "parents": ["can.route"], "comment": "<p>A can.Observe that represents the state of the history.</p>", "hide": true, "src": "can/route/route.js", "line": 330, "children": []})

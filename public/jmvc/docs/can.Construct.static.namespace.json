@@ -1,1 +1,0 @@
-c({"name": "can.Construct.static.namespace", "type": "attribute", "parents": ["can.Construct.static"], "comment": "<p>The namespaces object</p>\n\n<pre><code>can.Construct(\"MyOrg.MyConstructor\",{},{})\nMyOrg.MyConstructor.namespace //-&gt; MyOrg\n</code></pre>", "src": "can/construct/construct.js", "line": 230, "children": []})
