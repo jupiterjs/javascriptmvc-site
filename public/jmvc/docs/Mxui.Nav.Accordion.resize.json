@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Accordion.resize", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Nav.Accordion"], "comment": "<p>Occurs when resize was triggered.</p>", "src": "mxui/nav/accordion/accordion.js", "line": 204, "children": []})

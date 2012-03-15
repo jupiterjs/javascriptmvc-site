@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Accordion.expand", "params": {"el": {"description": "", "type": "", "optional": false, "order": 0, "name": "el"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Nav.Accordion"], "comment": "<p>Expand the content of the title that was clicked.</p>", "src": "mxui/nav/accordion/accordion.js", "line": 120, "children": []})

@@ -1,1 +1,0 @@
-c({"name": "Mxui.Util.Selectable.enableDeselection", "type": "attribute", "parents": ["Mxui.Util.Selectable"], "comment": "<p>Allows de-selection if current item is selected and \nuser clicks something inside the parent that is not an item</p>", "src": "mxui/util/selectable/selectable.js", "line": 51, "children": []})
