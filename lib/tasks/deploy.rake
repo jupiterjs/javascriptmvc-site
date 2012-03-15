@@ -98,7 +98,7 @@ namespace :deploy do
 		sh 'git repack'
 	end
 
-	task :prepare => [:update, :build, :commit_jmvc, :copy, :commit] do
+	task :prepare => [:build, :commit_jmvc, :copy, :commit] do
 		puts
 		puts 'Preparing to deploy...'
 		puts
