@@ -1,17 +1,17 @@
 // 560
 /**
- * @page can.util.lang Language Helpers
- * @parent can.util
+ * @page jquerymx.lang Language Helpers
+ * @parent jquerymx
  * @description A collection of language helpers for things like String, Objects, etc.
  * 
- * CANjs has several lightweight language helper plugins.
+ * JavaScriptMVC has several lightweight language helper plugins.
  * 
- * ## [can.Object Object]
+ * ## [jQuery.Object Object]
  * 
  * Methods useful for comparing Objects. For example, if two
  * objects are the same:
  * 
- *     can.Object.same({foo: "bar"}, {foo: "bar"});
+ *     $.Object.same({foo: "bar"}, {foo: "bar"});
  *     
  * ## [can.Control Observe]
  * 
@@ -21,24 +21,23 @@
  *     person.bind('change', function(){ ... })
  *     person.attr('name', "Brian");
  *     
- * ## [can.String String]
+ * ## [jQuery.String String]
  * 
  * String helpers capitalize, underscore, and perform similar manipulations
  * on strings.  They can also lookup a value in an object:
  * 
- *    can.String.getObject("foo.bar",{foo: {bar: "car"}})
+ *    $.String.getObject("foo.bar",{foo: {bar: "car"}})
  * 
- * ## [can.toJSON toJSON]
+ * ## [jQuery.toJSON toJSON]
  * 
  * Used to create or consume JSON strings.
  * 
- * ## [can.Vector Vector]
+ * ## [jQuery.Vector Vector]
  * 
  * Used for vector math.
  */
 //string helpers
-steal('can/util',function() {
-	
+steal('can/util',function( $ ) {
 	// Several of the methods in this plugin use code adapated from Prototype
 	//  Prototype JavaScript framework, version 1.6.0.1
 	//  (c) 2005-2007 Sam Stephenson
@@ -62,21 +61,21 @@ steal('can/util',function() {
 		// a reference
 		getObject;
 		/** 
-		 * @class can.String
-		 * @parent can.util
+		 * @class jQuery.String
+		 * @parent jquerymx.lang
 		 * 
 		 * A collection of useful string helpers. Available helpers are:
 		 * <ul>
-		 *   <li>[can.util.String.capitalize|capitalize]: Capitalizes a string (some_string &raquo; Some_string)</li>
-		 *   <li>[can.util.String.camelize|camelize]: Capitalizes a string from something undercored 
+		 *   <li>[jQuery.String.capitalize|capitalize]: Capitalizes a string (some_string &raquo; Some_string)</li>
+		 *   <li>[jQuery.String.camelize|camelize]: Capitalizes a string from something undercored 
 		 *       (some_string &raquo; someString, some-string &raquo; someString)</li>
-		 *   <li>[can.util.String.classize|classize]: Like [can.util.String.camelize|camelize], 
+		 *   <li>[jQuery.String.classize|classize]: Like [jQuery.String.camelize|camelize], 
 		 *       but the first part is also capitalized (some_string &raquo; SomeString)</li>
-		 *   <li>[can.util.String.niceName|niceName]: Like [can.util.String.classize|classize], but a space separates each 'word' (some_string &raquo; Some String)</li>
-		 *   <li>[can.util.String.underscore|underscore]: Underscores a string (SomeString &raquo; some_string)</li>
-		 *   <li>[can.util.String.sub|sub]: Returns a string with {param} replaced values from data.
+		 *   <li>[jQuery.String.niceName|niceName]: Like [jQuery.String.classize|classize], but a space separates each 'word' (some_string &raquo; Some String)</li>
+		 *   <li>[jQuery.String.underscore|underscore]: Underscores a string (SomeString &raquo; some_string)</li>
+		 *   <li>[jQuery.String.sub|sub]: Returns a string with {param} replaced values from data.
 		 *       <code><pre>
-		 *       can.String.sub("foo {bar}",{bar: "far"})
+		 *       $.String.sub("foo {bar}",{bar: "far"})
 		 *       //-> "foo far"</pre></code>
 		 *   </li>
 		 * </ul>
@@ -93,7 +92,7 @@ steal('can/util',function() {
 			 * 'object path' by removing or adding properties.
 			 * 
 			 *     Foo = {Bar: {Zar: {"Ted"}}}
-		 	 *     can.String.getObject("Foo.Bar.Zar") //-> "Ted"
+		 	 *     $.String.getObject("Foo.Bar.Zar") //-> "Ted"
 			 * 
 			 * @param {String} name the name of the object to look for
 			 * @param {Array} [roots] an array of root objects to look for the 
@@ -158,7 +157,7 @@ steal('can/util',function() {
 			/**
 			 * Underscores a string.
 			 * @codestart
-			 * can.String.underscore("OneTwo") //-> "one_two"
+			 * jQuery.String.underscore("OneTwo") //-> "one_two"
 			 * @codeend
 			 * @param {String} s
 			 * @return {String} the underscored string
@@ -169,7 +168,7 @@ steal('can/util',function() {
 			/**
 			 * Returns a string with {param} replaced values from data.
 			 * 
-			 *     can.String.sub("foo {bar}",{bar: "far"})
+			 *     $.String.sub("foo {bar}",{bar: "far"})
 			 *     //-> "foo far"
 			 *     
 			 * @param {String} s The string to replace

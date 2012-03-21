@@ -1268,7 +1268,6 @@ define("plugd/trigger",["dojo"], function(dojo){
 	
 ;
 
-	
 	// Several of the methods in this plugin use code adapated from Prototype
 	//  Prototype JavaScript framework, version 1.6.0.1
 	//  (c) 2005-2007 Sam Stephenson
@@ -1292,21 +1291,21 @@ define("plugd/trigger",["dojo"], function(dojo){
 		// a reference
 		getObject;
 		/** 
-		 * @class can.String
-		 * @parent can.util
+		 * @class jQuery.String
+		 * @parent jquerymx.lang
 		 * 
 		 * A collection of useful string helpers. Available helpers are:
 		 * <ul>
-		 *   <li>[can.util.String.capitalize|capitalize]: Capitalizes a string (some_string &raquo; Some_string)</li>
-		 *   <li>[can.util.String.camelize|camelize]: Capitalizes a string from something undercored 
+		 *   <li>[jQuery.String.capitalize|capitalize]: Capitalizes a string (some_string &raquo; Some_string)</li>
+		 *   <li>[jQuery.String.camelize|camelize]: Capitalizes a string from something undercored 
 		 *       (some_string &raquo; someString, some-string &raquo; someString)</li>
-		 *   <li>[can.util.String.classize|classize]: Like [can.util.String.camelize|camelize], 
+		 *   <li>[jQuery.String.classize|classize]: Like [jQuery.String.camelize|camelize], 
 		 *       but the first part is also capitalized (some_string &raquo; SomeString)</li>
-		 *   <li>[can.util.String.niceName|niceName]: Like [can.util.String.classize|classize], but a space separates each 'word' (some_string &raquo; Some String)</li>
-		 *   <li>[can.util.String.underscore|underscore]: Underscores a string (SomeString &raquo; some_string)</li>
-		 *   <li>[can.util.String.sub|sub]: Returns a string with {param} replaced values from data.
+		 *   <li>[jQuery.String.niceName|niceName]: Like [jQuery.String.classize|classize], but a space separates each 'word' (some_string &raquo; Some String)</li>
+		 *   <li>[jQuery.String.underscore|underscore]: Underscores a string (SomeString &raquo; some_string)</li>
+		 *   <li>[jQuery.String.sub|sub]: Returns a string with {param} replaced values from data.
 		 *       <code><pre>
-		 *       can.String.sub("foo {bar}",{bar: "far"})
+		 *       $.String.sub("foo {bar}",{bar: "far"})
 		 *       //-> "foo far"</pre></code>
 		 *   </li>
 		 * </ul>
@@ -1323,7 +1322,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 			 * 'object path' by removing or adding properties.
 			 * 
 			 *     Foo = {Bar: {Zar: {"Ted"}}}
-		 	 *     can.String.getObject("Foo.Bar.Zar") //-> "Ted"
+		 	 *     $.String.getObject("Foo.Bar.Zar") //-> "Ted"
 			 * 
 			 * @param {String} name the name of the object to look for
 			 * @param {Array} [roots] an array of root objects to look for the 
@@ -1388,7 +1387,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 			/**
 			 * Underscores a string.
 			 * @codestart
-			 * can.String.underscore("OneTwo") //-> "one_two"
+			 * jQuery.String.underscore("OneTwo") //-> "one_two"
 			 * @codeend
 			 * @param {String} s
 			 * @return {String} the underscored string
@@ -1399,7 +1398,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 			/**
 			 * Returns a string with {param} replaced values from data.
 			 * 
-			 *     can.String.sub("foo {bar}",{bar: "far"})
+			 *     $.String.sub("foo {bar}",{bar: "far"})
 			 *     //-> "foo far"
 			 *     
 			 * @param {String} s The string to replace
@@ -3137,7 +3136,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 		}
 	
 	/**
-	 * @add can.String
+	 * @add jQuery.String
 	 */
 	can.extend(can.String, { 
 		
@@ -3207,14 +3206,12 @@ define("plugd/trigger",["dojo"], function(dojo){
 	 * replaceWith, etc. Destroyed events do not bubble, so make sure you don't use live or delegate with destroyed
 	 * events.
 	 * </p>
-	 *
 	 * <h2>Quick Example</h2>
 	 * @codestart
-	 * can.$(".foo").bind("destroyed", function(){
+	 * $(".foo").bind("destroyed", function(){
 	 *    //clean up code
 	 * })
 	 * @codeend
-	 *
 	 * <h2>Quick Demo</h2>
 	 * @demo jquery/event/destroyed/destroyed.html 
 	 * <h2>More Involved Demo</h2>
@@ -3223,7 +3220,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 
 	var oldClean = $.cleanData;
 
-	can.cleanData = function( elems ) {
+	$.cleanData = function( elems ) {
 		$.each( elems, function( i, elem ) {
 			$(elem).triggerHandler("destroyed");
 		});
@@ -3270,10 +3267,10 @@ define("plugd/trigger",["dojo"], function(dojo){
 	/**
 	 * @class can.route
 	 * @inherits can.Observe
-	 * @plugin can/route
+	 * @plugin jquery/dom/route
 	 * @parent index
 	 * 
-	 * can.route helps manage browser history (and
+	 * jQuery.route helps manage browser history (and
 	 * client state) by
 	 * synchronizing the window.location.hash with
 	 * an [can.Control].
@@ -3747,6 +3744,20 @@ define("plugd/trigger",["dojo"], function(dojo){
 
 				// cache the underscored names
 				var control = this,
+					/**
+					* @hide
+					* @attribute pluginName
+					* Setting the <code>pluginName</code> property allows you
+					* to change the jQuery plugin helper name from its 
+					* default value.
+					* 
+					*     can.Control("Mxui.Layout.Fill",{
+					*       pluginName: "fillWith"
+					*     },{});
+					*     
+					*     $("#foo").fillWith();
+					*/
+					pluginName = control.pluginName || control._fullName,
 					funcName;
 
 				// calculate and cache actions
@@ -5439,10 +5450,10 @@ define("plugd/trigger",["dojo"], function(dojo){
 		/**
 		 * @class can.EJS
 		 * 
-		 * @plugin can/view/ejs
+		 * @plugin jquery/view/ejs
 		 * @parent can.View
-		 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=can/view/ejs/ejs.js
-		 * @test can/view/ejs/qunit.html
+		 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/view/ejs/ejs.js
+		 * @test jquery/view/ejs/qunit.html
 		 * 
 		 * 
 		 * Ejs provides <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">ERB</a> 
@@ -5478,7 +5489,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 		 *   - [jQuery.fn.replaceWith replaceWith], and 
 		 *   - [jQuery.fn.text text].
 		 * 
-		 * or [Can.Control.prototype.view].
+		 * or [jQuery.Controller.prototype.view].
 		 * 
 		 * ### Syntax
 		 * 
@@ -5523,7 +5534,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 		 * @codeend
 		 * 
 		 * To hook up a controller with options or any other jQuery plugin use the
-		 * [can.EJS.Helpers.prototype.plugin | plugin view helper]:
+		 * [jQuery.EJS.Helpers.prototype.plugin | plugin view helper]:
 		 * 
 		 * @codestart
 		 * &lt;ul &lt;%= plugin('mxui_tabs', { option: 'value' }) %>>...&lt;ul>
@@ -5534,9 +5545,9 @@ define("plugd/trigger",["dojo"], function(dojo){
 		 * 
 		 * <h2>View Helpers</h2>
 		 * View Helpers return html code.  View by default only comes with 
-		 * [can.EJS.Helpers.prototype.view view] and [can.EJS.Helpers.prototype.text text].
+		 * [jQuery.EJS.Helpers.prototype.view view] and [jQuery.EJS.Helpers.prototype.text text].
 		 * You can include more with the view/helpers plugin.  But, you can easily make your own!
-		 * Learn how in the [can.EJS.Helpers Helpers] page.
+		 * Learn how in the [jQuery.EJS.Helpers Helpers] page.
 		 * 
 		 * @constructor Creates a new view
 		 * @param {Object} options A hash with the following options

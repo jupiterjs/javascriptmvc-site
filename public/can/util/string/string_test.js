@@ -1,37 +1,37 @@
 steal('funcunit/qunit','./string').then(function(){
 	
-module("can/util/string")
+module("jquery/lang/string")
 
-test("can.String.sub", function(){
-	equals(can.String.sub("a{b}",{b: "c"}),"ac")
+test("$.String.sub", function(){
+	equals($.String.sub("a{b}",{b: "c"}),"ac")
 	
 	var foo = {b: "c"};
 	
-	equals(can.String.sub("a{b}",foo,true),"ac");
+	equals($.String.sub("a{b}",foo,true),"ac");
 	
 	ok(!foo.b, "removed this b");
 	
 	
 });
 
-test("can.String.sub double", function(){
-	equals(can.String.sub("{b} {d}",[{b: "c", d: "e"}]),"c e");
+test("$.String.sub double", function(){
+	equals($.String.sub("{b} {d}",[{b: "c", d: "e"}]),"c e");
 })
 
 test("String.underscore", function(){
-	equals(can.String.underscore("Foo.Bar.ZarDar"),"foo.bar.zar_dar")
+	equals($.String.underscore("Foo.Bar.ZarDar"),"foo.bar.zar_dar")
 })
 
 
-test("can.String.getObject", function(){
-	var obj = can.String.getObject("foo", [{a: 1}, {foo: 'bar'}]);
+test("$.String.getObject", function(){
+	var obj = $.String.getObject("foo", [{a: 1}, {foo: 'bar'}]);
 	
 	equals(obj,'bar', 'got bar')
 	
 	
 	// test null data
 	
-	var obj = can.String.getObject("foo", [{a: 1}, {foo: 0}]);
+	var obj = $.String.getObject("foo", [{a: 1}, {foo: 0}]);
 	
 	equals(obj,0, 'got 0 (falsey stuff)')
 });

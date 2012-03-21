@@ -1,1 +1,1 @@
-c({"name": "jQuery.event.special", "type": "class", "comment": "", "src": "steal/dev/dev.js", "line": 103, "children": []})
+c({"name": "jQuery.event.special", "type": "class", "comment": "", "src": "can/util/destroyed.js", "line": 0, "children": ["jQuery.event.special.destroyed"]})

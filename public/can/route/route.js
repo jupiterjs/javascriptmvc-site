@@ -1,5 +1,5 @@
 // 1.11
-steal('can/observe', 'can/util/string/deparam', function() {
+steal('can/observe', 'can/util/string/deparam', function( $ ) {
 
     // Helper methods used for matching routes.
 	var 
@@ -38,10 +38,10 @@ steal('can/observe', 'can/util/string/deparam', function() {
 	/**
 	 * @class can.route
 	 * @inherits can.Observe
-	 * @plugin can/route
+	 * @plugin jquery/dom/route
 	 * @parent index
 	 * 
-	 * can.route helps manage browser history (and
+	 * jQuery.route helps manage browser history (and
 	 * client state) by
 	 * synchronizing the window.location.hash with
 	 * an [can.Control].

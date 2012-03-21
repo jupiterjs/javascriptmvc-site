@@ -1,1 +1,1 @@
-c({"name": "specialevents", "children": ["can.event.special.destroyed"]})
+c({"name": "specialevents", "children": ["jQuery.event.special.destroyed"]})
