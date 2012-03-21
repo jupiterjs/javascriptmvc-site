@@ -1,1 +1,1 @@
-rake deploy:staging
+cd C:\dev\donejs-site && rake deploy:staging
