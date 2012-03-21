@@ -89,12 +89,13 @@ namespace :deploy do
 	task :staging => [:prepare] do
 		announce 'Deploying to staging...'
 
-		sh 'git push git@heroku.com:staging-donejs.git donejs:master'
+		#Adding force as the heroku source history is not relevant
+		sh 'git push git@heroku.com:staging-donejs.git donejs:master --force'
 	end
 
 	task :production => [:prepare] do
 		announce 'Deploying to production...'
 
-		sh 'git push git@heroku.com:donejs.git donejs:master'
+		sh 'git push git@heroku.com:donejs.git donejs:master --force'
 	end
 end
