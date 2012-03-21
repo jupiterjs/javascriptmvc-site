@@ -1,2 +1,7 @@
-donejs/
-selenium
+./donejs/.git
+./donejs/can/.git
+./donejs/documentjs/.git
+./donejs/funcunit/.git
+./donejs/funcunit/syn/.git
+./donejs/mxui/.git
+./donejs/steal/.git
