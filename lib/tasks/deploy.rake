@@ -23,7 +23,9 @@ namespace :deploy do
 		sh 'cd donejs && git pull origin master'
 
 		sh 'cd donejs && git submodule update --init --recursive'
-		sh 'cd donejs && git submodule foreach git pull origin master'
+		#Nested submodule updates should be checked in to the corresponding project
+		#as opposed to the website.
+		#sh 'cd donejs && git submodule foreach git pull origin master'
 	end
 
 	task :build do
@@ -32,8 +34,6 @@ namespace :deploy do
 		Dir.chdir('donejs') do
 			sh './js can/util/make.js'
 			sh './js jmvc/scripts/doc.js'
-			# sh './js jmvc/site/scripts/build.js'
-			# sh './js documentjs/jmvcdoc/scripts/build.js'
 		end
 	end
 
@@ -51,7 +51,6 @@ namespace :deploy do
 			#TODO: Simplify the below logic.
 			if (File.directory?(file) && (/\.git/ =~ file).nil? || (/\.git/ =~ dirname).nil?) &&
 				(!ignored_extensions.include?(extname) && !ignored_files.include?(basename))
-					#puts dirname
 					new_path = 'public/' + dirname.gsub(/donejs(\/)?/, '') + '/' + basename
 					new_path = new_path.gsub(/\/\//, '/')
 
