@@ -1,0 +1,1 @@
+c({"name": "can.Observe.setter", "type": "page", "comment": "<p>Provides setters on Observes.</p>", "parents": ["can.Observe"], "src": "can/observe/setter/setter.md", "children": []})

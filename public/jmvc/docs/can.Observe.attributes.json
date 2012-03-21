@@ -1,0 +1,1 @@
+c({"name": "can.Observe.attributes", "type": "page", "comment": "<p>The <code>can/observe/attributes</code> plugin is used for serializing and deserializing observes.</p>", "parents": ["can.Observe"], "src": "can/observe/attributes/attributes.md", "children": []})

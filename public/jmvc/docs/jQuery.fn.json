@@ -1,0 +1,1 @@
+c({"name": "jQuery.fn", "type": "class", "comment": "", "construct": "<p>blah</p>", "ret": {"type": "jquery.fn", "description": ""}, "src": "steal/dev/dev.js", "line": 98, "children": []})

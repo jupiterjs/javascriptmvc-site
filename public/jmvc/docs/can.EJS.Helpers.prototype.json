@@ -1,0 +1,1 @@
+c({"name": "can.EJS.Helpers.prototype", "type": "prototype", "parents": ["can.EJS.Helpers"], "comment": "", "src": "can/view/ejs/ejs.js", "line": 675, "children": ["can.EJS.Helpers.prototype.view"]})

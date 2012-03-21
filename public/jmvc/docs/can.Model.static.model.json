@@ -1,0 +1,1 @@
+c({"name": "can.Model.static.model", "params": {"attributes": {"description": "", "type": "", "optional": false, "order": 0, "name": "attributes"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.Model.static"], "comment": "", "src": "can/model/model.js", "line": 261, "children": []})

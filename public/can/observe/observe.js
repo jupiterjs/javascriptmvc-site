@@ -3,7 +3,7 @@ steal('can/construct', function() {
 
 	// returns if something is an object with properties of its own
 	var canMakeObserve = function( obj ) {
-			return typeof obj === 'object' && obj !== null && obj && !(obj instanceof Date);
+			return obj && typeof obj === 'object' && !(obj instanceof Date);
 		},
 		// removes all listeners
 		unhookup = function(items, namespace){
@@ -49,7 +49,7 @@ steal('can/construct', function() {
 		// an id to track events for a given observe
 		observeId = 0,
 		// a reference to an array of events that will be dispatched
-		collecting = null,
+		collecting = undefined,
 		// call to start collecting events (Observe sends all events at once)
 		collect = function() {
 			if (!collecting ) {
@@ -64,19 +64,18 @@ steal('can/construct', function() {
 		// - args - an array of arguments
 		batchTrigger = function( item, event, args ) {
 			// send no events if initalizing
-			if (item._init) {
-				return;
-			}
-			if (!collecting ) {
-				return can.trigger(item, event, args);
-			} else {
-				collecting.push([
-				item,
-				{
-					type: event,
-					batchNum : batchNum
-				}, 
-				args ] );
+			if ( ! item._init) {
+				if (!collecting ) {
+					return can.trigger(item, event, args);
+				} else {
+					collecting.push([
+					item,
+					{
+						type: event,
+						batchNum : batchNum
+					}, 
+					args ] );
+				}
 			}
 		},
 		// which batch of events this is for, might not want to send multiple
@@ -86,8 +85,7 @@ steal('can/construct', function() {
 		// sends all pending events
 		sendCollection = function() {
 			var items = collecting.slice(0);
-
-			collecting = null;
+			collecting = undefined;
 			batchNum++;
 			can.each(items, function( i, item) {
 				can.trigger.apply(can, item)
@@ -123,16 +121,13 @@ steal('can/construct', function() {
 	/**
 	 * @add can.Observe
 	 */
-	var Observe = can.Construct('can.Observe',{
+	var Observe = can.Construct('can.Observe', {
 		// keep so it can be overwritten
-		setup : function(baseClass){
+		setup : function(){
 			can.Construct.setup.apply(this, arguments)
 		},
 		bind : bind,
 		unbind: unbind,
-		/**
-		 * @attribute id
-		 */
 		id: "id"
 	},
 	/**
@@ -327,10 +322,11 @@ steal('can/construct', function() {
 		 *     o.attr('name',"Brian").attr('name') //-> Justin
 		 */
 		attr: function( attr, val ) {
-			var tAttr= typeof attr;
-			if(tAttr != 'string' && tAttr != 'number' ){
+			// This is super obfuscated for space -- basically, we're checking
+			// if the type of the attribute is not a number or a string
+			if ( !~ "ns".indexOf((typeof attr).charAt(0))) {
 				return this._attrs(attr, val)
-			}else if ( val === undefined ) {// if we are getting a value
+			} else if ( val === undefined ) {// if we are getting a value
 				// let people know we are reading (
 				Observe.__reading && Observe.__reading(this, attr)
 				return this._get(attr)
@@ -367,7 +363,7 @@ steal('can/construct', function() {
 		 * @return {can.Observe} the original observable.
 		 */
 		each: function() {
-			return can.each.apply(null, [this.__get()].concat(can.makeArray(arguments)))
+			return can.each.apply(undefined, [this.__get()].concat(can.makeArray(arguments)))
 		},
 		/**
 		 * Removes a property by name from an observe.
@@ -433,7 +429,9 @@ steal('can/construct', function() {
 				current._set(parts, value)
 			} else if (!parts.length ) {
 				// we're in 'real' set territory
-				
+				if(this.__convert){
+					value = this.__convert(prop, value)
+				}
 				this.__set(prop, value, current)
 				
 			} else {
@@ -441,6 +439,7 @@ steal('can/construct', function() {
 			}
 		},
 		__set : function(prop, value, current){
+			
 			// otherwise, we are setting it on this object
 			// todo: check if value is object and transform
 			// are we changing the value
@@ -616,10 +615,11 @@ steal('can/construct', function() {
 			props = can.extend(true, {}, props);
 			var prop, 
 				collectingStarted = collect(),
-				self = this;
+				self = this,
+				newVal;
 			
 			this.each(function(prop, curVal){
-				var newVal = props[prop];
+				newVal = props[prop];
 
 				// if we are merging ...
 				if ( newVal === undefined ) {
@@ -779,7 +779,7 @@ steal('can/construct', function() {
 	{
 		setup: function( instances, options ) {
 			this.length = 0;
-			this._namespace = ".list" + (++observeId);
+			this._namespace = ".observe" + (++observeId);
 			this._init = 1;
 			this.bind('change',can.proxy(this._changes,this));
 			this.push.apply(this, can.makeArray(instances || []));
@@ -1074,7 +1074,9 @@ steal('can/construct', function() {
 			props = props.slice(0);
 
 			var len = Math.min(props.length, this.length),
-				collectingStarted = collect();
+				collectingStarted = collect(),
+				prop;
+
 			for ( var prop = 0; prop < len; prop++ ) {
 				var curVal = this[prop],
 					newVal = props[prop];

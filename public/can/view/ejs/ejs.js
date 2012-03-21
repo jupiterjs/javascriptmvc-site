@@ -1,4 +1,4 @@
-// 2.19
+// 2.04
 /*jslint evil: true */
 steal('can/view', 'can/util/string').then(function( $ ) {
 
@@ -8,33 +8,22 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 	},
 		// removes the last character from a string
 		// this is no longer needed
-		// chop = function( string ) {
-		//	return string.substr(0, string.length - 1);
-		//},
 		extend = can.extend,
 		// regular expressions for caching
-		returnReg = /\r\n/g,
-		retReg = /\r/g,
-		newReg = /\n/g,
-		nReg = /\n/,
-		slashReg = /\\/g,
-		tabReg = /\t/g,
-		leftBracket = /\{/g,
-		rightBracket = /\}/g,
 		quickFunc = /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
 		attrReg = /([^\s]+)=$/,
 		attributeReplace = /__!!__/g,
 		tagMap = {"": "span", table: "tr", tr: "td", ol: "li", ul: "li", tbody: "tr", thead: "tr", tfoot: "tr"},
 		// escapes characters starting with \
 		clean = function( content ) {
-			return content.replace(slashReg, '\\\\').replace(newReg, '\\n').replace(/"/g, '\\"').replace(tabReg, '\\t');
+			return content
+				.split('\\').join("\\\\")
+				.split("\n").join("\\n")
+				.split('"').join('\\"')
+				.split("\t").join("\\t");
 		},
 		bracketNum = function(content){
-			var lefts = content.match(leftBracket),
-				rights = content.match(rightBracket);
-				
-			return (lefts ? lefts.length : 0) - 
-				   (rights ? rights.length : 0);
+			return (--content.split("{").length) - (--content.split("}").length);
 		},
 		// used to bind to an observe, and unbind when the element is removed
 		liveBind = function(observed, el, cb){
@@ -43,17 +32,15 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 			})
 			can.bind.call(el,'destroyed', function(){
 				can.each(observed, function(i, ob){
-					ob.obj.unbind(ob.attr, ob.cb)
+					ob.obj.unbind(ob.attr, cb)
 				})
 			})
 		},
 		contentEscape = function( txt ) {
 			//return sanatized text
-			if ( typeof txt == 'string' || typeof txt == 'number'  ) {
-				return can.String.esc(""+txt);
-			} else {
-				return contentText(txt);
-			}
+			return (typeof txt == 'string' || typeof txt == 'number') ?
+				can.String.esc( txt ) :
+				contentText(txt);
 		},
 		contentText =  function( input ) {	
 			
@@ -62,7 +49,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 				return input;
 			}
 			// if has no value
-			if ( input === null || input === undefined ) {
+			if ( !input && input != 0 ) {
 				return '';
 			}
 
@@ -78,7 +65,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 			// finally, if there is a funciton to hookup on some dom
 			// pass it to hookup to get the data-view-id back
 			if ( hook ) {
-				return "data-view-id='" + can.view.hook(hook) + "'";
+				return can.view.hook(hook);
 			}
 			// finally, if all else false, toString it
 			return ""+input;
@@ -86,10 +73,10 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		/**
 		 * @class can.EJS
 		 * 
-		 * @plugin jquery/view/ejs
+		 * @plugin can/view/ejs
 		 * @parent can.View
-		 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/view/ejs/ejs.js
-		 * @test jquery/view/ejs/qunit.html
+		 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=can/view/ejs/ejs.js
+		 * @test can/view/ejs/qunit.html
 		 * 
 		 * 
 		 * Ejs provides <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">ERB</a> 
@@ -125,7 +112,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		 *   - [jQuery.fn.replaceWith replaceWith], and 
 		 *   - [jQuery.fn.text text].
 		 * 
-		 * or [jQuery.Controller.prototype.view].
+		 * or [Can.Control.prototype.view].
 		 * 
 		 * ### Syntax
 		 * 
@@ -170,7 +157,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		 * @codeend
 		 * 
 		 * To hook up a controller with options or any other jQuery plugin use the
-		 * [jQuery.EJS.Helpers.prototype.plugin | plugin view helper]:
+		 * [can.EJS.Helpers.prototype.plugin | plugin view helper]:
 		 * 
 		 * @codestart
 		 * &lt;ul &lt;%= plugin('mxui_tabs', { option: 'value' }) %>>...&lt;ul>
@@ -181,9 +168,9 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		 * 
 		 * <h2>View Helpers</h2>
 		 * View Helpers return html code.  View by default only comes with 
-		 * [jQuery.EJS.Helpers.prototype.view view] and [jQuery.EJS.Helpers.prototype.text text].
+		 * [can.EJS.Helpers.prototype.view view] and [can.EJS.Helpers.prototype.text text].
 		 * You can include more with the view/helpers plugin.  But, you can easily make your own!
-		 * Learn how in the [jQuery.EJS.Helpers Helpers] page.
+		 * Learn how in the [can.EJS.Helpers Helpers] page.
 		 * 
 		 * @constructor Creates a new view
 		 * @param {Object} options A hash with the following options
@@ -276,7 +263,8 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 			}
 			// get value
 			var observed = [],
-				input = func.call(self);
+				input = func.call(self),
+				tag = (tagMap[tagName] || "span");
 	
 			// set back so we are no longer reading
 			if(can.Observe){
@@ -287,9 +275,9 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 			if(!observed.length){
 				return (escape || status !== 0? contentEscape : contentText)(input);
 			}
-			var tag = (tagMap[tagName] || "span");
+
 			if(status == 0){
-				return "<" +tag+" data-view-id='" +can.view.hook(
+				return "<" +tag+can.view.hook(
 				// are we escaping
 				escape ? 
 					// 
@@ -339,14 +327,14 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 							nodes = makeAndPut(func.call(self), nodes);
 						});
 						//return parent;
-				}) + "'></" +tag+">";
+				}) + "></" +tag+">";
 			} else if(status === 1){ // in a tag
 				// mark at end!
 				var attrName = func.call(self).replace(/['"]/g, '').split('=')[0];
 				pendingHookups.push(function(el) {
 					liveBind(observed, el, function() {
 						var attr = func.call(self),
-							parts = (attr || "").replace(/['"]/g, '').split('=')
+							parts = (attr || "").replace(/['"]/g, '').split('='),
 							newAttrName = parts[0];
 						
 						// remove if we have a change and used to have an attrName
@@ -378,10 +366,10 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 
 						hooks[status] = {
 							render: function() {
-								var i =0;
-								var newAttr = attr.replace(attributeReplace, function() {
-									return contentEscape( hook.funcs[i++].call(self) );
-								});
+								var i =0,
+									newAttr = attr.replace(attributeReplace, function() {
+										return contentText( hook.funcs[i++].call(self) );
+									});
 								return newAttr;
 							},
 							funcs: [func],
@@ -415,11 +403,11 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 				var hooks = pendingHookups.slice(0);
 
 				pendingHookups = [];
-				return " data-view-id='" + can.view.hook(function(el){
+				return can.view.hook(function(el){
 					can.each(hooks, function(i, fn){
 						fn(el);
 					})
-				}) + "'";
+				});
 			}else {
 				return "";
 			}
@@ -449,8 +437,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		pendingHookups = [],
 		
 		scan = function(source, name){
-			var tokens = source.replace(returnReg, "\n")
-				.replace(retReg, "\n")
+			var tokens = source.replace(/(\r|\n)+/g, "\n")
 				.split(tokenReg),
 				content = '',
 				buff = [startTxt],

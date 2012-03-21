@@ -1,6 +1,5 @@
 // 1.11
-steal('can/observe', 'can/util/string/deparam',
-function( $ ) {
+steal('can/observe', 'can/util/string/deparam', function() {
 
     // Helper methods used for matching routes.
 	var 
@@ -21,8 +20,8 @@ function( $ ) {
         // variables are present in the data the number of matches is returned 
         // to allow discerning between general and more specific routes. 
 		matchesData = function(route, data) {
-			var count = 0;
-			for ( var i = 0; i < route.names.length; i++ ) {
+			var count = 0, i = 0;
+			for (; i < route.names.length; i++ ) {
 				if (!data.hasOwnProperty(route.names[i]) ) {
 					return -1;
 				}
@@ -31,7 +30,7 @@ function( $ ) {
 			return count;
 		},
         // 
-		onready = true,
+		onready = !0,
 		location = window.location,
 		each = can.each,
 		extend = can.extend;
@@ -39,10 +38,10 @@ function( $ ) {
 	/**
 	 * @class can.route
 	 * @inherits can.Observe
-	 * @plugin jquery/dom/route
+	 * @plugin can/route
 	 * @parent index
 	 * 
-	 * jQuery.route helps manage browser history (and
+	 * can.route helps manage browser history (and
 	 * client state) by
 	 * synchronizing the window.location.hash with
 	 * an [can.Control].
@@ -233,20 +232,17 @@ function( $ ) {
          * @return {String} The route URL and &amp; separated parameters.
 		 */
 		param: function( data ) {
+			delete data.route;
 			// Check if the provided data keys match the names in any routes;
 			// get the one with the most matches.
-			delete data.route;
 			var route,
 				// need it to be at least 1 match
 				matches = 0,
 				matchCount,
 				routeName = data.route;
 			
-			delete data.route;
 			// if we have a route name in our can.route data, use it
-			if(routeName && (route = can.route.routes[routeName])){
-				
-			} else {
+			if ( ! ( routeName && (route = can.route.routes[routeName]))){
 				// otherwise find route
 				each(can.route.routes, function(name, temp){
 					matchCount = matchesData(temp, data);
@@ -256,9 +252,8 @@ function( $ ) {
 					}
 				});
 			}
-			// if this is match
 
-			
+			// if this is match
 			if ( route ) {
 				var cpy = extend({}, data),
                     // Create the url by replacing the var names with the provided data.
@@ -429,10 +424,7 @@ function( $ ) {
         // Deparameterizes the portion of the hash of interest and assign the
         // values to the can.route.data removing existing values no longer in the hash.
         setState = function() {
-			var hash = location.hash.substr(1, 1) === '!' ? 
-				location.hash.slice(2) : 
-				location.hash.slice(1); // everything after #!
-			curParams = can.route.deparam( hash );
+			curParams = can.route.deparam( location.hash.split(/#!?/).pop() );
 			can.route.attr(curParams, true);
 		};
 

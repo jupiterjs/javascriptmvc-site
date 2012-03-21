@@ -1,29 +1,72 @@
 steal('can/control', function(){
 	
-/**
- *  @add jQuery.fn
- */
+
 
 //used to determine if a controller instance is one of controllers
 //controllers can be strings or classes
 var i, 
-isAControllerOf = function( instance, controllers ) {
-	for ( i = 0; i < controllers.length; i++ ) {
-		if ( typeof controllers[i] == 'string' ? instance.constructor._shortName == controllers[i] : instance instanceof controllers[i] ) {
-			return true;
+	isAControllerOf = function( instance, controllers ) {
+		for ( i = 0; i < controllers.length; i++ ) {
+			if ( typeof controllers[i] == 'string' ? instance.constructor._shortName == controllers[i] : instance instanceof controllers[i] ) {
+				return true;
+			}
 		}
+		return false;
+	},
+	data = function(el, data){
+		var $el = can.$(el);
+		$el.data("controllers", data || {})
+		return $el.data('controllers');
+	},
+	makeArray = can.makeArray,
+	old = can.Control.setup;
+
+
+can.Control.setup = function() {
+	// if you didn't provide a name, or are control, don't do anything
+	if ( this !== can.Control ) {
+		/**
+		 * @hide
+		 * @attribute pluginName
+		 * Setting the <code>pluginName</code> property allows you
+		 * to change the jQuery plugin helper name from its 
+		 * default value.
+		 * 
+		 *     can.Control("Mxui.Layout.Fill",{
+		 *       pluginName: "fillWith"
+		 *     },{});
+		 *     
+		 *     $("#foo").fillWith();
+		 */
+		var pluginName = this.pluginName || this._fullName;
+			
+		// create jQuery plugin
+		if(pluginName !== 'can_control'){
+			this.plugin(pluginName);
+		}
+			
+		old.apply(this, arguments);
 	}
-	return false;
-},
-data = function(el, data){
-	return $.data(el, "controllers", data)
-},
-makeArray = $.makeArray;
+};
 
+/**
+ * @hide
+ * @attribute pluginName
+ * Setting the <code>pluginName</code> property allows you
+ * to change the jQuery plugin helper name from its 
+ * default value.
+ * 
+ *     can.Control("Mxui.Layout.Fill",{
+ *       pluginName: "fillWith"
+ *     },{});
+ *     
+ *     $("#foo").fillWith();
+ */
+can.prototype.extend({
 
-$.fn.extend({
 	/**
-	 * @function controllers
+	 * @function jQuery.fn.controllers
+	 * @parent can.Control.plugin
 	 * Gets all controllers in the jQuery element.
 	 * @return {Array} an array of controller instances.
 	 */
@@ -34,7 +77,7 @@ $.fn.extend({
 		//check if arguments
 		this.each(function() {
 
-			controllers = $.data(this, "controllers");
+			controllers = can.$(this).data("controllers");
 			for ( cname in controllers ) {
 				if ( controllers.hasOwnProperty(cname) ) {
 					c = controllers[cname];
@@ -47,7 +90,8 @@ $.fn.extend({
 		return instances;
 	},
 	/**
-	 * @function controller
+	 * @function jQuery.fn.controller
+	 * @parent can.Control.plugin
 	 * Gets a controller in the jQuery element.  With no arguments, returns the first one found.
 	 * @param {Object} controller (optional) if exists, the first controller instance with this class type will be returned.
 	 * @return {jQuery.Controller} the first controller.
@@ -60,8 +104,8 @@ $.fn.extend({
 can.Control.plugin = function(pluginname){
 	var controller = this;
 
-	if (!$.fn[pluginname]) {
-		$.fn[pluginname] = function(options){
+	if (!can.prototype[pluginname]) {
+		can.prototype[pluginname] = function(options){
 		
 			var args = makeArray(arguments),   //if the arg is a method on this controller
 			isMethod = typeof options == "string" && $.isFunction(controller.prototype[options]), meth = args[0];
@@ -83,7 +127,8 @@ can.Control.plugin = function(pluginname){
 				}
 				else {
 					//create a new controller instance
-					controller.newInstance.apply(controller, [this].concat(args));
+					controllers[pluginname] = 
+						controller.newInstance.apply(controller, [this].concat(args));
 				}
 			});
 		};
