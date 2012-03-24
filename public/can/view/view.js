@@ -30,7 +30,7 @@ steal("can/util").then(function( $ ) {
 	can.extend( $view, {
 		frag: function(result){
 			var frag = can.buildFragment([result],[document.body]).fragment;
-			// if we have an empty frag
+			// if we have an empty fraga
 			if(!frag.childNodes.length) { 
 				frag.appendChild(document.createTextNode(''))
 			}
@@ -45,7 +45,7 @@ steal("can/util").then(function( $ ) {
 			
 			// get all childNodes
 			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(i, node){
-				if(node.nodeType != 3){
+				if(node.nodeType === 1){
 					hookupEls.push(node)
 					hookupEls.push.apply(hookupEls, can.makeArray( node.getElementsByTagName('*')))
 				}
@@ -313,7 +313,7 @@ steal("can/util").then(function( $ ) {
 			// you should only be using // if you are using steal
 			if ( url.match(/^\/\//) ) {
 				var sub = url.substr(2);
-				url = window.steal ? 
+				url = !window.steal ? 
 					"/" + sub : 
 					steal.root.mapJoin(sub);
 			}

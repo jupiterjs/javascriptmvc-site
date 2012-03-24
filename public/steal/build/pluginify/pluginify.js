@@ -27,6 +27,7 @@ steal('steal/parse','steal/build/scripts').then(
 	 *   - nojquery - exclude jquery
 	 *   - global - what the callback to steal functions should be.  Defaults to jQuery as $.
 	 *   - compress - compress the file
+	 *   - wrapInner - an array containing code you want to wrap the output in [before, after]
 	 *   - skipCallbacks - don't run any of the code in steal callbacks (used for canjs build)
 	 */
 	s.build.pluginify = function(plugin, opts){
@@ -40,6 +41,7 @@ steal('steal/parse','steal/build/scripts').then(
 				"global": 0,
 				"compress": 0,
 				"onefunc" : 0,
+				"wrapInner": 0,
 				"skipCallbacks" : 0
 			}), 
 			where = opts.out || plugin + "/" + plugin.replace(/\//g, ".") + ".js";
@@ -56,11 +58,9 @@ steal('steal/parse','steal/build/scripts').then(
 		rhinoLoader = {
 			callback: function(s){
 				s.pluginify = true;
-				//s(plugin);
 			}
 		};
 		
-		//		steal.win().build_in_progress = true;
 		var out = [], 
 			str, 
 			i, 
@@ -74,11 +74,21 @@ steal('steal/parse','steal/build/scripts').then(
 				return false;
 			}, 
 			pageSteal, 
-			steals = [];
+			steals = [], 
+			fns = {};
 			
-		steal.build.open("steal/rhino/empty.html", {startFile : plugin, skipCallbacks: opts.skipCallbacks}, function(opener){
-			opener.each('js', function(stl, text, i){
-				//print("p  "+stl.rootSrc)
+		steal.build.open("steal/rhino/empty.html", {
+			startFile : plugin, 
+			skipCallbacks: opts.skipCallbacks
+		}, function(opener){
+			opener.each(function(stl, text, i){
+				if(stl.buildType === "fn") {
+					fns[stl.rootSrc] = true;
+				}
+				else if(fns[stl.rootSrc] && stl.buildType === "js"){ // if its a js type and we already had a function, ignore it
+					return;
+				}
+				// print(stl.rootSrc, stl.buildType);
 				if (!inExclude(stl)) {
 				
 					var content = s.build.pluginify.content(stl, opts, text);
@@ -91,9 +101,12 @@ steal('steal/parse','steal/build/scripts').then(
 					s.print("  Ignoring " + stl.rootSrc)
 				}
 			})
-		}, true);
+		}, true, true);
 		
 		var output = out.join(";\n");
+		if(opts.wrapInner && opts.wrapInner.length === 2){
+			output = opts.wrapInner[0] + output + opts.wrapInner[1];
+		}
 		if(opts.onefunc){
 			output = "(function(can, window, undefined){"+ output+ "})("+opts.global+", this )";
 		}
@@ -106,20 +119,17 @@ steal('steal/parse','steal/build/scripts').then(
 		s.print("--> " + where);
 		new steal.File(where).save(output);
 		
-		//keeps track of which 'then' we are in with steal
-		var funcCount = {};
-		
 	}
 	//gets content from a steal
-	s.build.pluginify.content = function(steal, opts, opener){
+	s.build.pluginify.content = function(steal, opts, text){
 		var param = opts.global;
 		
 		if (steal.buildType == 'fn') {
-			// if it's a function, go to the file it's in ... pull out the content
-			var index = funcCount[steal.rootSrc] || 0, contents = readFile(steal.rootSrc);
-			funcCount[steal.rootSrc]++;
-			var contents = s.build.pluginify.getFunction(contents, index, opts.onefunc);
-			return opts.onefunc ? contents : "(" + contents + ")(" + param + ")";
+			// fn's are always a \nfunction(){\n .... code .... \n}\n;\n
+			var textarr = text.split("\n");
+			textarr = textarr.splice(2, textarr.length-4)
+			text = "\n"+textarr.join("\n");
+			return opts.onefunc ? text : "(" + text + ")(" + param + ")";
 		}
 		else {
 			var content = readFile(steal.rootSrc);

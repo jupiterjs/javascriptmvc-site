@@ -1,5 +1,5 @@
-// 1.28
-steal('can/construct', 'can/util/destroyed.js', function( $ ) {
+// 1.08
+steal('can/construct', function( $ ) {
 	// ------- HELPER FUNCTIONS  ------
 	
 	// Binds an element, returns a function that unbinds
@@ -18,7 +18,7 @@ steal('can/construct', 'can/util/destroyed.js', function( $ ) {
 		extend = can.extend,
 		each = can.each,
 		slice = [].slice,
-		special = ($.event && $.event.special) || {},
+		special = can.getObject("$.event.special") || {},
 
 		// Binds an element, returns a function that unbinds
 		delegate = function( el, selector, ev, callback ) {
@@ -71,20 +71,6 @@ steal('can/construct', 'can/util/destroyed.js', function( $ ) {
 
 				// cache the underscored names
 				var control = this,
-					/**
-					* @hide
-					* @attribute pluginName
-					* Setting the <code>pluginName</code> property allows you
-					* to change the jQuery plugin helper name from its 
-					* default value.
-					* 
-					*     can.Control("Mxui.Layout.Fill",{
-					*       pluginName: "fillWith"
-					*     },{});
-					*     
-					*     $("#foo").fillWith();
-					*/
-					pluginName = control.pluginName || control._fullName,
 					funcName;
 
 				// calculate and cache actions
@@ -139,7 +125,7 @@ steal('can/construct', 'can/util/destroyed.js', function( $ ) {
 			if ( options || ! /\{([^\}]+)\}/g.test( methodName )) {
 				// If we have options, run sub to replace templates "{}" with a value from the options
 				// or the window
-				var convertedName = options ? can.String.sub(methodName, [options, window]) : methodName,
+				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
 					
 					// If a "{}" resolves to an object, convertedName will be an array
 					arr = can.isArray(convertedName),
@@ -583,107 +569,6 @@ steal('can/construct', 'can/util/destroyed.js', function( $ ) {
 			});
 			//adds bindings
 			this._bindings = [];
-		},
-		/**
-		 * @hide
-		 * Update extends [jQuery.Control.prototype.options this.options] 
-		 * with the `options` argument and rebinds all events.  It basically
-		 * re-configures the control.
-		 * 
-		 * For example, the following control wraps a recipe form. When the form
-		 * is submitted, it creates the recipe on the server.  When the recipe
-		 * is `created`, it resets the form with a new instance.
-		 * 
-		 *     can.Control('Creator',{
-		 *       "{recipe} created" : function(){
-		 *         this.update({recipe : new Recipe()});
-		 *         this.element[0].reset();
-		 *         this.find("[type=submit]").val("Create Recipe")
-		 *       },
-		 *       "submit" : function(el, ev){
-		 *         ev.preventDefault();
-		 *         var recipe = this.options.recipe;
-		 *         recipe.attrs( this.element.formParams() );
-		 *         this.find("[type=submit]").val("Saving...")
-		 *         recipe.save();
-		 *       }
-		 *     });
-		 *     $('#createRecipes').creator({recipe : new Recipe()})
-		 * 
-		 * 
-		 * @demo jquery/control/demo-update.html
-		 * 
-		 * Update is called if a control's [jquery.control.plugin jQuery helper] is 
-		 * called on an element that already has a control instance
-		 * of the same type. 
-		 * 
-		 * For example, a widget that listens for model updates
-		 * and updates it's html would look like.  
-		 * 
-		 *     can.Control('Updater',{
-		 *       // when the control is created, update the html
-		 *       init : function(){
-		 *         this.updateView();
-		 *       },
-		 *       
-		 *       // update the html with a template
-		 *       updateView : function(){
-		 *         this.element.html( "content.ejs",
-		 *                            this.options.model ); 
-		 *       },
-		 *       
-		 *       // if the model is updated
-		 *       "{model} updated" : function(){
-		 *         this.updateView();
-		 *       },
-		 *       update : function(options){
-		 *         // make sure you call super
-		 *         this._super(options);
-		 *          
-		 *         this.updateView();
-		 *       }
-		 *     })
-		 * 
-		 *     // create the control
-		 *     // this calls init
-		 *     $('#item').updater({model: recipe1});
-		 *     
-		 *     // later, update that model
-		 *     // this calls "{model} updated"
-		 *     recipe1.update({name: "something new"});
-		 *     
-		 *     // later, update the control with a new recipe
-		 *     // this calls update
-		 *     $('#item').updater({model: recipe2});
-		 *     
-		 *     // later, update the new model
-		 *     // this calls "{model} updated"
-		 *     recipe2.update({name: "something newer"});
-		 * 
-		 * _NOTE:_ If you overwrite `update`, you probably need to call
-		 * this._super.
-		 * 
-		 * ### Example
-		 * 
-		 *     can.Control("Thing",{
-		 *       init: function( el, options ) {
-		 *         alert( 'init:'+this.options.prop )
-		 *       },
-		 *       update: function( options ) {
-		 *         this._super(options);
-		 *         alert('update:'+this.options.prop)
-		 *       }
-		 *     });
-		 *     $('#myel').thing({prop : 'val1'}); // alerts init:val1
-		 *     $('#myel').thing({prop : 'val2'}); // alerts update:val2
-		 * 
-		 * @param {Object} options A list of options to merge with 
-		 * [jQuery.Control.prototype.options this.options].  Often, this method
-		 * is called by the [jquery.control.plugin jQuery helper function].
-		 */
-		update: function( options ) {
-			extend(this.options, options);
-			this.on();
 		},
 		/**
 		 * `destroy` prepares a control for garbage collection and is a place to
