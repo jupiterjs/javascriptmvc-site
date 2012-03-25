@@ -35,4 +35,13 @@ steal('./jquery.1.7.1.js', function( $ ) {
 		}
 	})
 
+	var oldClean = $.cleanData;
+
+	$.cleanData = function( elems ) {
+		$.each( elems, function( i, elem ) {
+			can.trigger(elem,"destroyed",[],false)
+		});
+		oldClean(elems);
+	};
+
 })

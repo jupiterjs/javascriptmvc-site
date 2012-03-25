@@ -712,7 +712,7 @@
 				this.options = steal.makeOptions(extend({},
 					typeof options == 'string' ? { src: options } : options));
 
-				this.waits = this.options.waits || false;
+				this.waits = this.orig.waits || false;
 				this.unique = true;
 			}
 		},
@@ -882,13 +882,26 @@
 			steal.require(this.options, function load_calling_loaded(script){
 				self.loaded(script);
 			}, function(error, src){
+				var abortFlag = self.options.abort,
+					errorCb = self.options.error;
+
+				// if an error callback was provided, fire it
+				if(errorCb){
+					errorCb.call(self.options);
+				}
+
 				win.clearTimeout && win.clearTimeout(self.completeTimeout)
+
+				// if abort: false, register the script as loaded, and don't throw
+				if(abortFlag === false){
+					self.loaded();
+					return;
+				}
 				throw "steal.js : "+self.options.src+" not completed"
 			});
-			
 		}
-
 	};
+
 	steal.p.init.prototype = steal.p;
 	/**
 	 * @add steal
@@ -1050,8 +1063,27 @@
 		 * files passed to the arguments.
 		 */
 		then : function(){
-			var args = typeof arguments[0] == 'function' ? 
-				arguments : [function(){}].concat(makeArray( arguments ) )
+			var args;
+			// if its a fn, it already waits
+			if(typeof arguments[0] == 'function'){
+				args = arguments;
+			}
+			else {
+				// TODO get this working, not sure why but its causing some out of order loading
+				// // otherwise, if its a string, convert it to an object
+				// args = makeArray( arguments );
+				// if(typeof args[0] == 'string'){
+					// args[0] = {
+						// src: args[0]
+					// };
+				// }
+				// // make the first one wait
+				// args[0].waits = true;
+				
+				
+				args = [function(){}].concat(makeArray( arguments ) )
+			}
+			
 			return steal.apply(win, args );
 		},
 		/**
@@ -1778,8 +1810,8 @@
 	}
 	
 	// =========== DEBUG =========
-	
-	/*var name = function(stel){
+	/*
+	var name = function(stel){
 		if(stel.options && stel.options.type == "fn"){
 			return stel.options.orig.toString().substr(0,50)
 		}
@@ -2081,8 +2113,8 @@
 			}
 			// either instrument is in this page (if we're the window opened from steal.browser), or its opener has it
 			try {
-				if ( options.instrument || (!options.browser && win.top && win.top.opener && 
-						win.top.opener.steal && win.top.opener.steal.options.instrument) ) {
+				if ((win.top && win.top.opener && win.top.opener.steal && win.top.opener.steal.instrument) || 
+					(win.top && win.top.steal && win.top.steal.instrument) ) {
 					// force startFiles to load before instrument
 					steals.push(function(){}, {
 						src: "steal/instrument",

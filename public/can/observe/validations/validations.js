@@ -1,7 +1,4 @@
 steal('can/observe/attributes', function(){
-	
-
-
 //validations object is by property.  You can have validations that
 //span properties, but this way we know which ones to run.
 //  proc should return true if there's an error or the error message
@@ -76,7 +73,7 @@ can.extend(can.Observe, {
     * @parent can.Observe.validations
     * The default validation error messages that will be returned by the builtin
     * validation methods. These can be overwritten by assigning new messages
-    * to $.Model.validationMessages.&lt;message> in your application setup.
+    * to can.Observe.validationMessages.&lt;message> in your application setup.
     * 
     * The following messages (with defaults) are available:
     * 
@@ -93,7 +90,7 @@ can.extend(can.Observe, {
     * 
     * ## Example
     * 
-    *     $.Model.validationMessages.format = "is invalid dummy!"
+    *     can.Observe.validationMessages.format = "is invalid dummy!"
     */
    validationMessages : {
        format      : "is invalid",
@@ -210,7 +207,7 @@ can.extend(can.Observe.prototype, {
 	 * To use validations, it's suggested you use the 
 	 * observe/validations plugin.
 	 * 
-	 *     $.Model("Task",{
+	 *     can.Observe("Task",{
 	 *       init : function(){
 	 *         this.validatePresenceOf("dueDate")
 	 *       }

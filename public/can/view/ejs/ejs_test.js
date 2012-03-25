@@ -140,7 +140,7 @@ test("helpers", function() {
 
 test("attribute single unescaped, html single unescaped", function(){
 
-	var text = "<div class='<%== task.attr('completed') ? 'complete' : ''%>'><%== task.attr('name') %></div>";
+	var text = "<div id='me' class='<%== task.attr('completed') ? 'complete' : ''%>'><%== task.attr('name') %></div>";
 	var task = new can.Observe({
 		name : 'dishes'
 	})
@@ -386,6 +386,22 @@ test('single escaped tag, removeAttr', function () {
 	equals(anchor.getAttribute('data-bar'), 'baz');
 });
 
+test('html comments', function(){
+	var text =	'<!-- bind to changes in the todo list --> <div> '
+	+ '<%= obs.attr("foo") %></div>',
+
+	obs = new can.Observe({
+		foo: 'foo',
+	}),
+
+	compiled = new can.EJS({ text: text }).render({ obs: obs });
+
+	var div = document.createElement('div');
+	div.appendChild(can.view.frag(compiled));
+})
+
+
+/** /
 test('multiple curly braces in a block', function() {
 	var text = '<% if(!obs.attr("items").length) { %>' +
 	'<li>No items</li>' +
@@ -408,3 +424,4 @@ test('multiple curly braces in a block', function() {
 	obs.attr('items', [{ name: 'foo' }]);
 	equals(u.innerHTML, '<li>foo</li>', 'updated observable');
 });
+/**/

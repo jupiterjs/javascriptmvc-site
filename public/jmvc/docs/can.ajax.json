@@ -1,0 +1,1 @@
+c({"name": "can.ajax", "type": "function", "comment": "<p><code>can.ajax( settings )</code> is used to make an Ajax request like\n[http://api.jquery.com/jQuery.ajax/ jQuery.ajax].</p>", "parents": ["can.util"], "src": "can/util/util.js", "line": 198, "children": []})
