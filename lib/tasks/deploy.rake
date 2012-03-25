@@ -34,6 +34,7 @@ namespace :deploy do
 		Dir.chdir('donejs') do
 			sh './js can/util/make.js'
 			sh './js jmvc/scripts/doc.js'
+			sh 'cd can/util/docco && npm install && node generate.js'
 		end
 	end
 
