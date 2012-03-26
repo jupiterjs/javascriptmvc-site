@@ -29,7 +29,6 @@ namespace :deploy do
 	end
 
 	task :build do
-
 		announce 'Building docs and compressing site...'
 
 		Dir.chdir('donejs') do
