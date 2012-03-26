@@ -909,12 +909,6 @@ define("can/dojo", ["dojo/query", "dojo/NodeList-dom", "dojo/NodeList-traverse"]
         if (self.fullName == "can.Model") {
             self.fullName = "Model" + (++modelNum);
         }
-        if (window.jQuery) {
-            var converters = {}, convertName = "* " + self.fullName + ".model";
-            converters[convertName + "s"] = can.proxy(self.models, self);
-            converters[convertName] = can.proxy(self.model, self);
-            $.ajaxSetup({converters:converters});
-        }
         this.store = {};
         this._reqs = 0;
         this._url = this._shortName + "/{" + this.id + "}";

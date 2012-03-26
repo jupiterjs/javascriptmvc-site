@@ -1,1 +1,1 @@
-c({"name": "can.Model.List", "type": "class", "comment": "", "inherits": "can.Observe.List", "parents": ["index"], "src": "can/model/model.js", "line": 469, "children": []})
+c({"name": "can.Model.List", "type": "class", "comment": "", "inherits": "can.Observe.List", "parents": ["index"], "src": "can/model/model.js", "line": 1052, "children": []})
