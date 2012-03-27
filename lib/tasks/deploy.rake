@@ -20,7 +20,7 @@ namespace :deploy do
 
 		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git donejs'
 		sh 'git submodule update --init --recursive'
-		sh 'cd donejs && git pull origin master'
+		sh 'cd donejs && git checkout master && git pull origin master'
 
 		sh 'cd donejs && git submodule update --init --recursive'
 		#Nested submodule updates should be checked in to the corresponding project
