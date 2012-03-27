@@ -40,10 +40,11 @@ steal('steal/parse','steal/build/scripts').then(
 				"nojquery": 0,
 				"global": 0,
 				"compress": 0,
-				"onefunc" : 0,
+				"onefunc": 0,
 				"wrapInner": 0,
-				"skipCallbacks" : 0
-			}), 
+				"skipCallbacks": 0,
+				"standAlone": 0
+			}),
 			where = opts.out || plugin + "/" + plugin.replace(/\//g, ".") + ".js";
 		
 		opts.exclude = !opts.exclude ? [] : (isArray(opts.exclude) ? opts.exclude : [opts.exclude]);
@@ -89,7 +90,8 @@ steal('steal/parse','steal/build/scripts').then(
 					return;
 				}
 				// print(stl.rootSrc, stl.buildType);
-				if (!inExclude(stl)) {
+				if ((opts.standAlone && stl.rootSrc === plugin)
+					|| (!opts.standAlone && !inExclude(stl))) {
 				
 					var content = s.build.pluginify.content(stl, opts, text);
 					if (content) {
@@ -120,16 +122,18 @@ steal('steal/parse','steal/build/scripts').then(
 		new steal.File(where).save(output);
 		
 	}
+	var funcCount = {};
 	//gets content from a steal
 	s.build.pluginify.content = function(steal, opts, text){
 		var param = opts.global;
 		
 		if (steal.buildType == 'fn') {
-			// fn's are always a \nfunction(){\n .... code .... \n}\n;\n
-			var textarr = text.split("\n");
-			textarr = textarr.splice(2, textarr.length-4)
-			text = "\n"+textarr.join("\n");
-			return opts.onefunc ? text : "(" + text + ")(" + param + ")";
+			// if it's a function, go to the file it's in ... pull out the content
+			var index = funcCount[steal.rootSrc] || 0, 
+				contents = readFile(steal.rootSrc);
+			funcCount[steal.rootSrc]++;
+			var contents = s.build.pluginify.getFunction(contents, index, opts.onefunc);
+			return opts.onefunc ? contents : "(" + contents + ")(" + param + ")";
 		}
 		else {
 			var content = readFile(steal.rootSrc);

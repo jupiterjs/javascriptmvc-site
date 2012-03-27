@@ -9,26 +9,23 @@ plugin.
 
 To backup a observe instance call [can.Observe.prototype.backup backup] like:
 
-@codestart
-var recipe = new Recipe({name: "cheese"});
-recipe.backup()
-@codeend
+	var recipe = new Recipe({name: "cheese"});
+	recipe.backup()
 
 You can check if the instance is dirty with [can.Observe.prototype.isDirty isDirty]:
 
-@codestart
-recipe.name = 'blah'
-recipe.isDirty() //-> true
-@codeend
+	recipe.name = 'blah'
+	recipe.isDirty() //-> true
 
 Finally, you can restore the original attributes with 
 [can.Observe.prototype.backup backup].
 
-@codestart
-recipe.restore();
-recipe.name //-> "cheese"
-@codeend
+	recipe.restore();
+	recipe.name //-> "cheese"
 
 See this in action:
 
 @demo can/observe/backup/backup.html
+
+*Note: Its important to include this plugin before you include other plugins that 
+extend Observe so that prototype chain is extended correctly.
