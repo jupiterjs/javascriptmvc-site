@@ -1,5 +1,8 @@
 (function(can, window, undefined){
 
+	// jquery.js
+	// ---------
+	// _jQuery wrapper._
 	$.extend( can, jQuery, {
 		trigger: function( obj, event, args ) {
 			obj.trigger ?
@@ -18,7 +21,7 @@
 		prototype: jQuery.fn
 	});
 
-	// make binding functions
+	// Wrap binding functions.
 	$.each(['bind','unbind','undelegate','delegate'],function(i,func){
 		can[func] = function(){
 			var t = this[func] ? this : $([this])
@@ -27,13 +30,14 @@
 		}
 	})
 
-	// make modifier based functions
+	// Wrap modifier based functions.
 	$.each(["append","filter","addClass","remove","data","get"], function(i,name){
 		can[name] = function(wrapped){
 			return wrapped[name].apply(wrapped, can.makeArray(arguments).slice(1))
 		}
 	})
 
+	// Memory safe destruction.
 	var oldClean = $.cleanData;
 
 	$.cleanData = function( elems ) {
@@ -45,29 +49,37 @@
 
 ;
 
+
+	// string.js
+	// ---------
+	// _Miscellaneous string utility functions._
 	
 	// Several of the methods in this plugin use code adapated from Prototype
-	//  Prototype JavaScript framework, version 1.6.0.1
-	//  (c) 2005-2007 Sam Stephenson
-	var undHash= /_|-/,
-		colons= /==/,
-		words= /([A-Z]+)([A-Z][a-z])/g,
-		lowUp= /([a-z\d])([A-Z])/g,
-		dash= /([a-z\d])([A-Z])/g,
-		replacer= /\{([^\}]+)\}/g,
-		quote= /"/g,
-		singleQuote= /'/g,
-		// gets the nextPart property from current
-		// add - if true and nextPart doesnt exist, create it as an empty object
-		getNext = function(current, nextPart, add){
-			return nextPart in current ? current[nextPart] : ( add && (current[nextPart] = {}) );
+	// Prototype JavaScript framework, version 1.6.0.1.
+	// © 2005-2007 Sam Stephenson
+	var undHash     = /_|-/,
+		colons      = /==/,
+		words       = /([A-Z]+)([A-Z][a-z])/g,
+		lowUp       = /([a-z\d])([A-Z])/g,
+		dash        = /([a-z\d])([A-Z])/g,
+		replacer    = /\{([^\}]+)\}/g,
+		quote       = /"/g,
+		singleQuote = /'/g,
+
+		// Returns the `prop` property from `obj`.
+		// If `add` is true and `prop` doesn't exist in `obj`, create it as an 
+		// empty object.
+		getNext = function( obj, prop, add ) {
+			return prop in obj ?
+				obj[ prop ] : 
+				( add && ( obj[ prop ] = {} ));
 		},
-		// returns true if the object can have properties (no nulls)
-		isContainer = function(current){
+
+		// Returns true if the object can have properties (no nulls).
+		isContainer = function( current ) {
 			return /^f|^o/.test( typeof current );
-		},
-		// a reference
-		getObject;
+		};
+
 		can.extend(can, {
 			/**
 			 * @function can.esc
@@ -76,8 +88,14 @@
 			 * 
 			 * can.esc( "<foo>&<bar>" ) //-> "&lt;foo&lt;&amp;&lt;bar&lt;"
 			 */
-			esc : function(content){
-				return ("" + content).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quote, '&#34;').replace(singleQuote, "&#39;");
+			// Escapes strings for HTML.
+			esc : function( content ) {
+				return ( "" + content )
+					.replace(/&/g, '&amp;')
+					.replace(/</g, '&lt;')
+					.replace(/>/g, '&gt;')
+					.replace(quote, '&#34;')
+					.replace(singleQuote, "&#39;");
 			},
 			
 			/**
@@ -97,39 +115,41 @@
 			 *  not modify the root object
 			 * @return {Object} The object.
 			 */
-			getObject : getObject = function( name, roots, add ) {
+			getObject : function( name, roots, add ) {
 			
-				// the parts of the name we are looking up
+				// The parts of the name we are looking up
 				// ['App','Models','Recipe']
 				var parts = name ? name.split('.') : [],
 					length =  parts.length,
 					current,
-					ret, 
-					i,
-					r = 0;
+					r = 0,
+					ret, i;
 				
-				// make sure roots is an array
+				// Make sure roots is an array.
 				roots = can.isArray(roots) ? roots : [roots || window];
 				
-				if(length == 0){
+				if ( ! length ) {
 					return roots[0];
 				}
-				// for each root, mark it as current
+
+				// For each root, mark it as current.
 				while( current = roots[r++] ) {
-					// walk current to the 2nd to last object
-					// or until there is not a container
-					for (i =0; i < length - 1 && isContainer(current); i++ ) {
-						current = getNext(current, parts[i], add);
+
+					// Walk current to the 2nd to last object or until there 
+					// is not a container.
+					for (i =0; i < length - 1 && isContainer( current ); i++ ) {
+						current = getNext( current, parts[i], add );
 					}
-					// if we can get a property from the 2nd to last object
+
+					// If we can get a property from the 2nd to last object...
 					if( isContainer(current) ) {
 						
-						// get (and possibly set) the property
+						// Get (and possibly set) the property.
 						ret = getNext(current, parts[i], add); 
 						
-						// if there is a value, we exit
-						if( ret !== undefined ) {
-							// if add is false, delete the property
+						// If there is a value, we exit.
+						if ( ret !== undefined ) {
+							// If add is false, delete the property
 							if ( add === false ) {
 								delete current[parts[i]];
 							}
@@ -146,8 +166,9 @@
 			 * @param {String} s the string.
 			 * @return {String} a string with the first character capitalized.
 			 */
+			// Capitalizes a string.
 			capitalize: function( s, cache ) {
-				// used to make newId ...
+				// Used to make newId.
 				return s.charAt(0).toUpperCase() + s.slice(1);
 			},
 			
@@ -162,8 +183,14 @@
 			 * @param {String} s
 			 * @return {String} the underscored string
 			 */
+			// Underscores a string.
 			underscore: function( s ) {
-				return s.replace(colons, '/').replace(words, '$1_$2').replace(lowUp, '$1_$2').replace(dash, '_').toLowerCase();
+				return s
+					.replace(colons, '/')
+					.replace(words, '$1_$2')
+					.replace(lowUp, '$1_$2')
+					.replace(dash, '_')
+					.toLowerCase();
 			},
 			/**
 			 * @function can.sub
@@ -179,26 +206,32 @@
 			 * objects can be used.
 			 * @param {Boolean} [remove] if a match is found, remove the property from the object
 			 */
-			sub: function( s, data, remove ) {
-				var obs = [],
-					remove = typeof remove == 'boolean' ? !remove : remove;
-				obs.push(s.replace(replacer, function( whole, inside ) {
-					//convert inside to type
-					var ob = getObject(inside, data, remove);
+			// Micro-templating.
+			sub: function( str, data, remove ) {
+
+				var obs = [];
+
+				obs.push( str.replace( replacer, function( whole, inside ) {
+
+					// Convert inside to type.
+					var ob = can.getObject( inside, data, remove );
 					
-					// if a container, push into objs (which will return objects found)
-					if( isContainer(ob) ){
-						obs.push(ob);
+					// If a container, push into objs (which will return objects found).
+					if ( isContainer( ob ) ) {
+						obs.push( ob );
 						return "";
-					}else{
-						return ""+ob;
+					} else {
+						return "" + ob;
 					}
 				}));
 				
 				return obs.length <= 1 ? obs[0] : obs;
 			},
+
+			// These regex's are used throughout the rest of can, so let's make
+			// them available.
 			replacer : replacer,
-			undHash :undHash
+			undHash : undHash
 		});
 ;
 
@@ -1396,44 +1429,9 @@
 			this.bind('change',can.proxy(this._changes,this));
 			this.push.apply(this, can.makeArray(instances || []));
 			can.extend(this, options);
-			//if(this.comparator){
-			//	this.sort()
-			//}
 			delete this._init;
 		},
 		_changes : function(ev, attr, how, newVal, oldVal){
-			// detects an add, sorts it, re-adds?			
-			
-			// if we are sorting, and an attribute inside us changed
-			/*if(this.comparator && /^\d+./.test(attr) ) {
-				
-				// get the index
-				var index = +/^\d+/.exec(attr)[0],
-					// and item
-					item = this[index],
-					// and the new item
-					newIndex = this.sortedIndex(item);
-				
-				if(newIndex !== index){
-					// move ...
-					splice.call(this, index, 1);
-					splice.call(this, newIndex, 0, item);
-					
-					batchTrigger(this, "move", [item, newIndex, index]);
-					ev.stopImmediatePropagation();
-					batchTrigger(this,"change", [
-						attr.replace(/^\d+/,newIndex),
-						how,
-						newVal,
-						oldVal
-					]);
-					return;
-				}
-			}*/
-			
-			// if we add items, we need to handle 
-			// sorting and such
-			
 			// batchTrigger direct add and remove events ...
 			if ( !~ attr.indexOf('.')){
 				
@@ -1450,28 +1448,14 @@
 			}
 			// issue add, remove, and move events ...
 		},
-		/**
-		 * @hide
-		   sortedIndex : function(item){
-			var itemCompare = item.attr(this.comparator),
-				equaled = 0,
-				i;
-			for(var i =0; i < this.length; i++){
-				if(item === this[i]){
-					equaled = -1;
-					continue;
-				}
-				if(itemCompare <= this[i].attr(this.comparator) ) {
-					return i+equaled;
-				}
-			}
-			return i+equaled;
-		},*/
 		__get : function(attr){
 			return attr ? this[attr] : this;
 		},
 		___set : function(attr, val){
 			this[attr] = val;
+			if(+attr >= this.length){
+				this.length = (+attr+1)
+			}
 		},
 		/**
 		 * @hide
@@ -1763,8 +1747,6 @@
 	// adds a method where
 	// - name - method name
 	// - where - where items in the array should be added
-
-
 	function( name, where ) {
 		list.prototype[name] = function() {
 			// get the items being added
@@ -1780,32 +1762,13 @@
 				}
 			}
 			
-			// if we have a sort item, add that
-			if( args.length == 1 && this.comparator ) {
-				// add each item ...
-				// we could make this check if we are already adding in order
-				// but that would be confusing ...
-				var index = this.sortedIndex(args[0]);
-				this.splice(index, 0, args[0]);
-				return this.length;
-			}
-			
 			// call the original method
-			var res = [][name].apply(this, args)
+			var res = [][name].apply(this, args);
 			
-			// cause the change where the args are:
-			// len - where the additions happened
-			// add - items added
-			// args - the items added
-			// undefined - the old value
-			if ( this.comparator  && args.length > 1) {
-				this.sort(null, true);
-				batchTrigger(this,"reset", [args])
-			} else {
+			if ( !this.comparator || !args.length ) {
 				batchTrigger(this, "change", [""+len, "add", args, undefined])
 			}
-			
-
+						
 			return res;
 		}
 	});
@@ -1849,8 +1812,6 @@
 		shift: 0
 	},
 	// creates a 'remove' type method
-
-
 	function( name, where ) {
 		list.prototype[name] = function() {
 			
@@ -3614,7 +3575,7 @@
 		 * An object of {eventName : function} pairs that Control uses to hook up events
 		 * auto-magically.  A processor function looks like:
 		 * 
-		 *     jQuery.Control.processors.
+		 *     can.Control.processors.
 		 *       myprocessor = function( el, event, selector, cb, control ) {
 		 *          //el - the control's element
 		 *          //event - the event (myprocessor)
@@ -3699,7 +3660,7 @@
 		 * 
 		 * The first parameter passed to new Control(el, options) is expected to be 
 		 * an element.  This gets converted to a jQuery wrapped element and set as
-		 * [jQuery.Control.prototype.element this.element].
+		 * [can.Control.prototype.element this.element].
 		 * 
 		 * ### 2. Adds the control's name to the element's className.
 		 * 
@@ -3716,11 +3677,11 @@
 		 * 
 		 * ### Binds event handlers
 		 * 
-		 * Setup does the event binding described in [jquery.control.listening Listening To Events].
+		 * Setup does the event binding described in [can.control.listening Listening To Events].
 		 * 
 		 * @param {HTMLElement} element the element this instance operates on.
 		 * @param {Object} [options] option values for the control.  These get added to
-		 * this.options and merged with [jQuery.Control.static.defaults defaults].
+		 * this.options and merged with [can.Control.static.defaults defaults].
 		 * @return {Array} return an array if you wan to change what init is called with. By
 		 * default it is called with the element and options passed to the control.
 		 */
@@ -3744,7 +3705,7 @@
 			 * Options are used to configure an control.  They are
 			 * the 2nd argument
 			 * passed to a control (or the first argument passed to the 
-			 * [jquery.control.plugin control's jQuery plugin]).
+			 * [can.Control.plugin control's jQuery plugin]).
 			 * 
 			 * For example:
 			 * 
@@ -3757,8 +3718,8 @@
 			 *                            .control();
 			 *     equal( h2.options.message , "There" )
 			 * 
-			 * Options are merged with [jQuery.Control.static.defaults defaults] in
-			 * [jQuery.Control.prototype.setup setup].
+			 * Options are merged with [can.Control.static.defaults defaults] in
+			 * [can.Control.prototype.setup setup].
 			 * 
 			 * For example:
 			 * 
@@ -3778,7 +3739,7 @@
 			 *     $("#tabs2").tabs({activeClass : 'active'}) // adds 'active'
 			 *     
 			 * Options are typically updated by calling 
-			 * [jQuery.Control.prototype.update update];
+			 * [can.Control.prototype.update update];
 			 *
 			 */
 			this.options = extend({}, cls.defaults, options);
