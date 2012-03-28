@@ -182,5 +182,14 @@ steal('steal/build/pluginify', function() {
 		skipCallbacks: true,
 		standAlone: true
 	});
+	
+	steal.build.pluginify("can/observe/sort/sort.js", {
+		out: "can/dist/can.observe.sort.js",
+		global: "can = {}",
+		onefunc: true,
+		compress: true,
+		skipCallbacks: true,
+		standAlone: true
+	});
 
 });
