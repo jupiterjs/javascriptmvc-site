@@ -17,6 +17,7 @@ function execCommandWithOutput( command, cwd, callback ) {
 	var spawn, parts;
 
 	parts = command.split(" ");
+	console.log( "parts", parts, cwd );
 	spawn = child_process.spawn( parts.shift(), parts, {
 		cwd : cwd,
 		env : process.env
@@ -115,5 +116,8 @@ function format( exitCode ) {
 console.log("Generating unminified sources...");
 if ( os.platform() != "win32" ) {
 	genCommand = "./" + genCommand;
+} else {
+	genCommand = genCommand.replace(/\\/g, "\\");
+	console.log( "genCommand", genCommand)
 }
 execCommandWithOutput( genCommand, rhinoDir, format );
