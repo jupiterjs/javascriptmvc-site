@@ -17,6 +17,7 @@ function execCommandWithOutput( command, cwd, callback ) {
 	var spawn, parts;
 
 	parts = command.split(" ");
+	console.log( "parts", parts, cwd);
 	spawn = child_process.spawn( parts.shift(), parts, {
 		cwd : cwd,
 		env : process.env
