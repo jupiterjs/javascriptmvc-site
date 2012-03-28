@@ -1,2 +1,2 @@
-Error occurred during initialization of VM
-Could not reserve enough space for object heap
+(function(e,l,j){var i=e.isArray,g=function(a,b,c){var d=typeof a,e=i(a);if(-1===c)return"object"===d||a===b;if(d!==typeof b||e!==i(b))return!1;if(a===b)return!0;if(e){if(a.length!==b.length)return!1;for(var f=0;f<a.length;f++)if(!g(a[f],b[f]))return!1;return!0}if("object"===d||"function"===d){var d=0,h;for(h in a){if(!g(a[h],b[h],!1===c?-1:j))return!1;d++}a=0;for(f in b)a++;return d===a}return!1},k=function(a){var b={},c;for(c in a)if("object"!==typeof a[c]||null===a[c])b[c]=a[c];return b};e.extend(e.Observe.prototype,
+{backup:function(){this._backupStore=this.serialize();return this},isDirty:function(a){return this._backupStore?!g(this.serialize(),this._backupStore,!!a):!1},restore:function(a){this._attrs(a?this._backupStore:k(this._backupStore));return this}})})(can={},this);

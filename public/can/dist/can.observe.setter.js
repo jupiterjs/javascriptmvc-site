@@ -1,2 +1,1 @@
-Error occurred during initialization of VM
-Could not reserve enough space for object heap
+(function(e,a,k){var l=e.classize,a=e.Observe.prototype,g=a.__set;a.__set=function(b,c,a,h,i){var j="set"+l(b),f=function(a){i&&i.call(d,a);e.trigger(d,"error",[b,a],!0)},d=this;if(!(this[j]&&(c=this[j](c,function(){g.call(d,b,c,a,h,f)},f))===k))return g.call(d,b,c,a,h,f),this}})(can={},this);

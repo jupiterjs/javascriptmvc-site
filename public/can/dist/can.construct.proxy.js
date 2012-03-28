@@ -1,2 +1,1 @@
-Error occurred during initialization of VM
-Could not reserve enough space for object heap
+(function(b){var g=b.isArray,h=b.makeArray;b.Construct.proxy=b.Construct.prototype.proxy=function(c){var b=h(arguments),f,c=b.shift();g(c)||(c=[c]);f=this;return function(){for(var a=b.concat(h(arguments)),i,j=c.length,d=0,e;d<j;d++)if(e=c[d])i="string"==typeof e,a=(i?f[e]:e).apply(f,a||[]),d<j-1&&(a=!g(a)||a._use_call?[a]:a);return a}}})(can={},this);
