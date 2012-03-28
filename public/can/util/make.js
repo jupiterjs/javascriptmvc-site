@@ -137,6 +137,15 @@ steal('steal/build/pluginify', function() {
 		skipCallbacks: true,
 		standAlone: true
 	});
+	
+	steal.build.pluginify("can/control/route/route.js", {
+		out: "can/dist/can.control.route.js",
+		global: "can = {}",
+		onefunc: true,
+		compress: true,
+		skipCallbacks: true,
+		standAlone: true
+	});
 
 	steal.build.pluginify("can/observe/attributes/attributes.js", {
 		out: "can/dist/can.observe.attributes.js",
