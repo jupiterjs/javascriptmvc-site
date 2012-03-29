@@ -1,4 +1,4 @@
-steal('jquery','documentjs/jmvcdoc/demo', function($){
+steal('jquery','documentjs/jmvcdoc/demo', 'documentjs/jmvcdoc/iframe',function($){
 	
 	var disqusIsLoaded = false,
 	    commentsTimeout;
@@ -36,7 +36,7 @@ steal('jquery','documentjs/jmvcdoc/demo', function($){
 		
 
 		// hookup iframe ui
-		//$(".iframe_wrapper").iframe();
+		$(".iframe_wrapper").iframe();
 
 		// hookup demo ui
 		$(".demo_wrapper").demo();
@@ -53,6 +53,7 @@ steal('jquery','documentjs/jmvcdoc/demo', function($){
 			
 			if(!disqusIsLoaded){
 				//window.disqus_developer = 1;
+				window.disqus_shortname = 'jmvcs3';
 	      window.disqus_identifier = window.location.hash;
 	      window.disqus_url = window.location.toString();
 				$.getScript(COMMENTS_LOCATION);
