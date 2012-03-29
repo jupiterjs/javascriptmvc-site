@@ -13,11 +13,11 @@ There's two options to install PlayerMX: getjs or using git.
 
 ### Download with getjs
 
-After downloading and [installing installing JMVC], run the following command:
+After downloading and [installing installing DoneJS], run the following command:
 
 `./js steal/getjs player`
 
-_Note: When running the getjs command, be sure to navigate to your [rootfolder JMVC root folder]._
+_Note: When running the getjs command, be sure to navigate to your [rootfolder DoneJS root folder]._
 
 ### Github
 
@@ -39,7 +39,7 @@ Open player/player.html in your browser and see the application run:
 
 _Note: Safari and Chrome currently support the mp4 codec, however Firefox requires the h.264 Flash player to process mp4's._
 
-You can see our version running here: [http://javascriptmvc.com/player/player.html](http://javascriptmvc.com/player/player.html)
+You can see our version running here: [http://donejs.com/player/player.html](http://donejs.com/player/player.html)
 
 Repo: [https://github.com/jupiterjs/playermx](https://github.com/jupiterjs/playermx)
 
@@ -77,8 +77,8 @@ Specifically with PlayerMX, our widgets listen to events produced by our Popcorn
 
 Once you've downloaded the application, you'll notice 3 folders within your `playermx` directory. A few notes on the directory structure of this application:
 
-* The `jquery` folder refers to [jquerymx](https://github.com/jupiterjs/jquerymx). This is the JMVC core and what we'll be building our application on.
-* The [steal](https://github.com/jupiterjs/steal) folder is our dependency management system. This is how we include other resources such as scripts, stylesheets, templates or other JMVC resources and apps altogether.
+* The `jquery` folder refers to [canjs](https://github.com/jupiterjs/canjs). This is the CanJS core and what we'll be building our application on.
+* The [steal](https://github.com/jupiterjs/steal) folder is our dependency management system. This is how we include other resources such as scripts, stylesheets, templates or other DoneJS resources and apps altogether.
 * The `player` folder is where we'll place our focus as this is the main directory for our application.  
 
 The application is broken up into one main application page, `player.html`, with a corresponding script, `player.js` and two corresponding widgets.
@@ -188,7 +188,7 @@ The widget listens to the Popcorn.js `timeupdate` event on our video model to re
             this.moving.css("left", percent*width+"px")
           },
 
-_Note: `draginit` and `dragend` are a couple of events provided by the JMVC framework. [jQuery.Drag jQuery.Drag]_  
+_Note: `draginit` and `dragend` are a couple of events provided by the CanJS framework. [jQuery.Drag jQuery.Drag]_  
 
 The drag events are scoped to the indicator div element. We can now call the Popcorn.js `play` and `pause` methods, trusting other widgets to respond as needed. In this app, these events will get picked up by our 'Play' widget to start/stop the playback.
 

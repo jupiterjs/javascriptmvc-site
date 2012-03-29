@@ -1,23 +1,23 @@
 @page tutorials Tutorials
 @parent index 4
 
-@description Tutorials on JavaScriptMVC.
+@description Tutorials on DoneJS.
 
-This is where your learning starts. Go through these tutorials to learn JavaScriptMVC basics. Also check out these [examples example apps]
+This is where your learning starts. Go through these tutorials to learn DoneJS basics. Also check out these [examples example apps]
 
-### [installing Installing JavaScriptMVC]
+### [installing Installing DoneJS]
 
-Learn how to install JavaScriptMVC.  This is a prerequisite 
+Learn how to install DoneJS.  This is a prerequisite 
 for most of the other tutorials.
 
 ### [rapidstart Rapid Start]
 
-Want to take JMVC for a test-drive?  Start here.
+Want to take DoneJS for a test-drive?  Start here.
 
-### [getstarted Get Started with JavaScriptMVC]
+### [getstarted Get Started with DoneJS]
 
 Build, minify, test, and document a basic recipe application.  This tutorial
-covers the major components of JavaScriptMVC.
+covers the major components of DoneJS.
 
 ### [mvc Get started with jQueryMX]
 
@@ -36,7 +36,7 @@ autocomplete widget.
 ### [organizing Organizing Your App]
 
 From a small to large projects, 
-covers the best way of organizing a JavaScriptMVC application and
+covers the best way of organizing a DoneJS application and
 scaling it to meet future needs.
 
 ### [ajaxy Searchable Ajax Apps]
@@ -47,7 +47,7 @@ a site Google crawlable and searchable.
 
 ### [services Ajax Service Guidelines]
 
-This guide details suggests a service layer design that minimizes the amount of extra work to get JavaScriptMVC running.
+This guide details suggests a service layer design that minimizes the amount of extra work to get DoneJS running.
 
 ### [migrate Migrating from 3.0 and 3.1]
 

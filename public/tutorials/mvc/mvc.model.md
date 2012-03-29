@@ -1,19 +1,19 @@
 @page mvc.model Model
 @parent mvc 1
 
-JavaScriptMVC's model and its associated plugins provide lots of tools around organizing model data such as validations, associations, lists and more.  But the core functionality is centered around service encapsulation, type conversion, and events. 
+CanJS's model and its associated plugins provide lots of tools around organizing model data such as validations, associations, lists and more.  But the core functionality is centered around service encapsulation, type conversion, and events. 
 
 ### Attributes and Observables
 
 Of absolute importance to a model layer is the ability to get and set properties on the modeled data and listen for changes on a model instance.  This is the Observer pattern and lies at the heart of the MVC approach - views listen to changes in the model.
 
-Fortunately, JavaScriptMVC makes it easy to make any data observable.  A great example is pagination.  It's very common that multiple pagination controls exist on the page.  For example, one control might provide next and previous page buttons.  Another control might detail the items the current page is viewing (ex "Showing items 1-20").  All pagination controls need the exact same data:
+Fortunately, CanJS makes it easy to make any data observable.  A great example is pagination.  It's very common that multiple pagination controls exist on the page.  For example, one control might provide next and previous page buttons.  Another control might detail the items the current page is viewing (ex "Showing items 1-20").  All pagination controls need the exact same data:
 
   - offset - the index of the first item to display
   - limit - the number of items to display
   - count - the total number of items
 
-We can model this data with JavaScriptMVC's $.Model like:
+We can model this data with CanJS's $.Model like:
 
     var paginate = new $.Model({
       offset: 0,
@@ -81,7 +81,7 @@ Second, the logic protecting a negative offset or offset above the total count i
 
 ### Extending Model
 
-JavaScriptMVC's model inherits from $.Class.  Thus, you create a model class by inheriting from <code>$.Model(NAME, [STATIC,] PROTOTYPE)</code>:
+CanJS's model inherits from $.Class.  Thus, you create a model class by inheriting from <code>$.Model(NAME, [STATIC,] PROTOTYPE)</code>:
 
     $.Model('Paginate',{
       staticProperty: 'foo'

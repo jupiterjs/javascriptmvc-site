@@ -2,7 +2,7 @@
 @parent mvc 2
 
 
-JavaScriptMVC's views are really just client side templates. Client side templates take data and return a string.  Typically, the strings are HTML intended to be inserted into the DOM. 
+CanJS's views are really just client side templates. Client side templates take data and return a string.  Typically, the strings are HTML intended to be inserted into the DOM. 
 
 $.View is a templating interface that takes care of complexities using templates:
 
@@ -14,7 +14,7 @@ $.View is a templating interface that takes care of complexities using templates
  - Bundling of processed templates in production builds
  - $.Deferred support
 
-JavaScriptMVC comes pre-packaged with 4 different template engines:
+CanJS comes pre-packaged with 4 different template engines:
 
  - EJS
  - JAML
@@ -117,11 +117,11 @@ By default, $.View loads templates synchronously.  This is because it's expected
   - Packaging templates with your JavaScript build, or
   - Preloading templates
 
-JavaScriptMVC does not recommend putting templates in script tags.  Script tag templates make it hard to reuse templates across different JavaScript applications.  They can also reduce load performance if your app doesn't need the templates immediately.
+DoneJS does not recommend putting templates in script tags.  Script tag templates make it hard to reuse templates across different JavaScript applications.  They can also reduce load performance if your app doesn't need the templates immediately.
 
-JavaScriptMVC recommends packaging initially used templates with your application's JavaScript and preloading templates that will be used later.
+DoneJS recommends packaging initially used templates with your application's JavaScript and preloading templates that will be used later.
 
-StealJS, JavaScriptMVC's build system, can process and package templates, adding them to a minified production build.  Simply point <code>steal.views(PATH, ...)</code> to your template.  
+StealJS, DoneJS's build system, can process and package templates, adding them to a minified production build.  Simply point <code>steal.views(PATH, ...)</code> to your template.  
 
     steal.views('tasks.ejs','task.ejs');
 

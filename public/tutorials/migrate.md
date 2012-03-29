@@ -1,7 +1,7 @@
 @page migrate Upgrading to 3.2
 @parent tutorials 9
 
-There are many new feature in JavaScriptMVC 3.2 that help you build great JavaScript applications.
+There are many new feature in DoneJS 3.2 that help you build great JavaScript applications.
 Although 3.2 is not strictly backwards compatible it is possible to upgrade from
 and earlier version. This guide outlines the things you have to look at when upgrading from
 version 3.0 or 3.1.
@@ -56,7 +56,7 @@ $(document).ready use this:
 
 ## Organizing your application
 
-Starting with version 3.1 and fully encouraged in 3.2 JavaScriptMVC follows a new approach in organizing your application structure.
+Starting with version 3.1 and fully encouraged in 3.2 DoneJS follows a new approach in organizing your application structure.
 Read the complete guide on [organizing | organizing your app] to get an idea. For migrating from the old structure
 the following things are important:
 

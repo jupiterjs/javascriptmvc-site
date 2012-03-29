@@ -2,11 +2,11 @@
 @parent index 5
 @description Example application to learn from.
 
-Here is the list of the example JavaScriptMVC applications. They cover specific JavaScriptMVC features and are ordered by complexity. If you need an introduction to the JavaScriptMVC framework it is best to read them in order.
+Here is the list of the example DoneJS applications. They cover specific DoneJS features and are ordered by complexity. If you need an introduction to the DoneJS framework it is best to read them in order.
 
 ## [todo Todo] - [open application &#x21D7;](todo/todo.html)
 
-In this guide, we're going to be installing and walking through the simplest [JavaScriptMVC](http://javascriptmvc.com/)
+In this guide, we're going to be installing and walking through the simplest [DoneJS](http://donejs.com/)
 application imaginable &mdash; a TODO list manager.
 
 This article covers:
@@ -30,8 +30,8 @@ Srchr searches multiple services (like Flickr, Upcoming, and Twitter) and saves 
 
 This article covers:
 
-- The ideas behind JavaScriptMVC
-- How JavaScriptMVC enables code separation
+- The ideas behind DoneJS
+- How DoneJS enables code separation
 - Event oriented architecture
 
 ## [contacts Contacts] - [open application &#x21D7;](contacts)

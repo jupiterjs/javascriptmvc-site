@@ -6,9 +6,9 @@ large apps.  Break up your applications into small
 pieces.  Then assemble those testable, bite-sized pieces 
 into your big application.
 
-JavaScriptMVC 3.X is built with this pattern in 
+DoneJS 3.X is built with this pattern in 
 mind. As opposed to a single flat 'scripts' folder, 
-JavaScriptMVC breaks up your app into
+DoneJS breaks up your app into
 manageable, isolated modules. This tutorial discusses
 the reasons for doing this and patterns for doing it.
 
@@ -45,7 +45,7 @@ hard to know if a particular style rule is needed.
 
 ### The Fix
 
-JavaScriptMVC gives each resource you author it's own folder.  Typically,
+DoneJS gives each resource you author it's own folder.  Typically,
 the folder will hold the resource, the its demo page, test page,
 test script, and any other files specific to that resource.
 
@@ -68,7 +68,7 @@ throat clearing ...
 > Every app is different. Providing a single folder structure for
 all applications is impossible. However, there are several useful 
 patterns that when understood can keep your
-application under control. JavaScriptMVC is extremely flexible so use your best judgement!
+application under control. DoneJS is extremely flexible so use your best judgement!
 
 This guide walks you through starting with a small-ish example app and where you would add
 features over time.  Before the example, it's good to know some JavaScript terminology:
@@ -76,7 +76,7 @@ features over time.  Before the example, it's good to know some JavaScript termi
 
 ### App and Library Folders
 
-In general, a JavaScriptMVC application is divided into two root folders: an app folder and
+In general, a DoneJS application is divided into two root folders: an app folder and
 library folder. The app folder code typically 'steals' and configures 'library' code.  
 
 #### Application Folder 
@@ -100,7 +100,7 @@ the name of the organization building the controls.
 
 ### Resource Types
 
-An application is comprised of various resources.  JavaScriptMVC's code generators can 
+An application is comprised of various resources.  DoneJS's code generators can 
 be used to create these resources.
 
 __Model__ - A model represents a set of services.  Typically, they exist within an application
@@ -347,7 +347,7 @@ folder structure would look like:
       });
     })
 
-JavaScriptMVC encourages you to organize your application folder as a tree.
+DoneJS encourages you to organize your application folder as a tree.
 The leaves of the tree are micro-controls that perform a specific task (such as
 allowing the editing of videos).  
 
@@ -369,7 +369,7 @@ for this situation.
 ## Conclusion
 
 This is an extremely abstract article, but hopefully illustrates a few
-important trends of JavaScriptMVC organization:
+important trends of DoneJS organization:
 
   - Put code specific to an app in the application folder.
   - Put reusable plugins, widgets, and other code into library folders.

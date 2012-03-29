@@ -1,11 +1,11 @@
 @page srchr Srchr
 @parent examples 0
 
-Srchr searches several data sources for content and displays it to the user.  See it in action [here](http://javascriptmvc.com/srchr/). This article covers:
+Srchr searches several data sources for content and displays it to the user.  See it in action [here](http://donejs.com/srchr/). This article covers:
 
 - Installing Srchr
-- The ideas behind JavaScriptMVC (JMVC)
-- How JMVC enables code separation
+- The ideas behind DoneJS
+- How DoneJS enables code separation
 - Srchr's architecture
 
 This article will talk about the architecture of the Srchr application, and how event oriented architecture can help you build loosely coupled, scalable applications. You will also learn how to assemble small pieces of functionality into the full blown application.
@@ -54,7 +54,7 @@ Srchr is now ready to be used. To run the Srchr application simply open _srchr/s
 
 ## How Srchr was built
 
-Srchr was built the 'JavaScriptMVC' way. It has a folder/file structure where:
+Srchr was built the 'DoneJS' way. It has a folder/file structure where:
 
 * Code is logically separated and tested
 * Code is easily assembled into higher-order functionality.
@@ -62,7 +62,7 @@ Srchr was built the 'JavaScriptMVC' way. It has a folder/file structure where:
 
 ## How to organize and separate code
 
-Every JavaScript application implements widgets to show and manipulate data. In JavaScriptMVC every one of these widgets is built as an isolated part that can be reused and tested. These widgets communicate to each other with events, which results in a loosely coupled application. 
+Every JavaScript application implements widgets to show and manipulate data. In DoneJS every one of these widgets is built as an isolated part that can be reused and tested. These widgets communicate to each other with events, which results in a loosely coupled application. 
 
 Srchr is broken into logically separated components: 
 
@@ -224,7 +224,7 @@ Search results widget listens to the show event to load search results and show 
 
 After the widgets are developed and tested in isolation, they need to be assembled into an application. Here is a quick overview of the techniques used to assemble the widgets in to the Srchr app.
 
-Srchr is a small application, so most of the assembling is done in the srchr.js file. When you generate a JavaScriptMVC application:
+Srchr is a small application, so most of the assembling is done in the srchr.js file. When you generate a DoneJS application:
 
     ./js jquery/generate/app srchr
 
@@ -245,13 +245,13 @@ Steal will first load all of the dependencies, and then run the function which i
 * render application skeleton on the page
 * find elements and initialize higher order widgets
 
-Srchr is a small application so all bootstrapping is done in the srchr.js file. When you have a bigger application that handles multiple resources you should create resource based higher order widgets that take care of bootstrapping and assembling that part of application. You can read more about this [here](http://edge.javascriptmvc.com/jmvc/docs.html#!organizing).
+Srchr is a small application so all bootstrapping is done in the srchr.js file. When you have a bigger application that handles multiple resources you should create resource based higher order widgets that take care of bootstrapping and assembling that part of application. You can read more about this [here](http://edge.donejs.com/jmvc/docs.html#!organizing).
 
 ## Testing your application
 
-JavaScriptMVC comes with two testing frameworks built in. QUnit is used to unit test your models and FuncUnit functionally tests your whole application.
+DoneJS comes with two testing frameworks built in. QUnit is used to unit test your models and FuncUnit functionally tests your whole application.
 
-If you open srchr/qunit.html in your browser, it will run unit tests. For functional testing open srchr/funcunit.html. Read more about [FuncUnit](http://javascriptmvc.com/docs.html#&who=FuncUnit) and [QUnit](http://docs.jquery.com/Qunit).
+If you open srchr/qunit.html in your browser, it will run unit tests. For functional testing open srchr/funcunit.html. Read more about [FuncUnit](http://donejs.com/docs.html#&who=FuncUnit) and [QUnit](http://docs.jquery.com/Qunit).
 
 In this article we already covered the separation of code, but another aspect of code separation is test isolation. In every module folder you will have a test file that should test only that widget. The usual module folder structure looks like this:
 
@@ -368,13 +368,13 @@ This code tests multiple widgets at once:
 
 You can find all of the srchr tests here:
 
-- Disabler widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/disabler/funcunit/disabler_test.js), [test page](http://javascriptmvc.com/srchr/disabler/funcunit.html)
-- History widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/history/funcunit/history_test.js), [test page](http://javascriptmvc.com/srchr/history/funcunit.html)
-- Search widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/search/funcunit/search_test.js), [test page](http://javascriptmvc.com/srchr/search/funcunit.html)
-- Search result widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/search_result/funcunit/search_result_test.js), [test page](http://javascriptmvc.com/srchr/search_result/funcunit.html)
-- Search tabs widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/search_tabs/funcunit/search_tabs_test.js), [test page](http://javascriptmvc.com/srchr/search_tabs/funcunit.html)
-- Tabs widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/tabs/funcunit/tabs_test.js), [test page](http://javascriptmvc.com/srchr/tabs/funcunit.html)
-- Application tests: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/test/funcunit/srchr_test.js), [test page](http://javascriptmvc.com/srchr/funcunit.html)
+- Disabler widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/disabler/funcunit/disabler_test.js), [test page](http://donejs.com/srchr/disabler/funcunit.html)
+- History widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/history/funcunit/history_test.js), [test page](http://donejs.com/srchr/history/funcunit.html)
+- Search widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/search/funcunit/search_test.js), [test page](http://donejs.com/srchr/search/funcunit.html)
+- Search result widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/search_result/funcunit/search_result_test.js), [test page](http://donejs.com/srchr/search_result/funcunit.html)
+- Search tabs widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/search_tabs/funcunit/search_tabs_test.js), [test page](http://donejs.com/srchr/search_tabs/funcunit.html)
+- Tabs widget: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/tabs/funcunit/tabs_test.js), [test page](http://donejs.com/srchr/tabs/funcunit.html)
+- Application tests: [test code](https://github.com/jupiterjs/srchr/blob/master/srchr/test/funcunit/srchr_test.js), [test page](http://donejs.com/srchr/funcunit.html)
 
 
 
@@ -390,5 +390,5 @@ This will compile and minify all of your JS code into the production.js and all 
 
 Successful completion of frontend applications depends on many things, but one of the most important is architecture. In this article we've seen how to use event oriented architecture to build loosely coupled and isolated modules that are assembled into an application.
 
-For instance, we could take out the disabler widget and rest of the app would continue working without problems. That is the power we need to build applications that are testable and maintainable. You can read more about application organization in [this article](http://edge.javascriptmvc.com/docs.html#!organizing).
+For instance, we could take out the disabler widget and rest of the app would continue working without problems. That is the power we need to build applications that are testable and maintainable. You can read more about application organization in [this article](http://edge.donejs.com/docs.html#!organizing).
 

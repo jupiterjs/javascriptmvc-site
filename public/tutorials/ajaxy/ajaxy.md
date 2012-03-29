@@ -21,11 +21,11 @@ of the content of an Ajax application.  Read Google's documentation on its
 
 ## Setup
 
-[installing Download and install] the latest version of JavaScriptMVC.
+[installing Download and install] the latest version of DoneJS.
 
-After installing JavaScriptMVC, open a command line to 
+After installing DoneJS, open a command line to 
 the [steal.static.root steal.root] folder (where you unzipped 
-JavaScriptMVC).  
+DoneJS).  
 
 
 We'll use the application generator to generate an application

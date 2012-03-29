@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this article we will be learning the basics of [JavaScriptMVC](http://javascriptmvc.com/) and the [Model-View-Controller pattern](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) by installing and walking through a simple To-do list manager. The separation of the application's core logic from its user interface behavior is the hallmark of MVC. By working through this exercise you will understand how JavaScriptMVC's particular flavor of this pattern enables you to create more flexible and maintainable browser-based applications.
+In this article we will be learning the basics of [DoneJS](http://DoneJS.com/) and the [Model-View-Controller pattern](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) by installing and walking through a simple To-do list manager. The separation of the application's core logic from its user interface behavior is the hallmark of MVC. By working through this exercise you will understand how DoneJS's particular flavor of this pattern enables you to create more flexible and maintainable browser-based applications.
 
 Let's get started!
 
@@ -39,14 +39,14 @@ Now let's take a look at the anatomy of our application:
 
 Breaking it down:
 
-* The `jquery` folder is where the [jQueryMX](http://github.com/jupiterjs/jquerymx) library lives. JavaScriptMVC consists of powerful abstractions like [jQuery.Class Class], [jQuery.Model Model], [jQuery.Controller Controller], and [jQuery.View View], as well as numerous helpful jQuery plugins like `resize`, `destroyed`, `closest`, `curStyles`, and `route` -- all designed to enhance your life as a JavaScript developer.
+* The `can` folder is where the [CanJS](http://github.com/jupiterjs/canjs) library lives. DoneJS consists of powerful abstractions like [jQuery.Class Class], [jQuery.Model Model], [jQuery.Controller Controller], and [jQuery.View View], as well as numerous helpful jQuery plugins like `resize`, `destroyed`, `closest`, `curStyles`, and `route` -- all designed to enhance your life as a JavaScript developer.
 * The `steal` folder houses the [Steal](http://github.com/jupiterjs/steal) dependency management system, which is what makes it possible to keep your project organized during development, and compact and fast in production. Steal has two main responsibilities: As a JavaScript library, it facilitates on-demand loading of any resources (scripts, stylesheets, templates, or even user-defined content) your application requires. As a command line utility, it takes care of bundling, compressing, and optimizing your application for deployment.
 * The [FuncUnit](http://github.com/jupiterjs/funcunit) testing framework lives in the `funcunit` folder -- think jQuery's excellent Qunit framework plus Selenium and headless (Env.js) support. Basically, qUnit on steroids.
 * Lastly, our application files will live in the `todo` folder.
 
 ## MVC in JavaScript
 
-MVC is a well-established architectural pattern in software engineering. Without going into too much detail, it states that there should be a clear separation of concerns between the part of the system that represents the application's core logic and state (Model), the part that renders the user interface (View), and the part that coordinates between the two (Controller). Since our application consists of only one model, one controller, and a handful of templates, we're going to keep all our code in the `todo.js` and `todo.html` files. (Ordinarily in a JavaScriptMVC application, we'd keep a single component in each file for ease of navigation, but you'll forgive us this time for keeping it simple.)
+MVC is a well-established architectural pattern in software engineering. Without going into too much detail, it states that there should be a clear separation of concerns between the part of the system that represents the application's core logic and state (Model), the part that renders the user interface (View), and the part that coordinates between the two (Controller). Since our application consists of only one model, one controller, and a handful of templates, we're going to keep all our code in the `todo.js` and `todo.html` files. (Ordinarily in a DoneJS application, we'd keep a single component in each file for ease of navigation, but you'll forgive us this time for keeping it simple.)
 
 The diagram below shows how we've broken our application out into model, view, and controller layers:
 
@@ -63,17 +63,17 @@ If you look at `todo.js` the first thing you'll notice is that all the code is w
           './todo.css',
           function($){ ... })
 
-In fact, this is true of every JavaScript file in a JavaScriptMVC application: we use `steal` to state our dependencies up-front, which tells the framework what libraries, plugins, stylesheets, etc. we need to load before we can begin. Typically, the final argument to `steal` will be a callback function, which will be executed when all the other dependencies (and _their_ dependencies, and so on...) have been loaded and executed as well. No more worrying whether you forgot any `<script>` tags, or whether you've got them in the right order!
+In fact, this is true of every JavaScript file in a DoneJS application: we use `steal` to state our dependencies up-front, which tells the framework what libraries, plugins, stylesheets, etc. we need to load before we can begin. Typically, the final argument to `steal` will be a callback function, which will be executed when all the other dependencies (and _their_ dependencies, and so on...) have been loaded and executed as well. No more worrying whether you forgot any `<script>` tags, or whether you've got them in the right order!
 
 > For our application, we can see that our script requires the [jQuery.Model.List Model.List] class (which itself requires the [jQuery.Model Model] class), the [jQuery.Controller Controller] class, a jQuery JSON helper, and our application's stylesheet.
 
 ### Model
 
-All models in JavaScriptMVC extend the [jQuery.Model Model] class:
+All models in CanJS extend the [jQuery.Model Model] class:
 
     $.Model('Todo', { /* static properties */ }, { /* instance/prototype properties */ })
 
-> If you need a quick refresher on how to use JVMC's classes, see [jQuery.Class Class].
+> If you need a quick refresher on how to use CanJS's classes, see [jQuery.Class Class].
 
 In the case of our application, the `Todo` model represents a single To-do item. Its job is simply to know about the name and completed state of the item, how to persist that information, and how to notify the rest of the application when the item is created, updated, or destroyed.
 
@@ -84,7 +84,7 @@ Since we want our To-do list manager to function without a server, we need some 
        * Gets JSON data from localStorage.  Any changes that 
        * get made in cb get written back to localStorage.
        * 
-       * This is unimportant for understanding JavaScriptMVC!
+       * This is unimportant for understanding CanJS!
        */
       localStore: function(cb){
         var name = this.shortName,
@@ -131,7 +131,7 @@ The static `create` and `update` methods may be called directly, but are most of
 
 ### Model Lists
 
-One of the really great features of JavaScriptMVC is the [jQuery.Model.List Model.List]. A Model.List gives us a way to manage a collection of models as an aggregate, and (the cool part) be able to respond to and trigger events at the collection level. For our present purposes, we'd like to have a list of `Todo` items that can tell us which ones have been marked as completed:
+One of the really great features of CanJS is the [jQuery.Model.List Model.List]. A Model.List gives us a way to manage a collection of models as an aggregate, and (the cool part) be able to respond to and trigger events at the collection level. For our present purposes, we'd like to have a list of `Todo` items that can tell us which ones have been marked as completed:
 
     $.Model.List('Todo.List', {
       /**
@@ -150,7 +150,7 @@ We'll see how lists really make our lives easier when it comes time to do our vi
 
 ### Controller and View
 
-Controllers in JavaScriptMVC get their mojo from the [jQuery.Controller Controller] class. Basically, you can think of Controller as a [factory for building jQuery plugins](http://jupiterjs.com/news/organize-jquery-widgets-with-jquery-controller): its job is to attach itself to a DOM element, and organize event handlers using event delegation.
+Controllers in CanJS get their mojo from the [jQuery.Controller Controller] class. Basically, you can think of Controller as a [factory for building jQuery plugins](http://jupiterjs.com/news/organize-jquery-widgets-with-jquery-controller): its job is to attach itself to a DOM element, and organize event handlers using event delegation.
 
 Unlike models, controllers and views are inherently tied to the application's user interface, so before we dive into the JavaScript code, let's take a quick look at the basic HTML structure of the application:
 
@@ -195,7 +195,7 @@ Next, we want to fetch the current collection of To-do items and display them to
 
 What's wrong with this kind of approach? Well, nothing is _wrong_ with it, per se. In a simple example like this one, we could probably get away with it. The problem comes as the application scales up in complexity, and there become more and more scenarios that can trigger a refresh of this list. The user may be allowed to create new To-do items manually, or import them from another source -- or even synchronize with another application running in the cloud. If we use this approach, we duplicate this hard-wiring of fetching and rendering all over the application, and make it more brittle and difficult to change in the future.
 
-JavaScriptMVC Controller takes a more scalable approach to this problem through its event mechanism. Rather than rendering the list explicitly in the fetch callback, we simply ask the `Todo.List` to perform a `findAll` on itself. When the fetch completes, the list fires its own "add" event, which we listen for in the Controller. Conveniently, the "add" event tells us everything we need to know: the list that published the event, the jQuery event that triggered the add, and the To-do items which were added:
+CanJS Controller takes a more scalable approach to this problem through its event mechanism. Rather than rendering the list explicitly in the fetch callback, we simply ask the `Todo.List` to perform a `findAll` on itself. When the fetch completes, the list fires its own "add" event, which we listen for in the Controller. Conveniently, the "add" event tells us everything we need to know: the list that published the event, the jQuery event that triggered the add, and the To-do items which were added:
 
     // adds existing and created to the list
     "{list} add": function(list, ev, items) {
@@ -271,4 +271,4 @@ This causes the "add" event to fire, which in turn triggers our `"{list} add"` h
 
 ## That's It!
 
-JavaScriptMVC enables you to write even the simplest application **the right way** from the start. With a Model that's completely independent from any knowledge of user interface behavior, and a Controller that's all ready to scale up to the complexities of modern Web experiences, you won't find yourself rewriting your app over and over again to deliver the goods.
+DoneJS enables you to write even the simplest application **the right way** from the start. With a Model that's completely independent from any knowledge of user interface behavior, and a Controller that's all ready to scale up to the complexities of modern Web experiences, you won't find yourself rewriting your app over and over again to deliver the goods.

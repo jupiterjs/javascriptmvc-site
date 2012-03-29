@@ -48,7 +48,7 @@ The contacts widget listens for events high in the DOM, so it can capture any ev
 @image tutorials/images/eoa_diagram1.jpg
 
 
-Grid parameters are a JavaScriptMVC Model instance, used to define common data attributes like limit, offset, and count.  The JavascriptMVC Model implements an observer pattern. As changes are made to attributes, widgets can listen for the _updated_ event and react accordingly.
+Grid parameters are a CanJS Model instance, used to define common data attributes like limit, offset, and count.  The CanJS Model implements an observer pattern. As changes are made to attributes, widgets can listen for the _updated_ event and react accordingly.
 
 In the sample code above we call [jquery.model.prototype.attr attr] on this model instance to update the parameters.  The grid is listening for changes in the attributes.  Above, when activate is triggered, _categoryId_ is changed.  The grid observes this change and executes an AJAX request to get data for the current parameter set. 
 

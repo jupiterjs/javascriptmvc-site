@@ -1,10 +1,10 @@
 @page services Ajax Service Guidelines
 @parent tutorials 8
 
-JavaScriptMVC's flexibility allows it to 
+DoneJS's flexibility allows it to 
 be used with almost any service layer.  However, 
 this guide details suggests a service layer design 
-that minimizes the amount of extra work to get JavaScriptMVC running.
+that minimizes the amount of extra work to get DoneJS running.
 
 In general, the service layer should be as 
 thin as possible and reflect the Database 

@@ -27,7 +27,7 @@ In this app, the category, location, and company sections are all filters for th
 
 ### Getting the List Data
 
-When initialized, you pass the List a [jQuery.model model] class.  JavaScriptMVC models have a standard API to perform CRUD operations.  Every model implements a [jQuery.Model.static.findAll findAll] method, which we can leverage to fetch data.
+When initialized, you pass the List a [jQuery.model model] class.  CanJS models have a standard API to perform CRUD operations.  Every model implements a [jQuery.Model.static.findAll findAll] method, which we can leverage to fetch data.
 
 	this.options.model.findAll(this.options.params, this.callback('list'))
 

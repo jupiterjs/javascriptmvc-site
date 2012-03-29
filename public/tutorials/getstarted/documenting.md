@@ -3,7 +3,7 @@
 
 Documentation is a critical step in creating maintainable code. 
 It's often burdensome on developers and 
-becomes neglected. JavaScriptMVC's integrates [DocumentJS] to make
+becomes neglected. DoneJS's integrates [DocumentJS] to make
 it hard not to document your code. 
 
 ## Generating Documentation
@@ -37,7 +37,7 @@ for more information.
 ## Next steps
 
 In the context of this trivial application, you've 
-been exposed to major features of JavaScriptMVC: 
+been exposed to major features of DoneJS: 
 
  - code separation
  - testing

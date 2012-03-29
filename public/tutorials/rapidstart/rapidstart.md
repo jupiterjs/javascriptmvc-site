@@ -1,15 +1,15 @@
 @page rapidstart Rapid Start
 @parent tutorials 1
 
-This walks through the basics of JavaScriptMVC by building a 
+This walks through the basics of DoneJS by building a 
 smal todo app.  Check out the [getstarted Getting Started Guide] 
 for a more in-depth overview.
 
-## Get JavaScriptMVC
+## Get DoneJS
 
-[http://javascriptmvc.com/builder.html Download it] or 
-[developwithgit pull it from Git].  JavaScriptMVC (JMVC) is a collection of 4 sub-projects. 
-Once you have JavaScriptMVC, you should have a folder with:
+[http://donejs.com/builder.html Download it] or 
+[developwithgit pull it from Git].  DoneJS is a collection of 4 sub-projects. 
+Once you have DoneJS, you should have a folder with:
 
     documentjs - documentation engine
     funcunit   - testing app
@@ -21,10 +21,10 @@ Once you have JavaScriptMVC, you should have a folder with:
 <b>Notice</b>: This folder, the one that has the sub-projects, is 
 called the [rootfolder ROOT FOLDER]</b>.
 
-## Get JavaScriptMVC running.
+## Get DoneJS running.
 
-JMVC uses [steal steal/steal.js] for dependency 
-management. Steal loads scripts.  To use JavaScriptMVC's 
+DoneJS uses [steal steal/steal.js] for dependency 
+management. Steal loads scripts.  To use CanJS's 
 features like [$.Controller] and [$.View],
 'steal' them like:
 
@@ -813,7 +813,7 @@ Notice that because we are overwriting `update`, we must call __\_super__.
 
 ## Routing
 
-[$.route] is the core of JavaScriptMVC's 
+[$.route] is the core of CanJS's 
 routing functionality. It is a [jQuery.Observe] that
 updates `window.location.hash` when it's properties change
 and updates its properties when `window.location.hash` 
@@ -885,7 +885,7 @@ everything. Congrats!  [//tutorials/rapidstart/todos.html See it in action].
 
 ## FuncUnit
 
-JavaScriptMVC uses [FuncUnit] for testing.  FuncUnit provides an API for writing functional 
+DoneJS uses [FuncUnit] for testing.  FuncUnit provides an API for writing functional 
 tests that simulate clicks and keypresses a user would make.
 
 To create a FuncUnit test:
@@ -959,7 +959,7 @@ Replace the test code within the steal callback with the following:
     
 Reload __funcunit.html__.  You'll see the page open and run the test in a separate window.
 
-FuncUnit has the ability to provide code coverage stats.  <a href='http://javascriptmvc.com/tutorials/rapidstart/funcunit.html?steal[instrument]=jquery%2Cfuncunit%2Csteal%2Cdocumentjs%2C*%2Ftest%2C*_test.js%2Cmxui%2C*funcunit.js'>Click</a> 
+FuncUnit has the ability to provide code coverage stats.  <a href='http://donejs.com/tutorials/rapidstart/funcunit.html?steal[instrument]=jquery%2Cfuncunit%2Csteal%2Cdocumentjs%2C*%2Ftest%2C*_test.js%2Cmxui%2C*funcunit.js'>Click</a> 
 the checkbox next to coverage to 
 see a coverage report.  81% isn't bad!  Click Todos.js to see a line by line breakdown.
 

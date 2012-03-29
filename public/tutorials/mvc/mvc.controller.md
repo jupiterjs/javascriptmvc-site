@@ -1,7 +1,7 @@
 @page mvc.controller Controller
 @parent mvc 3
 
-JavaScriptMVC's controllers are many things.  They are a jQuery plugin factory.  They can be used as a traditional view, making pagination widgets and grid controls.  Or, they can be used as a traditional controller, initializing and controllers and hooking them up to models.  Mostly, controller's are a really great way of organizing your application's code.
+CanJS's controllers are many things.  They are a jQuery plugin factory.  They can be used as a traditional view, making pagination widgets and grid controls.  Or, they can be used as a traditional controller, initializing and controllers and hooking them up to models.  Mostly, controller's are a really great way of organizing your application's code.
 
 Controllers provide a number of handy features such as:
 
@@ -269,6 +269,6 @@ Putting it together, list becomes:
     // create a list of tasks
     $('#tasks').list({model: Task, template: "tasks.ejs"});
 
-It's almost frighteningly easy to create abstract, reusable, memory safe widgets with JavaScriptMVC.
+It's almost frighteningly easy to create abstract, reusable, memory safe widgets with CanJS.
 
 Boo!

@@ -8,7 +8,7 @@ lets us create, and delete recipes. It will look like:
 
 
 
-JavaScriptMVC uses 
+DoneJS uses 
 [steal.generate generator scripts] to 
 assist you
 in setting up your application's 
@@ -71,7 +71,7 @@ page followed by <code>?cookbook</code> like:
 @codeend
 
 If you open cookbook/cookbook.html, you'll see a
-JavaScriptMVC welcome screen.  
+DoneJS welcome screen.  
 
 @image tutorials/getstarted/Welcome.png
 
@@ -195,7 +195,7 @@ so it looks like:
 		&lt;title>cookbook&lt;/title>
 	&lt;/head>
 	&lt;body>
-	    &lt;h1>Welcome to JavaScriptMVC 3.2!&lt;/h1>
+	    &lt;h1>Welcome to DoneJS 3.2!&lt;/h1>
 	    &lt;ul id='recipes'>&lt;/ul>
 	    &lt;form id='create' action=''>&lt;/form>
 		&lt;script type='text/javascript' 
@@ -224,11 +224,11 @@ using Chrome from the filesystem, it's because Chrome has an
 </p>
 <p>
 Essentially, Chrome does not allow AJAX requests to
-files outside the html page's folder.  JavaScriptMVC
+files outside the html page's folder.  DoneJS
 organizes your files into separate folders.
 </p>
 <p>
-To fix this, just run JavaScriptMVC from a web server.
+To fix this, just run DoneJS from a web server.
 Or, you can use another browser.  Or you can add
 <code>--allow-file-access-from-files</code> to Chrome's start script.
 </p>

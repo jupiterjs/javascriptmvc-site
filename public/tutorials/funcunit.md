@@ -135,7 +135,7 @@ this breaking change before moving on to the next part.
 ## Running in Selenium
 
 Next we'll run this same test via the browser automation tool Selenium. Open a 
-command prompt to the JMVC directory and run the following:
+command prompt to the DoneJS directory and run the following:
 
 @codestart
 ./js funcunit/run selenium funcunit/test/autosuggest/funcunit.html

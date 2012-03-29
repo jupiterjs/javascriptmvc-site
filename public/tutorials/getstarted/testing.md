@@ -1,7 +1,7 @@
 @page testing Testing Cookbook
 @parent getstarted 1
 
-JavaScriptMVC puts a tremendous emphasis on 
+DoneJS puts a tremendous emphasis on 
 testing. It uses [FuncUnit] to provide easy to write functional and
 unit tests that can be run in the browser or automated!
 

@@ -32,7 +32,7 @@ The code for these widgets is divided into three top level folders: MXUI, Jupite
 
 ### MXUI
 
-[https://github.com/jupiterjs/mxui MXUI]  (jQueryMX User Interface) is a JavaScriptMVC widget library. The Grid and List widgets from MXUI are used in Contacts.
+[https://github.com/jupiterjs/mxui MXUI]  (MX User Interface) is a CanJS widget library. The Grid and List widgets from MXUI are used in Contacts.
 
 ### Jupiter
 
@@ -78,6 +78,6 @@ The contacts widget listens for events using event delegation and communicates w
 
 In the [contacts.glue Gluing Modules Together] section, we will touch more on the pattern used to facilitate this cross-widget communication.
 
-Additionally in the contacts folder, you will find the building blocks of any JavascriptMVC application: models for communication with the server, fixtures for simulating AJAX responses from the server, and functional tests for testing the application.
+Additionally in the contacts folder, you will find the building blocks of any DoneJS application: models for communication with the server, fixtures for simulating AJAX responses from the server, and functional tests for testing the application.
 
 In the next section, we will get into more detail about [contacts.designing how to design each module].

@@ -16,8 +16,8 @@ StealJS.
 
 ### Installing Steal
 
-[javascriptmvc.com/builder.html Download  StealJS] or 
-[installing install JavaScriptMVC] and 
+[http://donejs.com/builder.html Download  StealJS] or 
+[installing install DoneJS] and 
 unzip it in a public folder.
 
 __Note:__ StealJS requires Java 1.6 or greater.
