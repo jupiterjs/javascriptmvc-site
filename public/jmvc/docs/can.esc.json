@@ -1,1 +1,1 @@
-c({"name": "can.esc", "type": "function", "comment": "<p>Escapes a string for insertion into html.</p>\n\n<p>can.esc( \"<foo>&amp;<bar>\" ) //-> \"&lt;foo&lt;&amp;&lt;bar&lt;\"</p>", "parents": ["can.util"], "src": "can/util/string/string.js", "line": 33, "children": []})
+c({"name": "can.esc", "type": "function", "comment": "<p>Escapes a string for insertion into html.</p>\n\n<p>can.esc( \"<foo>&amp;<bar>\" ) //-> \"&lt;foo&lt;&amp;&lt;bar&lt;\"</p>", "parents": ["can.util"], "src": "can/util/string/string.js", "line": 32, "children": []})

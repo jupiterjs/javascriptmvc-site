@@ -1,1 +1,1 @@
-c({"name": "can.view.cache", "type": "attribute", "parents": ["can.view"], "comment": "<p>Should the views be cached or reloaded from the server. Defaults to true.</p>", "src": "can/view/view.js", "line": 95, "children": []})
+c({"name": "can.view.cache", "type": "attribute", "parents": ["can.view"], "comment": "<p>By default, views are cached on the client.  If you'd like the\nthe views to reload from the server, you can set the <code>cache</code> attribute to <code>false</code>.</p>", "src": "can/view/view.js", "line": 95, "children": []})

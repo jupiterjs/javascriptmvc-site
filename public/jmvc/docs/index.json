@@ -1,1 +1,1 @@
-c({"name": "index", "type": "page", "comment": "<p>Awesome</p>", "title": "CanJS", "src": "can/can.md", "children": ["can.Construct", "can.Control", "can.Model", "can.Observe", "can.util", "can.view"]})
+c({"name": "index", "type": "page", "comment": "<p>Awesome</p>", "title": "CanJS", "src": "can/can.md", "children": ["can.Construct", "can.Control", "migrate", "can.Model", "can.Observe", "can.util", "can.view"]})

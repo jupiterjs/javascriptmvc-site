@@ -1061,8 +1061,7 @@ can.$ = Zepto
 ;
 
 
-	// string.js
-	// ---------
+	// ##string.js
 	// _Miscellaneous string utility functions._
 	
 	// Several of the methods in this plugin use code adapated from Prototype
@@ -1086,7 +1085,7 @@ can.$ = Zepto
 				( add && ( obj[ prop ] = {} ));
 		},
 
-		// Returns true if the object can have properties (no nulls).
+		// Returns `true` if the object can have properties (no `null`s).
 		isContainer = function( current ) {
 			return /^f|^o/.test( typeof current );
 		};
@@ -1128,15 +1127,15 @@ can.$ = Zepto
 			 */
 			getObject : function( name, roots, add ) {
 			
-				// The parts of the name we are looking up
-				// ['App','Models','Recipe']
+				// The parts of the name we are looking up  
+				// `['App','Models','Recipe']`
 				var parts = name ? name.split('.') : [],
 					length =  parts.length,
 					current,
 					r = 0,
 					ret, i;
 				
-				// Make sure roots is an array.
+				// Make sure roots is an `array`.
 				roots = can.isArray(roots) ? roots : [roots || window];
 				
 				if ( ! length ) {
@@ -1160,7 +1159,7 @@ can.$ = Zepto
 						
 						// If there is a value, we exit.
 						if ( ret !== undefined ) {
-							// If add is false, delete the property
+							// If `add` is `false`, delete the property
 							if ( add === false ) {
 								delete current[parts[i]];
 							}
@@ -1247,7 +1246,14 @@ can.$ = Zepto
 ;
 
 
+	// ## construct.js
+	// `can.Construct`  
+	// _This is a modified version of
+	// [John Resig's class](http://ejohn.org/blog/simple-javascript-inheritance/).  
+	// It provides class level inheritance and callbacks._
 	
+	// A private flag used to initialize a new class instance without
+	// initializing it's bindings.
 	var initializing = 0;
 
 	/** 
@@ -1290,25 +1296,28 @@ can.$ = Zepto
 		 * @return {class} instance of the class
 		 */
 		newInstance: function() {
-			// get a raw instance objet (init is not called)
+			// Get a raw instance object (`init` is not called).
 			var inst = this.instance(),
 				arg = arguments,
 				args;
 				
-			// call setup if there is a setup
+			// Call `setup` if there is a `setup`
 			if ( inst.setup ) {
 				args = inst.setup.apply(inst, arguments);
 			}
-			// call init if there is an init, if setup returned args, use those as the arguments
+
+			// Call `init` if there is an `init`  
+			// If `setup` returned `args`, use those as the arguments
 			if ( inst.init ) {
 				inst.init.apply(inst, args || arguments);
 			}
+
 			return inst;
 		},
-		// overwrites an object with methods, sets up _super
-		//   newProps - new properties
-		//   oldProps - where the old properties might be
-		//   addTo - what we are adding to
+		// Overwrites an object with methods. Used in the `super` plugin.
+		// `newProps` - New properties to add.  
+		// `oldProps` - Where the old properties might be (used with `super`).  
+		// `addTo` - What we are adding to.
 		_inherit: function( newProps, oldProps, addTo ) {
 			can.extend(addTo || newProps, newProps || {})
 		},
@@ -1361,16 +1370,24 @@ can.$ = Zepto
 		 * @param {Object} [staticProps] the static properties of the new constructor
 		 * @param {Object} [protoProps] the prototype properties of the new constructor
 		 */
+		// Set `defaults` as the merger of the parent `defaults` and this 
+		// object's `defaults`. If you overwrite this method, make sure to
+		// include option merging logic.
 		setup: function( base, fullName ) {
-			// set defaults as the merger of the parent defaults and this object's defaults
 			this.defaults = can.extend(true,{}, base.defaults, this.defaults);
 		},
+		// Create's a new `class` instance without initializing by setting the
+		// `initializing` flag.
 		instance: function() {
-			// prevent running init
+
+			// Prevents running `init`.
 			initializing = 1;
+
 			var inst = new this();
+
+			// Allow running `init`.
 			initializing = 0;
-			// allow running init
+
 			return inst;
 		},
 		/**
@@ -1401,52 +1418,55 @@ can.$ = Zepto
 		 * 
 		 * @return {can.Construct} returns the new class
 		 */
+		// Extends classes.
 		extend: function( fullName, klass, proto ) {
-			// figure out what was passed and normalize it
+			// Figure out what was passed and normalize it.
 			if ( typeof fullName != 'string' ) {
 				proto = klass;
 				klass = fullName;
 				fullName = null;
 			}
-			if (!proto ) {
+
+			if ( ! proto ) {
 				proto = klass;
 				klass = null;
 			}
-
 			proto = proto || {};
+
 			var _super_class = this,
 				_super = this.prototype,
-				string = can,
 				name, shortName, namespace, prototype;
 
 			// Instantiate a base class (but only create the instance,
-			// don't run the init constructor)
+			// don't run the init constructor).
 			prototype = this.instance();
 			
-			// Copy the properties over onto the new prototype
-			this._inherit(proto, _super, prototype);
+			// Copy the properties over onto the new prototype.
+			_super_class._inherit(proto, _super, prototype);
 
-			// The dummy class constructor
+			// The dummy class constructor.
 			function Constructor() {
-				// All construction is actually done in the init method
+				// All construction is actually done in the init method.
 				if ( ! initializing ) {
-					// we are being called w/o new, we are extending
 					return this.constructor !== Constructor && arguments.length ?
+						// We are being called without `new` or we are extending.
 						arguments.callee.extend.apply(arguments.callee, arguments) :
-						//we are being called w/ new
+						// We are being called with `new`.
 						this.constructor.newInstance.apply(this.constructor, arguments);
 				}
 			}
+
 			// Copy old stuff onto class (can probably be merged w/ inherit)
-			for ( name in this ) {
-				if ( this.hasOwnProperty(name) ) {
-					Constructor[name] = this[name];
+			for ( name in _super_class ) {
+				if ( _super_class.hasOwnProperty(name) ) {
+					Constructor[name] = _super_class[name];
 				}
 			}
-			// copy new static props on class
-			this._inherit(klass, this, Constructor);
 
-			// do namespace stuff
+			// Copy new static properties on class.
+			_super_class._inherit(klass, _super_class, Constructor);
+
+			// Setup namespaces.
 			if ( fullName ) {
 
 				var parts = fullName.split('.'),
@@ -1465,12 +1485,14 @@ can.$ = Zepto
 				current[shortName] = Constructor;
 			}
 
-			// set things that can't be overwritten
+			// Set things that shouldn't be overwritten.
 			can.extend(Constructor, {
+				constructor: Constructor,
 				prototype: prototype,
 				/**
 				 * @attribute namespace 
-				 * The namespaces object
+				 * The namespace keyword is used to declare a scope. This enables you to organize
+				 * code and provides a way to create globally unique types.
 				 * 
 				 *     can.Construct("MyOrg.MyConstructor",{},{})
 				 *     MyOrg.MyConstructor.namespace //-> MyOrg
@@ -1489,8 +1511,6 @@ can.$ = Zepto
 				 */
 				shortName: shortName,
 				_shortName : _shortName,
-				_fullName: _fullName,
-				constructor: Constructor,
 				/**
 				 * @attribute fullName 
 				 * If you pass a name when creating a Construct, the `fullName` property will be set to
@@ -1501,18 +1521,18 @@ can.$ = Zepto
 				 *     MyOrg.MyConstructor.fullName //->  'MyOrg.MyConstructor'
 				 * 
 				 */
-				fullName: fullName
+				fullName: fullName,
+				_fullName: _fullName
 			});
 
-			//make sure our prototype looks nice
+			// Make sure our prototype looks nice.
 			Constructor.prototype.constructor = Constructor;
 
 			
-			// call the class setup
+			// Call the class `setup` and `init`
 			var t = [_super_class].concat(can.makeArray(arguments)),
 				args = Constructor.setup.apply(Constructor, t );
 			
-			// call the class init
 			if ( Constructor.init ) {
 				Constructor.init.apply(Constructor, args || t );
 			}
@@ -1649,10 +1669,6 @@ can.$ = Zepto
 		}
 
 	});
-
-
-
-
 
 ;
 
@@ -4583,7 +4599,7 @@ can.$ = Zepto
 		},
 		/**
 		 * @attribute processors
-		 * An object of {eventName : function} pairs that Control uses to hook up events
+		 * An object of `{eventName : function}` pairs that Control uses to hook up events
 		 * auto-magically.  A processor function looks like:
 		 * 
 		 *     can.Control.processors.
@@ -4667,24 +4683,29 @@ can.$ = Zepto
 		/**
 		 * Setup is where most of control's magic happens.  It does the following:
 		 * 
-		 * ### 1. Sets this.element
+		 * ### Sets this.element
 		 * 
 		 * The first parameter passed to new Control(el, options) is expected to be 
-		 * an element.  This gets converted to a jQuery wrapped element and set as
+		 * an element.  This gets converted to a Wrapped NodeList element and set as
 		 * [can.Control.prototype.element this.element].
 		 * 
-		 * ### 2. Adds the control's name to the element's className.
+		 * ### Adds the control's name to the element's className.
 		 * 
 		 * Control adds it's plugin name to the element's className for easier 
 		 * debugging.  For example, if your Control is named "Foo.Bar", it adds
 		 * "foo_bar" to the className.
 		 * 
-		 * ### 3. Saves the control in $.data
+		 * ### Saves the control in $.data
 		 * 
 		 * A reference to the control instance is saved in $.data.  You can find 
 		 * instances of "Foo.Bar" like: 
 		 * 
 		 *     $("#el").data("controls")['foo_bar'].
+		 *
+		 * ### Merges Options
+		 * Merges the default options with optional user-supplied ones.
+		 * Additionally, default values are exposed in the static [can.Control.static.defaults defaults] 
+		 * so that users can change them.
 		 * 
 		 * ### Binds event handlers
 		 * 
@@ -5263,7 +5284,8 @@ can.$ = Zepto
 		cached: {},
 		/**
 		 * @attribute cache
-		 * Should the views be cached or reloaded from the server. Defaults to true.
+		 * By default, views are cached on the client.  If you'd like the
+		 * the views to reload from the server, you can set the `cache` attribute to `false`.
 		 */
 		cache: true,
 		/**
@@ -5316,7 +5338,7 @@ can.$ = Zepto
 		/**
 		 * @attribute ext
 		 * The default suffix to use if none is provided in the view's url.  
-		 * This is set to .ejs by default.
+		 * This is set to `.ejs` by default.
 		 */
 		ext: ".ejs",
 		/**
@@ -5560,6 +5582,7 @@ can.$ = Zepto
 		// regular expressions for caching
 		quickFunc = /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
 		attrReg = /([^\s]+)=$/,
+		newLine = /(\r|\n)+/g,
 		attributeReplace = /__!!__/g,
 		tagMap = {"": "span", table: "tr", tr: "td", ol: "li", ul: "li", tbody: "tr", thead: "tr", tfoot: "tr"},
 		// escapes characters starting with \
@@ -5611,9 +5634,10 @@ can.$ = Zepto
 			// or if it's a function, just use the input
 			(typeof input == 'function' && input);
 			// finally, if there is a funciton to hookup on some dom
-			// pass it to hookup to get the data-view-id back
+			// add it to pending hookups
 			if ( hook ) {
-				return can.view.hook(hook);
+				pendingHookups.push(hook);
+				return '';
 			}
 			// finally, if all else false, toString it
 			return ""+input;
@@ -5839,7 +5863,7 @@ can.$ = Zepto
 						
 						// create textNode
 						liveBind(observed, parent, function(){
-							node.nodeValue = func.call(self)
+							node.nodeValue = ""+func.call(self);
 						});
 					}
 					:
@@ -5983,10 +6007,28 @@ can.$ = Zepto
 			return quote ? "'"+beforeQuote.match(attrReg)[1]+"'" : (htmlTag ? 1 : 0)
 		},
 		pendingHookups = [],
-		
+		rsplit = function( string, regex ) {
+			var result = regex.exec(string),
+				retArr = [],
+				first_idx, last_idx;
+			while ( result !== null ) {
+				first_idx = result.index;
+				last_idx = regex.lastIndex;
+				if ( first_idx !== 0 ) {
+					retArr.push(string.substring(0, first_idx));
+					string = string.slice(first_idx);
+				}
+				retArr.push(result[0]);
+				string = string.slice(result[0].length);
+				result = regex.exec(string);
+			}
+			if ( string !== '' ) {
+				retArr.push(string);
+			}
+			return retArr;
+		},
 		scan = function(source, name){
-			var tokens = source.replace(/(\r|\n)+/g, "\n")
-				.split(tokenReg),
+			var tokens = rsplit(source.replace(newLine, "\n"), tokenReg), 
 				content = '',
 				buff = [startTxt],
 				// helper function for putting stuff in the view concat

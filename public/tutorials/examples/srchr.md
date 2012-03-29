@@ -380,7 +380,7 @@ You can find all of the srchr tests here:
 
 ## Building a production version
 
-To build scalable and maintainable JavaScript applications, you should keep your code separated and isolated, but when you want to deploy you want as few files as possible, and you want your scripts minified. JMVC uses Steal to build a minified production version of your code. You can build your app by running the build.js script available in every JMVC project. You can build Srchr by running:
+To build scalable and maintainable JavaScript applications, you should keep your code separated and isolated, but when you want to deploy you want as few files as possible, and you want your scripts minified. DoneJS uses Steal to build a minified production version of your code. You can build your app by running the build.js script available in every DoneJS project. You can build Srchr by running:
 
     $ ./js srchr/scripts/build.js
     
