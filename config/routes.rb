@@ -1,4 +1,5 @@
 JmvcSite3::Application.routes.draw do
+  root :to => redirect('/docs.html')
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
