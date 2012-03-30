@@ -658,6 +658,7 @@
 			
 			var stel = new steal.p.init(options),
 				rootSrc = stel.options.rootSrc;
+			
 			if(stel.unique && rootSrc){
 				// the .js is b/c we are not adding that automatically until
 				// load because we defer 'type' determination until then
@@ -666,7 +667,6 @@
 				} else{ // already have this steal
 					stel = steals[rootSrc];
 					// extend the old stolen file with any new options
-					delete options.src;
 					extend(stel.options, typeof options === "string" ? {} : options)
 				}
 			}
@@ -711,6 +711,7 @@
 
 				this.options = steal.makeOptions(extend({},
 					typeof options == 'string' ? { src: options } : options));
+
 				this.waits = this.orig.waits || false;
 				this.unique = true;
 			}
@@ -1025,6 +1026,7 @@
 		 * @param {Object} options
 		 */
 		makeOptions : function(options){
+			
 			var ext = File(options.src).ext();
 			if (!ext && !options.type) {
 				// if first character of path is a . or /, just load this file
@@ -1067,17 +1069,19 @@
 				args = arguments;
 			}
 			else {
-				// otherwise, if its a string, convert it to an object
-				args = makeArray( arguments );
-				if(typeof args[0] == 'string'){
-					args[0] = {
-						src: args[0]
-					};
-				}
-				// make the first one wait
-				args[0].waits = true;
-
-				// args = [function(){}].concat(args);
+				// TODO get this working, not sure why but its causing some out of order loading
+				// // otherwise, if its a string, convert it to an object
+				// args = makeArray( arguments );
+				// if(typeof args[0] == 'string'){
+					// args[0] = {
+						// src: args[0]
+					// };
+				// }
+				// // make the first one wait
+				// args[0].waits = true;
+				
+				
+				args = [function(){}].concat(makeArray( arguments ) )
 			}
 			
 			return steal.apply(win, args );
