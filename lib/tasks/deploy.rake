@@ -14,7 +14,10 @@ def echo(message)
 	puts
 end
 
-def copy(path)
+def copy_resources(path)
+	ignored_extensions = []
+	ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
+
 	Find.find(path) do |file|
 		basename = File.basename file
 		dirname = File.dirname file
@@ -42,10 +45,15 @@ namespace :deploy do
 		announce 'Pulling latest DoneJS-Site...'
 
 		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git donejs'
-		sh 'git submodule update --init --recursive'
-		sh 'cd donejs && git checkout master && git pull origin master'
+		sh 'git submodule update --init'
 
+		sh 'cd donejs && git checkout master && git pull git@github.com:jupiterjs/donejs.git master'
 		sh 'cd donejs && git submodule update --init --recursive'
+
+		sh 'cd examples/todo && git checkout master && git pull git@github.com:jupiterjs/cantodo.git master'
+		#sh 'cd examples/srchr && git checkout canjs && git pull origin canjs'
+		#sh 'cd examples/player && git checkout canjs && git pull origin canjs'
+		#sh 'cd examples/contacts && git checkout canjs && git pull origin canjs'
 	end
 
 	task :build do
@@ -61,14 +69,11 @@ namespace :deploy do
 	task :copy do
 		announce 'Copying files to local directory...'
 
-		ignored_extensions = []
-		ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
-
-		copy 'donejs'
-		#copy 'player'
-		#copy 'contacts'
-		#copy 'todo'
-		#copy 'srchr'
+		copy_resources 'donejs'
+		#copy 'examples/player'
+		#copy 'examples/contacts'
+		copy_resources 'examples/todo'
+		#copy 'examples/srchr'
 	end
 
 	task :commit_site do

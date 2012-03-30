@@ -1,1 +1,1 @@
-c({"name": "can.view.hookups", "type": "attribute", "parents": ["can.view"], "comment": "<p>A list of pending 'hookups'</p>", "hide": true, "src": "can/view/view.js", "line": 65, "children": []})
+c({"name": "can.view.hookups", "type": "attribute", "parents": ["can.view"], "comment": "<p>A list of pending 'hookups'</p>", "hide": true, "src": "can/view/view.js", "line": 63, "children": []})

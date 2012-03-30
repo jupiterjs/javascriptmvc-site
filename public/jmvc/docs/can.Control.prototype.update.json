@@ -1,1 +1,0 @@
-c({"name": "can.Control.prototype.update", "params": {"options": {"description": "", "type": "", "optional": false, "order": 0, "name": "options"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "", "parents": ["can.Control.plugin"], "src": "can/control/plugin/plugin.js", "line": 102, "children": []})

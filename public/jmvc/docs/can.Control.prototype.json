@@ -1,1 +1,1 @@
-c({"name": "can.Control.prototype", "type": "prototype", "parents": ["can.Control"], "comment": "", "src": "can/control/control.js", "line": 229, "children": ["can.Control.prototype.options", "can.Control.prototype.element", "can.Control.prototype.on"]})
+c({"name": "can.Control.prototype", "type": "prototype", "parents": ["can.Control"], "comment": "", "src": "can/control/control.js", "line": 230, "children": ["can.Control.prototype.options", "can.Control.prototype.element", "can.Control.prototype.on"]})

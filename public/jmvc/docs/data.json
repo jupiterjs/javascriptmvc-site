@@ -1,1 +1,1 @@
-c({"name": "data", "type": "attribute", "comment": "<p>A can.Observe that represents the state of the history.</p>", "hide": true, "src": "can/route/route.js", "line": 177, "children": []})
+c({"name": "data", "type": "attribute", "comment": "<p>A can.Observe that represents the state of the history.</p>", "hide": true, "src": "can/route/route.js", "line": 170, "children": []})

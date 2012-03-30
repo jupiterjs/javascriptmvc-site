@@ -1,1 +1,0 @@
-(function(c){var d=c.isFunction,f=/xyz/.test(function(){xyz})?/\b_super\b/:/.*/;c.Construct._inherit=function(b,c,e){var e=e||b,a;for(a in b)e[a]=d(b[a])&&d(c[a])&&f.test(b[a])?function(a,b){return function(){var e=this._super,d;this._super=c[a];d=b.apply(this,arguments);this._super=e;return d}}(a,b[a]):b[a]}})(can={},this);
