@@ -1,1 +1,1 @@
-c({"name": "can.buildFragment", "type": "function", "comment": "", "parents": ["can.util"], "src": "can/util/util.js", "line": 226, "children": []})
+c({"name": "can.buildFragment", "type": "function", "comment": "<p><code>can.buildFragment([html], nodes)</code> returns a document fragment for the HTML passed.</p>", "parents": ["can.util"], "src": "can/util/util.js", "line": 232, "children": []})

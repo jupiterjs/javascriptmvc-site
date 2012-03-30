@@ -1,1 +1,1 @@
-c({"name": "can.Control.static", "type": "static", "parents": ["can.Control"], "comment": "", "src": "can/control/control.js", "line": 51, "children": ["can.Control.static.processors", "can.Control.static.defaults"]})
+c({"name": "can.Control.static", "type": "static", "parents": ["can.Control"], "comment": "", "src": "can/control/control.js", "line": 50, "children": ["can.Control.static.processors", "can.Control.static.defaults"]})
