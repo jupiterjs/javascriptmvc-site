@@ -2947,14 +2947,12 @@
 			return decodeURIComponent( str.replace(/\+/g, " ") );
 		}
 	
-	/**
-	 * @add can
-	 */
+
 	can.extend(can, { 
 		
 		/**
-		 * @function deparam
-		 * 
+		 * @function can.deparam
+		 * @parent can.util
 		 * Takes a string of name value pairs and returns a Object literal that represents those params.
 		 * 
 		 * @param {String} params a string like <code>"foo=bar&person[age]=3"</code>
@@ -3041,165 +3039,7 @@
 		each = can.each,
 		extend = can.extend;
 
-	/**
-	 * @class can.route
-	 * @inherits can.Observe
-	 * @plugin can/route
-	 * @parent index
-	 * 
-	 * can.route helps manage browser history (and
-	 * client state) by
-	 * synchronizing the window.location.hash with
-	 * an [can.Control].
-	 * 
-	 * ## Background Information
-	 * 
-	 * To support the browser's back button and bookmarking
-	 * in an Ajax application, most applications use
-	 * the <code>window.location.hash</code>.  By
-	 * changing the hash (via a link or JavaScript), 
-	 * one is able to add to the browser's history 
-	 * without changing the page.  The [jQuery.event.special.hashchange event] allows
-	 * you to listen to when the hash is changed.
-	 * 
-	 * Combined, this provides the basics needed to
-	 * create history enabled Ajax websites.  However,
-	 * jQuery.Route addresses several other needs such as:
-	 * 
-	 *   - Pretty Routes
-	 *   - Keeping routes independent of application code
-	 *   - Listening to specific parts of the history changing
-	 *   - Setup / Teardown of widgets.
-	 * 
-	 * ## How it works
-	 * 
-	 * <code>can.route</code> is a [can.Control can.Observe] that represents the
-	 * <code>window.location.hash</code> as an 
-	 * object.  For example, if the hash looks like:
-	 * 
-	 *     #!type=videos&id=5
-	 *     
-	 * the data in <code>can.route</code> would look like:
-	 * 
-	 *     { type: 'videos', id: 5 }
-	 * 
-	 * 
-	 * can.route keeps the state of the hash in-sync with the data in
-	 * can.route.
-	 * 
-	 * ## can.Observe
-	 * 
-	 * can.route is a [can.Control can.Observe]. Understanding
-	 * can.Observe is essential for using can.route correctly.
-	 * 
-	 * You can
-	 * listen to changes in an Observe with bind and
-	 * delegate and change can.route's properties with 
-	 * attr and attrs.
-	 * 
-	 * ### Listening to changes in an Observable
-	 * 
-	 * Listen to changes in history 
-	 * by [can.Control.prototype.bind bind]ing to
-	 * changes in <code>can.route</code> like:
-	 * 
-	 *     can.route.bind('change', function(ev, attr, how, newVal, oldVal) {
-	 *     
-	 *     })
-	 * 
-     *  - attr - the name of the changed attribute
-     *  - how - the type of Observe change event (add, set or remove)
-     *  - newVal/oldVal - the new and old values of the attribute
-     * 
-	 * You can also listen to specific changes 
-	 * with [can.Control.prototype.delegate delegate]:
-	 * 
-	 *     can.route.delegate('id','change', function(){ ... })
-	 * 
-	 * Observe lets you listen to the following events:
-	 * 
-	 *  - change - any change to the object
-	 *  - add - a property is added
-	 *  - set - a property value is added or changed
-	 *  - remove - a property is removed
-	 * 
-	 * Listening for <code>add</code> is useful for widget setup
-	 * behavior, <code>remove</code> is useful for teardown.
-	 * 
-	 * ### Updating an observable
-	 * 
-	 * Create changes in the route data like:
-	 * 
-	 *     can.route.attr('type','images');
-	 * 
-	 * Or change multiple properties at once with
-	 * [can.Control.prototype.attrs attrs]:
-	 * 
-	 *     can.route.attr({type: 'pages', id: 5}, true)
-	 * 
-	 * When you make changes to can.route, they will automatically
-	 * change the <code>hash</code>.
-	 * 
-	 * ## Creating a Route
-	 * 
-	 * Use <code>can.route(url, defaults)</code> to create a 
-	 * route. A route is a mapping from a url to 
-	 * an object (that is the can.route's state).
-	 * 
-	 * If no routes are added, or no route is matched, 
-	 * can.route's data is updated with the [jQuery.String.deparam deparamed]
-	 * hash.
-	 * 
-	 *     location.hash = "#!type=videos";
-	 *     // can.route -> {type : "videos"}
-	 *     
-	 * Once routes are added and the hash changes,
-	 * can.route looks for matching routes and uses them
-	 * to update can.route's data.
-	 * 
-	 *     can.route( "content/:type" );
-	 *     location.hash = "#!content/images";
-	 *     // can.route -> {type : "images"}
-	 *     
-	 * Default values can also be added:
-	 * 
-	 *     can.route("content/:type",{type: "videos" });
-	 *     location.hash = "#!content/"
-	 *     // can.route -> {type : "videos"}
-	 *     
-	 * ## Delay setting can.route
-	 * 
-	 * By default, <code>can.route</code> sets its initial data
-	 * on document ready.  Sometimes, you want to wait to set 
-	 * this data.  To wait, call:
-	 * 
-	 *     can.route.ready(false);
-	 * 
-	 * and when ready, call:
-	 * 
-	 *     can.route.ready(true);
-	 * 
-	 * ## Changing the route.
-	 * 
-	 * Typically, you never want to set <code>location.hash</code>
-	 * directly.  Instead, you can change properties on <code>can.route</code>
-	 * like:
-	 * 
-	 *     can.route.attr('type', 'videos')
-	 *     
-	 * This will automatically look up the appropriate 
-	 * route and update the hash.
-	 * 
-	 * Often, you want to create links.  <code>can.route</code> provides
-	 * the [jQuery.route.link] and [jQuery.route.url] helpers to make this 
-	 * easy:
-	 * 
-	 *     can.route.link("Videos", {type: 'videos'})
-	 * 
-	 * @param {String} url the fragment identifier to match.  
-	 * @param {Object} [defaults] an object of default values
-	 * @return {jQuery.route}
-	 */
+
 	can.route = function( url, defaults ) {
         // Extract the variable names and replace with regEx that will match an atual URL with values.
 		var names = [],
@@ -3229,6 +3069,7 @@
 
 	extend(can.route, {
 		/**
+		 * @function can.route.param
 		 * Parameterizes the raw JS object representation provided in data.
 		 * If a route matching the provided data is found that URL is built
          * from the data. Any remaining data is added at the end of the
@@ -3285,6 +3126,8 @@
 			return can.isEmptyObject(data) ? "" : "&" + can.param(data);
 		},
 		/**
+		 * @function can.route.param
+		 * 
 		 * Populate the JS data object from a given URL.
 		 * 
 		 * @param {Object} url
@@ -3356,6 +3199,8 @@
          */
 		routes: {},
 		/**
+		 * @function can.route.param
+		 * @parent can.route
 		 * Indicates that all routes have been added and sets can.route.data
 		 * based upon the routes and the current hash.
 		 * 
@@ -3378,6 +3223,9 @@
 			return can.route;
 		},
 		/**
+		 * @function can.route.url
+		 * @parent can.route
+		 * 
 		 * Returns a url from the options
 		 * @param {Object} options
 		 * @param {Boolean} merge true if the options should be merged with the current options
@@ -3390,7 +3238,11 @@
 			return "#!" + can.route.param(options)
 		},
 		/**
+		 * @function can.route.link
+		 * @parent can.route
+		 * 
 		 * Returns a link
+		 * 
 		 * @param {Object} name The text of the link.
 		 * @param {Object} options The route options (variables)
 		 * @param {Object} props Properties of the &lt;a&gt; other than href.
@@ -3403,7 +3255,11 @@
 			}, props)) + ">" + name + "</a>";
 		},
 		/**
+		 * @function can.route.current
+		 * @parent can.route
+		 * 
 		 * Returns true if the options represent the current page.
+		 * 
 		 * @param {Object} options
          * @return {Boolean}
 		 */
@@ -3450,16 +3306,16 @@
 	can.bind.call(document,"ready",can.route.ready);
 ;
 
-	// ------- HELPER FUNCTIONS  ------
-	
-	// Binds an element, returns a function that unbinds
-	var bind = function( el, ev, callback ) {
-		can.bind.call( el, ev, callback )
-		//var binder = el.bind && el.unbind ? el : $(isFunction(el) ? [el] : el);
 
-		//binder.bind(ev, callback);
-		// if ev name has >, change the name and bind
-		// in the wrapped callback, check that the element matches the actual element
+	// ## control.js
+	// `can.Control`  
+	// _Controller_
+	
+	// Binds an element, returns a function that unbinds.
+	var bind = function( el, ev, callback ) {
+
+		can.bind.call( el, ev, callback )
+
 		return function() {
 			can.unbind.call(el, ev, callback);
 		};
@@ -3470,24 +3326,22 @@
 		slice = [].slice,
 		special = can.getObject("$.event.special") || {},
 
-		// Binds an element, returns a function that unbinds
+		// Binds an element, returns a function that unbinds.
 		delegate = function( el, selector, ev, callback ) {
-			//var binder = el.delegate && el.undelegate ? el : $(isFunction(el) ? [el] : el)
-			//binder.delegate(selector, ev, callback);
 			can.delegate.call(el, selector, ev, callback)
 			return function() {
 				can.undelegate.call(el, selector, ev, callback);
 			};
 		},
 		
-		// calls bind or unbind depending if there is a selector
+		// Calls bind or unbind depending if there is a selector.
 		binder = function( el, ev, callback, selector ) {
 			return selector ?
 				delegate( el, can.trim( selector ), ev, callback ) : 
 				bind( el, ev, callback );
 		},
 		
-		// moves 'this' to the first argument, wraps it with jQuery if it's an element
+		// Moves `this` to the first argument, wraps it with `jQuery` if it's an element
 		shifter = function shifter(context, name) {
 			var method = typeof name == "string" ? context[name] : name;
 			return function() {
@@ -3511,19 +3365,21 @@
 		 * Setup pre-process which methods are event listeners.
 		 * 
 		 */
+		// Setup pre-processes which methods are event listeners.
 		setup: function() {
 
-			// Allow contollers to inherit "defaults" from superclasses as it done in can.Construct
+			// Allow contollers to inherit "defaults" from super-classes as it 
+			// done in `can.Construct`
 			can.Construct.setup.apply( this, arguments );
 
-			// if you didn't provide a name, or are control, don't do anything
+			// If you didn't provide a name, or are `control`, don't do anything.
 			if ( this !== can.Control ) {
 
-				// cache the underscored names
+				// Cache the underscored names.
 				var control = this,
 					funcName;
 
-				// calculate and cache actions
+				// Calculate and cache actions.
 				control.actions = {};
 
 				for ( funcName in control.prototype ) {
@@ -3541,10 +3397,9 @@
 		 * @param {String} methodName a prototype function
 		 * @return {Boolean} truthy if an action or not
 		 */
+		// Return `true` if is an action.
 		_isAction: function( methodName ) {
-			// RegExp literals don't carry a last index property so this is
-			// safe
-			return special[methodName] || processors[methodName] || /[^\w]/.test(methodName);
+			return !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
 		},
 		/**
 		 * @hide
@@ -3554,7 +3409,7 @@
 		 * 
 		 * For performance reasons, this called twice.  First, it is called when 
 		 * the Control class is created.  If the methodName is templated
-		 * like : "{window} foo", it returns null.  If it is not templated
+		 * like: "{window} foo", it returns null.  If it is not templated
 		 * it returns event binding data.
 		 * 
 		 * The resulting data is added to this.actions.
@@ -3567,21 +3422,26 @@
 		 * @return {Object} null or the processor and pre-split parts.  
 		 * The processor is what does the binding/subscribing.
 		 */
+		 // Takes a method name and the options passed to a control
+		 // and tries to return the data necessary to pass to a processor
+		 // (something that binds things).
 		_action: function( methodName, options ) {
-			// reset the test index
 			
-			//if we don't have options (a control instance), we'll run this later
-			                  // Parameter replacer regex
+			// If we don't have options (a `control` instance), we'll run this 
+			// later.  
+			// `/\{([^\}]+)\}/` - parameter replacer regex.
 			if ( options || ! /\{([^\}]+)\}/g.test( methodName )) {
-				// If we have options, run sub to replace templates "{}" with a value from the options
-				// or the window
+				// If we have options, run sub to replace templates `{}` with a
+				// value from the options or the window
 				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
 					
-					// If a "{}" resolves to an object, convertedName will be an array
+					// If a `{}` resolves to an object, `convertedName` will be
+					// an array
 					arr = can.isArray(convertedName),
 					
-					// get the parts of the function = [convertedName, delegatePart, eventPart]
-					                                                       // Breaker regex
+					// Get the parts of the function  
+					// `[convertedName, delegatePart, eventPart]`  
+					// `/^(?:(.*?)\s)?([\w\.\:>]+)$/` - Breaker regex.
 					parts = (arr ? convertedName[1] : convertedName).match(/^(?:(.*?)\s)?([\w\.\:>]+)$/),
 					event = parts[2],
 					processor = processors[event] || basicProcessor;
@@ -3638,15 +3498,16 @@
 		 * Listen to events on the document or window 
 		 * with templated event handlers:
 		 * 
-		 *
-		 *     can.Control('Sized',{
-		 *       "{window} resize" : function(){
-		 *         this.element.width(this.element.parent().width() / 2);
+		 *     Sized = can.Control({
+		 *       "{window} resize": function(){
+		 *         this.element.width( this.element.parent().width() / 2 );
 		 *       }
 		 *     });
 		 *     
-		 *     $('.foo').sized();
+		 *     new Sized( $( '#foo' ) );
 		 */
+		// An object of `{eventName : function}` pairs that Control uses to 
+		// hook up events auto-magically.
 		processors: {},
 		/**
 		 * @attribute defaults
@@ -3654,21 +3515,23 @@
 		 * [can.Control::options this.options].
 		 * 
 		 *     Message = can.Control({
-		 *       defaults : {
-		 *         message : "Hello World"
+		 *       defaults: {
+		 *         message: "Hello World"
 		 *       }
-		 *     },{
-		 *       init : function(){
-		 *         this.element.text(this.options.message);
+		 *     }, {
+		 *       init: function(){
+		 *         this.element.text( this.options.message );
 		 *       }
-		 *     })
+		 *     });
 		 *     
-		 *     new Message("#el1"); //writes "Hello World"
-		 *     new Message("#el12",{message: "hi"}); //writes hi
+		 *     new Message( "#el1" ); //writes "Hello World"
+		 *     new Message( "#el12", { message: "hi" } ); //writes hi
 		 *     
 		 * In [can.Control::setup] the options passed to the control
 		 * are merged with defaults.  This is not a deep merge.
 		 */
+		// A object of name-value pairs that act as default values for a 
+		// control instance
 		defaults: {}
 	},
 	/** 
@@ -3680,7 +3543,7 @@
 		 * 
 		 * ### Sets this.element
 		 * 
-		 * The first parameter passed to new Control(el, options) is expected to be 
+		 * The first parameter passed to new Control( el, options ) is expected to be 
 		 * an element.  This gets converted to a Wrapped NodeList element and set as
 		 * [can.Control.prototype.element this.element].
 		 * 
@@ -3695,7 +3558,7 @@
 		 * A reference to the control instance is saved in $.data.  You can find 
 		 * instances of "Foo.Bar" like: 
 		 * 
-		 *     $("#el").data("controls")['foo_bar'].
+		 *     $( '#el' ).data( 'controls' )[ 'foo_bar' ]
 		 *
 		 * ### Merges Options
 		 * Merges the default options with optional user-supplied ones.
@@ -3712,15 +3575,17 @@
 		 * @return {Array} return an array if you wan to change what init is called with. By
 		 * default it is called with the element and options passed to the control.
 		 */
+		// Where the magic happens.
 		setup: function( element, options ) {
+
 			var cls = this.constructor,
 				pluginname = cls.pluginName || cls._fullName;
 
-			// want the raw element here
+			// Want the raw element here.
 			this.element = can.$(element)
 
-			if( pluginname && pluginname !== 'can_control') {
-				//set element and className on element
+			if ( pluginname && pluginname !== 'can_control') {
+				// Set element and `className` on element.
 				this.element.addClass(pluginname);
 			}
 			
@@ -3738,40 +3603,39 @@
 			 * 
 			 *     can.Control('Hello')
 			 *     
-			 *     var h1 = new Hello($('#content1'), {message: 'World'} );
-			 *     equal( h1.options.message , "World" )
+			 *     var h1 = new Hello( $( '#content1' ), { message: 'World' } );
+			 *     equal( h1.options.message , "World" );
 			 *     
-			 *     var h2 = $('#content2').hello({message: 'There'})
-			 *                            .control();
-			 *     equal( h2.options.message , "There" )
+			 *     var h2 = $( '#content2' ).hello({ message: 'There' })
+			 *                              .control();
+			 *     equal( h2.options.message , "There" );
 			 * 
 			 * Options are merged with [can.Control.static.defaults defaults] in
 			 * [can.Control.prototype.setup setup].
 			 * 
 			 * For example:
 			 * 
-			 *     can.Control("Tabs", 
-			 *     {
-			 *        defaults : {
+			 *     Tabs = can.Control({
+			 *        defaults: {
 			 *          activeClass: "ui-active-state"
 			 *        }
-			 *     },
-			 *     {
-			 *        init : function(){
-			 *          this.element.addClass(this.options.activeClass);
+			 *     }, {
+			 *        init: function(){
+			 *          this.element.addClass( this.options.activeClass );
 			 *        }
-			 *     })
+			 *     });
 			 *     
-			 *     $("#tabs1").tabs()                         // adds 'ui-active-state'
-			 *     $("#tabs2").tabs({activeClass : 'active'}) // adds 'active'
+			 *     new Tabs( $( "#tabs1" ) ); // adds 'ui-active-state'
+			 *     new Tabs( $( "#tabs2" ), { activeClass : 'active' } ); // adds 'active'
 			 *     
 			 * Options are typically updated by calling 
 			 * [can.Control.prototype.update update];
 			 *
 			 */
+			// Option merging.
 			this.options = extend({}, cls.defaults, options);
 
-			// bind all event handlers
+			// Bind all event handlers.
 			this.on();
 
 			/**
@@ -3779,7 +3643,7 @@
 			 * 
 			 * The control instance's HTMLElement (or window) wrapped by the 
 			 * util library for ease of use. It is set by the first
-			 * parameter to `new can.Construct(element, options)` 
+			 * parameter to `new can.Construct( element, options )` 
 			 * in [can.Control::setup].  Control listens on `this.element`
 			 * for events.
 			 * 
@@ -3788,14 +3652,13 @@
 			 * The following `HelloWorld` control sets the control`s text to "Hello World":
 			 * 
 			 *     HelloWorld = can.Control({
-			 *       init : function(){
-			 * 	       this.element.text('Hello World')
+			 *       init: function(){
+			 * 	       this.element.text( 'Hello World' );
 			 *       }
-			 *     })
+			 *     });
 			 *     
 			 *     // create the controller on the element
-			 *     new HelloWorld(document.getElementById('#helloworld'))
-			 * 
+			 *     new HelloWorld( document.getElementById( '#helloworld' ) );
 			 * 
 			 * ## Wrapped NodeList
 			 * 
@@ -3843,24 +3706,24 @@
 			 * original element.
 			 * 
 			 *     Combobox = can.Control({
-			 *       setup : function(el, options){
-			 *          this.oldElement = $(el);
-			 *          var newEl = $('<div/>');
-			 *          this.oldElement.wrap(newEl);
-			 *          can.Controll.prototype.setup.call(this, newEl, options);
+			 *       setup: function( el, options ) {
+			 *          this.oldElement = $( el );
+			 *          var newEl = $( '<div/>' );
+			 *          this.oldElement.wrap( newEl );
+			 *          can.Controll.prototype.setup.call( this, newEl, options );
 			 *       },
-			 *       init : function(){
+			 *       init: function() {
 			 *          this.element //-> the div
 			 *       },
-			 *       ".option click" : function(){
+			 *       ".option click": function() {
 			 *         // event handler bound on the div
 			 *       },
-			 *       destroy : function(){
+			 *       destroy: function() {
 			 *          var div = this.element; //save reference
-			 *          can.Control.prototype.destroy.call(this);
-			 *          div.replaceWith(this.oldElement);
+			 *          can.Control.prototype.destroy.call( this );
+			 *          div.replaceWith( this.oldElement );
 			 *       }
-			 *     })
+			 *     });
 			 * 
 			 * ### unbining, setting, and rebinding.
 			 * 
@@ -3868,12 +3731,13 @@
 			 * [can.Control::off], setting this.element, and 
 			 * then calling [can.Control::on] like:
 			 * 
-			 *     move : function(newElement) {
+			 *     move: function( newElement ) {
 			 *        this.off();
-			 *        this.element = $(newElement);
-			 *        this.on();  
+			 *        this.element = $( newElement );
+			 *        this.on();
 			 *     }
 			 */
+			// Get's passed into `init`.
 			return [this.element, this.options];
 		},
 		/**
@@ -3889,37 +3753,37 @@
 		 * toggle a strike className like:
 		 * 
 		 *     TaskStriker = can.Control({
-		 *       "{task} completed" : function(){
+		 *       "{task} completed": function(){
 		 * 	       this.update();
 		 *       },
-		 *       update : function(){
-		 *         if(this.options.task.completed){
-		 * 	         this.element.addClass('strike')
+		 *       update: function(){
+		 *         if ( this.options.task.completed ) {
+		 * 	         this.element.addClass( 'strike' );
 		 * 	       } else {
-		 *           this.element.removeClass('strike')
+		 *           this.element.removeClass( 'strike' );
 		 *         }
 		 *       }
-		 *     }) 
+		 *     });
 		 * 
 		 *     var taskstriker = new TaskStriker({ 
-		 *       task: new Task({completed: 'true'}) 
-		 *     })
+		 *       task: new Task({ completed: 'true' }) 
+		 *     });
 		 * 
 		 * To update the taskstriker's task, add a task method that updates
 		 * this.options and calls rebind like:
 		 * 
 		 *     TaskStriker = can.Control({
-		 *       "{task} completed" : function(){
+		 *       "{task} completed": function(){
 		 * 	       this.update();
 		 *       },
-		 *       update : function(){
-		 *         if(this.options.task.completed){
-		 * 	         this.element.addClass('strike')
+		 *       update: function() {
+		 *         if ( this.options.task.completed ) {
+		 * 	         this.element.addClass( 'strike' );
 		 * 	       } else {
-		 *           this.element.removeClass('strike')
+		 *           this.element.removeClass( 'strike' );
 		 *         }
 		 *       },
-		 *       task : function(newTask){
+		 *       task: function( newTask ) {
 		 *         this.options.task = newTask;
 		 *         this.on();
 		 *         this.update();
@@ -3927,11 +3791,11 @@
 		 *     });
 		 * 
 		 *     var taskstriker = new TaskStriker({ 
-		 *       task: new Task({completed: true}) 
+		 *       task: new Task({ completed: true }) 
 		 *     });
 		 *     taskstriker.task( new TaskStriker({ 
-		 *       task: new Task({completed: false}) 
-		 *     }))
+		 *       task: new Task({ completed: false }) 
+		 *     }));
 		 * 
 		 * ## Adding new events
 		 * 
@@ -3939,19 +3803,19 @@
 		 * are not sufficent, you can call this.on to bind or delegate programatically:
 		 * 
 		 *     init: function() {
-		 *        // calls somethingClicked(el,ev)
-		 *        this.on('click','somethingClicked') 
+		 *        // calls somethingClicked( el, ev )
+		 *        this.on( 'click', 'somethingClicked' ); 
 		 *     
 		 *        // calls function when the window is clicked
-		 *        this.on(window, 'click', function(ev){
+		 *        this.on( window, 'click', function( ev ) {
 		 *          //do something
-		 *        })
+		 *        });
 		 *     },
 		 *     somethingClicked: function( el, ev ) {
 		 *       
 		 *     }
 		 * 
-		 * @param {HTMLElement|jQuery.fn|Object} [el=this.element] 
+		 * @param {HTMLElement|jQuery.fn|Object} [el=this.element]
 		 * The element to be bound.  If an eventName is provided,
 		 * the control's element is used instead.
 		 * @param {String} [selector] A css selector for event delegation.
@@ -3964,15 +3828,18 @@
 		on: function( el, selector, eventName, func ) {
 			
 			if ( ! el ) {
-				//adds bindings
+
+				// Adds bindings.
 				this.off();
-				//go through the cached list of actions and use the processor to bind
-				
+
+				// Go through the cached list of actions and use the processor 
+				// to bind
 				var cls = this.constructor,
 					bindings = this._bindings,
 					actions = cls.actions,
 					element = this.element,
-					destroyCB = shifter(this,"destroy");
+					destroyCB = shifter(this,"destroy"),
+					funcName;
 					
 				for ( funcName in actions ) {
 					if ( actions.hasOwnProperty( funcName )) {
@@ -3987,7 +3854,8 @@
 				}
 	
 	
-				// setup to be destroyed ... don't bind b/c we don't want to remove it
+				// Setup to be destroyed...  
+				// don't bind because we don't want to remove it.
 				can.bind.call(element,"destroyed", destroyCB);
 				bindings.push(function( el ) {
 					can.unbind.call(el,"destroyed", destroyCB);
@@ -4014,15 +3882,14 @@
 		 * @hide
 		 * Unbinds all event handlers on the controller. You should never
 		 * be calling this unless in use with [can.Control::on].
-		 * 
-		 * 
 		 */
+		// Unbinds all event handlers on the controller.
 		off : function(){
 			var el = this.element[0]
 			each(this._bindings || [], function( key, value ) {
 				value(el);
 			});
-			//adds bindings
+			// Adds bindings.
 			this._bindings = [];
 		},
 		/**
@@ -4042,17 +3909,17 @@
 		 *  
 		 * 
 		 *      Clickr = can.Control({
-		 *       "{window} click" : function(){
+		 *       "{window} click": function() {
 		 * 	       this.element.html( this.count ? 
-		 * 	                          this.count++ : this.count = 0)
+		 * 	                          this.count++ : this.count = 0 );
 		 *       }  
-		 *     })
+		 *     });
 		 *     
 		 *     // create a clicker on an element
-		 *     new Clicker("#clickme");
+		 *     new Clicker( "#clickme" );
 		 * 
 		 *     // remove the element
-		 *     $('#clickme').remove();
+		 *     $( '#clickme' ).remove();
 		 * 
 		 * 
 		 * The methods you can use that will destroy controls automatically by library:
@@ -4090,20 +3957,21 @@
 		 * created and sets it back when the control is removed:
 		 * 
 		 *     Changer = can.Control({
-		 *       init : function(){
+		 *       init: function() {
 		 *         this.oldText = this.element.text();
-		 *         this.element.text("Changed!!!")
+		 *         this.element.text( "Changed!!!" );
 		 *       },
-		 *       destroy : function(){
-		 *         this.element.text(this.oldText);
-		 *         can.Control.prototype.destroy.call(this)
-		 *     })
+		 *       destroy: function() {
+		 *         this.element.text( this.oldText );
+		 *         can.Control.prototype.destroy.call( this );
+		 *       }
+		 *     });
 		 *     
 		 *     // create a changer which changes #myel's text
-		 *     var changer = new Changer('#myel')
+		 *     var changer = new Changer( '#myel' );
 		 * 
 		 *     // destroy changer which will reset it
-		 *     changer.destroy()
+		 *     changer.destroy();
 		 * 
 		 * ## Base Functionality
 		 * 
@@ -4115,24 +3983,26 @@
 		 *   - removing it's [can.Control.pluginName] from the element's className
 		 * 
 		 */
+
+		// Prepares a `control` for garbage collection
 		destroy: function() {
 			var Class = this.constructor,
 				pluginName = Class.pluginName || Class._fullName,
 				controls;
 			
-			// unbind bindings
+			// Unbind bindings.
 			this.off();
 			
 			if(pluginName && pluginName !== 'can_control'){
-				// remove the className
+				// Remove the `className`.
 				this.element.removeClass(pluginName);
 			}
 			
-			// remove from data
+			// Remove from `data`.
 			controls = can.data(this.element,"controls");
 			controls.splice(can.inArray(this, controls),1);
 			
-			can.trigger( this, "destroyed"); //in case we want to know if the control is removed
+			can.trigger( this, "destroyed"); // In case we want to know if the `control` is removed.
 			
 			this.element = null;
 		}
@@ -4140,10 +4010,10 @@
 
 	var processors = can.Control.processors,
 
-	//------------- PROCESSSORS -----------------------------
-	//processors do the binding.  They return a function that
-	//unbinds when called.
-	//the basic processor that binds events
+	// Processors do the binding.  
+	// They return a function that unbinds when called.  
+	//
+	// The basic processor that binds events.
 	basicProcessor = function( el, event, selector, methodName, control ) {
 		return binder( el, event, shifter(control, methodName), selector);
 	};
@@ -4151,14 +4021,14 @@
 
 
 
-	//set common events to be processed as a basicProcessor
-	each(["change", "click", "contextmenu", "dblclick", "keydown", "keyup", "keypress", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "reset", "resize", "scroll", "select", "submit", "focusin", "focusout", "mouseenter", "mouseleave"], function( i, v ) {
+	// Set common events to be processed as a `basicProcessor`
+	each(["change", "click", "contextmenu", "dblclick", "keydown", "keyup", 
+		 "keypress", "mousedown", "mousemove", "mouseout", "mouseover", 
+		 "mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
+		 "focusout", "mouseenter", "mouseleave"], function( i, v ) {
 		processors[v] = basicProcessor;
 	});
 	
-
-	
-
 ;
 
 	
@@ -4981,7 +4851,7 @@
 		}
 });
 	// ========= SCANNING CODE =========
-	var tokenReg = new RegExp("(" +["<%%","%%>","<%==","<%=","<%#","<%","%>","<",">",'"',"'"].join("|")+")"),
+	var tokenReg = new RegExp("(" +["<%%","%%>","<%==","<%=","<%#","<%","%>","<",">",'"',"'"].join("|")+")","g"),
 		// commands for caching
 		startTxt = 'var ___v1ew = [];',
 		finishTxt = "return ___v1ew.join('')",
@@ -5002,29 +4872,23 @@
 			return quote ? "'"+beforeQuote.match(attrReg)[1]+"'" : (htmlTag ? 1 : 0)
 		},
 		pendingHookups = [],
-		rsplit = function( string, regex ) {
-			var result = regex.exec(string),
-				retArr = [],
-				first_idx, last_idx;
-			while ( result !== null ) {
-				first_idx = result.index;
-				last_idx = regex.lastIndex;
-				if ( first_idx !== 0 ) {
-					retArr.push(string.substring(0, first_idx));
-					string = string.slice(first_idx);
-				}
-				retArr.push(result[0]);
-				string = string.slice(result[0].length);
-				result = regex.exec(string);
-			}
-			if ( string !== '' ) {
-				retArr.push(string);
-			}
-			return retArr;
-		},
 		scan = function(source, name){
-			var tokens = rsplit(source.replace(newLine, "\n"), tokenReg), 
-				content = '',
+			var tokens = [],
+				last = 0;
+			
+			source = source.replace(newLine, "\n");
+			source.replace(tokenReg, function(whole, part, offset){
+				if(offset > last){
+					tokens.push( source.substring(last, offset) );
+				} 
+				tokens.push(part)
+				last = offset+part.length;
+			})
+			if(last === 0){
+				tokens.push(source)
+			}
+			
+			var content = '',
 				buff = [startTxt],
 				// helper function for putting stuff in the view concat
 				put = function( content, bonus ) {
