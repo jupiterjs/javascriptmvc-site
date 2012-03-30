@@ -2,31 +2,16 @@ steal({
 	src: './mootools-core-1.4.3.js',
 	_skip: true
 }, '../event.js','../fragment', function(){
-	/**
-	 * makeArray
-	 * isArray
-	 * each
-	 * extend
-	 * proxy
-	 * bind
-	 * unbind
-	 * trigger
-	 * 
-	 * inArray
-	 * Deferred
-	 * When
-	 * ajax
-	 * 
-	 * delegate
-	 * undelegate
-	 * 
-	 * buildFragement
-	 */
+	// mootools.js
+	// ---------
+	// _MooTools node list._
+	// 
+	// Map string helpers.
 	can.trim = function(s){
 		return s && s.trim()
 	}
 	
-	// Array
+	// Map array helpers.
 	can.makeArray = Array.from;
 	can.isArray = function(arr){
 		return typeOf(arr) === 'array'
@@ -49,7 +34,8 @@ steal({
 	      }
 	    return elements;
   	}
-	// Object
+
+	// Map object helpers.
 	can.extend = function(first){
 		if(first === true){
 			var args = can.makeArray(arguments);
@@ -64,7 +50,7 @@ steal({
 	can.isEmptyObject = function(object){
 		return Object.keys(object).length === 0;
 	}
-	// Function
+	// Map function helpers.
 	can.proxy = function(func){
 		var args = can.makeArray(arguments),
 			func = args.shift();
@@ -74,55 +60,60 @@ steal({
 	can.isFunction = function(f){
 		return typeOf(f) == 'function'
 	}
-	// make this object so you can bind on it
+	// Make this object so you can bind on it.
 	can.bind = function( ev, cb){
-		// if we can bind to it ...
+		// If we can bind to it...
 		if(this.bind && this.bind !== can.bind){
 			this.bind(ev, cb)
 		} else if(this.addEvent) {
 			this.addEvent(ev, cb)
 		} else {
-			// make it bind-able ...
+			// Make it bind-able...
 			can.addEvent.call(this, ev, cb)
 		}
 		return this;
 	}
 	can.unbind = function(ev, cb){
-		// if we can bind to it ...
+		// If we can bind to it...
 		if(this.unbind && this.unbind !== can.unbind){
 			this.unbind(ev, cb)
 		} else if(this.removeEvent) {
 			this.removeEvent(ev, cb)
 		} else {
-			// make it bind-able ...
+			// Make it bind-able...
 			can.removeEvent.call(this, ev, cb)
 		}
 		return this;
 	}
 	can.trigger = function(item, event, args, bubble){
-		// defaults to true
+		// Defaults to `true`.
 		bubble = (bubble === undefined ? true : bubble);
 		args = args || []
 		if(item.fireEvent){
 			item = item[0] || item;
-			// walk up parents to simulate bubbling 
+			// walk up parents to simulate bubbling .
 			while(item) {
-			// handle walking yourself
+			// Handle walking yourself.
 				if(!event.type){
 					event = {
 						type : event,
 						target : item
 					}
 				}
-				var events = item.retrieve('events');
+				var events = (item !== window ? 
+					can.$(item).retrieve('events')[0] :
+					item.retrieve('events') );
 				if (events && events[event.type]) {
-					
 					events[event.type].keys.each(function(fn){
 						fn.apply(this, [event].concat(args));
 					}, this); 
 				} 
-				// if we are bubbling, get parent node
-				item = bubble && item.parentNode
+				// If we are bubbling, get parent node.
+				if(bubble && item.parentNode){
+					item = item.parentNode
+				} else {
+					item = null;
+				}
 				
 			}
 			
@@ -177,7 +168,7 @@ steal({
 	can.ajax = function(options){
 		var d = can.Deferred(),
 			requestOptions = can.extend({}, options);
-		// maap jQuery options to mootools options
+		// Map jQuery options to MooTools options.
 		
 		for(var option in optionsMap){
 			if(requestOptions[option] !== undefined){
@@ -210,7 +201,7 @@ steal({
 		return d;
 			
 	}
-	// element ... get the wrapped helper
+	// Element -- get the wrapped helper.
 	can.$ = function(selector){
 		if(selector === window){
 			return window;
@@ -218,7 +209,7 @@ steal({
 		return $$(selector)
 	}
 	
-	// add document fragement support
+	// Add `document` fragment support.
 	var old = document.id;
 	document.id =  function(el){
 		if(el && el.nodeType === 11){
@@ -247,29 +238,44 @@ steal({
 		return wrapped.addClass(className);
 	}
 	can.remove = function(wrapped){
-		// we need to remove text nodes ourselves
-		
-		return wrapped.filter(function(node){ 
+		// We need to remove text nodes ourselves.
+		var filtered = wrapped.filter(function(node){ 
 			if(node.nodeType !== 1){
 				node.parentNode.removeChild(node);
 			} else {
 				return true;
 			}
-		}).destroy();
+		})
+		filtered.destroy();
+		return filtered;
 	}
-	// destroyed method
+	
+	// Destroyed method.
 	var destroy = Element.prototype.destroy;
-	Element.prototype.destroy = function(){
-		can.trigger(this,"destroyed",[],false)
-		var elems = this.getElementsByTagName("*");
-		for ( var i = 0, elem; (elem = elems[i]) !== undefined; i++ ) {
-			can.trigger(elem,"destroyed",[],false);
+	Element.implement({
+		destroy : function(){
+			can.trigger(this,"destroyed",[],false)
+			var elems = this.getElementsByTagName("*");
+			for ( var i = 0, elem; (elem = elems[i]) !== undefined; i++ ) {
+				can.trigger(elem,"destroyed",[],false);
+			}
+			destroy.apply(this, arguments)
 		}
-		destroy.apply(this, arguments)
-	}
+	});
 	can.get = function(wrapped, index){
 		return wrapped[index];
 	}
 	
-	
+	// Overwrite to handle IE not having an id.
+	// IE barfs if text node.
+	var idOf = Slick.uidOf;
+	Slick.uidOf = function(node){
+		if(node.nodeType === 1 || node === window){
+			return idOf(node);
+		} else {
+			return Math.random();
+		}
+			
+		
+	}
 },'../deferred.js')

@@ -156,7 +156,10 @@
 		/**
 		 * @function can.capitalize
 		 * @parent can.util
-		 * Capitalizes a string
+		 * `can.capitalize(string)` capitalizes the first letter of the string passed.
+		 *
+		 *		can.capitalize('candy is fun!'); //-> Returns: 'Candy is fun!'
+		 *
 		 * @param {String} s the string.
 		 * @return {String} a string with the first character capitalized.
 		 */
@@ -652,7 +655,8 @@
 
 	// ## observe.js  
 	// `can.Observe`  
-	// _Provides the observable pattern for JavaScript Objects._
+	// _Provides the observable pattern for JavaScript Objects._  
+	//  
 	// Returns `true` if something is an object with properties of its own.
 	var canMakeObserve = function( obj ) {
 		return obj && typeof obj === 'object' && !(obj instanceof Date);
@@ -1813,7 +1817,7 @@
 		 */
 		shift: 0
 	},
-	// creates a `remove` type method
+	// Creates a `remove` type method
 
 
 	function( name, where ) {
@@ -1862,6 +1866,7 @@
 	// ## model.js  
 	// `can.Model`  
 	// _A `can.Observe` that connects to a RESTful interface._
+	//  
 	/**
 	 * @add can.Model
 	 */
@@ -2927,6 +2932,9 @@
 	;
 
 
+	// ## deparam.js  
+	// `can.deparam`  
+	// _Takes a string of name value pairs and returns a Object literal that represents those params._
 	var digitTest = /^\d+$/,
 		keyBreaker = /([^\[\]]+)|(\[\])/g,
 		paramTest = /([^?#]*)(#.*)?$/,
@@ -2936,7 +2944,6 @@
 
 
 		can.extend(can, {
-
 			/**
 			 * @function can.deparam
 			 * @parent can.util
@@ -2972,7 +2979,7 @@
 
 						for ( var j = 0, l = parts.length - 1; j < l; j++ ) {
 							if (!current[parts[j]] ) {
-								// if what we are pointing to looks like an array
+								// If what we are pointing to looks like an `array`
 								current[parts[j]] = digitTest.test(parts[j + 1]) || parts[j + 1] == "[]" ? [] : {}
 							}
 							current = current[parts[j]];
@@ -2992,9 +2999,14 @@
 	;
 
 
+	// ## route.js  
+	// `can.route`  
+	// _Helps manage browser history (and client state) by synchronizing the 
+	// `window.location.hash` with a `can.Observe`._  
+	//   
 	// Helper methods used for matching routes.
 	var
-	// RegEx used to match route variables of the type ':name'.
+	// `RegExp` used to match route variables of the type ':name'.
 	// Any word character or a period is matched.
 	matcher = /\:([\w\.]+)/g,
 		// Regular expression for identifying &amp;key=value lists.
@@ -3007,8 +3019,8 @@
 			}).join(" ");
 		},
 		// Checks if a route matches the data provided. If any route variable
-		// is not present in the data the route does not match. If all route
-		// variables are present in the data the number of matches is returned 
+		// is not present in the data, the route does not match. If all route
+		// variables are present in the data, the number of matches is returned 
 		// to allow discerning between general and more specific routes. 
 		matchesData = function( route, data ) {
 			var count = 0,
@@ -3021,7 +3033,6 @@
 			}
 			return count;
 		},
-		// 
 		onready = !0,
 		location = window.location,
 		each = can.each,
@@ -3029,27 +3040,28 @@
 
 
 	can.route = function( url, defaults ) {
-		// Extract the variable names and replace with regEx that will match an atual URL with values.
+		// Extract the variable names and replace with `RegExp` that will match 
+		// an atual URL with values.
 		var names = [],
 			test = url.replace(matcher, function( whole, name ) {
 				names.push(name)
-				// TODO: I think this should have a +
-				return "([^\\/\\&]*)" // The '\\' is for string-escaping giving single '\' for regEx escaping
+				// TODO: I think this should have a `+`
+				return "([^\\/\\&]*)" // The `\\` is for string-escaping giving single `\` for `RegExp` escaping.
 			});
 
-		// Add route in a form that can be easily figured out
+		// Add route in a form that can be easily figured out.
 		can.route.routes[url] = {
 			// A regular expression that will match the route when variable values 
-			// are present; i.e. for :page/:type the regEx is /([\w\.]*)/([\w\.]*)/ which
-			// will match for any value of :page and :type (word chars or period).
+			// are present; i.e. for `:page/:type` the `RegExp` is `/([\w\.]*)/([\w\.]*)/` which
+			// will match for any value of `:page` and `:type` (word chars or period).
 			test: new RegExp("^" + test + "($|&)"),
 			// The original URL, same as the index for this entry in routes.
 			route: url,
-			// An array of all the variable names in this route
+			// An `array` of all the variable names in this route.
 			names: names,
 			// Default values provided for the variables.
 			defaults: defaults || {},
-			// The number of parts in the URL separated by '/'.
+			// The number of parts in the URL separated by `/`.
 			length: url.split('/').length
 		}
 		return can.route;
@@ -3058,6 +3070,7 @@
 	extend(can.route, {
 		/**
 		 * @function can.route.param
+		 * @parent can.route
 		 * Parameterizes the raw JS object representation provided in data.
 		 * If a route matching the provided data is found that URL is built
 		 * from the data. Any remaining data is added at the end of the
@@ -3069,15 +3082,15 @@
 		param: function( data ) {
 			delete data.route;
 			// Check if the provided data keys match the names in any routes;
-			// get the one with the most matches.
+			// Get the one with the most matches.
 			var route,
-			// need it to be at least 1 match
+			// Need to have at least 1 match.
 			matches = 0,
 				matchCount, routeName = data.route;
 
-			// if we have a route name in our can.route data, use it
+			// If we have a route name in our `can.route` data, use it.
 			if (!(routeName && (route = can.route.routes[routeName]))) {
-				// otherwise find route
+				// Otherwise find route.
 				each(can.route.routes, function( name, temp ) {
 					matchCount = matchesData(temp, data);
 					if ( matchCount > matches ) {
@@ -3087,7 +3100,7 @@
 				});
 			}
 
-			// if this is match
+			// If this is match...
 			if ( route ) {
 				var cpy = extend({}, data),
 					// Create the url by replacing the var names with the provided data.
@@ -3097,7 +3110,7 @@
 						return data[name] === route.defaults[name] ? "" : encodeURIComponent(data[name]);
 					}),
 					after;
-				// remove matching default values
+				// Remove matching default values
 				each(route.defaults, function( name, val ) {
 					if ( cpy[name] === val ) {
 						delete cpy[name]
@@ -3105,22 +3118,23 @@
 				})
 
 				// The remaining elements of data are added as 
-				// $amp; separated parameters to the url.
+				// `&amp;` separated parameters to the url.
 				after = can.param(cpy);
 				return res + (after ? "&" + after : "")
 			}
-			// If no route was found there is no hash URL, only paramters.
+			// If no route was found, there is no hash URL, only paramters.
 			return can.isEmptyObject(data) ? "" : "&" + can.param(data);
 		},
 		/**
-		 * @function can.route.param
+		 * @function can.route.deparam
+		 * @parent can.route
 		 * 
 		 * Populate the JS data object from a given URL.
 		 * 
 		 * @param {Object} url
 		 */
 		deparam: function( url ) {
-			// See if the url matches any routes by testing it against the route.test regEx.
+			// See if the url matches any routes by testing it against the `route.test` `RegExp`.
 			// By comparing the URL length the most specialized route that matches is used.
 			var route = {
 				length: -1
@@ -3130,21 +3144,22 @@
 					route = temp;
 				}
 			});
-			// If a route was matched
+			// If a route was matched.
 			if ( route.length > -1 ) {
-				var // Since RegEx backreferences are used in route.test (round brackets)
-				// the parts will contain the full matched string and each variable (backreferenced) value.
+				var // Since `RegExp` backreferences are used in `route.test` (parens)
+				// the parts will contain the full matched string and each variable (back-referenced) value.
 				parts = url.match(route.test),
-					// start will contain the full matched string; parts contain the variable values.
+					// Start will contain the full matched string; parts contain the variable values.
 					start = parts.shift(),
-					// The remainder will be the &amp;key=value list at the end of the URL.
+					// The remainder will be the `&amp;key=value` list at the end of the URL.
 					remainder = url.substr(start.length - (parts[parts.length - 1] === "&" ? 1 : 0)),
-					// If there is a remainder and it contains a &amp;key=value list deparam it.
+					// If there is a remainder and it contains a `&amp;key=value` list deparam it.
 					obj = (remainder && paramsMatcher.test(remainder)) ? can.deparam(remainder.slice(1)) : {};
 
-				// Add the default values for this route
+				// Add the default values for this route.
 				obj = extend(true, {}, route.defaults, obj);
-				// Overwrite each of the default values in obj with those in parts if that part is not empty.
+				// Overwrite each of the default values in `obj` with those in 
+				// parts if that part is not empty.
 				each(parts, function( i, part ) {
 					if ( part && part !== '&' ) {
 						obj[route.names[i]] = decodeURIComponent(part);
@@ -3153,7 +3168,7 @@
 				obj.route = route.route;
 				return obj;
 			}
-			// If no route was matched it is parsed as a &amp;key=value list.
+			// If no route was matched, it is parsed as a `&amp;key=value` list.
 			if ( url.charAt(0) !== '&' ) {
 				url = '&' + url;
 			}
@@ -3173,7 +3188,7 @@
 		 * Each route is an object with these members:
 		 * 
 		 *  - test - A regular expression that will match the route when variable values 
-		 *    are present; i.e. for :page/:type the regEx is /([\w\.]*)/([\w\.]*)/ which
+		 *    are present; i.e. for :page/:type the `RegExp` is /([\w\.]*)/([\w\.]*)/ which
 		 *    will match for any value of :page and :type (word chars or period).
 		 * 
 		 *  - route - The original URL, same as the index for this entry in routes.
@@ -3186,7 +3201,7 @@
 		 */
 		routes: {},
 		/**
-		 * @function can.route.param
+		 * @function can.route.ready
 		 * @parent can.route
 		 * Indicates that all routes have been added and sets can.route.data
 		 * based upon the routes and the current hash.
@@ -3256,8 +3271,8 @@
 	});
 
 
-	// The functions in the following list applied to can.route (e.g. can.route.attr('...')) will
-	// instead act on the can.route.data Observe.
+	// The functions in the following list applied to `can.route` (e.g. `can.route.attr('...')`) will
+	// instead act on the `can.route.data` observe.
 	each(['bind', 'unbind', 'delegate', 'undelegate', 'attr', 'removeAttr'], function( i, name ) {
 		can.route[name] = function() {
 			return can.route.data[name].apply(can.route.data, arguments)
@@ -3265,23 +3280,22 @@
 	})
 
 	var // A ~~throttled~~ debounced function called multiple times will only fire once the
-	// timer runs down. Each call resets the timer. (throttled functions
-	// are called once every x seconds)
+	// timer runs down. Each call resets the timer.
 	timer,
-	// Intermediate storage for can.route.data.
+	// Intermediate storage for `can.route.data`.
 	curParams,
 	// Deparameterizes the portion of the hash of interest and assign the
-	// values to the can.route.data removing existing values no longer in the hash.
+	// values to the `can.route.data` removing existing values no longer in the hash.
 	setState = function() {
 		curParams = can.route.deparam(location.hash.split(/#!?/).pop());
 		can.route.attr(curParams, true);
 	};
 
-	// If the hash changes, update the can.route.data
+	// If the hash changes, update the `can.route.data`.
 	can.bind.call(window, 'hashchange', setState);
 
-	// If the can.route.data changes, update the hash.
-	// Using .serialize() retrieves the raw data contained in the observable.
+	// If the `can.route.data` changes, update the hash.
+	// Using `.serialize()` retrieves the raw data contained in the `observable`.
 	// This function is ~~throttled~~ debounced so it only updates once even if multiple values changed.
 	can.route.bind("change", function() {
 		clearTimeout(timer);
@@ -3289,7 +3303,7 @@
 			location.hash = "#!" + can.route.param(can.route.data.serialize())
 		}, 1);
 	});
-	// onready event ...
+	// `onready` event...
 	can.bind.call(document, "ready", can.route.ready);;
 
 
@@ -3412,7 +3426,7 @@
 
 			// If we don't have options (a `control` instance), we'll run this 
 			// later.  
-			// `/\{([^\}]+)\}/` - parameter replacer regex.
+			// `/\{([^\}]+)\}/` - parameter replacer `RegExp`.
 			if ( options || !/\{([^\}]+)\}/g.test(methodName) ) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
@@ -3424,7 +3438,7 @@
 
 					// Get the parts of the function  
 					// `[convertedName, delegatePart, eventPart]`  
-					// `/^(?:(.*?)\s)?([\w\.\:>]+)$/` - Breaker regex.
+					// `/^(?:(.*?)\s)?([\w\.\:>]+)$/` - Breaker `RegExp`.
 					parts = (arr ? convertedName[1] : convertedName).match(/^(?:(.*?)\s)?([\w\.\:>]+)$/),
 					event = parts[2],
 					processor = processors[event] || basicProcessor;
@@ -4007,6 +4021,8 @@
 	;
 
 
+	// ## control/route.js  
+	// _Controller route integration._
 	can.Control.processors.route = function( el, event, selector, funcName, controller ) {
 		can.route(selector || "")
 		var batchNum, check = function( ev, attr, how ) {
@@ -4027,21 +4043,22 @@
 	};
 
 
-	// a path like string into something that's ok for an element ID
+	// ## view.js
+	// `can.view`  
+	// _Templating abstraction._
+	// Convert a path like string into something that's ok for an `element` ID.
 	var toId = function( src ) {
 		return src.split(/\/|\./g).join("_");
 	},
 		isFunction = can.isFunction,
 		makeArray = can.makeArray,
-		// used for hookup ids
+		// Used for hookup `id`s.
 		hookupId = 1,
-		// this might be useful for testing if html
-		// htmlTest = /^[\s\n\r\xA0]*<(.|[\r\n])*>[\s\n\r\xA0]*$/
 		/**
 		 * @add can.view
 		 */
 		$view = can.view = function( view, data, helpers, callback ) {
-			// get the result
+			// Get the result.
 			var result = $view.render(view, data, helpers, callback);
 			if ( can.isDeferred(result) ) {
 				return result.pipe(function( result ) {
@@ -4049,14 +4066,14 @@
 				})
 			}
 
-			// convert it into a dom frag
+			// Convert it into a dom frag.
 			return $view.frag(result);
 		};
 
 	can.extend($view, {
 		frag: function( result ) {
 			var frag = can.buildFragment([result], [document.body]).fragment;
-			// if we have an empty fraga
+			// If we have an empty frag...
 			if (!frag.childNodes.length ) {
 				frag.appendChild(document.createTextNode(''))
 			}
@@ -4066,14 +4083,14 @@
 			var hookupEls = [],
 				id, func, el, i = 0;
 
-			// get all childNodes
+			// Get all `childNodes`.
 			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function( i, node ) {
 				if ( node.nodeType === 1 ) {
 					hookupEls.push(node)
 					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName('*')))
 				}
 			});
-			// filter by data-view-id attribute
+			// Filter by `data-view-id` attribute.
 			for (; el = hookupEls[i++]; ) {
 
 				if ( el.getAttribute && (id = el.getAttribute('data-view-id')) && (func = $view.hookups[id]) ) {
@@ -4120,6 +4137,10 @@
 		 * @attribute cache
 		 * By default, views are cached on the client.  If you'd like the
 		 * the views to reload from the server, you can set the `cache` attribute to `false`.
+		 *
+		 * 		//- Forces loads from server
+		 * 		can.view.cache = false; 
+		 *
 		 */
 		cache: true,
 		/**
@@ -4173,6 +4194,10 @@
 		 * @attribute ext
 		 * The default suffix to use if none is provided in the view's url.  
 		 * This is set to `.ejs` by default.
+		 *
+		 * 		// Changes view ext to 'txt'
+		 * 		can.view.ext = 'txt';
+		 *
 		 */
 		ext: ".ejs",
 		/**
@@ -4192,75 +4217,75 @@
 		 */
 		preload: function() {},
 		render: function( view, data, helpers, callback ) {
-			// if helpers is a function, it is actually a callback
+			// If helpers is a `function`, it is actually a callback.
 			if ( isFunction(helpers) ) {
 				callback = helpers;
 				helpers = undefined;
 			}
 
-			// see if we got passed any deferreds
+			// See if we got passed any deferreds.
 			var deferreds = getDeferreds(data);
 
 
-			if ( deferreds.length ) { // does data contain any deferreds?
-				// the deferred that resolves into the rendered content ...
+			if ( deferreds.length ) { // Does data contain any deferreds?
+				// The deferred that resolves into the rendered content...
 				var deferred = new can.Deferred();
 
-				// add the view request to the list of deferreds
+				// Add the view request to the list of deferreds.
 				deferreds.push(get(view, true))
 
-				// wait for the view and all deferreds to finish
+				// Wait for the view and all deferreds to finish...
 				can.when.apply(can, deferreds).then(function( resolved ) {
-					// get all the resolved deferreds
+					// Get all the resolved deferreds.
 					var objs = makeArray(arguments),
-						// renderer is last [0] is the data
+						// Renderer is the last index of the data.
 						renderer = objs.pop(),
-						// the result of the template rendering with data
+						// The result of the template rendering with data.
 						result;
 
-					// make data look like the resolved deferreds
+					// Make data look like the resolved deferreds.
 					if ( can.isDeferred(data) ) {
 						data = usefulPart(resolved);
 					}
 					else {
-						// go through each prop in data again,
-						// replace the defferreds with what they resolved to
+						// Go through each prop in data again and
+						// replace the defferreds with what they resolved to.
 						for ( var prop in data ) {
 							if ( can.isDeferred(data[prop]) ) {
 								data[prop] = usefulPart(objs.shift());
 							}
 						}
 					}
-					// get the rendered result
+					// Get the rendered result.
 					result = renderer(data, helpers);
 
-					//resolve with the rendered view
+					// Resolve with the rendered view.
 					deferred.resolve(result);
-					// if there's a callback, call it back with the result
+					// If there's a `callback`, call it back with the result.
 					callback && callback(result);
 				});
-				// return the deferred ....
+				// Return the deferred...
 				return deferred;
 			}
 			else {
-				// no deferreds, render this bad boy
+				// No deferreds! Render this bad boy.
 				var response,
-				// if there's a callback function
+				// If there's a `callback` function
 				async = isFunction(callback),
-					// get the 'view' type
+					// Get the `view` type
 					deferred = get(view, async);
 
-				// if we are async, 
+				// If we are `async`...
 				if ( async ) {
-					// return the deferred
+					// Return the deferred
 					response = deferred;
-					// and callback callback with the rendered result
+					// And fire callback with the rendered result.
 					deferred.then(function( renderer ) {
 						callback(renderer(data, helpers))
 					})
 				} else {
-					// otherwise, the deferred is complete, so
-					// set response to the result of the rendering
+					// Otherwise, the deferred is complete, so
+					// set response to the result of the rendering.
 					deferred.then(function( renderer ) {
 						response = renderer(data, helpers);
 					});
@@ -4270,11 +4295,11 @@
 			}
 		}
 	});
-	// returns true if something looks like a deferred
+	// Returns `true` if something looks like a deferred.
 	can.isDeferred = function( obj ) {
-		return obj && isFunction(obj.then) && isFunction(obj.pipe) // check if obj is a can.Deferred
+		return obj && isFunction(obj.then) && isFunction(obj.pipe) // Check if `obj` is a `can.Deferred`.
 	}
-	// makes sure there's a template, if not, has steal provide a warning
+	// Makes sure there's a template, if not, have `steal` provide a warning.
 	var checkText = function( text, url ) {
 		if (!text.length ) {
 			//@steal-remove-start
@@ -4283,77 +4308,78 @@
 			throw "can.view: No template or empty template:" + url;
 		}
 	},
-		// returns a 'view' renderer deferred
-		// url - the url to the view template
-		// async - if the ajax request should be synchronous
-		// returns a deferred
+		// `Returns a `view` renderer deferred.  
+		// `url` - The url to the template.  
+		// `async` - If the ajax request should be asynchronous.  
+		// Returns a deferred.
 		get = function( url, async ) {
 
 
 			var suffix = url.match(/\.[\w\d]+$/),
 				type,
-				// if we are reading a script element for the content of the template
-				// el will be set to that script element
+				// If we are reading a script element for the content of the template,
+				// `el` will be set to that script element.
 				el,
-				// a unique identifier for the view (used for caching)
-				// this is typically derived from the element id or
-				// the url for the template
+				// A unique identifier for the view (used for caching).
+				// This is typically derived from the element id or
+				// the url for the template.
 				id,
-				// the AJAX request used to retrieve the template content
+				// The ajax request used to retrieve the template content.
 				jqXHR,
-				// used to generate the response 
+				// Used to generate the response.
 				response = function( text ) {
-					// get the renderer function
+					// Get the renderer function.
 					var func = type.renderer(id, text),
 						d = new can.Deferred();
 					d.resolve(func)
-					// cache if if we are caching
+					// Cache if we are caching.
 					if ( $view.cache ) {
 						$view.cached[id] = d;
 					}
-					// return the objects for the response's dataTypes 
-					// (in this case view)
+					// Return the objects for the response's `dataTypes`
+					// (in this case view).
 					return d;
 				};
 
-			// if we have an inline template, derive the suffix from the 'text/???' part
-			// this only supports '<script></script>' tags
+			// If we have an inline template, derive the suffix from the `text/???` part.
+			// This only supports `<script>` tags.
 			if ( el = document.getElementById(url) ) {
 				suffix = "." + el.type.match(/\/(x\-)?(.+)/)[2];
 			}
 
-			// if there is no suffix, add one
+			// If there is no suffix, add one.
 			if (!suffix ) {
 				url += (suffix = $view.ext);
 			}
+
 			if ( can.isArray(suffix) ) {
 				suffix = suffix[0]
 			}
 
-			// convert to a unique and valid id
+			// Convert to a unique and valid id.
 			id = toId(url);
 
-			// if a absolute path, use steal to get it
-			// you should only be using // if you are using steal
+			// If an absolute path, use `steal` to get it.
+			// You should only be using `//` if you are using `steal`.
 			if ( url.match(/^\/\//) ) {
 				var sub = url.substr(2);
 				url = !window.steal ? "/" + sub : steal.root.mapJoin(sub);
 			}
 
-			//set the template engine type 
+			// Set the template engine type.
 			type = $view.types[suffix];
 
-			// if it is cached, 
+			// If it is cached, 
 			if ( $view.cached[id] ) {
-				// return the cached deferred renderer
+				// Return the cached deferred renderer.
 				return $view.cached[id];
 
-				// otherwise if we are getting this from a script elment
+				// Otherwise if we are getting this from a `<script>` element.
 			} else if ( el ) {
-				// resolve immediately with the element's innerHTML
+				// Resolve immediately with the element's `innerHTML`.
 				return response(el.innerHTML);
 			} else {
-				// make an ajax request for text
+				// Make an ajax request for text.
 				var d = new can.Deferred();
 				can.ajax({
 					async: async,
@@ -4364,10 +4390,10 @@
 						d.reject(jqXHR);
 					},
 					success: function( text ) {
-						// make sure we got some text back
+						// Make sure we got some text back.
 						checkText(text, url);
 						d.resolve(type.renderer(id, text))
-						// cache if if we are caching
+						// Cache if if we are caching.
 						if ( $view.cache ) {
 							$view.cached[id] = d;
 						}
@@ -4377,8 +4403,8 @@
 				return d;
 			}
 		},
-		// gets an array of deferreds from an object
-		// this only goes one level deep
+		// Gets an `array` of deferreds from an `object`.
+		// This only goes one level deep.
 		getDeferreds = function( data ) {
 			var deferreds = [];
 
@@ -4394,9 +4420,8 @@
 			}
 			return deferreds;
 		},
-		// gets the useful part of deferred
-		// this is for Models and can.ajax that resolve to array (with success and such)
-		// returns the useful, content part
+		// Gets the useful part of a resolved deferred.
+		// This is for `model`s and `can.ajax` that resolve to an `array`.
 		usefulPart = function( resolved ) {
 			return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved
 		};
@@ -4404,14 +4429,15 @@
 	;
 
 
-	// HELPER METHODS ==============
+	// ## ejs.js
+	// `can.EJS`  
+	// _Embedded JavaScript Templates._
+	// Helper methods.
 	var myEval = function( script ) {
 		eval(script);
 	},
-		// removes the last character from a string
-		// this is no longer needed
 		extend = can.extend,
-		// regular expressions for caching
+		// Regular expressions for caching.
 		quickFunc = /\s*\(([\$\w]+)\)\s*->([^\n]*)/,
 		attrReg = /([^\s]+)=$/,
 		newLine = /(\r|\n)+/g,
@@ -4426,7 +4452,7 @@
 			thead: "tr",
 			tfoot: "tr"
 		},
-		// escapes characters starting with \
+		// Escapes characters starting with `\`.
 		clean = function( content ) {
 			return content.split('\\').join("\\\\").split("\n").join("\\n").split('"').join('\\"').split("\t").join("\\t");
 		},
@@ -4439,10 +4465,10 @@
 		getAttr = function( el, attrName ) {
 			return attrName === "class" ? el.className : el.getAttribute(attrName);
 		},
-		// used to bind to an observe, and unbind when the element is removed
-		// oldObserved is a mapping of observe namespaces to instances
+		// Used to bind to an `observe` and unbind when the element is removed.
+		// `oldObserved` is a mapping of `observe` namespaces to instances.
 		liveBind = function( observed, el, cb, oldObserved ) {
-			// we are going to set everything to matched that we find
+			// We are going to set everything to matched that we find.
 			var first = oldObserved.matched === undefined;
 			oldObserved.matched = !oldObserved.matched;
 			can.each(observed, function( i, ob ) {
@@ -4454,7 +4480,7 @@
 					ob.obj.bind(ob.attr, cb)
 				}
 			})
-			// remove any old bindings
+			// Remove any old bindings.
 			for ( var name in oldObserved ) {
 				var ob = oldObserved[name];
 				if ( name !== "matched" && ob.matched !== oldObserved.matched ) {
@@ -4474,36 +4500,41 @@
 
 		},
 		contentEscape = function( txt ) {
-			//return sanatized text
+			// Return sanatized text.
 			return (typeof txt == 'string' || typeof txt == 'number') ? can.esc(txt) : contentText(txt);
 		},
 		contentText = function( input ) {
 
-			// if it's a string, return
+			// If it's a string, return.
 			if ( typeof input == 'string' ) {
 				return input;
 			}
-			// if has no value
+			// If has no value, return an empty string.
 			if (!input && input != 0 ) {
 				return '';
 			}
 
-			// if it's an object, and it has a hookup method
+			// If it's an object, and it has a hookup method.
 			var hook = (input.hookup &&
-			// make a function call the hookup method
+
+			// Make a function call the hookup method.
+
 
 			function( el, id ) {
 				input.hookup.call(input, el, id);
 			}) ||
-			// or if it's a function, just use the input
+
+			// Or if it's a `function`, just use the input.
 			(typeof input == 'function' && input);
-			// finally, if there is a funciton to hookup on some dom
-			// add it to pending hookups
+
+			// Finally, if there is a `function` to hookup on some dom,
+			// add it to pending hookups.
 			if ( hook ) {
 				pendingHookups.push(hook);
 				return '';
 			}
-			// finally, if all else false, toString it
+
+			// Finally, if all else is `false`, `toString()` it.
 			return "" + input;
 		},
 		getValueAndObserved = function( func, self ) {
@@ -4515,11 +4546,11 @@
 					});
 				}
 			}
-			// get value
+			// Get value.
 			var observed = [],
 				input = func.call(self);
 
-			// set back so we are no longer reading
+			// Set back so we are no longer reading.
 			if ( can.Observe ) {
 				delete can.Observe.__reading;
 			}
@@ -4661,19 +4692,19 @@
 					return ejs.render(data, helpers);
 				};
 			}
-			// if we get a function directly, it probably is coming from
-			// a steal-packaged view
+			// If we get a `function` directly, it probably is coming from
+			// a `steal`-packaged view.
 			if ( typeof options == "function" ) {
 				this.template = {
 					fn: options
 				};
 				return;
 			}
-			//set options on self
+			// Set options on self.
 			extend(this, options);
 			this.template = scan(this.text, this.name);
 		};
-	// add EJS to jQuery if it exists
+
 	can.EJS = EJS;
 	/** 
 	 * @Prototype
@@ -4710,7 +4741,7 @@
 		 * @param {Object} func
 		 */
 		txt: function( tagName, status, self, func, escape ) {
-			// set callback on reading ...
+			// Set callback on reading...
 			var res = getValueAndObserved(func, self),
 				observed = res.observed,
 				input = res.value,
@@ -4719,20 +4750,17 @@
 
 
 
-			// if we had no observes
+			// If we had no observes.
 			if (!observed.length ) {
 				return (escape || status !== 0 ? contentEscape : contentText)(input);
 			}
 
 			if ( status == 0 ) {
 				return "<" + tag + can.view.hook(
-				// are we escaping
+				// Are we escaping?
 				escape ?
-				// 
-
-
 				function( el ) {
-					// remove child, bind on parent
+					// Remove child, bind on parent.
 					var parent = el.parentNode,
 						node = document.createTextNode(input),
 						binder = function() {
@@ -4744,36 +4772,35 @@
 					parent.insertBefore(node, el);
 					parent.removeChild(el);
 
-					// create textNode
+					// Create `textNode`.
 					liveBind(observed, parent, binder, oldObserved);
 				} : function( span ) {
-					// remove child, bind on parent
+					// Remove child, bind on parent.
 					var makeAndPut = function( val, remove ) {
-						// get fragement of html to fragment
+						// Get `fragment` of html to `fragment`.
 						var frag = can.view.frag(val),
-							// wrap it to keep a reference to the elements .. 
-							nodes = can.$(can.map(frag.childNodes, function( node ) {
+							// Wrap it to keep a reference to the elements...
+							nodes = can.map(frag.childNodes, function( node ) {
 								return node;
-							})),
+							}),
 							last = remove[remove.length - 1];
 
-						// insert it in the document
+						// Insert it in the `document`.
 						if ( last.nextSibling ) {
 							last.parentNode.insertBefore(frag, last.nextSibling)
 						} else {
 							last.parentNode.appendChild(frag)
 						}
 
-						// remove the old content
+						// Remove the old content.
 						can.remove(can.$(remove));
-						//can.view.hookup(nodes);
 						return nodes;
 					},
 						nodes = makeAndPut(input, [span]);
-					// listen to changes and update
-					// make sure the parent does not die
-					// we might simply check that nodes is still in the document 
-					// before a write ...
+					// Listen to changes and update. 
+					// Make sure the parent does not die.
+					// We might simply check that nodes is still in the `document` 
+					// before a write...
 					var binder = function() {
 						var res = getValueAndObserved(func, self);
 						nodes = makeAndPut(res.value, nodes);
@@ -4781,10 +4808,9 @@
 						liveBind(res.observed, span.parentNode, binder, oldObserved);
 					}
 					liveBind(observed, span.parentNode, binder, oldObserved);
-					//return parent;
 				}) + "></" + tag + ">";
-			} else if ( status === 1 ) { // in a tag
-				// mark at end!
+			} else if ( status === 1 ) { // In a tag.
+				// Mark at end!
 				var attrName = input.replace(/['"]/g, '').split('=')[0];
 				pendingHookups.push(function( el ) {
 					var binder = function() {
@@ -4792,11 +4818,11 @@
 							parts = (res.value || "").replace(/['"]/g, '').split('='),
 							newAttrName = parts[0];
 
-						// remove if we have a change and used to have an attrName
+						// Remove if we have a change and used to have an `attrName`.
 						if ((newAttrName != attrName) && attrName ) {
 							el.removeAttribute(attrName)
 						}
-						// set if we have a new attrName
+						// Set if we have a new `attrName`.
 						if ( newAttrName ) {
 							setAttr(el, newAttrName, parts[1])
 						}
@@ -4807,22 +4833,22 @@
 				});
 
 				return input;
-			} else { // in an attribute
+			} else { // In an attribute...
 				pendingHookups.push(function( el ) {
 					var wrapped = can.$(el),
 						hooks;
 
-					// get the list of hookups or create one for this element
-					// hooks is a map of attribute name to hookup data
-					// each hookup data has
-					//  - render - a function to render the value of the attribute
-					//  - funcs - a list of hookup functions on that attribute
-					//  - batchNum - the last event batchNum, used for performance	
+					// Get the list of hookups or create one for this element.
+					// Hooks is a map of attribute names to hookup `data`s.
+					// Each hookup data has:
+					// `render` - A `function` to render the value of the attribute.
+					// `funcs` - A list of hookup `function`s on that attribute.
+					// `batchNum` - The last event `batchNum`, used for performance.
 					(hooks = can.data(wrapped, 'hooks')) || can.data(wrapped, 'hooks', hooks = {});
 
-					// get the attribute value
+					// Get the attribute value.
 					var attr = getAttr(el, status),
-						// split the attribute value by the template 
+						// Split the attribute value by the template.
 						parts = attr.split("__!!__"),
 						hook, binder = function( ev ) {
 							if ( ev.batchNum === undefined || ev.batchNum !== hook.batchNum ) {
@@ -4831,16 +4857,16 @@
 							}
 						};
 
-					// if we already had a hookup for this attribute
+					// If we already had a hookup for this attribute...
 					if ( hooks[status] ) {
-						// just add to that attribute's list of functions
+						// Just add to that attribute's list of `function`s.
 						hooks[status].funcs.push({
 							func: func,
 							old: oldObserved
 						});
 					}
 					else {
-						// create the hookup data
+						// Create the hookup data.
 						hooks[status] = {
 							render: function() {
 								var i = 0,
@@ -4858,21 +4884,23 @@
 							batchNum: undefined
 						};
 					};
-					//  getValueAndObserved(func, self)
-					// save the hook for slightly faster performance
+
+					// Save the hook for slightly faster performance.
 					hook = hooks[status];
-					// insert the value in parts
+
+					// Insert the value in parts.
 					parts.splice(1, 0, input);
-					// set the attribute
+
+					// Set the attribute.
 					setAttr(el, status, parts.join(""));
 
-					// bind on cha
+					// Bind on change.
 					liveBind(observed, el, binder, oldObserved);
 				})
 				return "__!!__";
 			}
 		},
-		// called to setup escaped text
+		// Called to setup escaped text.
 		esc: function( tagName, status, self, func ) {
 			return EJS.txt(tagName, status, self, func, true)
 		},
@@ -4891,25 +4919,26 @@
 			}
 		}
 	});
-	// ========= SCANNING CODE =========
+	// Start scanning code.
 	var tokenReg = new RegExp("(" + ["<%%", "%%>", "<%==", "<%=", "<%#", "<%", "%>", "<", ">", '"', "'"].join("|") + ")", "g"),
-		// commands for caching
+		// Commands for caching.
 		startTxt = 'var ___v1ew = [];',
 		finishTxt = "return ___v1ew.join('')",
 		put_cmd = "___v1ew.push(",
 		insert_cmd = put_cmd,
-		// global controls (used by other functions to know where we are)
-		// are we inside a tag
+		// Global controls (used by other functions to know where we are).
+		//  
+		// Are we inside a tag?
 		htmlTag = null,
-		// are we within a quote within a tag
+		// Are we within a quote within a tag?
 		quote = null,
-		// what was the text before the current quote (used to get the attr name)
+		// What was the text before the current quote? (used to get the `attr` name)
 		beforeQuote = null,
-		// used to mark where the element is
+		// Used to mark where the element is.
 		status = function() {
-			// t - 1
-			// h - 0
-			// q - string beforeQuote
+			// `t` - `1`.
+			// `h` - `0`.
+			// `q` - String `beforeQuote`.
 			return quote ? "'" + beforeQuote.match(attrReg)[1] + "'" : (htmlTag ? 1 : 0)
 		},
 		pendingHookups = [],
@@ -4931,27 +4960,28 @@
 
 			var content = '',
 				buff = [startTxt],
-				// helper function for putting stuff in the view concat
+				// Helper `function` for putting stuff in the view concat.
 				put = function( content, bonus ) {
 					buff.push(put_cmd, '"', clean(content), '"' + (bonus || '') + ');');
 				},
-				// a stack used to keep track of how we should end a bracket }
-				// once we have a <%= %> with a leftBracket
-				// we store how the file should end here (either '))' or ';' )
+				// A stack used to keep track of how we should end a bracket
+				// `}`.  
+				// Once we have a `<%= %>` with a `leftBracket`,
+				// we store how the file should end here (either `))` or `;`).
 				endStack = [],
-				// the last token, used to remember which tag we are in
+				// The last token, used to remember which tag we are in.
 				lastToken,
-				// the corresponding magic tag
+				// The corresponding magic tag.
 				startTag = null,
-				// was there a magic tag inside an html tag
+				// Was there a magic tag inside an html tag?
 				magicInTag = false,
-				// the current tag name
+				// The current tag name.
 				tagName = '',
-				// declared here
+				// Declared here.
 				bracketCount, i = 0,
 				token;
 
-			// re-init the tag state goodness
+			// Reinitialize the tag state goodness.
 			htmlTag = quote = beforeQuote = null;
 
 			for (;
@@ -4964,8 +4994,8 @@
 					case '<%==':
 						magicInTag = 1;
 					case '<%#':
-						// a new line, just add whatever content w/i a clean
-						// reset everything
+						// A new line -- just add whatever content within a clean.  
+						// Reset everything.
 						startTag = token;
 						if ( content.length ) {
 							put(content);
@@ -4974,11 +5004,11 @@
 						break;
 
 					case '<%%':
-						// replace <%% with <%
+						// Replace `<%%` with `<%`.
 						content += '<%';
 						break;
 					case '<':
-						// make sure we are not in a comment
+						// Make sure we are not in a comment.
 						if ( tokens[i].indexOf("!--") !== 0 ) {
 							htmlTag = 1;
 							magicInTag = 0;
@@ -4987,7 +5017,7 @@
 						break;
 					case '>':
 						htmlTag = 0;
-						// TODO: all <%= in tags should be added to pending hookups
+						// TODO: all `<%=` in tags should be added to pending hookups.
 						if ( magicInTag ) {
 							put(content, ",can.EJS.pending(),\">\"");
 							content = '';
@@ -4998,14 +5028,14 @@
 						break;
 					case "'":
 					case '"':
-						// if we are in an html tag, finding matching quotes
+						// If we are in an html tag, finding matching quotes.
 						if ( htmlTag ) {
-							// we have a quote and it matches
+							// We have a quote and it matches.
 							if ( quote && quote === token ) {
-								// we are exiting the quote
+								// We are exiting the quote.
 								quote = null;
-								// otherwise we are creating a quote
-								// TOOD: does this handle "\""
+								// Otherwise we are creating a quote.
+								// TODO: does this handle `\`?
 							} else if ( quote === null ) {
 								quote = token;
 								beforeQuote = lastToken;
@@ -5020,19 +5050,20 @@
 					}
 				}
 				else {
-					//we have a start tag
+					// We have a start tag.
 					switch ( token ) {
 					case '%>':
-						// %>
+						// `%>`
 						switch ( startTag ) {
 						case '<%':
-							// <%
-							// get the number of { minus }
+							// `<%`
+							// Get the number of `{ minus }`
 							bracketCount = bracketNum(content);
 
-							// we are ending a block
+							// We are ending a block.
 							if ( bracketCount == 1 ) {
-								// we are starting on
+
+								// We are starting on.
 								buff.push(insert_cmd, "can.EJS.txt('" + tagName + "'," + status() + ",this,function(){", startTxt, content);
 
 								endStack.push({
@@ -5042,51 +5073,51 @@
 							}
 							else {
 
-								// how are we ending this statement
-								var last = // if the stack has value and we are ending a block
-								endStack.length && bracketCount == -1 ? // use the last item in the block stack
-								endStack.pop() : // or use the default ending
+								// How are we ending this statement?
+								var last = // If the stack has value and we are ending a block...
+								endStack.length && bracketCount == -1 ? // Use the last item in the block stack.
+								endStack.pop() : // Or use the default ending.
 								{
 									after: ";"
 								};
 
-								// if we are ending a returning block
+								// If we are ending a returning block, 
 								// add the finish text which returns the result of the
-								// block 
+								// block.
 								if ( last.before ) {
 									buff.push(last.before)
 								}
-								// add the remaining content
+								// Add the remaining content.
 								buff.push(content, ";", last.after);
 							}
 							break;
 						case '<%=':
 						case '<%==':
-							// - we have an extra { -> block
-							// get the number of { minus } 
+							// We have an extra `{` -> `block`.
+							// Get the number of `{ minus }`.
 							bracketCount = bracketNum(content);
-							// if we have more {, it means there is a block
+							// If we have more `{`, it means there is a block.
 							if ( bracketCount ) {
-								// when we return to the same # of { vs } end wiht a doubleParen
+								// When we return to the same # of `{` vs `}` end with a `doubleParent`.
 								endStack.push({
 									before: finishTxt,
 									after: "}));"
 								})
 							}
-							// check if its a func like ()->
+							// Check if its a func like `()->`
 							if ( quickFunc.test(content) ) {
 								var parts = content.match(quickFunc)
 								content = "function(__){var " + parts[1] + "=can.$(__);" + parts[2] + "}"
 							}
 
-							// if we have <%== a(function(){ %> then we want
-							//  can.EJS.text(0,this, function(){ return a(function(){ var _v1ew = [];
+							// If we have `<%== a(function(){ %>` then we want
+							// `can.EJS.text(0,this, function(){ return a(function(){ var _v1ew = [];`.
 							buff.push(insert_cmd, "can.EJS." + (startTag === '<%=' ? "esc" : "txt") + "('" + tagName + "'," + status() + ",this,function(){ return ", content,
-							// if we have a block
+							// If we have a block.
 							bracketCount ?
-							// start w/ startTxt "var _v1ew = [];"
+							// Start with startTxt `"var _v1ew = [];"`.
 							startTxt :
-							// if not, add doubleParent to close push and text
+							// If not, add `doubleParent` to close push and text.
 							"}));");
 							break;
 						}
@@ -5105,9 +5136,9 @@
 				lastToken = token;
 			}
 
-			// put it together ..
+			// Put it together...
 			if ( content.length ) {
-				// Should be content.dump in Ruby
+				// Should be `content.dump` in Ruby.
 				put(content)
 			}
 			buff.push(";")
@@ -5115,7 +5146,7 @@
 				out = {
 					out: 'with(_VIEW) { with (_CONTEXT) {' + template + " " + finishTxt + "}}"
 				};
-			//use eval instead of creating a function, b/c it is easier to debug
+			// Use `eval` instead of creating a function, because it is easier to debug.
 			myEval.call(out, 'this.fn = (function(_CONTEXT,_VIEW){' + out.out + '});\r\n//@ sourceURL=' + name + ".js");
 			return out;
 		};
@@ -5171,7 +5202,7 @@
 		 * Renders a partial view.  This is deprecated in favor of <code>can.View()</code>.
 		 */
 		view: function( url, data, helpers ) {
-			return $View(url, data || this._data, helpers || this._extras); //new EJS(options).render(data, helpers);
+			return $View(url, data || this._data, helpers || this._extras);
 		},
 		list: function( list, cb ) {
 			list.attr('length')
@@ -5181,10 +5212,10 @@
 		}
 	};
 
-	// options for steal's build
+	// Options for `steal`'s build.
 	can.view.register({
 		suffix: "ejs",
-		//returns a function that renders the view
+		// returns a `function` that renders the view.
 		script: function( id, src ) {
 			return "can.EJS(function(_CONTEXT,_VIEW) { " + new EJS({
 				text: src,
