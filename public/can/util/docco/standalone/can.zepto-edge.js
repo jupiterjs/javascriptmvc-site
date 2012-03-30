@@ -174,6 +174,7 @@
 					type: event
 				}
 			}
+			event.target = event.target || obj;
 			event.data = args;
 			can.dispatch.call(obj, event)
 		}
