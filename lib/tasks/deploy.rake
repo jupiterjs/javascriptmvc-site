@@ -14,6 +14,29 @@ def echo(message)
 	puts
 end
 
+def copy(path)
+	Find.find(path) do |file|
+		basename = File.basename file
+		dirname = File.dirname file
+		extname = File.extname file
+
+		#TODO: Simplify the below logic.
+		if (File.directory?(file) && (/\.git/ =~ file).nil? || (/\.git/ =~ dirname).nil?) &&
+			(!ignored_extensions.include?(extname) && !ignored_files.include?(basename))
+				new_path = 'public/' + dirname.gsub(/donejs(\/)?/, '') + '/' + basename
+				new_path = new_path.gsub(/\/\//, '/')
+
+				puts new_path
+				if File.directory? file
+					FileUtils.rm_rf new_path
+					FileUtils.mkdir new_path
+				elsif
+					FileUtils.cp file, new_path
+				end
+		end
+	end
+end
+
 namespace :deploy do
 	task :update do
 		announce 'Pulling latest DoneJS-Site...'
@@ -23,9 +46,6 @@ namespace :deploy do
 		sh 'cd donejs && git checkout master && git pull origin master'
 
 		sh 'cd donejs && git submodule update --init --recursive'
-		#Nested submodule updates should be checked in to the corresponding project
-		#as opposed to the website.
-		#sh 'cd donejs && git submodule foreach git pull origin master'
 	end
 
 	task :build do
@@ -44,26 +64,11 @@ namespace :deploy do
 		ignored_extensions = []
 		ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
 
-		Find.find('donejs') do |file|
-			basename = File.basename file
-			dirname = File.dirname file
-			extname = File.extname file
-
-			#TODO: Simplify the below logic.
-			if (File.directory?(file) && (/\.git/ =~ file).nil? || (/\.git/ =~ dirname).nil?) &&
-				(!ignored_extensions.include?(extname) && !ignored_files.include?(basename))
-					new_path = 'public/' + dirname.gsub(/donejs(\/)?/, '') + '/' + basename
-					new_path = new_path.gsub(/\/\//, '/')
-
-					puts new_path
-					if File.directory? file
-						FileUtils.rm_rf new_path
-						FileUtils.mkdir new_path
-					elsif
-						FileUtils.cp file, new_path
-					end
-			end
-		end
+		copy 'donejs'
+		#copy 'player'
+		#copy 'contacts'
+		#copy 'todo'
+		#copy 'srchr'
 	end
 
 	task :commit_site do
