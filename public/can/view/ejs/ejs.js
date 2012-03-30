@@ -26,16 +26,49 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		bracketNum = function(content){
 			return (--content.split("{").length) - (--content.split("}").length);
 		},
+		setAttr = function(el, attrName, val){
+			attrName === "class"?
+				(el.className = val):
+				el.setAttribute(attrName, val);
+		},
+		getAttr = function(el, attrName){
+			return attrName === "class"?
+				el.className:
+				el.getAttribute(attrName);
+		},
 		// used to bind to an observe, and unbind when the element is removed
-		liveBind = function(observed, el, cb){
+		// oldObserved is a mapping of observe namespaces to instances
+		liveBind = function(observed, el, cb, oldObserved){
+			// we are going to set everything to matched that we find
+			var first = oldObserved.matched === undefined;
+			oldObserved.matched = !oldObserved.matched;
 			can.each(observed, function(i, ob){
-				ob.obj.bind(ob.attr, cb)
+				if(oldObserved[ob.obj._namespace+"|"+ob.attr]){
+					oldObserved[ob.obj._namespace+"|"+ob.attr].matched = oldObserved.matched;
+				} else {
+					ob.matched = oldObserved.matched;
+					oldObserved[ob.obj._namespace+"|"+ob.attr] = ob
+					ob.obj.bind(ob.attr, cb)
+				}
 			})
-			can.bind.call(el,'destroyed', function(){
-				can.each(observed, function(i, ob){
-					ob.obj.unbind(ob.attr, cb)
+			// remove any old bindings
+			for(var name in oldObserved){
+				var ob = oldObserved[name];
+				if(name !== "matched" && ob.matched !== oldObserved.matched){
+					ob.obj.unbind(ob.attr);
+					delete oldObserved[name];
+				}
+			}
+			if(first){
+				can.bind.call(el,'destroyed', function(){
+					can.each(oldObserved, function(i, ob){
+						if(typeof ob !== 'boolean'){
+							ob.obj.unbind(ob.attr, cb)
+						}
+					})
 				})
-			})
+			}
+
 		},
 		contentEscape = function( txt ) {
 			//return sanatized text
@@ -71,6 +104,28 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 			}
 			// finally, if all else false, toString it
 			return ""+input;
+		},
+		getValueAndObserved = function(func, self){
+			if (can.Observe) {
+				can.Observe.__reading = function(obj, attr){
+					observed.push({
+						obj: obj,
+						attr: attr
+					});
+				}
+			}
+			// get value
+			var observed = [],
+				input = func.call(self);
+	
+			// set back so we are no longer reading
+			if(can.Observe){
+				delete can.Observe.__reading;
+			}
+			return {
+				value : input,
+				observed : observed
+			}
 		},
 		/**
 		 * @class can.EJS
@@ -255,23 +310,13 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		 */
 		txt : function(tagName, status, self, func, escape){
 			// set callback on reading ...
-			if (can.Observe) {
-				can.Observe.__reading = function(obj, attr){
-					observed.push({
-						obj: obj,
-						attr: attr
-					});
-				}
-			}
-			// get value
-			var observed = [],
-				input = func.call(self),
+			var res = getValueAndObserved(func, self),
+				observed = res.observed,
+				input = res.value,
+				oldObserved = {},
 				tag = (tagMap[tagName] || "span");
 	
-			// set back so we are no longer reading
-			if(can.Observe){
-				delete can.Observe.__reading;
-			}
+
 
 			// if we had no observes
 			if(!observed.length){
@@ -286,19 +331,23 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 					function(el){
 						// remove child, bind on parent
 						var parent = el.parentNode,
-							node = document.createTextNode(input);
+							node = document.createTextNode(input),
+							binder = function(){
+								var res = getValueAndObserved(func, self);
+								node.nodeValue = ""+res.value;
+								liveBind(res.observed, parent, binder,oldObserved);
+							};
 						
 						parent.insertBefore(node, el);
 						parent.removeChild(el);
 						
 						// create textNode
-						liveBind(observed, parent, function(){
-							node.nodeValue = ""+func.call(self);
-						});
+						liveBind(observed, parent, binder,oldObserved);
 					}
 					:
 					function(span){
 						// remove child, bind on parent
+						
 						var makeAndPut = function(val, remove){
 								// get fragement of html to fragment
 								var frag = can.view.frag(val),
@@ -325,18 +374,22 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 						// make sure the parent does not die
 						// we might simply check that nodes is still in the document 
 						// before a write ...
-						liveBind(observed, span.parentNode, function(){
-							nodes = makeAndPut(func.call(self), nodes);
-						});
+						var binder = function(){
+							var res = getValueAndObserved(func, self);
+							nodes = makeAndPut(res.value, nodes);
+							
+							liveBind(res.observed, span.parentNode, binder ,oldObserved);
+						}
+						liveBind(observed, span.parentNode, binder ,oldObserved);
 						//return parent;
 				}) + "></" +tag+">";
 			} else if(status === 1){ // in a tag
 				// mark at end!
-				var attrName = func.call(self).replace(/['"]/g, '').split('=')[0];
+				var attrName = input.replace(/['"]/g, '').split('=')[0];
 				pendingHookups.push(function(el) {
-					liveBind(observed, el, function() {
-						var attr = func.call(self),
-							parts = (attr || "").replace(/['"]/g, '').split('='),
+					var binder = function() {
+						var res = getValueAndObserved(func, self),
+							parts = (res.value || "").replace(/['"]/g, '').split('='),
 							newAttrName = parts[0];
 						
 						// remove if we have a change and used to have an attrName
@@ -345,9 +398,12 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 						}
 						// set if we have a new attrName
 						if(newAttrName){
-							el.setAttribute(newAttrName, parts[1])
+							setAttr(el, newAttrName, parts[1])
 						}
-					});
+						liveBind(res.observed, el, binder,oldObserved);
+					}
+					
+					liveBind(observed, el, binder,oldObserved);
 				});
 
 				return input;
@@ -355,43 +411,58 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 				pendingHookups.push(function(el){
 					var wrapped = can.$(el),
 						hooks;
-						
+					
+					// get the list of hookups or create one for this element
+					// hooks is a map of attribute name to hookup data
+					// each hookup data has
+					//  - render - a function to render the value of the attribute
+					//  - funcs - a list of hookup functions on that attribute
+					//  - batchNum - the last event batchNum, used for performance	
 					(hooks = can.data(wrapped,'hooks')) || can.data(wrapped, 'hooks', hooks = {});
-					var attr = el.getAttribute(status),
+					
+					// get the attribute value
+					var attr = getAttr(el, status),
+						// split the attribute value by the template 
 						parts = attr.split("__!!__"),
-						hook;
+						hook,
+						binder = function(ev){
+							if(ev.batchNum === undefined || ev.batchNum !== hook.batchNum){
+								hook.batchNum = ev.batchNum;
+								setAttr(el, status, hook.render());
+							} 
+						};
 
+					// if we already had a hookup for this attribute
 					if(hooks[status]) {
-						hooks[status].funcs.push(func);
+						// just add to that attribute's list of functions
+						hooks[status].funcs.push({func: func, old: oldObserved});
 					}
 					else {
-
+						// create the hookup data
 						hooks[status] = {
 							render: function() {
 								var i =0,
 									newAttr = attr.replace(attributeReplace, function() {
-										return contentText( hook.funcs[i++].call(self) );
+										var ob = getValueAndObserved(hook.funcs[i].func, self);
+										liveBind(ob.observed, el, binder, hook.funcs[i++].old)
+										return contentText( ob.value );
 									});
 								return newAttr;
 							},
-							funcs: [func],
+							funcs: [{func: func, old: oldObserved}],
 							batchNum : undefined
 						};
-					}
+					};
+					//  getValueAndObserved(func, self)
+					// save the hook for slightly faster performance
 					hook = hooks[status];
-					
+					// insert the value in parts
 					parts.splice(1,0,input);
-					el.setAttribute(status, parts.join(""));
+					// set the attribute
+					setAttr(el, status, parts.join(""));
 					
-
-					liveBind(observed, el, function(ev) {
-						if(ev.batchNum === undefined || ev.batchNum !== hook.batchNum){
-							hook.batchNum = ev.batchNum;
-							el.setAttribute(status, hook.render());
-						} 
-						
-						
-					});
+					// bind on cha
+					liveBind(observed, el, binder,oldObserved);
 				})
 				return "__!!__";
 			}
@@ -491,7 +562,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 						// a new line, just add whatever content w/i a clean
 						// reset everything
 						startTag = token;
-						if ( content.length > 0 ) {
+						if ( content.length ) {
 							put(content);
 						}
 						content = '';
@@ -633,7 +704,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 			
 			// put it together ..
 			
-			if ( content.length > 0 ) {
+			if ( content.length ) {
 				// Should be content.dump in Ruby
 				put(content)
 			}
