@@ -7,3 +7,6 @@
 [submodule "examples/srchr"]
 	path = examples/srchr
 	url = git@github.com:jupiterjs/srchr.git
+[submodule "examples/player"]
+	path = examples/player
+	url = git@github.com:jupiterjs/canplay.git
