@@ -76,10 +76,9 @@ namespace :deploy do
 	end
 
 	task :commit_site do
-		announce 'Committing site/donejs changes...'
+		announce 'Committing site changes...'
 
-		sh 'cd donejs && git add . && git commit -am "Updating DoneJS with latest build. - Automated message from DoneJS-Site."'
-		sh 'cd donejs && git push git@github.com:jupiterjs/donejs.git master'
+		sh 'cd donejs && git checkout .'
 
 		sh 'git add . && git commit -am "Updating from source."'
 		sh 'git push git@github.com:jupiterjs/javascriptmvc-site.git donejs'
