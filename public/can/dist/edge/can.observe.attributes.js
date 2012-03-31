@@ -286,4 +286,4 @@ can.Observe.prototype.serialize = function(attrName){
 	return where;
 };
 
-})(can = {}, this )
+})(can, this )

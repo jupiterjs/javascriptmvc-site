@@ -234,4 +234,4 @@ can.Control.prototype.update = function( options ) {
 		this.on();
 };
 
-})(can = {}, this )
+})(can, this )
