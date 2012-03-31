@@ -2286,10 +2286,11 @@ can.dispatch = function(event){
 	 * 
 	 * To create an observable list, use `new can.Observe.List( ARRAY )` like:
 	 * 
-	 *     var hobbies = new can.Observe.List(['programming', 'basketball', 'nose picking'])
+	 *     var hobbies = new can.Observe.List(
+	 * 		 			['programming', 'basketball', 'nose picking'])
 	 * 
 	 * can.Observe.List inherits from [can.Observe], including it's 
-	 * [can.Observe::bind bind], [can.Observe::each], and [can.Observe.unbind] 
+	 * [can.Observe.prototype.bind bind], [can.Observe.prototype.each], and [can.Observe.prototype.unbind] 
 	 * methods.
 	 * 
 	 * can.Observe.List is inherited by [can.Model.List].
@@ -2695,7 +2696,8 @@ can.dispatch = function(event){
 		 *     
 		 *     l.bind('change', function( 
 		 *         ev,        // the change event
-		 *         attr,      // the attr that was changed, for multiple items, "*" is used 
+		 *         attr,      // the attr that was changed,
+		 *     			   // for multiple items, "*" is used 
 		 *         how,       // "add"
 		 *         newVals,   // an array of new values pushed
 		 *         oldVals,   // undefined
@@ -2712,7 +2714,7 @@ can.dispatch = function(event){
 		/**
 		 * @function unshift
 		 * Add items to the start of the list.  This is very similar to
-		 * [can.Observe.List::push].  Example:
+		 * [can.Observe.List::push can.Observe.prototype.List].  Example:
 		 * 
 		 *     var l = new can.Observe.List(["a","b"]);
 		 *     l.unshift(1,2,3) //-> 5
@@ -2765,7 +2767,8 @@ can.dispatch = function(event){
 		 * 
 		 *     l.bind('change', function( 
 		 *         ev,        // the change event
-		 *         attr,      // the attr that was changed, for multiple items, "*" is used 
+		 *         attr,      // the attr that was changed, 
+		 *     			   // for multiple items, "*" is used 
 		 *         how,       // "remove"
 		 *         newVals,   // undefined
 		 *         oldVals,   // 2
@@ -3889,6 +3892,35 @@ can.dispatch = function(event){
 	 * @class can.Model.List
 	 * @inherits can.Observe.List
 	 * @parent index
+	 *
+	 * Works exactly like [can.Observe.List] and has all of the same properties,
+	 * events, and functions as an observable list. The only difference is that 
+	 * when an item from the list is destroyed, it will automatically get removed
+	 * from the list.
+	 *
+	 * ## Creating a new Model List
+	 *
+	 * To create a new model list, just use `new {model_name}.List(ARRAY)` like:
+	 *
+	 *     var todo1 = new Todo( { name: "Do the dishes" } ),
+	 *         todo2 = new Todo( { name: "Wash floors" } )
+	 *     var todos = new Todo.List( [todo1, todo2] );
+	 *
+	 * ## Removing models from model list
+	 *
+	 * The advantage that `can.Model.List` has over a traditional `can.Observe.List`
+	 * is that when you destroy a model, if it is in that list, it will automatically
+	 * be removed from the list. 
+	 *
+	 *     // Listen for when something is removed from the todos list.
+	 *     todos.bind("remove", function( ev, oldVals, indx ) {
+	 *         console.log(oldVals[indx].attr("name") + " removed")
+	 *     })
+	 *
+	 *     todo1.destory(); // console shows "Do the dishes removed"
+	 })
+	 *
+	 *
 	 */
 	var ML = can.Observe.List('can.Model.List',{
 		setup : function(){
@@ -5548,6 +5580,7 @@ can.dispatch = function(event){
 		bracketNum = function(content){
 			return (--content.split("{").length) - (--content.split("}").length);
 		},
+		// Cross-browser attribute methods.
 		setAttr = function(el, attrName, val){
 			attrName === "class" ?
 				(el.className = val):
@@ -5558,22 +5591,33 @@ can.dispatch = function(event){
 				el.className:
 				el.getAttribute(attrName);
 		},
-		// Used to bind to an `observe` and unbind when the element is removed.
-		// `oldObserved` is a mapping of `observe` namespaces to instances.
+		// This is used to setup live binding on a list of observe/attribute
+		// pairs for a given element.
+		//  - observed - an array of observe/attribute
+		//  - el - the parent element, if removed, unbinds all observes
+		//  - cb - a callback function that gets called if any observe/attribute changes
+		//  - oldObserve - a mapping of observe/attributes already bound
 		liveBind = function( observed, el, cb, oldObserved ) {
-			// We are going to set everything to matched that we find.
+			// record if this is the first liveBind call for this magic tag
 			var first = oldObserved.matched === undefined;
+			// toggle the 'matched' indicator
 			oldObserved.matched = !oldObserved.matched;
+			
 			can.each(observed, function(i, ob){
+				// if the observe/attribute pair is being observed
 				if(oldObserved[ob.obj._namespace+"|"+ob.attr]){
+					// mark at as observed
 					oldObserved[ob.obj._namespace+"|"+ob.attr].matched = oldObserved.matched;
 				} else {
+					// otherwise, set the observe/attribute on oldObserved, marking it as being observed
 					ob.matched = oldObserved.matched;
 					oldObserved[ob.obj._namespace+"|"+ob.attr] = ob
+					// call `cb` when `attr` changes on the observe
 					ob.obj.bind(ob.attr, cb)
 				}
 			})
-			// Remove any old bindings.
+			// Iterate through oldObserved, looking for observe/attributes
+			// that are no longer being bound and unbind them
 			for ( var name in oldObserved ) {
 				var ob = oldObserved[name];
 				if(name !== "matched" && ob.matched !== oldObserved.matched){
@@ -5582,6 +5626,9 @@ can.dispatch = function(event){
 				}
 			}
 			if(first){
+				// If this is the first time binding, listen
+				// for the element to be destroyed and unbind
+				// all event handlers for garbage collection.
 				can.bind.call(el,'destroyed', function(){
 					can.each(oldObserved, function(i, ob){
 						if(typeof ob !== 'boolean'){
@@ -5592,12 +5639,13 @@ can.dispatch = function(event){
 			}
 
 		},
+		// Returns escaped/sanatized content for anything other than a live-binding
 		contentEscape = function( txt ) {
-			// Return sanatized text.
 			return (typeof txt == 'string' || typeof txt == 'number') ?
 				can.esc( txt ) :
 				contentText(txt);
 		},
+		// Returns text content for anything other than a live-binding 
 		contentText =  function( input ) {	
 			
 			// If it's a string, return.
@@ -5630,155 +5678,43 @@ can.dispatch = function(event){
 			// Finally, if all else is `false`, `toString()` it.
 			return "" + input;
 		},
+		// Returns the return value of a "wrapping" function and any
+		// observe attribute properties that were read.
+		// A wrapping function is the function that gets put around
+		// a magic tag.  For example, `<%= task.attr() %>` becomes
+		// `function(){ return task.attr() }`.  
 		getValueAndObserved = function(func, self){
+			// Set a callback on can.Observe to know
+			// when an attr is read.
 			if (can.Observe) {
 				can.Observe.__reading = function(obj, attr){
+					// Add the observe and attr that was read
+					// to `observed`
 					observed.push({
 						obj: obj,
 						attr: attr
 					});
 				}
 			}
-			// Get value.
+			
 			var observed = [],
-				input = func.call(self);
+				// Call the "wrapping" function to get the value. `observed`
+				// will have the observe/attribute pairs that were read.
+				value = func.call(self);
 	
 			// Set back so we are no longer reading.
 			if(can.Observe){
 				delete can.Observe.__reading;
 			}
 			return {
-				value : input,
+				value : value,
 				observed : observed
 			}
 		},
-		/**
-		 * @class can.EJS
-		 * 
-		 * @plugin can/view/ejs
-		 * @parent can.View
-		 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=can/view/ejs/ejs.js
-		 * @test can/view/ejs/qunit.html
-		 * 
-		 * 
-		 * Ejs provides <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">ERB</a> 
-		 * style client side templates.  Use them with controllers to easily build html and inject
-		 * it into the DOM.
-		 * 
-		 * ###  Example
-		 * 
-		 * The following generates a list of tasks:
-		 * 
-		 * @codestart html
-		 * &lt;ul>
-		 * &lt;% for(var i = 0; i < tasks.length; i++){ %>
-		 *     &lt;li class="task &lt;%= tasks[i].identity %>">&lt;%= tasks[i].name %>&lt;/li>
-		 * &lt;% } %>
-		 * &lt;/ul>
-		 * @codeend
-		 * 
-		 * For the following examples, we assume this view is in <i>'views\tasks\list.ejs'</i>.
-		 * 
-		 * 
-		 * ## Use
-		 * 
-		 * ### Loading and Rendering EJS:
-		 * 
-		 * You should use EJS through the helper functions [jQuery.View] provides such as:
-		 * 
-		 *   - [jQuery.fn.after after]
-		 *   - [jQuery.fn.append append]
-		 *   - [jQuery.fn.before before]
-		 *   - [jQuery.fn.html html], 
-		 *   - [jQuery.fn.prepend prepend],
-		 *   - [jQuery.fn.replaceWith replaceWith], and 
-		 *   - [jQuery.fn.text text].
-		 * 
-		 * or [Can.Control.prototype.view].
-		 * 
-		 * ### Syntax
-		 * 
-		 * EJS uses 5 types of tags:
-		 * 
-		 *   - <code>&lt;% CODE %&gt;</code> - Runs JS Code.
-		 *     For example:
-		 *     
-		 *         <% alert('hello world') %>
-		 *     
-		 *   - <code>&lt;%= CODE %&gt;</code> - Runs JS Code and writes the _escaped_ result into the result of the template.
-		 *     For example:
-		 *     
-		 *         <h1><%= 'hello world' %></h1>
-		 *         
-		 *   - <code>&lt;%== CODE %&gt;</code> - Runs JS Code and writes the _unescaped_ result into the result of the template.
-		 *     For example:
-		 *     
-		 *         <h1><%== '<span>hello world</span>' %></h1>
-		 *         
-		 *   - <code>&lt;%%= CODE %&gt;</code> - Writes <%= CODE %> to the result of the template.  This is very useful for generators.
-		 *     
-		 *         <%%= 'hello world' %>
-		 *         
-		 *   - <code>&lt;%# CODE %&gt;</code> - Used for comments.  This does nothing.
-		 *     
-		 *         <%# 'hello world' %>
-		 *        
-		 * ## Hooking up controllers
-		 * 
-		 * After drawing some html, you often want to add other widgets and plugins inside that html.
-		 * View makes this easy.  You just have to return the Contoller class you want to be hooked up.
-		 * 
-		 * @codestart
-		 * &lt;ul &lt;%= Mxui.Tabs%>>...&lt;ul>
-		 * @codeend
-		 * 
-		 * You can even hook up multiple controllers:
-		 * 
-		 * @codestart
-		 * &lt;ul &lt;%= [Mxui.Tabs, Mxui.Filler]%>>...&lt;ul>
-		 * @codeend
-		 * 
-		 * To hook up a controller with options or any other jQuery plugin use the
-		 * [can.EJS.Helpers.prototype.plugin | plugin view helper]:
-		 * 
-		 * @codestart
-		 * &lt;ul &lt;%= plugin('mxui_tabs', { option: 'value' }) %>>...&lt;ul>
-		 * @codeend
-		 * 
-		 * Don't add a semicolon when using view helpers.
-		 * 
-		 * 
-		 * <h2>View Helpers</h2>
-		 * View Helpers return html code.  View by default only comes with 
-		 * [can.EJS.Helpers.prototype.view view] and [can.EJS.Helpers.prototype.text text].
-		 * You can include more with the view/helpers plugin.  But, you can easily make your own!
-		 * Learn how in the [can.EJS.Helpers Helpers] page.
-		 * 
-		 * @constructor Creates a new view
-		 * @param {Object} options A hash with the following options
-		 * <table class="options">
-		 *     <tbody><tr><th>Option</th><th>Default</th><th>Description</th></tr>
-		 *     <tr>
-		 *      <td>text</td>
-		 *      <td>&nbsp;</td>
-		 *      <td>uses the provided text as the template. Example:<br/><code>new View({text: '&lt;%=user%>'})</code>
-		 *      </td>
-		 *     </tr>
-		 *     <tr>
-		 *      <td>type</td>
-		 *      <td>'<'</td>
-		 *      <td>type of magic tags.  Options are '&lt;' or '['
-		 *      </td>
-		 *     </tr>
-		 *     <tr>
-		 *      <td>name</td>
-		 *      <td>the element ID or url </td>
-		 *      <td>an optional name that is used for caching.
-		 *      </td>
-		 *     </tr>
-		 *    </tbody></table>
-		 */
+		// The EJS constructor function
 		EJS = function( options ) {
+			// Supports calling EJS without the constructor
+			// This returns a function that renders the template.
 			if ( this.constructor != EJS ) {
 				var ejs = new EJS(options);
 				return function( data, helpers ) {
@@ -5833,29 +5769,43 @@ can.dispatch = function(event){
 		 * @param {Object} self
 		 * @param {Object} func
 		 */
-		txt : function(tagName, status, self, func, escape){
-			// Set callback on reading...
+		// Called to return the content within a magic tag like `<%= %>`.
+		// - escape - if the content returned should be escaped
+		// - tagName - the tag name the magic tag is within or the one that proceeds the magic tag
+		// - status - where the tag is in.  The status can be:
+		//    - _STRING_ - The name of the attribute the magic tag is within
+		//    - `1` - The magic tag is within a tag like `<div <%= %>>`
+		//    - `0` - The magic tag is outside (or between) tags like `<div><%= %></div>`
+		// - self - the `this` the template was called with
+		// - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
+		//   `(function(){return task.attr('name')})
+		txt : function(escape, tagName, status, self, func){
+			// Get teh value returned by the wrapping function and any observe/attributes read.
 			var res = getValueAndObserved(func, self),
 				observed = res.observed,
-				input = res.value,
+				value = res.value,
+				// Contains the bindings this magic tag will make.  Used when 
+				// `func` might dynamically change what it is binding to.
 				oldObserved = {},
+				// The tag type to create within the parent tagName
 				tag = (tagMap[tagName] || "span");
 	
 
 
-			// If we had no observes.
+			// If we had no observes just return the value returned by func.
 			if(!observed.length){
-				return (escape || status !== 0? contentEscape : contentText)(input);
+				return (escape || status !== 0? contentEscape : contentText)(value);
 			}
-
+			// The magic tag is outside or between tags.
 			if(status == 0){
+				// Return an element tag with a hookup in place of the content
 				return "<" +tag+can.view.hook(
-				// Are we escaping?
 				escape ? 
+					// If we are escaping, replace the parentNode with 
+					// a text node who's value is `func`'s return value.
 					function(el){
-						// Remove child, bind on parent.
 						var parent = el.parentNode,
-							node = document.createTextNode(input),
+							node = document.createTextNode(value),
 							binder = function(){
 								var res = getValueAndObserved(func, self);
 								node.nodeValue = ""+res.value;
@@ -5864,17 +5814,17 @@ can.dispatch = function(event){
 						
 						parent.insertBefore(node, el);
 						parent.removeChild(el);
-						
-						// Create `textNode`.
 						liveBind(observed, parent, binder,oldObserved);
-					}
+					} 
 					:
+					// If we are not escaping, replace the parentNode with a
+					// documentFragment created as with `func`'s return value.
 					function(span){
-						// Remove child, bind on parent.
+						// A helper function to manage inserting the contents
+						// and removing the old contents
 						var makeAndPut = function(val, remove){
-								// Get `fragment` of html to `fragment`.
+							
 								var frag = can.view.frag(val),
-									// Wrap it to keep a reference to the elements...
 									nodes = can.map(frag.childNodes,function(node){
 										return node;
 									}),
@@ -5891,22 +5841,19 @@ can.dispatch = function(event){
 								can.remove( can.$(remove) );
 								return nodes;
 							},
-							nodes = makeAndPut(input, [span]);
-						// Listen to changes and update. 
-						// Make sure the parent does not die.
-						// We might simply check that nodes is still in the `document` 
-						// before a write...
+							nodes = makeAndPut(value, [span]);
+
 						var binder = function(){
 							var res = getValueAndObserved(func, self);
 							nodes = makeAndPut(res.value, nodes);
-							
 							liveBind(res.observed, span.parentNode, binder ,oldObserved);
 						}
 						liveBind(observed, span.parentNode, binder ,oldObserved);
 				}) + "></" +tag+">";
-			} else if(status === 1){ // In a tag.
-				// Mark at end!
-				var attrName = input.replace(/['"]/g, '').split('=')[0];
+			// In a tag, but not in an attribute
+			} else if(status === 1){ 
+				// remember the old attr name
+				var attrName = value.replace(/['"]/g, '').split('=')[0];
 				pendingHookups.push(function(el) {
 					var binder = function() {
 						var res = getValueAndObserved(func, self),
@@ -5919,7 +5866,8 @@ can.dispatch = function(event){
 						}
 						// Set if we have a new `attrName`.
 						if(newAttrName){
-							setAttr(el, newAttrName, parts[1])
+							setAttr(el, newAttrName, parts[1]);
+							attrName = newAttrName;
 						}
 						liveBind(res.observed, el, binder,oldObserved);
 					}
@@ -5927,7 +5875,7 @@ can.dispatch = function(event){
 					liveBind(observed, el, binder,oldObserved);
 				});
 
-				return input;
+				return value;
 			} else { // In an attribute...
 				pendingHookups.push(function(el){
 					var wrapped = can.$(el),
@@ -5979,7 +5927,7 @@ can.dispatch = function(event){
 					hook = hooks[status];
 
 					// Insert the value in parts.
-					parts.splice(1,0,input);
+					parts.splice(1,0,value);
 
 					// Set the attribute.
 					setAttr(el, status, parts.join(""));
@@ -5989,10 +5937,6 @@ can.dispatch = function(event){
 				})
 				return "__!!__";
 			}
-		},
-		// Called to setup escaped text.
-		esc : function(tagName, status, self, func){
-			return EJS.txt(tagName, status, self, func, true)
 		},
 		pending: function() {
 			if(pendingHookups.length) {
@@ -6068,6 +6012,8 @@ can.dispatch = function(event){
 				magicInTag = false,
 				// The current tag name.
 				tagName = '',
+				// stack of tagNames
+				tagNames = [],
 				// Declared here.
 				bracketCount,
 				i = 0,
@@ -6133,8 +6079,15 @@ can.dispatch = function(event){
 							}
 						}
 					default:
+						// Track the current tag
 						if(lastToken === '<'){
 							tagName = token.split(' ')[0];
+							// If 
+							if( tagName.indexOf("/") === 0 && tagNames.pop() === tagName.substr(1) ) {
+								tagName = tagNames[tagNames.length-1]|| tagName.substr(1)
+							} else {
+								tagNames.push(tagName);
+							}
 						}
 						content += token;
 						break;
@@ -6156,7 +6109,7 @@ can.dispatch = function(event){
 							if (bracketCount == 1) {
 
 								// We are starting on.
-								buff.push(insert_cmd, "can.EJS.txt('"+tagName+"'," + status() + ",this,function(){", startTxt, content);
+								buff.push(insert_cmd, "can.EJS.txt(0,'"+tagName+"'," + status() + ",this,function(){", startTxt, content);
 								
 								endStack.push({
 									before: "",
@@ -6204,7 +6157,7 @@ can.dispatch = function(event){
 							
 							// If we have `<%== a(function(){ %>` then we want
 							// `can.EJS.text(0,this, function(){ return a(function(){ var _v1ew = [];`.
-							buff.push(insert_cmd, "can.EJS."+(startTag === '<%=' ? "esc" : "txt")+"('"+tagName+"'," + status()+",this,function(){ return ", content, 
+							buff.push(insert_cmd, "can.EJS.txt("+(startTag === '<%=' ? 1 : 0)+",'"+tagName+"'," + status()+",this,function(){ return ", content, 
 								// If we have a block.
 								bracketCount ? 
 								// Start with startTxt `"var _v1ew = [];"`.
