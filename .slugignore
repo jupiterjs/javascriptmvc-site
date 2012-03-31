@@ -6,7 +6,6 @@
 ./donejs/mxui/.git
 ./donejs/steal/.git
 ./donejs
-./examples
 js
 js.bat
 funcunit/
