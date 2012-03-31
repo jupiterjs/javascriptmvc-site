@@ -1,1 +1,0 @@
-c({"name": "can.Control.static.setup", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.Control.static"], "comment": "<p>Setup pre-process which methods are event listeners.</p>", "hide": true, "src": "can/control/control.js", "line": 57, "children": []})
