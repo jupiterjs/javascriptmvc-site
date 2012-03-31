@@ -1,12 +1,6 @@
 @parent index
 @page migrate Migrating
 
-## Control
-
-## `this.find` was removed
-
-`this.find` was removed in favor of doing: `this.element.find`.
-
 ## Models
 
 ### No Conversion Necessary

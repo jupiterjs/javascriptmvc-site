@@ -108,10 +108,7 @@ function(){
 				}
 				return frag;
 			},
-			".name mouseenter" : function(el, ev){
-				if(ev.relatedTarget && ev.relatedTarget.nodeName === "INPUT") {
-					return;
-				}
+			".name click" : function(el, ev){
 				this.newEditInput(el)
 				ev.stopImmediatePropagation();
 				this.editing = this.getObserveAndName(el);
@@ -235,10 +232,7 @@ function(){
 				})
 				this.on();
 			},
-			".value mouseenter" : function(el, ev){
-				if(ev.relatedTarget && ev.relatedTarget.nodeName === "INPUT") {
-					return;
-				}
+			".value click" : function(el, ev){
 				this.newEditInput(el)
 
 				this.editing = this.getObserveAndName( el.prev().children().eq(0) );
@@ -274,6 +268,7 @@ function(){
 				ev.stopImmediatePropagation();
 			},
 			".end click" : function(el, ev){
+				console.log("observe ...")
 				//this.options.editOverInput && this.options.editOverInput.remove();
 				
 				
@@ -347,6 +342,11 @@ function(){
 		// draws an input element over some other element
 		EditOver = can.Control({
 			init : function(){
+				/*this.element.css({
+					padding: "0px",
+					margin: "0px",
+					border: "solid 1px gray"
+				})*/
 				this.element.addClass("edit-over")
 				this.element.val(this.options.el.text())
 				this.element.appendTo(document.body)
@@ -381,8 +381,8 @@ function(){
 				this.measure.appendTo(document.body)
 				this.measure.css({left: "0px", top: "-1000px"})
 			},
-			"mouseleave" : function(el, ev){
-				if(this.ready){
+			"{window} click" : function(el, ev){
+				if(this.ready && ev.target !== this.element[0]){
 					this.element.remove();
 				}
 			},
