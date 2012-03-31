@@ -2,7 +2,7 @@ steal('can/control', function(){
 	
 
 
-//used to determine if a controller instance is one of controllers
+//used to determine if a control instance is one of controllers
 //controllers can be strings or classes
 var i, 
 	isAControllerOf = function( instance, controllers ) {
@@ -14,29 +14,37 @@ var i,
 		return false;
 	},
 	data = function(el, data){
-		var $el = can.$(el);
-		$el.data("controllers", data || {})
-		return $el.data('controllers');
+		return $el.data('controls');
 	},
 	makeArray = can.makeArray,
 	old = can.Control.setup;
 
-
+/*
+ * static
+ */
 can.Control.setup = function() {
 	// if you didn't provide a name, or are control, don't do anything
 	if ( this !== can.Control ) {
+
 		/**
-		 * @hide
-		 * @attribute pluginName
-		 * Setting the <code>pluginName</code> property allows you
-		 * to change the jQuery plugin helper name from its 
-		 * default value.
+		 * @attribute can.Control.plugin.static.pluginName
+		 * @parent can.Control.plugin
+		 *
+		 * Setting the static `pluginName` property allows you to override the default name
+		 * with your own.
+		 *
+		 * 		var Filler = can.Control({
+		 * 			pluginName: 'fillWith'
+		 * 		},{});
 		 * 
-		 *     can.Control("Mxui.Layout.Fill",{
-		 *       pluginName: "fillWith"
-		 *     },{});
-		 *     
-		 *     $("#foo").fillWith();
+		 * 		$("#foo").fillWith();
+		 *
+		 * If you don't provide a `pluginName`, the control falls back to the
+		 * [can.Construct.fullName fullName] attribute:
+		 *
+		 * 		can.Control('Ui.Layout.FillWith', {}, {});
+		 * 		$("#foo").ui_layout_fill_with();
+		 *
 		 */
 		var pluginName = this.pluginName || this._fullName;
 			
@@ -49,195 +57,181 @@ can.Control.setup = function() {
 	}
 };
 
-/**
- * @hide
- * @attribute pluginName
- * Setting the <code>pluginName</code> property allows you
- * to change the jQuery plugin helper name from its 
- * default value.
- * 
- *     can.Control("Mxui.Layout.Fill",{
- *       pluginName: "fillWith"
- *     },{});
- *     
- *     $("#foo").fillWith();
+/*
+ * prototype
  */
 can.prototype.extend({
 
 	/**
-	 * @function jQuery.fn.controllers
+	 * @function can.Control.prototype.controls
 	 * @parent can.Control.plugin
-	 * Gets all controllers in the jQuery element.
-	 * @return {Array} an array of controller instances.
+	 * 
+	 * When the widget is initialized, the plugin control creates an array 
+	 * of control instance(s) with the DOM element it was initialized on using 
+	 * [can.data] method.
+	 *
+	 * The `controls` method allows you to get the control instance(s) for any element.  
+	 *
+	 * 		<div class="widgets my_box" />
+	 * 		<div class="widgets my_clock" />
+	 * 		$('.widgets').controls() //- will return: [ MyBox, MyClock ]
+	 *
+	 * Additionally, you can invoke it passing the name of a control
+	 * to fetch a specific instance(s).
+	 *
+	 * 		<div class="widgets my_box" />
+	 * 		<div class="widgets my_clock" />
+	 * 		$('.widgets').controls('MyBox') //- will return: [ MyBox ]
+	 *
+	 * @return {Array} an array of control instance(s).
 	 */
-	controllers: function() {
+	controls: function() {
 		var controllerNames = makeArray(arguments),
 			instances = [],
-			controllers, c, cname;
+			controls, c, cname;
 		//check if arguments
 		this.each(function() {
 
-			controllers = can.$(this).data("controllers");
-			for ( cname in controllers ) {
-				if ( controllers.hasOwnProperty(cname) ) {
-					c = controllers[cname];
-					if (!controllerNames.length || isAControllerOf(c, controllerNames) ) {
-						instances.push(c);
-					}
+			controls = can.$(this).data("controls");
+			if(!controls){
+				return;
+			}
+			for(var i=0; i<controls.length; i++){
+				c = controls[i];
+				if (!controllerNames.length || isAControllerOf(c, controllerNames) ) {
+					instances.push(c);
 				}
 			}
 		});
 		return instances;
 	},
+	
 	/**
-	 * @function jQuery.fn.controller
+	 * @function can.Control.prototype.control
 	 * @parent can.Control.plugin
-	 * Gets a controller in the jQuery element.  With no arguments, returns the first one found.
-	 * @param {Object} controller (optional) if exists, the first controller instance with this class type will be returned.
-	 * @return {jQuery.Controller} the first controller.
+	 * 
+	 * When the widget is initialized, the plugin control creates an array 
+	 * of the control instance with the DOM element it was initialized on using 
+	 * [can.data] method.
+	 *
+	 * The `control` method allows you to get the control instance for any element.  
+	 *
+	 * 		<div class="widgets my_box" />
+	 * 		$('.widgets').controls() //- will return: MyBox,
+	 *
+	 * Additionally, you can invoke it passing the name of a control
+	 * to fetch a specific instance.
+	 *
+	 * 		<div class="widgets my_box my_clock" />
+	 * 		$('.widgets').control('MyBox') //- will return: MyBox
+	 *
+	 * @param {Object} control (optional) if exists, the first control instance with this class type will be returned.
+	 * @return {can.Control} the first control.
 	 */
-	controller: function( controller ) {
-		return this.controllers.apply(this, arguments)[0];
+	control: function( control ) {
+		return this.controls.apply(this, arguments)[0];
 	}
 });
 
 can.Control.plugin = function(pluginname){
-	var controller = this;
+	var control = this;
 
 	if (!can.prototype[pluginname]) {
 		can.prototype[pluginname] = function(options){
 		
-			var args = makeArray(arguments),   //if the arg is a method on this controller
-			isMethod = typeof options == "string" && $.isFunction(controller.prototype[options]), meth = args[0];
+			var args = makeArray(arguments),   //if the arg is a method on this control
+			isMethod = typeof options == "string" && $.isFunction(control.prototype[options]), meth = args[0];
 			return this.each(function(){
 				//check if created
-				var controllers = data(this),    //plugin is actually the controller instance
-				plugin = controllers && controllers[pluginname];
+				var plugin = can.$(this).control(control);
 				
 				if (plugin) {
 					if (isMethod) {
-						// call a method on the controller with the remaining args
+						// call a method on the control with the remaining args
 						plugin[meth].apply(plugin, args.slice(1));
 					}
 					else {
 						// call the plugin's update method
 						plugin.update.apply(plugin, args);
 					}
-					
 				}
 				else {
-					//create a new controller instance
-					controllers[pluginname] = 
-						controller.newInstance.apply(controller, [this].concat(args));
+					//create a new control instance
+					control.newInstance.apply(control, [this].concat(args));
 				}
 			});
 		};
 	}
 }
 
-
-		/**
-		 * @function can.Control.prototype.update
-		 * @parent can.Control.plugin
-		 * Update extends [jQuery.Control.prototype.options this.options] 
-		 * with the `options` argument and rebinds all events.  It basically
-		 * re-configures the control.
-		 * 
-		 * For example, the following control wraps a recipe form. When the form
-		 * is submitted, it creates the recipe on the server.  When the recipe
-		 * is `created`, it resets the form with a new instance.
-		 * 
-		 *     can.Control('Creator',{
-		 *       "{recipe} created" : function(){
-		 *         this.update({recipe : new Recipe()});
-		 *         this.element[0].reset();
-		 *         this.find("[type=submit]").val("Create Recipe")
-		 *       },
-		 *       "submit" : function(el, ev){
-		 *         ev.preventDefault();
-		 *         var recipe = this.options.recipe;
-		 *         recipe.attrs( this.element.formParams() );
-		 *         this.find("[type=submit]").val("Saving...")
-		 *         recipe.save();
-		 *       }
-		 *     });
-		 *     $('#createRecipes').creator({recipe : new Recipe()})
-		 * 
-		 * 
-		 * @demo jquery/control/demo-update.html
-		 * 
-		 * Update is called if a control's [jquery.control.plugin jQuery helper] is 
-		 * called on an element that already has a control instance
-		 * of the same type. 
-		 * 
-		 * For example, a widget that listens for model updates
-		 * and updates it's html would look like.  
-		 * 
-		 *     can.Control('Updater',{
-		 *       // when the control is created, update the html
-		 *       init : function(){
-		 *         this.updateView();
-		 *       },
-		 *       
-		 *       // update the html with a template
-		 *       updateView : function(){
-		 *         this.element.html( "content.ejs",
-		 *                            this.options.model ); 
-		 *       },
-		 *       
-		 *       // if the model is updated
-		 *       "{model} updated" : function(){
-		 *         this.updateView();
-		 *       },
-		 *       update : function(options){
-		 *         // make sure you call super
-		 *         this._super(options);
-		 *          
-		 *         this.updateView();
-		 *       }
-		 *     })
-		 * 
-		 *     // create the control
-		 *     // this calls init
-		 *     $('#item').updater({model: recipe1});
-		 *     
-		 *     // later, update that model
-		 *     // this calls "{model} updated"
-		 *     recipe1.update({name: "something new"});
-		 *     
-		 *     // later, update the control with a new recipe
-		 *     // this calls update
-		 *     $('#item').updater({model: recipe2});
-		 *     
-		 *     // later, update the new model
-		 *     // this calls "{model} updated"
-		 *     recipe2.update({name: "something newer"});
-		 * 
-		 * _NOTE:_ If you overwrite `update`, you probably need to call
-		 * this._super.
-		 * 
-		 * ### Example
-		 * 
-		 *     can.Control("Thing",{
-		 *       init: function( el, options ) {
-		 *         alert( 'init:'+this.options.prop )
-		 *       },
-		 *       update: function( options ) {
-		 *         this._super(options);
-		 *         alert('update:'+this.options.prop)
-		 *       }
-		 *     });
-		 *     $('#myel').thing({prop : 'val1'}); // alerts init:val1
-		 *     $('#myel').thing({prop : 'val2'}); // alerts update:val2
-		 * 
-		 * @param {Object} options A list of options to merge with 
-		 * [jQuery.Control.prototype.options this.options].  Often, this method
-		 * is called by the [jquery.control.plugin jQuery helper function].
-		 */
+/**
+ * @function can.Control.prototype.update
+ * @parent can.Control.plugin
+ * 
+ * Update extends [can.Control.prototype.options options] 
+ * with the `options` argument and rebinds all events.  It 
+ * re-configures the control.
+ * 
+ * For example, the following control wraps a recipe form. When the form
+ * is submitted, it creates the recipe on the server.  When the recipe
+ * is `created`, it resets the form with a new instance.
+ * 
+ *		var Creator = can.Control({
+ *			"{recipe} created" : function(){
+ *				this.update({recipe : new Recipe()});
+ *				this.element[0].reset();
+ *				this.element.find("[type=submit]").val("Create Recipe")
+ *			},
+ *			"submit" : function(el, ev){
+ *				ev.preventDefault();
+ *				var recipe = this.options.recipe;
+ *				recipe.attrs( this.element.formParams() );
+ *				this.element.find("[type=submit]").val("Saving...")
+ *				recipe.save();
+ *			}
+ *		});
+ *
+ *		$('#createRecipes').creator({ recipe : new Recipe() })
+ * 
+ * *Update* is called if a control's plugin helper is called with the plugin options on an element
+ * that already has a control instance of the same type. If you want to implement your
+ * own update method make sure to call the old one either using the [can.Construct.super super] plugin or
+ * by calling `can.Control.prototype.update.apply(this, arguments);`.
+ * For example, you can change the content of the control element every time the options change:
+ * 
+ *		var Plugin = can.Control({
+ *				pluginName: 'myPlugin'
+ *			}, {
+ *			init : function(el, options) {
+ *				this.updateCount = 0;
+ *				this.update({
+ *					text : 'Initialized'
+ *				});
+ *			},
+ *			update : function(options) {
+ *				// Call the can.Control update first.
+ *				// Use this._super when using can/construct/super
+ *				can.Control.prototype.update.call(this, options);
+ *				this.element.html(this.options.text + ' ' +
+ *					(++this.updateCount) + ' times');
+ *			}
+ *		});
+ *
+ *		$('#control').myPlugin();
+ *		$('#control').html();
+ *		// Initialized. Updated 1 times
+ *
+ *		$('#control').myPlugin({ text : 'Calling update. Updated' });
+ *		$('#control').html();
+ *		// Calling update. Updated 2 times
+ * 
+ * @param {Object} options A list of options to merge with 
+ * [can.Control.prototype.options this.options].  Often, this method
+ * is called by the [can.Control.plugin jQuery helper function].
+ */
 can.Control.prototype.update = function( options ) {
-		extend(this.options, options);
+		can.extend(this.options, options);
 		this.on();
 };
-
 
 });

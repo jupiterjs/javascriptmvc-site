@@ -1,1 +1,1 @@
-c({"name": "static", "type": "static", "comment": "", "src": "can/view/ejs/ejs.js", "line": 211, "children": []})
+c({"name": "static", "type": "static", "comment": "", "src": "can/view/ejs/ejs.js", "line": 211, "children": ["static.txt"]})

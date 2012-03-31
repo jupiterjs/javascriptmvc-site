@@ -550,8 +550,8 @@
         };
 
     can.extend(can, {
-                // Escapes strings for HTML.
-        esc: function( content ) {
+        // Escapes strings for HTML.
+                esc: function( content ) {
             return ("" + content).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quote, '&#34;').replace(singleQuote, "&#39;");
         },
 
@@ -598,18 +598,18 @@
                 }
             }
         },
-                // Capitalizes a string.
-        capitalize: function( s, cache ) {
+        // Capitalizes a string.
+                capitalize: function( s, cache ) {
             // Used to make newId.
             return s.charAt(0).toUpperCase() + s.slice(1);
         },
 
-                // Underscores a string.
-        underscore: function( s ) {
+        // Underscores a string.
+                underscore: function( s ) {
             return s.replace(colons, '/').replace(words, '$1_$2').replace(lowUp, '$1_$2').replace(dash, '_').toLowerCase();
         },
-                // Micro-templating.
-        sub: function( str, data, remove ) {
+        // Micro-templating.
+                sub: function( str, data, remove ) {
 
             var obs = [];
 
@@ -678,10 +678,11 @@
         _inherit: function( newProps, oldProps, addTo ) {
             can.extend(addTo || newProps, newProps || {})
         },
-                // Set `defaults` as the merger of the parent `defaults` and this 
+
+        // Set `defaults` as the merger of the parent `defaults` and this 
         // object's `defaults`. If you overwrite this method, make sure to
         // include option merging logic.
-        setup: function( base, fullName ) {
+                setup: function( base, fullName ) {
             this.defaults = can.extend(true, {}, base.defaults, this.defaults);
         },
         // Create's a new `class` instance without initializing by setting the
@@ -698,8 +699,8 @@
 
             return inst;
         },
-                // Extends classes.
-        extend: function( fullName, klass, proto ) {
+        // Extends classes.
+                extend: function( fullName, klass, proto ) {
             // Figure out what was passed and normalize it.
             if ( typeof fullName != 'string' ) {
                 proto = klass;
@@ -788,8 +789,8 @@
             }
 
                         return Constructor;
-                        //break up
-                        //Breaks up code
+                        //  
+                        //  
                     }
 
     });
@@ -1129,11 +1130,11 @@
                     this.length = (+attr + 1)
                 }
             },
-                        // Returns the serialized form of this list.
-            serialize: function() {
+            // Returns the serialized form of this list.
+                        serialize: function() {
                 return serialize(this, 'serialize', []);
             },
-                        //
+                        //  
                         splice: function( index, howMany ) {
                 var args = can.makeArray(arguments),
                     i;
@@ -1272,8 +1273,8 @@
     // `can.Model`  
     // _A `can.Observe` that connects to a RESTful interface._
     //  
-        // Generic deferred piping function
-    var pipe = function( def, model, func ) {
+    // Generic deferred piping function
+        var pipe = function( def, model, func ) {
         var d = new can.Deferred();
         def.then(function() {
             arguments[0] = model[func](arguments[0])
@@ -1348,13 +1349,12 @@
             return deferred.then(success, error);
         },
 
-        
         // This object describes how to make an ajax request for each ajax method.  
         // The available properties are:
         //        `url` - The default url to use as indicated as a property on the model.
         //        `type` - The default http request type
         //        `data` - A method that takes the `arguments` and returns `data` used for ajax.
-        ajaxMethods = {
+                ajaxMethods = {
                         create: {
                 url: "_shortName",
                 type: "post"
@@ -1502,8 +1502,7 @@
             }
                         // 
                         // 
-                        // 
-        },
+                    },
                 {
                         isNew: function() {
                 var id = getId(this);
@@ -1566,11 +1565,7 @@
 
     // Model lists are just like `Observe.List` except that when their items are 
     // destroyed, it automatically gets removed from the list.
-         })
-     *
-     *
-     */
-    var ML = can.Observe.List('can.Model.List', {
+        var ML = can.Observe.List('can.Model.List', {
         setup: function() {
             can.Observe.List.prototype.setup.apply(this, arguments);
             // Send destroy events.
@@ -1748,6 +1743,7 @@
             return can.isEmptyObject(data) ? "" : "&" + can.param(data);
         },
                 deparam: function( url ) {
+            console.log('deparam', url)
             // See if the url matches any routes by testing it against the `route.test` `RegExp`.
             // By comparing the URL length the most specialized route that matches is used.
             var route = {
@@ -1832,7 +1828,7 @@
     // Deparameterizes the portion of the hash of interest and assign the
     // values to the `can.route.data` removing existing values no longer in the hash.
     setState = function() {
-        curParams = can.route.deparam(location.hash.split(/#!?/).pop());
+        curParams = can.route.deparam(location.hash.split(/#!?/).pop() || "");
         can.route.attr(curParams, true);
     };
 
@@ -1894,8 +1890,8 @@
 
         can.Construct("can.Control",
         {
-                // Setup pre-processes which methods are event listeners.
-        setup: function() {
+        // Setup pre-processes which methods are event listeners.
+                setup: function() {
 
             // Allow contollers to inherit "defaults" from super-classes as it 
             // done in `can.Construct`
@@ -1921,14 +1917,14 @@
                 }
             }
         },
-                // Return `true` if is an action.
-        _isAction: function( methodName ) {
+        // Return `true` if is an action.
+                _isAction: function( methodName ) {
             return !!(special[methodName] || processors[methodName] || /[^\w]/.test(methodName));
         },
-                // Takes a method name and the options passed to a control
+        // Takes a method name and the options passed to a control
         // and tries to return the data necessary to pass to a processor
         // (something that binds things).
-        _action: function( methodName, options ) {
+                _action: function( methodName, options ) {
 
             // If we don't have options (a `control` instance), we'll run this 
             // later.  
@@ -1955,19 +1951,21 @@
                 };
             }
         },
-                // An object of `{eventName : function}` pairs that Control uses to 
+        // An object of `{eventName : function}` pairs that Control uses to 
         // hook up events auto-magically.
-        processors: {},
-                // A object of name-value pairs that act as default values for a 
+                processors: {},
+        // A object of name-value pairs that act as default values for a 
         // control instance
-        defaults: {}
+                defaults: {}
     },
         {
-                // Where the magic happens.
-        setup: function( element, options ) {
+        // Sets `this.element`, saves the control in `data, binds event
+        // handlers.
+                setup: function( element, options ) {
 
             var cls = this.constructor,
-                pluginname = cls.pluginName || cls._fullName;
+                pluginname = cls.pluginName || cls._fullName,
+                arr;
 
             // Want the raw element here.
             this.element = can.$(element)
@@ -1977,16 +1975,17 @@
                 this.element.addClass(pluginname);
             }
 
-            (can.data(this.element, "controls")) || can.data(this.element, "controls", [this]);
+            (arr = can.data(this.element, "controls")) || can.data(this.element, "controls", arr = []);
+            arr.push(this);
 
-                        // Option merging.
-            this.options = extend({}, cls.defaults, options);
+            // Option merging.
+                        this.options = extend({}, cls.defaults, options);
 
             // Bind all event handlers.
             this.on();
 
-                        // Get's passed into `init`.
-            return [this.element, this.options];
+            // Get's passed into `init`.
+                        return [this.element, this.options];
         },
                 on: function( el, selector, eventName, func ) {
 
@@ -2036,8 +2035,8 @@
 
             return this._bindings.length;
         },
-                // Unbinds all event handlers on the controller.
-        off: function() {
+        // Unbinds all event handlers on the controller.
+                off: function() {
             var el = this.element[0]
             each(this._bindings || [], function( key, value ) {
                 value(el);
@@ -2045,9 +2044,8 @@
             // Adds bindings.
             this._bindings = [];
         },
-        
         // Prepares a `control` for garbage collection
-        destroy: function() {
+                destroy: function() {
             var Class = this.constructor,
                 pluginName = Class.pluginName || Class._fullName,
                 controls;
@@ -2567,7 +2565,7 @@
         return this.template.fn.call(object, object, new EJS.Helpers(object, extraHelpers || {}));
     };
         extend(EJS, {
-                // Called to return the content within a magic tag like `<%= %>`.
+        // Called to return the content within a magic tag like `<%= %>`.
         // - escape - if the content returned should be escaped
         // - tagName - the tag name the magic tag is within or the one that proceeds the magic tag
         // - status - where the tag is in.  The status can be:
@@ -2577,7 +2575,7 @@
         // - self - the `this` the template was called with
         // - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
         //   `(function(){return task.attr('name')})
-        txt: function( escape, tagName, status, self, func ) {
+                txt: function( escape, tagName, status, self, func ) {
             // Get teh value returned by the wrapping function and any observe/attributes read.
             var res = getValueAndObserved(func, self),
                 observed = res.observed,

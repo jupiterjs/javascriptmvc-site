@@ -1,0 +1,1 @@
+c({"name": "can.Model.static.updated", "type": "function", "parents": ["can.Model.static"], "comment": "<p>Called by save after an instance is updated.  Publishes 'updated'.</p>", "hide": true, "params": {"attrs": {"order": 0, "description": "", "name": "attrs", "type": "Object", "optional": false}}, "src": "can/model/model.js", "line": 1020, "children": []})

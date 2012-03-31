@@ -1126,6 +1126,7 @@ can.$ = Zepto
 		};
 
 		can.extend(can, {
+			// Escapes strings for HTML.
 			/**
 			 * @function can.esc
 			 * @parent can.util
@@ -1133,7 +1134,6 @@ can.$ = Zepto
 			 * 
 			 * can.esc( "<foo>&<bar>" ) //-> "&lt;foo&lt;&amp;&lt;bar&lt;"
 			 */
-			// Escapes strings for HTML.
 			esc : function( content ) {
 				return ( "" + content )
 					.replace(/&/g, '&amp;')
@@ -1204,6 +1204,7 @@ can.$ = Zepto
 					}
 				}
 			},
+			// Capitalizes a string.
 			/**
 			 * @function can.capitalize
 			 * @parent can.util
@@ -1214,12 +1215,12 @@ can.$ = Zepto
 			 * @param {String} s the string.
 			 * @return {String} a string with the first character capitalized.
 			 */
-			// Capitalizes a string.
 			capitalize: function( s, cache ) {
 				// Used to make newId.
 				return s.charAt(0).toUpperCase() + s.slice(1);
 			},
 			
+			// Underscores a string.
 			/**
 			 * @function can.underscore
 			 * @parent can.util
@@ -1231,7 +1232,6 @@ can.$ = Zepto
 			 * @param {String} s
 			 * @return {String} the underscored string
 			 */
-			// Underscores a string.
 			underscore: function( s ) {
 				return s
 					.replace(colons, '/')
@@ -1240,6 +1240,7 @@ can.$ = Zepto
 					.replace(dash, '_')
 					.toLowerCase();
 			},
+			// Micro-templating.
 			/**
 			 * @function can.sub
 			 * @parent can.util
@@ -1254,7 +1255,6 @@ can.$ = Zepto
 			 * objects can be used.
 			 * @param {Boolean} [remove] if a match is found, remove the property from the object
 			 */
-			// Micro-templating.
 			sub: function( str, data, remove ) {
 
 				var obs = [];
@@ -1359,6 +1359,10 @@ can.$ = Zepto
 		_inherit: function( newProps, oldProps, addTo ) {
 			can.extend(addTo || newProps, newProps || {})
 		},
+
+		// Set `defaults` as the merger of the parent `defaults` and this 
+		// object's `defaults`. If you overwrite this method, make sure to
+		// include option merging logic.
 		/**
 		 * Setup is called immediately after a constructor function is created and 
 		 * set to inherit from its base constructor.  It is called with a base constructor and
@@ -1408,9 +1412,6 @@ can.$ = Zepto
 		 * @param {Object} [staticProps] the static properties of the new constructor
 		 * @param {Object} [protoProps] the prototype properties of the new constructor
 		 */
-		// Set `defaults` as the merger of the parent `defaults` and this 
-		// object's `defaults`. If you overwrite this method, make sure to
-		// include option merging logic.
 		setup: function( base, fullName ) {
 			this.defaults = can.extend(true,{}, base.defaults, this.defaults);
 		},
@@ -1428,6 +1429,7 @@ can.$ = Zepto
 
 			return inst;
 		},
+		// Extends classes.
 		/**
 		 * @hide
 		 * Extends a class with new static and prototype functions.  There are a variety of ways
@@ -1456,7 +1458,6 @@ can.$ = Zepto
 		 * 
 		 * @return {can.Construct} returns the new class
 		 */
-		// Extends classes.
 		extend: function( fullName, klass, proto ) {
 			// Figure out what was passed and normalize it.
 			if ( typeof fullName != 'string' ) {
@@ -1631,7 +1632,7 @@ can.$ = Zepto
 			 * @return {Array|undefined} If an array is return, [can.Construct.prototype.init] is 
 			 * called with those arguments; otherwise, the original arguments are used.
 			 */
-			//break up
+			//  
 			/** 
 			 * @function init
 			 * 
@@ -1681,7 +1682,7 @@ can.$ = Zepto
 			 * It doesn't matter what init returns because the `new` keyword always
 			 * returns the new object.
 			 */
-			//Breaks up code
+			//  
 			/**
 			 * @attribute constructor
 			 * 
@@ -2524,11 +2525,11 @@ can.$ = Zepto
 				this.length = (+attr+1)
 			}
 		},
+		// Returns the serialized form of this list.
 		/**
 		 * @hide
 		 * Returns the serialized form of this list.
 		 */
-		// Returns the serialized form of this list.
 		serialize: function() {
 			return serialize(this, 'serialize', []);
 		},
@@ -2558,7 +2559,7 @@ can.$ = Zepto
 		 * 
 		 * @return {can.Observe.List} the original observable.
 		 */
-		//
+		//  
 		/**
 		 * `splice(index, [ howMany, elements... ] )` remove or add items 
 		 * from a specific point in the list.
@@ -2928,10 +2929,10 @@ can.$ = Zepto
 	// `can.Model`  
 	// _A `can.Observe` that connects to a RESTful interface._
 	//  
+	// Generic deferred piping function
 	/**
 	 * @add can.Model
 	 */
-	// Generic deferred piping function
 	var	pipe = function( def, model, func ) {
 		var d = new can.Deferred();
 		def.then(function(){
@@ -3011,15 +3012,14 @@ can.$ = Zepto
 			return deferred.then(success,error);
 		},
 	
-	/** 
-	 * @Static
-	 */
-	
 	// This object describes how to make an ajax request for each ajax method.  
 	// The available properties are:
 	//		`url` - The default url to use as indicated as a property on the model.
 	//		`type` - The default http request type
 	//		`data` - A method that takes the `arguments` and returns `data` used for ajax.
+	/** 
+	 * @Static
+	 */
 	ajaxMethods = {
 		/**
 		 * @function create
@@ -3086,13 +3086,13 @@ can.$ = Zepto
 		 * 
 		 *     Recipe = can.Model({
 		 *       update: "/recipes/{id}"
-		 *     },{})
+		 *     },{});
 		 *     
 		 * This lets you update a recipe like:
 		 *  
 		 *     Recipe.findOne({id: 1}, function(recipe){
-		 * 	      recipe.attr('name','salad')
-		 *        recipe.save()
+		 *       recipe.attr('name','salad');
+		 *       recipe.save();
 		 *     })
 		 * 
 		 * This will make an XHR request like:
@@ -3104,7 +3104,7 @@ can.$ = Zepto
 		 * 
 		 *     $.Model("Recipe",{
 		 *       update: "POST /recipes/{id}"
-		 *     },{})
+		 *     },{});
 		 * 
 		 * The server should send back an object with any new attributes the model 
 		 * should have.  For example if your server udpates the "updatedAt" property, it
@@ -3136,7 +3136,7 @@ can.$ = Zepto
 		 *       update : function(id, attrs ) {
 		 *         return $.post("/recipes/"+id+".json",attrs, null,"json");
 		 *       }
-		 *     },{})
+		 *     },{});
 		 * 
 		 * 
 		 * @param {String} id the id of the model instance
@@ -3234,8 +3234,8 @@ can.$ = Zepto
 		 * `can.ajax` (jQuery.ajax) like:
 		 * 
 		 *     Recipe = can.Model({
-		 * 	     findAll : {
-		 * 	       url: "/recipes.xml",
+		 *       findAll : {
+		 *         url: "/recipes.xml",
 		 *         dataType: "xml"
 		 *       }
 		 *     },{})
@@ -3261,9 +3261,9 @@ can.$ = Zepto
 		 * like:
 		 * 
 		 *     Recipe.findAll({favorite: true}, function(recipes){
-		 * 	     recipes[0].attr('name') //-> "Ice Water"
+		 *       recipes[0].attr('name') //-> "Ice Water"
 		 *     }, function( xhr ){
-		 * 	     // called if an error
+		 *       // called if an error
 		 *     }) //-> Deferred
 		 * 
 		 * The following API details the use of `findAll`.
@@ -3323,7 +3323,7 @@ can.$ = Zepto
 		 * `can.ajax` (jQuery.ajax) like:
 		 * 
 		 *     Recipe = can.Model({
-		 *       findAll : {
+		 *       findOne : {
 		 *         url: "/recipes/{id}.xml",
 		 *         dataType: "xml"
 		 *       }
@@ -3336,7 +3336,7 @@ can.$ = Zepto
 		 * deferred that resolves to the model data. For example:
 		 * 
 		 *     Recipe = can.Model({
-		 *       findAll : function(params){
+		 *       findOne : function(params){
 		 *         return $.ajax({
 		 *           url: '/recipes/{id}.json',
 		 *           type: 'get',
@@ -3468,7 +3468,7 @@ can.$ = Zepto
 		 * 
 		 *     Task = can.Model({},{})
 		 *     var tasks = Task.models([
-		 * 	     {id: 1, name : "dishes", complete : false},
+		 *       {id: 1, name : "dishes", complete : false},
 		 *       {id: 2, name: "laundry", compelte: true}
 		 *     ])
 		 *     
@@ -3521,7 +3521,7 @@ can.$ = Zepto
 		 * 
 		 * Or an Object with a data property and other expando properties like:
 		 * 
-		 * 	   {
+		 *     {
 		 *       count: 15000 //how many total items there might be
 		 *       data: [{id: 1, name : "justin"},{id:2, name: "brian"}, ...]
 		 *     }
@@ -3705,7 +3705,6 @@ can.$ = Zepto
 		 *       id: "Id"
 		 *     },{});
 		 */
-		// 
 	},
 	/**
 	 * @prototype
@@ -3972,43 +3971,78 @@ can.$ = Zepto
 			can.trigger(constructor,funcName, this);
 		};
 	});
-	
-	// Model lists are just like `Observe.List` except that when their items are 
-	// destroyed, it automatically gets removed from the list.
-	/**
-	 * @class can.Model.List
-	 * @inherits can.Observe.List
-	 * @parent index
-	 *
-	 * Works exactly like [can.Observe.List] and has all of the same properties,
-	 * events, and functions as an observable list. The only difference is that 
-	 * when an item from the list is destroyed, it will automatically get removed
-	 * from the list.
-	 *
-	 * ## Creating a new Model List
-	 *
-	 * To create a new model list, just use `new {model_name}.List(ARRAY)` like:
-	 *
-	 *     var todo1 = new Todo( { name: "Do the dishes" } ),
-	 *         todo2 = new Todo( { name: "Wash floors" } )
-	 *     var todos = new Todo.List( [todo1, todo2] );
-	 *
-	 * ## Removing models from model list
-	 *
-	 * The advantage that `can.Model.List` has over a traditional `can.Observe.List`
-	 * is that when you destroy a model, if it is in that list, it will automatically
-	 * be removed from the list. 
-	 *
-	 *     // Listen for when something is removed from the todos list.
-	 *     todos.bind("remove", function( ev, oldVals, indx ) {
-	 *         console.log(oldVals[indx].attr("name") + " removed")
-	 *     })
-	 *
-	 *     todo1.destory(); // console shows "Do the dishes removed"
-	 })
-	 *
-	 *
-	 */
+  
+  // Model lists are just like `Observe.List` except that when their items are 
+  // destroyed, it automatically gets removed from the list.
+  /**
+   * @class can.Model.List
+   * @inherits can.Observe.List
+   * @parent index
+   *
+   * Works exactly like [can.Observe.List] and has all of the same properties,
+   * events, and functions as an observable list. The only difference is that 
+   * when an item from the list is destroyed, it will automatically get removed
+   * from the list.
+   *
+   * ## Creating a new Model List
+   *
+   * To create a new model list, just use `new {model_name}.List(ARRAY)` like:
+   *
+   *     var todo1 = new Todo( { name: "Do the dishes" } ),
+   *         todo2 = new Todo( { name: "Wash floors" } )
+   *     var todos = new Todo.List( [todo1, todo2] );
+   *
+   * ### Model Lists in `can.Model`
+   * In addition to creating new lists, it is possible to call 
+   * [can.Model.static.findAll can.Model.findAll] or [can.Model.models] to return
+   * a `can.Model.List` object.
+   *
+   *     var todos = Todo.models([
+   *         new Todo( { name: "Do the dishes" } ),
+   *         new Todo( { name: "Wash floors" } )
+   *     ])
+   *     
+   *     todos.constructor // -> can.Model.List
+   *
+   *     Todo.findAll({}, function(todos) {
+   *         todos.constructor // -> can.Model.List
+   *     })
+   *
+   * ### Extending `can.Model.List`
+   *
+   * Creating custom `can.Model.Lists` allows you to extend lists with helper
+   * functions for a list of a specific type. So, if there was a need to get a
+   * random todo item, something could be written like
+   *
+   *     can.Model.List('Todo.List', {
+   *         random: function() {
+   *             // return a random todo from the list.
+   *         }
+   *     })
+   *
+   *     var list = new Todo.List([
+   *         new Todo( { name: "Do the dishes" } ),
+   *         new Todo( { name: "Wash floors" } )
+   *     ]);
+   *
+   *     list.random() // -> random todo
+   *
+   *
+   * ## Removing models from model list
+   *
+   * The advantage that `can.Model.List` has over a traditional `can.Observe.List`
+   * is that when you destroy a model, if it is in that list, it will automatically
+   * be removed from the list. 
+   *
+   *     // Listen for when something is removed from the todos list.
+   *     todos.bind("remove", function( ev, oldVals, indx ) {
+   *         console.log(oldVals[indx].attr("name") + " removed")
+   *     })
+   *
+   *     todo1.destory(); // console shows "Do the dishes removed"
+   *
+   *
+   */
 	var ML = can.Observe.List('can.Model.List',{
 		setup : function(){
 			can.Observe.List.prototype.setup.apply(this, arguments );
@@ -4162,24 +4196,24 @@ can.$ = Zepto
 	extend(can.route, {
 		/**
 		 * @function can.route.param
-     * @parent can.route
+		 * @parent can.route
 		 * Parameterizes the raw JS object representation provided in data.
-     *
-     *     can.route.param( { type: "video", id: 5 } ) 
-     *          // -> "type=video&id=5"
-     *
-     * If a route matching the provided data is found, that URL is built
-     * from the data. Any remaining data is added at the end of the
-     * URL as &amp; separated key/value parameters.
-     *
-     *     can.route(":type/:id")
-     *     
-     *     can.route.param( { type: "video", id: 5 } ) // -> "video/5"
-     *     can.route.param( { type: "video", id: 5, isNew: false } ) 
-     *          // -> "video/5&isNew=false"
+		 *
+		 *     can.route.param( { type: "video", id: 5 } ) 
+		 *          // -> "type=video&id=5"
+		 *
+		 * If a route matching the provided data is found, that URL is built
+		 * from the data. Any remaining data is added at the end of the
+		 * URL as &amp; separated key/value parameters.
+		 *
+		 *     can.route(":type/:id")
+		 *     
+		 *     can.route.param( { type: "video", id: 5 } ) // -> "video/5"
+		 *     can.route.param( { type: "video", id: 5, isNew: false } ) 
+		 *          // -> "video/5&isNew=false"
 		 * 
 		 * @param {Object} data Data object containing key/value properies to be parameterized
-     * @return {String} The route URL and &amp; separated parameters.
+		 * @return {String} The route URL and &amp; separated parameters.
 		 */
 		param: function( data ) {
 			delete data.route;
@@ -4208,7 +4242,7 @@ can.$ = Zepto
 				var cpy = extend({}, data),
                     // Create the url by replacing the var names with the provided data.
                     // If the default value is found an empty string is inserted.
-				    res = route.route.replace(matcher, function( whole, name ) {
+					res = route.route.replace(matcher, function( whole, name ) {
                         delete cpy[name];
                         return data[name] === route.defaults[name] ? "" : encodeURIComponent( data[name] );
                     }),
@@ -4222,7 +4256,7 @@ can.$ = Zepto
 					
 					// The remaining elements of data are added as 
 					// `&amp;` separated parameters to the url.
-				    after = can.param(cpy);
+					after = can.param(cpy);
 				return res + (after ? "&" + after : "")
 			}
             // If no route was found, there is no hash URL, only paramters.
@@ -4230,37 +4264,38 @@ can.$ = Zepto
 		},
 		/**
 		 * @function can.route.deparam
-     * @parent can.route
+		 * @parent can.route
 		 * 
-     * Creates a data object based on the query string passed into it. This is 
-     * useful to create an object based on the `location.hash`.
-     *
-     *     can.route.deparam("id=5&type=videos") 
-     *          // -> { id: 5, type: "videos" }
-     *
+		 * Creates a data object based on the query string passed into it. This is 
+		 * useful to create an object based on the `location.hash`.
+		 *
+		 *     can.route.deparam("id=5&type=videos") 
+		 *          // -> { id: 5, type: "videos" }
+		 *
 		 * 
-     * It's important to make sure the hash or exclamantion point is not passed
-     * to `can.route.deparam` otherwise it will be included in the first property's
-     * name.
-     *
-     *     can.route.attr("id", 5) // location.hash -> #!id=5
-     *     can.route.attr("type", "videos") 
-     *          // location.hash -> #!id=5&type=videos
-     *     can.route.deparam(location.hash) 
-     *          // -> { #!id: 5, type: "videos" }
-     *
-     * `can.route.deparam` will try and find a matching route and, if it does,
-     * will deconstruct the URL and parse our the key/value parameters into the data object.
-     *
-     *     can.route(":type/:id")
-     *
-     *     can.route.deparam("videos/5");
-     *          // -> { id: 5, route: ":type/:id", type: "videos" }
-     *
+		 * It's important to make sure the hash or exclamantion point is not passed
+		 * to `can.route.deparam` otherwise it will be included in the first property's
+		 * name.
+		 *
+		 *     can.route.attr("id", 5) // location.hash -> #!id=5
+		 *     can.route.attr("type", "videos") 
+		 *          // location.hash -> #!id=5&type=videos
+		 *     can.route.deparam(location.hash) 
+		 *          // -> { #!id: 5, type: "videos" }
+		 *
+		 * `can.route.deparam` will try and find a matching route and, if it does,
+		 * will deconstruct the URL and parse our the key/value parameters into the data object.
+		 *
+		 *     can.route(":type/:id")
+		 *
+		 *     can.route.deparam("videos/5");
+		 *          // -> { id: 5, route: ":type/:id", type: "videos" }
+		 *
 		 * @param {String} url Query string to be turned into an object.
-     * @return {Object} Data object containing properties and values from the string
+		 * @return {Object} Data object containing properties and values from the string
 		 */
 		deparam: function( url ) {
+			console.log('deparam', url)
 			// See if the url matches any routes by testing it against the `route.test` `RegExp`.
             // By comparing the URL length the most specialized route that matches is used.
 			var route = {
@@ -4314,7 +4349,7 @@ can.$ = Zepto
          * A list of routes recognized by the router indixed by the url used to add it.
          * Each route is an object with these members:
          * 
- 		 *  - test - A regular expression that will match the route when variable values 
+		 *  - test - A regular expression that will match the route when variable values 
          *    are present; i.e. for :page/:type the `RegExp` is /([\w\.]*)/([\w\.]*)/ which
          *    will match for any value of :page and :type (word chars or period).
 		 * 
@@ -4355,22 +4390,22 @@ can.$ = Zepto
 		 * @function can.route.url
 		 * @parent can.route
 		 * 
-     * Similar to [can.route.link], but instead of creating an anchor tag, `can.route.url` creates 
-     * only the URL based on the route options passed into it.
-     *
-     *     can.route.url( { type: "videos", id: 5 } ) 
-     *          // -> "#!type=videos&id=5"
-     *
-     * If a route matching the provided data is found the URL is built from the data. Any remaining
-     * data is added at the end of the URL as & separated key/value parameters.
-     *
-     *     can.route(":type/:id")
-     *
-     *     can.route.url( { type: "videos", id: 5 } ) // -> "#!videos/5"
-     *     can.route.url( { type: "video", id: 5, isNew: false } ) 
-     *          // -> "#!video/5&isNew=false"
-     *
-     *
+		 * Similar to [can.route.link], but instead of creating an anchor tag, `can.route.url` creates 
+		 * only the URL based on the route options passed into it.
+		 *
+		 *     can.route.url( { type: "videos", id: 5 } ) 
+		 *          // -> "#!type=videos&id=5"
+		 *
+		 * If a route matching the provided data is found the URL is built from the data. Any remaining
+		 * data is added at the end of the URL as & separated key/value parameters.
+		 *
+		 *     can.route(":type/:id")
+		 *
+		 *     can.route.url( { type: "videos", id: 5 } ) // -> "#!videos/5"
+		 *     can.route.url( { type: "video", id: 5, isNew: false } ) 
+		 *          // -> "#!video/5&isNew=false"
+		 *
+		 *
 		 * @param {Object} options The route options (variables)
 		 * @param {Boolean} merge true if the options should be merged with the current options
 		 * @return {String} The route URL & separated parameters
@@ -4386,38 +4421,38 @@ can.$ = Zepto
 		 * @parent can.route
 		 * 
 		 * Creates and returns an anchor tag with an href of the route 
-     * attributes passed into it, as well as any properies desired
-     * for the tag.
-     *
-     *     can.route.link( "My videos", { type: "videos" }, {}, false )
-     *          // -> <a href="#!type=videos">My videos</a>
+		 * attributes passed into it, as well as any properies desired
+		 * for the tag.
+		 *
+		 *     can.route.link( "My videos", { type: "videos" }, {}, false )
+		 *          // -> <a href="#!type=videos">My videos</a>
 		 * 
-     * Other attributes besides href can be added to the anchor tag
-     * by passing in a data object with the attributes desired.
-     *
-     *     can.route.link( "My videos", { type: "videos" }, 
-     *       { className: "new" }, false ) 
-     *          // -> <a href="#!type=videos" class="new">My Videos</a>
-     *
-     * It is possible to utilize the current route options when making anchor
-     * tags in order to make your code more reusable. If merge is set to true,
-     * the route options passed into `can.route.link` will be passed into the
-     * current ones.
-     *
-     *     location.hash = "#!type=videos" 
-     *     can.route.link( "The zoo", { id: 5 }, true )
-     *          // -> <a href="#!type=videos&id=5">The zoo</true>
-     *
-     *     location.hash = "#!type=pictures" 
-     *     can.route.link( "The zoo", { id: 5 }, true )
-     *          // -> <a href="#!type=pictures&id=5">The zoo</true>
-     *
-     *
+		 * Other attributes besides href can be added to the anchor tag
+		 * by passing in a data object with the attributes desired.
+		 *
+		 *     can.route.link( "My videos", { type: "videos" }, 
+		 *       { className: "new" }, false ) 
+		 *          // -> <a href="#!type=videos" class="new">My Videos</a>
+		 *
+		 * It is possible to utilize the current route options when making anchor
+		 * tags in order to make your code more reusable. If merge is set to true,
+		 * the route options passed into `can.route.link` will be passed into the
+		 * current ones.
+		 *
+		 *     location.hash = "#!type=videos" 
+		 *     can.route.link( "The zoo", { id: 5 }, true )
+		 *          // -> <a href="#!type=videos&id=5">The zoo</true>
+		 *
+		 *     location.hash = "#!type=pictures" 
+		 *     can.route.link( "The zoo", { id: 5 }, true )
+		 *          // -> <a href="#!type=pictures&id=5">The zoo</true>
+		 *
+		 *
 		 * @param {Object} name The text of the link.
 		 * @param {Object} options The route options (variables)
 		 * @param {Object} props Properties of the &lt;a&gt; other than href.
-     * @param {Boolean} merge true if the options should be merged with the current options
-     * @return {string} String containing the formatted &lt;a&gt; HTML element
+		 * @param {Boolean} merge true if the options should be merged with the current options
+		 * @return {string} String containing the formatted &lt;a&gt; HTML element
 		 */
 		link: function( name, options, props, merge ) {
 			return "<a " + makeProps(
@@ -4429,19 +4464,19 @@ can.$ = Zepto
 		 * @function can.route.current
 		 * @parent can.route
 		 * 
-     * Checks the page's current URL to see if the route represents the options passed 
-     * into the function.
-     *
-     * Returns true if the options respresent the current URL.
-     * 
-     *     can.route.attr('id', 5) // location.hash -> "#!id=5"
-     *     can.route.current({ id: 5 }) // -> true
-     *     can.route.current({ id: 5, type: 'videos' }) // -> false
-     *     
-     *     can.route.attr('type', 'videos') 
-     *            // location.hash -> #!id=5&type=videos
-     *     can.route.current({ id: 5, type: 'videos' }) // -> true
-     * 
+		 * Checks the page's current URL to see if the route represents the options passed 
+		 * into the function.
+		 *
+		 * Returns true if the options respresent the current URL.
+		 * 
+		 *     can.route.attr('id', 5) // location.hash -> "#!id=5"
+		 *     can.route.current({ id: 5 }) // -> true
+		 *     can.route.current({ id: 5, type: 'videos' }) // -> false
+		 *     
+		 *     can.route.attr('type', 'videos') 
+		 *            // location.hash -> #!id=5&type=videos
+		 *     can.route.current({ id: 5, type: 'videos' }) // -> true
+		 * 
 		 * 
 		 * @param {Object} options Data object containing properties and values that might represent the route.
          * @return {Boolean} Whether or not the options match the current URL.
@@ -4468,7 +4503,7 @@ can.$ = Zepto
         // Deparameterizes the portion of the hash of interest and assign the
         // values to the `can.route.data` removing existing values no longer in the hash.
         setState = function() {
-			curParams = can.route.deparam( location.hash.split(/#!?/).pop() );
+			curParams = can.route.deparam( location.hash.split(/#!?/).pop() || "" );
 			can.route.attr(curParams, true);
 		};
 
@@ -4541,13 +4576,13 @@ can.$ = Zepto
 	 * @Static
 	 */
 	{
+		// Setup pre-processes which methods are event listeners.
 		/**
 		 * @hide
 		 * 
 		 * Setup pre-process which methods are event listeners.
 		 * 
 		 */
-		// Setup pre-processes which methods are event listeners.
 		setup: function() {
 
 			// Allow contollers to inherit "defaults" from super-classes as it 
@@ -4574,15 +4609,18 @@ can.$ = Zepto
 				}
 			}
 		},
+		// Return `true` if is an action.
 		/**
 		 * @hide
 		 * @param {String} methodName a prototype function
 		 * @return {Boolean} truthy if an action or not
 		 */
-		// Return `true` if is an action.
 		_isAction: function( methodName ) {
 			return !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
 		},
+		// Takes a method name and the options passed to a control
+		// and tries to return the data necessary to pass to a processor
+		// (something that binds things).
 		/**
 		 * @hide
 		 * Takes a method name and the options passed to a control
@@ -4604,9 +4642,6 @@ can.$ = Zepto
 		 * @return {Object} null or the processor and pre-split parts.  
 		 * The processor is what does the binding/subscribing.
 		 */
-		 // Takes a method name and the options passed to a control
-		 // and tries to return the data necessary to pass to a processor
-		 // (something that binds things).
 		_action: function( methodName, options ) {
 			
 			// If we don't have options (a `control` instance), we'll run this 
@@ -4634,6 +4669,8 @@ can.$ = Zepto
 				};
 			}
 		},
+		// An object of `{eventName : function}` pairs that Control uses to 
+		// hook up events auto-magically.
 		/**
 		 * @attribute processors
 		 * An object of `{eventName : function}` pairs that Control uses to hook up events
@@ -4688,9 +4725,9 @@ can.$ = Zepto
 		 *     
 		 *     new Sized( $( '#foo' ) );
 		 */
-		// An object of `{eventName : function}` pairs that Control uses to 
-		// hook up events auto-magically.
 		processors: {},
+		// A object of name-value pairs that act as default values for a 
+		// control instance
 		/**
 		 * @attribute defaults
 		 * A object of name-value pairs that act as default values for a control's 
@@ -4712,14 +4749,14 @@ can.$ = Zepto
 		 * In [can.Control::setup] the options passed to the control
 		 * are merged with defaults.  This is not a deep merge.
 		 */
-		// A object of name-value pairs that act as default values for a 
-		// control instance
 		defaults: {}
 	},
 	/** 
 	 * @Prototype
 	 */
 	{
+		// Sets `this.element`, saves the control in `data, binds event
+		// handlers.
 		/**
 		 * Setup is where most of control's magic happens.  It does the following:
 		 * 
@@ -4757,11 +4794,11 @@ can.$ = Zepto
 		 * @return {Array} return an array if you wan to change what init is called with. By
 		 * default it is called with the element and options passed to the control.
 		 */
-		// Where the magic happens.
 		setup: function( element, options ) {
 
 			var cls = this.constructor,
-				pluginname = cls.pluginName || cls._fullName;
+				pluginname = cls.pluginName || cls._fullName,
+				arr;
 
 			// Want the raw element here.
 			this.element = can.$(element)
@@ -4771,8 +4808,10 @@ can.$ = Zepto
 				this.element.addClass(pluginname);
 			}
 			
-			(can.data(this.element,"controls")) || can.data(this.element,"controls", [ this ]);
+			(arr = can.data(this.element,"controls")) || can.data(this.element,"controls",arr = []);
+			arr.push(this);
 			
+			// Option merging.
 			/**
 			 * @attribute options
 			 * 
@@ -4814,12 +4853,12 @@ can.$ = Zepto
 			 * [can.Control.prototype.update update];
 			 *
 			 */
-			// Option merging.
 			this.options = extend({}, cls.defaults, options);
 
 			// Bind all event handlers.
 			this.on();
 
+			// Get's passed into `init`.
 			/**
 			 * @attribute element
 			 * 
@@ -4919,7 +4958,6 @@ can.$ = Zepto
 			 *        this.on();
 			 *     }
 			 */
-			// Get's passed into `init`.
 			return [this.element, this.options];
 		},
 		/**
@@ -5060,12 +5098,12 @@ can.$ = Zepto
 
 			return this._bindings.length;
 		},
+		// Unbinds all event handlers on the controller.
 		/**
 		 * @hide
 		 * Unbinds all event handlers on the controller. You should never
 		 * be calling this unless in use with [can.Control::on].
 		 */
-		// Unbinds all event handlers on the controller.
 		off : function(){
 			var el = this.element[0]
 			each(this._bindings || [], function( key, value ) {
@@ -5074,7 +5112,9 @@ can.$ = Zepto
 			// Adds bindings.
 			this._bindings = [];
 		},
+		// Prepares a `control` for garbage collection
 		/**
+		 * @function destroy
 		 * `destroy` prepares a control for garbage collection and is a place to
 		 * reset any changes the control has made.  
 		 * 
@@ -5165,8 +5205,6 @@ can.$ = Zepto
 		 *   - removing it's [can.Control.pluginName] from the element's className
 		 * 
 		 */
-
-		// Prepares a `control` for garbage collection
 		destroy: function() {
 			var Class = this.constructor,
 				pluginName = Class.pluginName || Class._fullName,
@@ -5845,6 +5883,16 @@ can.$ = Zepto
 	 * @Static
 	 */
 	extend(EJS, {
+		// Called to return the content within a magic tag like `<%= %>`.
+		// - escape - if the content returned should be escaped
+		// - tagName - the tag name the magic tag is within or the one that proceeds the magic tag
+		// - status - where the tag is in.  The status can be:
+		//    - _STRING_ - The name of the attribute the magic tag is within
+		//    - `1` - The magic tag is within a tag like `<div <%= %>>`
+		//    - `0` - The magic tag is outside (or between) tags like `<div><%= %></div>`
+		// - self - the `this` the template was called with
+		// - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
+		//   `(function(){return task.attr('name')})
 		/**
 		 * @hide
 		 * called to setup unescaped text
@@ -5856,16 +5904,6 @@ can.$ = Zepto
 		 * @param {Object} self
 		 * @param {Object} func
 		 */
-		// Called to return the content within a magic tag like `<%= %>`.
-		// - escape - if the content returned should be escaped
-		// - tagName - the tag name the magic tag is within or the one that proceeds the magic tag
-		// - status - where the tag is in.  The status can be:
-		//    - _STRING_ - The name of the attribute the magic tag is within
-		//    - `1` - The magic tag is within a tag like `<div <%= %>>`
-		//    - `0` - The magic tag is outside (or between) tags like `<div><%= %></div>`
-		// - self - the `this` the template was called with
-		// - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
-		//   `(function(){return task.attr('name')})
 		txt : function(escape, tagName, status, self, func){
 			// Get teh value returned by the wrapping function and any observe/attributes read.
 			var res = getValueAndObserved(func, self),

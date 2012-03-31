@@ -1118,6 +1118,7 @@
 		};
 
 	can.extend(can, {
+		// Escapes strings for HTML.
 		/**
 		 * @function can.esc
 		 * @parent can.util
@@ -1125,7 +1126,6 @@
 		 * 
 		 * can.esc( "<foo>&<bar>" ) //-> "&lt;foo&lt;&amp;&lt;bar&lt;"
 		 */
-		// Escapes strings for HTML.
 		esc: function( content ) {
 			return ("" + content).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(quote, '&#34;').replace(singleQuote, "&#39;");
 		},
@@ -1190,6 +1190,7 @@
 				}
 			}
 		},
+		// Capitalizes a string.
 		/**
 		 * @function can.capitalize
 		 * @parent can.util
@@ -1200,12 +1201,12 @@
 		 * @param {String} s the string.
 		 * @return {String} a string with the first character capitalized.
 		 */
-		// Capitalizes a string.
 		capitalize: function( s, cache ) {
 			// Used to make newId.
 			return s.charAt(0).toUpperCase() + s.slice(1);
 		},
 
+		// Underscores a string.
 		/**
 		 * @function can.underscore
 		 * @parent can.util
@@ -1217,10 +1218,10 @@
 		 * @param {String} s
 		 * @return {String} the underscored string
 		 */
-		// Underscores a string.
 		underscore: function( s ) {
 			return s.replace(colons, '/').replace(words, '$1_$2').replace(lowUp, '$1_$2').replace(dash, '_').toLowerCase();
 		},
+		// Micro-templating.
 		/**
 		 * @function can.sub
 		 * @parent can.util
@@ -1235,7 +1236,6 @@
 		 * objects can be used.
 		 * @param {Boolean} [remove] if a match is found, remove the property from the object
 		 */
-		// Micro-templating.
 		sub: function( str, data, remove ) {
 
 			var obs = [];
@@ -1338,6 +1338,10 @@
 		_inherit: function( newProps, oldProps, addTo ) {
 			can.extend(addTo || newProps, newProps || {})
 		},
+
+		// Set `defaults` as the merger of the parent `defaults` and this 
+		// object's `defaults`. If you overwrite this method, make sure to
+		// include option merging logic.
 		/**
 		 * Setup is called immediately after a constructor function is created and 
 		 * set to inherit from its base constructor.  It is called with a base constructor and
@@ -1387,9 +1391,6 @@
 		 * @param {Object} [staticProps] the static properties of the new constructor
 		 * @param {Object} [protoProps] the prototype properties of the new constructor
 		 */
-		// Set `defaults` as the merger of the parent `defaults` and this 
-		// object's `defaults`. If you overwrite this method, make sure to
-		// include option merging logic.
 		setup: function( base, fullName ) {
 			this.defaults = can.extend(true, {}, base.defaults, this.defaults);
 		},
@@ -1407,6 +1408,7 @@
 
 			return inst;
 		},
+		// Extends classes.
 		/**
 		 * @hide
 		 * Extends a class with new static and prototype functions.  There are a variety of ways
@@ -1435,7 +1437,6 @@
 		 * 
 		 * @return {can.Construct} returns the new class
 		 */
-		// Extends classes.
 		extend: function( fullName, klass, proto ) {
 			// Figure out what was passed and normalize it.
 			if ( typeof fullName != 'string' ) {
@@ -1611,7 +1612,7 @@
 			 * @return {Array|undefined} If an array is return, [can.Construct.prototype.init] is 
 			 * called with those arguments; otherwise, the original arguments are used.
 			 */
-			//break up
+			//  
 			/** 
 			 * @function init
 			 * 
@@ -1661,7 +1662,7 @@
 			 * It doesn't matter what init returns because the `new` keyword always
 			 * returns the new object.
 			 */
-			//Breaks up code
+			//  
 			/**
 			 * @attribute constructor
 			 * 
@@ -2501,11 +2502,11 @@
 					this.length = (+attr + 1)
 				}
 			},
+			// Returns the serialized form of this list.
 			/**
 			 * @hide
 			 * Returns the serialized form of this list.
 			 */
-			// Returns the serialized form of this list.
 			serialize: function() {
 				return serialize(this, 'serialize', []);
 			},
@@ -2535,7 +2536,7 @@
 			 * 
 			 * @return {can.Observe.List} the original observable.
 			 */
-			//
+			//  
 			/**
 			 * `splice(index, [ howMany, elements... ] )` remove or add items 
 			 * from a specific point in the list.
@@ -2907,10 +2908,10 @@
 	// `can.Model`  
 	// _A `can.Observe` that connects to a RESTful interface._
 	//  
+	// Generic deferred piping function
 	/**
 	 * @add can.Model
 	 */
-	// Generic deferred piping function
 	var pipe = function( def, model, func ) {
 		var d = new can.Deferred();
 		def.then(function() {
@@ -2988,15 +2989,14 @@
 			return deferred.then(success, error);
 		},
 
-		/** 
-		 * @Static
-		 */
-
 		// This object describes how to make an ajax request for each ajax method.  
 		// The available properties are:
 		//		`url` - The default url to use as indicated as a property on the model.
 		//		`type` - The default http request type
 		//		`data` - A method that takes the `arguments` and returns `data` used for ajax.
+		/** 
+		 * @Static
+		 */
 		ajaxMethods = {
 			/**
 			 * @function create
@@ -3063,13 +3063,13 @@
 			 * 
 			 *     Recipe = can.Model({
 			 *       update: "/recipes/{id}"
-			 *     },{})
+			 *     },{});
 			 *     
 			 * This lets you update a recipe like:
 			 *  
 			 *     Recipe.findOne({id: 1}, function(recipe){
-			 * 	      recipe.attr('name','salad')
-			 *        recipe.save()
+			 *       recipe.attr('name','salad');
+			 *       recipe.save();
 			 *     })
 			 * 
 			 * This will make an XHR request like:
@@ -3081,7 +3081,7 @@
 			 * 
 			 *     $.Model("Recipe",{
 			 *       update: "POST /recipes/{id}"
-			 *     },{})
+			 *     },{});
 			 * 
 			 * The server should send back an object with any new attributes the model 
 			 * should have.  For example if your server udpates the "updatedAt" property, it
@@ -3113,7 +3113,7 @@
 			 *       update : function(id, attrs ) {
 			 *         return $.post("/recipes/"+id+".json",attrs, null,"json");
 			 *       }
-			 *     },{})
+			 *     },{});
 			 * 
 			 * 
 			 * @param {String} id the id of the model instance
@@ -3211,8 +3211,8 @@
 			 * `can.ajax` (jQuery.ajax) like:
 			 * 
 			 *     Recipe = can.Model({
-			 * 	     findAll : {
-			 * 	       url: "/recipes.xml",
+			 *       findAll : {
+			 *         url: "/recipes.xml",
 			 *         dataType: "xml"
 			 *       }
 			 *     },{})
@@ -3238,9 +3238,9 @@
 			 * like:
 			 * 
 			 *     Recipe.findAll({favorite: true}, function(recipes){
-			 * 	     recipes[0].attr('name') //-> "Ice Water"
+			 *       recipes[0].attr('name') //-> "Ice Water"
 			 *     }, function( xhr ){
-			 * 	     // called if an error
+			 *       // called if an error
 			 *     }) //-> Deferred
 			 * 
 			 * The following API details the use of `findAll`.
@@ -3300,7 +3300,7 @@
 			 * `can.ajax` (jQuery.ajax) like:
 			 * 
 			 *     Recipe = can.Model({
-			 *       findAll : {
+			 *       findOne : {
 			 *         url: "/recipes/{id}.xml",
 			 *         dataType: "xml"
 			 *       }
@@ -3313,7 +3313,7 @@
 			 * deferred that resolves to the model data. For example:
 			 * 
 			 *     Recipe = can.Model({
-			 *       findAll : function(params){
+			 *       findOne : function(params){
 			 *         return $.ajax({
 			 *           url: '/recipes/{id}.json',
 			 *           type: 'get',
@@ -3445,7 +3445,7 @@
 			 * 
 			 *     Task = can.Model({},{})
 			 *     var tasks = Task.models([
-			 * 	     {id: 1, name : "dishes", complete : false},
+			 *       {id: 1, name : "dishes", complete : false},
 			 *       {id: 2, name: "laundry", compelte: true}
 			 *     ])
 			 *     
@@ -3498,7 +3498,7 @@
 			 * 
 			 * Or an Object with a data property and other expando properties like:
 			 * 
-			 * 	   {
+			 *     {
 			 *       count: 15000 //how many total items there might be
 			 *       data: [{id: 1, name : "justin"},{id:2, name: "brian"}, ...]
 			 *     }
@@ -3682,7 +3682,6 @@
 			 *       id: "Id"
 			 *     },{});
 			 */
-			// 
 		},
 		/**
 		 * @prototype
@@ -3969,6 +3968,42 @@
 	 *         todo2 = new Todo( { name: "Wash floors" } )
 	 *     var todos = new Todo.List( [todo1, todo2] );
 	 *
+	 * ### Model Lists in `can.Model`
+	 * In addition to creating new lists, it is possible to call 
+	 * [can.Model.static.findAll can.Model.findAll] or [can.Model.models] to return
+	 * a `can.Model.List` object.
+	 *
+	 *     var todos = Todo.models([
+	 *         new Todo( { name: "Do the dishes" } ),
+	 *         new Todo( { name: "Wash floors" } )
+	 *     ])
+	 *     
+	 *     todos.constructor // -> can.Model.List
+	 *
+	 *     Todo.findAll({}, function(todos) {
+	 *         todos.constructor // -> can.Model.List
+	 *     })
+	 *
+	 * ### Extending `can.Model.List`
+	 *
+	 * Creating custom `can.Model.Lists` allows you to extend lists with helper
+	 * functions for a list of a specific type. So, if there was a need to get a
+	 * random todo item, something could be written like
+	 *
+	 *     can.Model.List('Todo.List', {
+	 *         random: function() {
+	 *             // return a random todo from the list.
+	 *         }
+	 *     })
+	 *
+	 *     var list = new Todo.List([
+	 *         new Todo( { name: "Do the dishes" } ),
+	 *         new Todo( { name: "Wash floors" } )
+	 *     ]);
+	 *
+	 *     list.random() // -> random todo
+	 *
+	 *
 	 * ## Removing models from model list
 	 *
 	 * The advantage that `can.Model.List` has over a traditional `can.Observe.List`
@@ -3981,7 +4016,6 @@
 	 *     })
 	 *
 	 *     todo1.destory(); // console shows "Do the dishes removed"
-	 })
 	 *
 	 *
 	 */
@@ -4237,6 +4271,7 @@
 		 * @return {Object} Data object containing properties and values from the string
 		 */
 		deparam: function( url ) {
+			console.log('deparam', url)
 			// See if the url matches any routes by testing it against the `route.test` `RegExp`.
 			// By comparing the URL length the most specialized route that matches is used.
 			var route = {
@@ -4444,7 +4479,7 @@
 	// Deparameterizes the portion of the hash of interest and assign the
 	// values to the `can.route.data` removing existing values no longer in the hash.
 	setState = function() {
-		curParams = can.route.deparam(location.hash.split(/#!?/).pop());
+		curParams = can.route.deparam(location.hash.split(/#!?/).pop() || "");
 		can.route.attr(curParams, true);
 	};
 
@@ -4513,13 +4548,13 @@
 	 * @Static
 	 */
 	{
+		// Setup pre-processes which methods are event listeners.
 		/**
 		 * @hide
 		 * 
 		 * Setup pre-process which methods are event listeners.
 		 * 
 		 */
-		// Setup pre-processes which methods are event listeners.
 		setup: function() {
 
 			// Allow contollers to inherit "defaults" from super-classes as it 
@@ -4546,15 +4581,18 @@
 				}
 			}
 		},
+		// Return `true` if is an action.
 		/**
 		 * @hide
 		 * @param {String} methodName a prototype function
 		 * @return {Boolean} truthy if an action or not
 		 */
-		// Return `true` if is an action.
 		_isAction: function( methodName ) {
 			return !!(special[methodName] || processors[methodName] || /[^\w]/.test(methodName));
 		},
+		// Takes a method name and the options passed to a control
+		// and tries to return the data necessary to pass to a processor
+		// (something that binds things).
 		/**
 		 * @hide
 		 * Takes a method name and the options passed to a control
@@ -4576,9 +4614,6 @@
 		 * @return {Object} null or the processor and pre-split parts.  
 		 * The processor is what does the binding/subscribing.
 		 */
-		// Takes a method name and the options passed to a control
-		// and tries to return the data necessary to pass to a processor
-		// (something that binds things).
 		_action: function( methodName, options ) {
 
 			// If we don't have options (a `control` instance), we'll run this 
@@ -4606,6 +4641,8 @@
 				};
 			}
 		},
+		// An object of `{eventName : function}` pairs that Control uses to 
+		// hook up events auto-magically.
 		/**
 		 * @attribute processors
 		 * An object of `{eventName : function}` pairs that Control uses to hook up events
@@ -4660,9 +4697,9 @@
 		 *     
 		 *     new Sized( $( '#foo' ) );
 		 */
-		// An object of `{eventName : function}` pairs that Control uses to 
-		// hook up events auto-magically.
 		processors: {},
+		// A object of name-value pairs that act as default values for a 
+		// control instance
 		/**
 		 * @attribute defaults
 		 * A object of name-value pairs that act as default values for a control's 
@@ -4684,14 +4721,14 @@
 		 * In [can.Control::setup] the options passed to the control
 		 * are merged with defaults.  This is not a deep merge.
 		 */
-		// A object of name-value pairs that act as default values for a 
-		// control instance
 		defaults: {}
 	},
 	/** 
 	 * @Prototype
 	 */
 	{
+		// Sets `this.element`, saves the control in `data, binds event
+		// handlers.
 		/**
 		 * Setup is where most of control's magic happens.  It does the following:
 		 * 
@@ -4729,11 +4766,11 @@
 		 * @return {Array} return an array if you wan to change what init is called with. By
 		 * default it is called with the element and options passed to the control.
 		 */
-		// Where the magic happens.
 		setup: function( element, options ) {
 
 			var cls = this.constructor,
-				pluginname = cls.pluginName || cls._fullName;
+				pluginname = cls.pluginName || cls._fullName,
+				arr;
 
 			// Want the raw element here.
 			this.element = can.$(element)
@@ -4743,8 +4780,10 @@
 				this.element.addClass(pluginname);
 			}
 
-			(can.data(this.element, "controls")) || can.data(this.element, "controls", [this]);
+			(arr = can.data(this.element, "controls")) || can.data(this.element, "controls", arr = []);
+			arr.push(this);
 
+			// Option merging.
 			/**
 			 * @attribute options
 			 * 
@@ -4786,12 +4825,12 @@
 			 * [can.Control.prototype.update update];
 			 *
 			 */
-			// Option merging.
 			this.options = extend({}, cls.defaults, options);
 
 			// Bind all event handlers.
 			this.on();
 
+			// Get's passed into `init`.
 			/**
 			 * @attribute element
 			 * 
@@ -4891,7 +4930,6 @@
 			 *        this.on();
 			 *     }
 			 */
-			// Get's passed into `init`.
 			return [this.element, this.options];
 		},
 		/**
@@ -5028,12 +5066,12 @@
 
 			return this._bindings.length;
 		},
+		// Unbinds all event handlers on the controller.
 		/**
 		 * @hide
 		 * Unbinds all event handlers on the controller. You should never
 		 * be calling this unless in use with [can.Control::on].
 		 */
-		// Unbinds all event handlers on the controller.
 		off: function() {
 			var el = this.element[0]
 			each(this._bindings || [], function( key, value ) {
@@ -5042,7 +5080,9 @@
 			// Adds bindings.
 			this._bindings = [];
 		},
+		// Prepares a `control` for garbage collection
 		/**
+		 * @function destroy
 		 * `destroy` prepares a control for garbage collection and is a place to
 		 * reset any changes the control has made.  
 		 * 
@@ -5133,8 +5173,6 @@
 		 *   - removing it's [can.Control.pluginName] from the element's className
 		 * 
 		 */
-
-		// Prepares a `control` for garbage collection
 		destroy: function() {
 			var Class = this.constructor,
 				pluginName = Class.pluginName || Class._fullName,
@@ -5790,6 +5828,16 @@
 	 * @Static
 	 */
 	extend(EJS, {
+		// Called to return the content within a magic tag like `<%= %>`.
+		// - escape - if the content returned should be escaped
+		// - tagName - the tag name the magic tag is within or the one that proceeds the magic tag
+		// - status - where the tag is in.  The status can be:
+		//    - _STRING_ - The name of the attribute the magic tag is within
+		//    - `1` - The magic tag is within a tag like `<div <%= %>>`
+		//    - `0` - The magic tag is outside (or between) tags like `<div><%= %></div>`
+		// - self - the `this` the template was called with
+		// - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
+		//   `(function(){return task.attr('name')})
 		/**
 		 * @hide
 		 * called to setup unescaped text
@@ -5801,16 +5849,6 @@
 		 * @param {Object} self
 		 * @param {Object} func
 		 */
-		// Called to return the content within a magic tag like `<%= %>`.
-		// - escape - if the content returned should be escaped
-		// - tagName - the tag name the magic tag is within or the one that proceeds the magic tag
-		// - status - where the tag is in.  The status can be:
-		//    - _STRING_ - The name of the attribute the magic tag is within
-		//    - `1` - The magic tag is within a tag like `<div <%= %>>`
-		//    - `0` - The magic tag is outside (or between) tags like `<div><%= %></div>`
-		// - self - the `this` the template was called with
-		// - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
-		//   `(function(){return task.attr('name')})
 		txt: function( escape, tagName, status, self, func ) {
 			// Get teh value returned by the wrapping function and any observe/attributes read.
 			var res = getValueAndObserved(func, self),
