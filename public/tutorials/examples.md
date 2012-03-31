@@ -14,7 +14,7 @@ This article covers:
 - Separation of application logic from user interface
 - Using model lists to manage collection of models
 
-## [playermx PlayerMX] - [open application &#x21D7;](player/player.html)
+## [playermx PlayerMX] - [open application &#x21D7;](../examples/player/index.html)
 
 This article walks through a simple video player application utilizing Popcorn.js. 
 
