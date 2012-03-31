@@ -70,10 +70,9 @@ namespace :deploy do
 		announce 'Copying files to local directory...'
 
 		copy_resources 'donejs'
-		#copy 'examples/player'
-		#copy 'examples/contacts'
+		#copy_resources 'examples/player'
 		copy_resources 'examples/todo'
-		#copy 'examples/srchr'
+		copy_resources 'examples/srchr'
 	end
 
 	task :commit_site do
