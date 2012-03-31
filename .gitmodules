@@ -4,3 +4,6 @@
 [submodule "examples/todo"]
 	path = examples/todo
 	url = git@github.com:jupiterjs/cantodo.git
+[submodule "examples/srchr"]
+	path = examples/srchr
+	url = git@github.com:jupiterjs/srchr.git
