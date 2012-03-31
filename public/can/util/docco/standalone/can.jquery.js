@@ -1318,7 +1318,7 @@
 	 * 		 			['programming', 'basketball', 'nose picking'])
 	 * 
 	 * can.Observe.List inherits from [can.Observe], including it's 
-	 * [can.Observe.prototype.bind bind], [can.Observe.prototype.each], and [can.Observe.prototype.unbind] 
+	 * [can.Observe.prototype.bind bind], [can.Observe.prototype.each each], and [can.Observe.prototype.unbind unbind] 
 	 * methods.
 	 * 
 	 * can.Observe.List is inherited by [can.Model.List].
@@ -1327,6 +1327,7 @@
 	 * 
 	 * Similar to an array, use the index operator to access items of a list:
 	 * 
+	 * 
 	 *     list = new can.Observe.List(["a","b"])
 	 *     list[1] //-> "b"
 	 * 
@@ -1334,6 +1335,11 @@
 	 * 
 	 *     list = new can.Observe.List(["a","b"])
 	 *     list.attr(1)  //-> "b"
+	 *
+	 * __WARNING:__ while using the index operator with [] is acceptable, 
+	 * it should be noted that changing properties of objects that way
+	 * will not call bound events to the observed list that would let
+	 * it know that an object in the list has changed.
 	 * 
 	 * Using the 'attr' method lets Observe know you accessed the 
 	 * property. This is used by [can.EJS] for live-binding.
@@ -1720,6 +1726,8 @@
 		 * 
 		 *     var l = new can.Observe.List([]);
 		 *     
+		 *     l.attr() // -> []
+		 *     
 		 *     l.bind('change', function( 
 		 *         ev,        // the change event
 		 *         attr,      // the attr that was changed,
@@ -1732,7 +1740,8 @@
 		 *     
 		 *     })
 		 *     
-		 *     l.push('0','1','2');
+		 *     l.push('0','1','2'); 
+		 *     l.attr() // -> ['0', '1', '2']
 		 * 
 		 * @return {Number} the number of items in the array
 		 */
@@ -1790,6 +1799,7 @@
 		 * 
 		 *     var l = new can.Observe.List([0,1,2]);
 		 *     l.pop() //-> 2;
+		 *     l.attr() //-> [0,1]
 		 * 
 		 * This produces a change event like
 		 * 
@@ -1816,6 +1826,7 @@
 		 * 
 		 *     var l = new can.Observe.List([0,1,2]);
 		 *     l.shift() //-> 0;
+		 *     l.attr() //-> [1,2]
 		 * 
 		 * @return {Object} the element at the start of the list
 		 */
@@ -3234,7 +3245,6 @@
 		 * @return {Object} Data object containing properties and values from the string
 		 */
 		deparam: function( url ) {
-			console.log('deparam', url)
 			// See if the url matches any routes by testing it against the `route.test` `RegExp`.
 			// By comparing the URL length the most specialized route that matches is used.
 			var route = {
