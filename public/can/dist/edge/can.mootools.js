@@ -230,6 +230,7 @@ can.dispatch = function(event){
 			if(typeof event === 'string'){
 				event = {type: event}
 			}
+			event.target = event.target || item;
 			event.data = args
 			can.dispatch.call(item, event)
 		}
