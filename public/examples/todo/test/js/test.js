@@ -77,7 +77,7 @@ steal('funcunit', 'funcunit/qunit').then(function() {
 		helpers.complete(1);
 		helpers.incomplete(1);
 		helpers.remove(1);
-		
+
 		helpers.add(1, 'new todo');
 		S('#todo-list .todo:nth-child(1)').dblclick();
 		S('#todo-list .todo:nth-child(1) .edit').type('more edits');

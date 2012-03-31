@@ -4,7 +4,7 @@
 
 Here is the list of the example DoneJS applications. They cover specific DoneJS features and are ordered by complexity. If you need an introduction to the DoneJS framework it is best to read them in order.
 
-## [todo Todo] - [open application &#x21D7;](todo/todo.html)
+## [todo Todo] - [open application &#x21D7;](../examples/todo/jquery/index.html)
 
 In this guide, we're going to be installing and walking through the simplest [DoneJS](http://donejs.com/)
 application imaginable &mdash; a TODO list manager.
@@ -14,7 +14,7 @@ This article covers:
 - Separation of application logic from user interface
 - Using model lists to manage collection of models
 
-## [playermx PlayerMX] - [open application &#x21D7;](player/player.html)
+## [playermx PlayerMX] - [open application &#x21D7;](../examples/player/index.html)
 
 This article walks through a simple video player application utilizing Popcorn.js. 
 
@@ -24,7 +24,7 @@ This article covers:
 - Templated Events with [jQuery.Controller $.Controller]
 - How PlayerMX is built
 
-## [srchr Srchr] - [open application &#x21D7;](srchr/srchr.html)
+## [srchr Srchr] - [open application &#x21D7;](../examples/srchr/index.html)
 
 Srchr searches multiple services (like Flickr, Upcoming, and Twitter) and saves the results between page requests.
 
@@ -33,15 +33,3 @@ This article covers:
 - The ideas behind DoneJS
 - How DoneJS enables code separation
 - Event oriented architecture
-
-## [contacts Contacts] - [open application &#x21D7;](contacts)
-
-The contacts example is a lightweight application that allows users to add and organize their friend's contact information.
-
-This article covers:
-
-- Installing and running the application
-- The application's structure and organization
-- How the application's widgets were designed
-- The anatomy of the application's widgets
-- How we glued the application's widgets together using event-oriented-architecture
