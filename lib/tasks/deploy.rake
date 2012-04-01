@@ -51,9 +51,8 @@ namespace :deploy do
 		sh 'cd donejs && git submodule update --init --recursive'
 
 		sh 'cd examples/todo && git checkout master && git pull git@github.com:jupiterjs/cantodo.git master'
-		#sh 'cd examples/srchr && git checkout canjs && git pull origin canjs'
-		#sh 'cd examples/player && git checkout canjs && git pull origin canjs'
-		#sh 'cd examples/contacts && git checkout canjs && git pull origin canjs'
+		sh 'cd examples/srchr && git checkout canjs && git pull git@github.com:jupiterjs/srchr.git canjs'
+		sh 'cd examples/player && git checkout master && git pull git@github.com:jupiterjs/canplay.git master'
 	end
 
 	task :build do
