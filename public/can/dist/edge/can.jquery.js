@@ -381,6 +381,7 @@
 						parent.indexOf(val)+"." + args[0] :
 						prop +  "." + args[0];
 				can.trigger(parent, ev, args);
+				can.trigger(parent,args[0],args);
 			});
 
 			return val;
@@ -1752,7 +1753,7 @@
 				ext: ".ejs",
 				registerScript: function() {},
 				preload: function( ) {},
-		render: function( view, data, helpers, callback ) {
+				render: function( view, data, helpers, callback ) {
 			// If helpers is a `function`, it is actually a callback.
 			if ( isFunction( helpers )) {
 				callback = helpers;
