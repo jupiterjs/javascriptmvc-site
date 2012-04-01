@@ -9,7 +9,7 @@ load('documentjs/documentjs.js');
 
 
 DocumentJS('jmvc/jmvc.html',{
-	markdown : [/*'jquery','steal','jmvc',*/'tutorials'/*,'funcunit','mxui'*/,'can']
+	markdown : [/*'jquery','steal','jmvc','tutorials','funcunit','mxui',*/'can']
 });
 
 // change timestamp in docs.html

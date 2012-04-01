@@ -1,78 +1,104 @@
-var control = {
+var control, video, position, play;
 
-		Position : can.Control({
 
-			init : function(){
+// Object literal to hold onto our controller classes.
+control = {
 
-				this.moving = $("<div>").css({
-					position: 'absolute',
-					left: "0px"
-				})
+	// Position controller will be used to update the video position indicator.
+	Position : can.Control({
+
+		// Gets called upon instantiation.
+		init : function(){
+
+			// The movie starts at the beginning, so set the indicator to the
+			// left.
+			this.moving = $("<div>").css({
+				position: 'absolute',
+				left: "0px"
+			})
+		
+			// Add it to the DOM.
+			this.element.css("position","relative")
+				.append( this.moving );
+		
+			// Make the indicator square.
+			this.moving.outerWidth( this.element.height() );
+			this.moving.outerHeight( this.element.height() );
+		},
+
+		// Templated binding the to Popcorn video object.
+		"{video.video} timeupdate" : function( video ) {
+			this.resize()
+		},
+
+		// Calculated and updates the position of the moving indicator.
+		resize : function(){
+			var video = this.options.video,
+				percent = video.currentTime() / video.duration(),
+				width = this.element.width() - this.moving.outerWidth();
 			
-				this.element.css("position","relative")
-					.append( this.moving );
-			
-				this.moving.outerWidth( this.element.height() );
-				this.moving.outerHeight( this.element.height() );
-			},
+			this.moving.css("left", percent*width+"px")
+		},
 
-			"{video.video} timeupdate" : function(video){
-				this.resize()
-			},
+		// Allows the user to drag the moving indicator to a specific point in
+		// the video.
+		"div draginit" : function(el, ev, drag){
+			this.options.video.pause()
+			drag.limit(this.element)
+		},
 
-			resize : function(){
-				var video = this.options.video,
-					percent = video.currentTime() / video.duration(),
-					width = this.element.width() - this.moving.outerWidth();
-				
-				this.moving.css("left", percent*width+"px")
-			},
+		// When the user stops dragging, update the position and play the video
+		// from that point.
+		"div dragend" : function(el, ev, drag){
+			var video = this.options.video,
+				width = this.element.width() - this.moving.outerWidth()
+				percent = parseInt(this.moving.css("left"), 10) / width;
+		
+			video.currentTime(  percent * video.duration()  );
+			video.play()
+		}
+	}),
+	// Play controller manages playing and pausing.
+	Play : can.Control({
 
-			"div draginit" : function(el, ev, drag){
+		// Set the text of the play button depending on if the video is playing
+		// already or not.
+		init : function(){
+			if ( this.options.video.video.paused ) {
+				this.element.text("▶")
+			} else {
+				this.element.text("||")
+			}
+		},
+
+		// Update button text on play / pause
+		"{video.video} play" : function() {
+			this.element.text("||").addClass('stop')
+		},
+
+		"{video.video} pause" : function() {
+			this.element.text("▶").removeClass('stop')
+		},
+
+		// Play / pause the video on click
+		click : function() {
+			if( this.options.video.video.paused ) {
+				this.options.video.play()
+			} else {
 				this.options.video.pause()
-				drag.limit(this.element)
-			},
-
-			"div dragend" : function(el, ev, drag){
-				var video = this.options.video,
-					width = this.element.width() - this.moving.outerWidth()
-					percent = parseInt(this.moving.css("left"), 10) / width;
-			
-				video.currentTime(  percent * video.duration()  );
-				video.play()
 			}
-		}),
-		Play : can.Control({
-			init : function(){
-				if ( this.options.video.video.paused ) {
-					this.element.text("▶")
-				} else {
-					this.element.text("||")
-				}
-			},
+		}
+	})
+};
 
-			"{video.video} play" : function() {
-				this.element.text("||").addClass('stop')
-			},
+// Grab the popcorn video object.
+video = Popcorn("#trailer");
 
-			"{video.video} pause" : function() {
-				this.element.text("▶").removeClass('stop')
-			},
-
-			click : function() {
-				if( this.options.video.video.paused ) {
-					this.options.video.play()
-				} else {
-					this.options.video.pause()
-				}
-			}
-		})
-	},
-	video = Popcorn("#trailer"),
-
+// Instantiate the position and play controllers, passing in the popcorn video
+// object.
 position = new control.Position("#position", {
 	video : video
-}),
+});
 
 play = new control.Play("#play", {
 	video : video

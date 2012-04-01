@@ -3273,10 +3273,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 		extend(this, extras);
 	};
 		EJS.Helpers.prototype = {
-				view: function( url, data, helpers ) {
-			return $View(url, data || this._data, helpers || this._extras); 		
-		},
-		list : function(list, cb){
+				list : function(list, cb){
 			list.attr('length')
 			for(var i = 0, len = list.length; i < len; i++){
 				cb(list[i], i, list)
