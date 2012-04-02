@@ -280,6 +280,8 @@ can.dispatch = function(event){
 				delete requestOptions[option]
 			}
 		}
+		// Mootools defaults to 'post', but Can expects a default of 'get'
+		requestOptions.method = requestOptions.method || 'get';
 
 		var success = options.success,
 			error = options.error;
