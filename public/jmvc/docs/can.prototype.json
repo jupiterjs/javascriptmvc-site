@@ -1,1 +1,0 @@
-c({"name": "can.prototype", "src": "can/view/modifiers/modifiers.js", "line": 143, "children": ["can.prototype.jQuery.fn.prepend", "can.prototype.jQuery.fn.append", "can.prototype.jQuery.fn.after", "can.prototype.jQuery.fn.before", "can.prototype.jQuery.fn.text", "can.prototype.jQuery.fn.html", "can.prototype.jQuery.fn.replaceWith"]})

@@ -64,7 +64,7 @@ control = {
 		// Set the text of the play button depending on if the video is playing
 		// already or not.
 		init : function(){
-			if ( this.options.video.video.paused ) {
+			if ( this.options.video.paused() ) {
 				this.element.text("▶")
 			} else {
 				this.element.text("||")
@@ -82,7 +82,7 @@ control = {
 
 		// Play / pause the video on click
 		click : function() {
-			if( this.options.video.video.paused ) {
+			if( this.options.video.paused() ) {
 				this.options.video.play()
 			} else {
 				this.options.video.pause()

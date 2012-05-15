@@ -3,3 +3,4 @@ doc
 tmp
 .rvmrc
 *.orig
+.idea

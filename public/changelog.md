@@ -1,3 +1,47 @@
+## 3.3
+
+CanJS is now stolen and is the prefered way of doing things.  $.Class, $.Model, $.View, $.Controller, $.route, $.Observe are all
+now can.NAME.  To maintain large amounts of backwards compatability, these things still exist.  However,
+using can is now encouraged.  Also, can has things as plugins that were included by default previously.
+
+
+### Class
+
+ - Removed .Class access to instance's constructor function, use .constructor instead
+ - Removed callback, use .proxy
+
+### Controller
+
+ - `delegate` and `bind` are replaced with `on`
+
+### Observe
+
+ - $.O is removed
+ - attrs is now just attr
+ - sort is removed (temporarily)
+
+### Model
+
+ - model's implemented ajax methods do not take success / error, they produce methods that do
+ - model.update(attrs, success, error) is removed, use model.attr(attrs).save(success, error)
+ - model list does not get updated events, listen for change
+ - error message handlers get `handler(ev, attr, errorName)`
+ - `this` in save's success handler `save(succes, error)` is now the deferred.
+ - There are no default fixtures for models anymore.
+ - there is no error handler on attributes.  Use an event handler.
+ 
+### View
+
+ - Returns a documentFragment
+ - All types are moved into can
+ - Helpers are removed
+ - plugin is gone, use <%= (el)-> el.pluginName(args) %>
+ - callback functions execute before the fragment is inserted into the DOM
+
+### Fixture
+
+ - fixture.make returns a store
+
 ## 3.2.2
 
 ### Model

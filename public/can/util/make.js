@@ -81,16 +81,24 @@ steal('steal/build/pluginify', function() {
 			"" : false
 		},	
 		plugins = {
-			"construct/proxy/proxy" : "construct.proxy",
-			"construct/super/super" : "construct.super",
-			"control/plugin/plugin" : "control.plugin",
-			"observe/attributes/attributes" : "observe.attributes",
-			"observe/delegate/delegate" : "observe.delegate",
-			"observe/setter/setter" : "observe.setter",
-			"observe/backup/backup" : "observe.backup",
-			"observe/validations/validations" : "observe.validations",
-			"view/modifiers/modifiers" : "view.modifiers"
-		};
+			standAlone: {
+				"construct/proxy/proxy" : "construct.proxy",
+				"construct/super/super" : "construct.super",
+				"control/plugin/plugin" : "control.plugin",
+				"control/view/view" : "control.view",
+				"observe/attributes/attributes" : "observe.attributes",
+				"observe/delegate/delegate" : "observe.delegate",
+				"observe/setter/setter" : "observe.setter",
+				"observe/validations/validations" : "observe.validations",
+				"view/modifiers/modifiers" : "view.modifiers"
+			},
+			can_util_object: {
+				"observe/backup/backup" : "observe.backup",
+				"util/fixture/fixture" : "fixture"
+
+			}
+		},
+		version = readFile( "can/util/version" );
 
 	steal.File("can/dist").mkdirs();
 	steal.File("can/dist/edge").mkdirs();
@@ -128,15 +136,23 @@ steal('steal/build/pluginify', function() {
 				// Save the file.
 				steal.File( "can/dist/edge/can." + lib + type + ".js" ).save( code );
 			}
+
+			// Replace version
+			code = readFile( "can/dist/edge/can." + lib + type + ".js" );
+			code = code.replace( /\#\{VERSION\}/gim, version );
+			steal.File( "can/dist/edge/can." + lib + type + ".js" ).save( code );
 		});
 	});
 	
 
-	// Build plugins
+	// Build standalone plugins
 	STEALDOJO = STEALMOO = STEALYUI = STEALZEPTO = false;
 	STEALJQUERY = true;
 
-	each( plugins, function( output, input ) {
+	each( plugins.standAlone, function( output, input ) {
+
+		var code; 
+
 		steal.build.pluginify("can/" + input + ".js", {
 			out: "can/dist/edge/can." + output + ".js",
 			global: "can",
@@ -145,6 +161,32 @@ steal('steal/build/pluginify', function() {
 			skipCallbacks: true,
 			standAlone: true
 		});
+
 	});
 
+	// Build can.fixture and can.observe.backup seperately
+	// They need can/util/object, so we can't use the standAlone option
+	each( plugins.can_util_object, function( output, input ) {
+
+		
+		steal.build.pluginify("can/" + input + ".js", {
+			out: "can/dist/edge/can." + output + ".js",
+			global: "can",
+			onefunc: true,
+			exclude: [
+				'can/util/jquery/jquery.1.7.1.js',
+				'can/util/preamble.js',
+				'can/util/jquery/jquery.js',
+				'can/util/array/each.js',
+				'can/util/string/string.js',
+				'can/construct/construct.js',
+				'can/observe/observe.js'
+			],
+			compress: false,
+			skipCallbacks: true,
+			standAlone: false
+		});
+
+
+	});
 });

@@ -1,0 +1,1 @@
+steal('can/model/list','jquery/model');

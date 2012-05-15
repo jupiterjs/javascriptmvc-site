@@ -15,22 +15,37 @@ steal('can/observe', 'can/util/string/deparam', function() {
         // Converts a JS Object into a list of parameters that can be 
         // inserted into an html element tag.
 		makeProps = function( props ) {
-			return can.map(props, function( val, name ) {
-				return ( name === 'className' ? 'class'  : name )+ '="' + can.esc(val) + '"';
-			}).join(" ");
+			var tags = [];
+			can.each(props, function(val, name){
+				tags.push( ( name === 'className' ? 'class'  : name )+ '="' + 
+						(name === "href" ? val : can.esc(val) ) + '"');
+			});
+			return tags.join(" ");
 		},
 		// Checks if a route matches the data provided. If any route variable
         // is not present in the data, the route does not match. If all route
         // variables are present in the data, the number of matches is returned 
         // to allow discerning between general and more specific routes. 
 		matchesData = function(route, data) {
-			var count = 0, i = 0;
+			var count = 0, i = 0, defaults = {};
+			// look at default values, if they match ...
+			for( var name in route.defaults ) {
+				if(route.defaults[name] === data[name]){
+					// mark as matched
+					defaults[name] = 1;
+					count++;
+				}
+			}
 			for (; i < route.names.length; i++ ) {
 				if (!data.hasOwnProperty(route.names[i]) ) {
 					return -1;
 				}
-				count++;
+				if(!defaults[route.names[i]]){
+					count++;
+				}
+				
 			}
+			
 			return count;
 		},
 		onready = !0,
@@ -40,13 +55,16 @@ steal('can/observe', 'can/util/string/deparam', function() {
 
 
 	can.route = function( url, defaults ) {
-        // Extract the variable names and replace with `RegExp` that will match 
+        defaults = defaults || {}
+        // Extract the variable names and replace with `RegExp` that will match
 		// an atual URL with values.
 		var names = [],
 			test = url.replace(matcher, function( whole, name ) {
 				names.push(name)
-				// TODO: I think this should have a `+`
-				return "([^\\/\\&]*)"  // The `\\` is for string-escaping giving single `\` for `RegExp` escaping.
+				// a name without a default value HAS to have a value
+				// a name that has a default value can be empty
+				// The `\\` is for string-escaping giving single `\` for `RegExp` escaping.
+				return "([^\\/\\&]"+(defaults[name] ? "*" : "+")+")"
 			});
 
 		// Add route in a form that can be easily figured out.
@@ -60,7 +78,7 @@ steal('can/observe', 'can/util/string/deparam', function() {
             // An `array` of all the variable names in this route.
 			names: names,
             // Default values provided for the variables.
-			defaults: defaults || {},
+			defaults: defaults,
             // The number of parts in the URL separated by `/`.
 			length: url.split('/').length
 		}
@@ -90,27 +108,37 @@ steal('can/observe', 'can/util/string/deparam', function() {
 		 * @return {String} The route URL and &amp; separated parameters.
 		 */
 		param: function( data ) {
-			delete data.route;
 			// Check if the provided data keys match the names in any routes;
 			// Get the one with the most matches.
 			var route,
 				// Need to have at least 1 match.
 				matches = 0,
 				matchCount,
-				routeName = data.route;
+				routeName = data.route,
+				propCount = 0;
+				
+			delete data.route;
 			
-			// If we have a route name in our `can.route` data, use it.
-			if ( ! ( routeName && (route = can.route.routes[routeName]))){
-				// Otherwise find route.
-				each(can.route.routes, function(name, temp){
-					matchCount = matchesData(temp, data);
-					if ( matchCount > matches ) {
-						route = temp;
-						matches = matchCount
-					}
-				});
+			each(data, function(){propCount++});
+			// Otherwise find route.
+			each(can.route.routes, function(temp, name){
+				// best route is the first with all defaults matching
+				
+				
+				matchCount = matchesData(temp, data);
+				if ( matchCount > matches ) {
+					route = temp;
+					matches = matchCount
+				}
+				if(matchCount >= propCount){
+					return false;
+				}
+			});
+			// If we have a route name in our `can.route` data, and it's
+			// just as good as what currently matches, use that
+			if (can.route.routes[routeName] && matchesData(can.route.routes[routeName], data ) === matches) {
+				route = can.route.routes[routeName];
 			}
-
 			// If this is match...
 			if ( route ) {
 				var cpy = extend({}, data),
@@ -122,7 +150,7 @@ steal('can/observe', 'can/util/string/deparam', function() {
                     }),
                     after;
 					// Remove matching default values
-					each(route.defaults, function(name,val){
+					each(route.defaults, function(val,name){
 						if(cpy[name] === val) {
 							delete cpy[name]
 						}
@@ -174,7 +202,7 @@ steal('can/observe', 'can/util/string/deparam', function() {
 			var route = {
 				length: -1
 			};
-			each(can.route.routes, function(name, temp){
+			each(can.route.routes, function(temp, name){
 				if ( temp.test.test(url) && temp.length > route.length ) {
 					route = temp;
 				}
@@ -195,7 +223,7 @@ steal('can/observe', 'can/util/string/deparam', function() {
 				obj = extend(true, {}, route.defaults, obj);
                 // Overwrite each of the default values in `obj` with those in 
 				// parts if that part is not empty.
-				each(parts,function(i, part){
+				each(parts,function(part,  i){
 					if ( part && part !== '&') {
 						obj[route.names[i]] = decodeURIComponent( part );
 					}
@@ -362,7 +390,7 @@ steal('can/observe', 'can/util/string/deparam', function() {
 	
     // The functions in the following list applied to `can.route` (e.g. `can.route.attr('...')`) will
     // instead act on the `can.route.data` observe.
-	each(['bind','unbind','delegate','undelegate','attr','removeAttr'], function(i, name){
+	each(['bind','unbind','delegate','undelegate','attr','removeAttr'], function(name){
 		can.route[name] = function(){
 			return can.route.data[name].apply(can.route.data, arguments)
 		}
@@ -376,7 +404,7 @@ steal('can/observe', 'can/util/string/deparam', function() {
         // Deparameterizes the portion of the hash of interest and assign the
         // values to the `can.route.data` removing existing values no longer in the hash.
         setState = function() {
-			curParams = can.route.deparam( location.hash.split(/#!?/).pop() || "" );
+			curParams = can.route.deparam( location.href.split(/#!?/)[1] || "" );
 			can.route.attr(curParams, true);
 		};
 
@@ -389,7 +417,8 @@ steal('can/observe', 'can/util/string/deparam', function() {
 	can.route.bind("change", function() {
 		clearTimeout( timer );
 		timer = setTimeout(function() {
-			location.hash = "#!" + can.route.param(can.route.data.serialize())
+			var serialized = can.route.data.serialize();
+			location.hash = "#!" + can.route.param(serialized)
 		}, 1);
 	});
 	// `onready` event...

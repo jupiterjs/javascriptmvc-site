@@ -17,6 +17,7 @@ steal('can/construct', function( $ ) {
 		extend = can.extend,
 		each = can.each,
 		slice = [].slice,
+    paramReplacer = /\{([^\}]+)\}/g,
 		special = can.getObject("$.event.special") || {},
 
 		// Binds an element, returns a function that unbinds.
@@ -122,8 +123,8 @@ steal('can/construct', function( $ ) {
 			
 			// If we don't have options (a `control` instance), we'll run this 
 			// later.  
-			// `/\{([^\}]+)\}/` - parameter replacer `RegExp`.
-			if ( options || ! /\{([^\}]+)\}/g.test( methodName )) {
+      paramReplacer.lastIndex = 0;
+			if ( options || ! paramReplacer.test( methodName )) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
 				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
@@ -135,8 +136,9 @@ steal('can/construct', function( $ ) {
 					// Get the parts of the function  
 					// `[convertedName, delegatePart, eventPart]`  
 					// `/^(?:(.*?)\s)?([\w\.\:>]+)$/` - Breaker `RegExp`.
-					parts = (arr ? convertedName[1] : convertedName).match(/^(?:(.*?)\s)?([\w\.\:>]+)$/),
-					event = parts[2],
+					parts = (arr ? convertedName[1] : convertedName).match(/^(?:(.*?)\s)?([\w\.\:>]+)$/);
+
+					var event = parts[2],
 					processor = processors[event] || basicProcessor;
 				return {
 					processor: processor,
@@ -582,7 +584,7 @@ steal('can/construct', function( $ ) {
 		 */
 		off : function(){
 			var el = this.element[0]
-			each(this._bindings || [], function( key, value ) {
+			each(this._bindings || [], function( value ) {
 				value(el);
 			});
 			// Adds bindings.
@@ -721,7 +723,7 @@ steal('can/construct', function( $ ) {
 	each(["change", "click", "contextmenu", "dblclick", "keydown", "keyup", 
 		 "keypress", "mousedown", "mousemove", "mouseout", "mouseover", 
 		 "mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
-		 "focusout", "mouseenter", "mouseleave"], function( i, v ) {
+		 "focusout", "mouseenter", "mouseleave"], function( v ) {
 		processors[v] = basicProcessor;
 	});
 	

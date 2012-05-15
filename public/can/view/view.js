@@ -5,11 +5,7 @@ steal("can/util")
 	// `can.view`  
 	// _Templating abstraction._
 
-	// Convert a path like string into something that's ok for an `element` ID.
-	var toId = function( src ) {
-		return src.split(/\/|\./g).join("_");
-	},
-		isFunction = can.isFunction,
+	var isFunction = can.isFunction,
 		makeArray = can.makeArray,
 		// Used for hookup `id`s.
 		hookupId = 1,
@@ -31,13 +27,22 @@ steal("can/util")
 
 	can.extend( $view, {
 		frag: function(result){
-			var frag = can.buildFragment([result],[document.body]).fragment;
+			var frag = can.buildFragment(result,document.body);
 			// If we have an empty frag...
 			if(!frag.childNodes.length) { 
 				frag.appendChild(document.createTextNode(''))
 			}
 			return $view.hookup(frag);
 		},
+    // Convert a path like string into something that's ok for an `element` ID.
+    toId : function( src ) {
+      return can.map(src.split(/\/|\./g), function( part ) {
+        // Dont include empty strings in toId functions
+        if ( part ) {
+          return part;
+        }
+      }).join("_");
+    },
 		hookup: function(fragment){
 			var hookupEls = [],
 				id, 
@@ -46,7 +51,7 @@ steal("can/util")
 				i=0;
 			
 			// Get all `childNodes`.
-			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(i, node){
+			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(node){
 				if(node.nodeType === 1){
 					hookupEls.push(node)
 					hookupEls.push.apply(hookupEls, can.makeArray( node.getElementsByTagName('*')))
@@ -339,6 +344,11 @@ steal("can/util")
 				return d;
 			};
 
+			//If the url has a #, we assume we want to use an inline template
+			//from a script element and not current page's HTML
+			if( url.match(/^#/) ) {
+				url = url.substr(1);
+			}
 			// If we have an inline template, derive the suffix from the `text/???` part.
 			// This only supports `<script>` tags.
 			if ( el = document.getElementById(url) ) {
@@ -355,7 +365,7 @@ steal("can/util")
 			}
 	
 			// Convert to a unique and valid id.
-			id = toId(url);
+			id = can.view.toId(url);
 	
 			// If an absolute path, use `steal` to get it.
 			// You should only be using `//` if you are using `steal`.
@@ -425,5 +435,43 @@ steal("can/util")
 		usefulPart = function( resolved ) {
 			return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved
 		};
+	
+	
+	if ( window.steal ) {
+		steal.type("view js", function( options, success, error ) {
+			var type = can.view.types["." + options.type],
+				id = can.view.toId(options.rootSrc);
+
+			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "').then(function($){" + "can.view.preload('" + id + "'," + options.text + ");\n})";
+			success();
+		})
+	}
+
+	//!steal-pluginify-remove-start
+	can.extend(can.view, {
+		register: function( info ) {
+			this.types["." + info.suffix] = info;
+
+			if ( window.steal ) {
+				steal.type(info.suffix + " view js", function( options, success, error ) {
+					var type = can.view.types["." + options.type],
+						id = can.view.toId(options.rootSrc+'');
+
+					options.text = type.script(id, options.text)
+					success();
+				})
+			}
+		},
+		registerScript: function( type, id, src ) {
+			return "can.view.preload('" + id + "'," + $view.types["." + type].script(id, src) + ");";
+		},
+		preload: function( id, renderer ) {
+			can.view.cached[id] = new can.Deferred().resolve(function( data, helpers ) {
+				return renderer.call(data, data, helpers);
+			});
+		}
+
+	});
+	//!steal-pluginify-remove-end
 	
 });

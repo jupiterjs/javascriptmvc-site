@@ -76,7 +76,12 @@ steal("can/util/string",function( $ ) {
 		_inherit: function( newProps, oldProps, addTo ) {
 			can.extend(addTo || newProps, newProps || {})
 		},
-
+		// used for overwriting a single property.
+		// this should be used for patching other objects
+		// the super plugin overwrites this
+		_overwrite : function(what, oldProps, propName, val){
+			what[propName] = val;
+		},
 		// Set `defaults` as the merger of the parent `defaults` and this 
 		// object's `defaults`. If you overwrite this method, make sure to
 		// include option merging logic.
@@ -198,7 +203,7 @@ steal("can/util/string",function( $ ) {
 			prototype = this.instance();
 			
 			// Copy the properties over onto the new prototype.
-			_super_class._inherit(proto, _super, prototype);
+			can.Construct._inherit(proto, _super, prototype);
 
 			// The dummy class constructor.
 			function Constructor() {
@@ -220,7 +225,7 @@ steal("can/util/string",function( $ ) {
 			}
 
 			// Copy new static properties on class.
-			_super_class._inherit(klass, _super_class, Constructor);
+			can.Construct._inherit(klass, _super_class, Constructor);
 
 			// Setup namespaces.
 			if ( fullName ) {
