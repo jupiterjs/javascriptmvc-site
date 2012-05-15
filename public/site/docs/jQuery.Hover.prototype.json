@@ -1,0 +1,1 @@
+c({"name": "jQuery.Hover.prototype", "type": "prototype", "parents": ["jQuery.Hover"], "comment": "", "src": "jquery/event/hover/hover.js", "line": 33, "children": ["jQuery.Hover.prototype.delay", "jQuery.Hover.prototype.distance"]})

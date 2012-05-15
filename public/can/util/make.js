@@ -97,8 +97,7 @@ steal('steal/build/pluginify', function() {
 				"util/fixture/fixture" : "fixture"
 
 			}
-		},
-		version = readFile( "can/util/version" );
+		}
 
 	steal.File("can/dist").mkdirs();
 	steal.File("can/dist/edge").mkdirs();
@@ -136,11 +135,6 @@ steal('steal/build/pluginify', function() {
 				// Save the file.
 				steal.File( "can/dist/edge/can." + lib + type + ".js" ).save( code );
 			}
-
-			// Replace version
-			code = readFile( "can/dist/edge/can." + lib + type + ".js" );
-			code = code.replace( /\#\{VERSION\}/gim, version );
-			steal.File( "can/dist/edge/can." + lib + type + ".js" ).save( code );
 		});
 	});
 	
@@ -150,9 +144,6 @@ steal('steal/build/pluginify', function() {
 	STEALJQUERY = true;
 
 	each( plugins.standAlone, function( output, input ) {
-
-		var code; 
-
 		steal.build.pluginify("can/" + input + ".js", {
 			out: "can/dist/edge/can." + output + ".js",
 			global: "can",
@@ -161,14 +152,11 @@ steal('steal/build/pluginify', function() {
 			skipCallbacks: true,
 			standAlone: true
 		});
-
 	});
 
 	// Build can.fixture and can.observe.backup seperately
 	// They need can/util/object, so we can't use the standAlone option
 	each( plugins.can_util_object, function( output, input ) {
-
-		
 		steal.build.pluginify("can/" + input + ".js", {
 			out: "can/dist/edge/can." + output + ".js",
 			global: "can",
@@ -186,7 +174,5 @@ steal('steal/build/pluginify', function() {
 			skipCallbacks: true,
 			standAlone: false
 		});
-
-
 	});
 });

@@ -15,70 +15,11 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 	// var handle = event.handle; //unused
 	/**
 	 * @class jQuery.Drag
-	 * @parent specialevents
+	 * @parent jQuery.event.drag
 	 * @plugin jquery/event/drag
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/event/drag/drag.js
 	 * @test jquery/event/drag/qunit.html
-	 * Provides drag events as a special events to jQuery.  
-	 * A jQuery.Drag instance is created on a drag and passed
-	 * as a parameter to the drag event callbacks.  By calling
-	 * methods on the drag event, you can alter the drag's
-	 * behavior.
-	 * ## Drag Events
-	 * 
-	 * The drag plugin allows you to listen to the following events:
-	 * 
-	 * <ul>
-	 *  <li><code>dragdown</code> - the mouse cursor is pressed down</li>
-	 *  <li><code>draginit</code> - the drag motion is started</li>
-	 *  <li><code>dragmove</code> - the drag is moved</li>
-	 *  <li><code>dragend</code> - the drag has ended</li>
-	 *  <li><code>dragover</code> - the drag is over a drop point</li>
-	 *  <li><code>dragout</code> - the drag moved out of a drop point</li>
-	 * </ul>
-	 * 
-	 * Just by binding or delegating on one of these events, you make
-	 * the element dragable.  You can change the behavior of the drag
-	 * by calling methods on the drag object passed to the callback.
-	 * 
-	 * ### Example
-	 * 
-	 * Here's a quick example:
-	 * 
-	 *     //makes the drag vertical
-	 *     $(".drags").delegate("draginit", function(event, drag){
-	 *       drag.vertical();
-	 *     })
-	 *     //gets the position of the drag and uses that to set the width
-	 *     //of an element
-	 *     $(".resize").delegate("dragmove",function(event, drag){
-	 *       $(this).width(drag.position.left() - $(this).offset().left   )
-	 *     })
-	 * 
-	 * ## Drag Object
-	 * 
-	 * <p>The drag object is passed after the event to drag 
-	 * event callback functions.  By calling methods
-	 * and changing the properties of the drag object,
-	 * you can alter how the drag behaves.
-	 * </p>
-	 * <p>The drag properties and methods:</p>
-	 * <ul>
-	 *  <li><code>[jQuery.Drag.prototype.cancel cancel]</code> - stops the drag motion from happening</li>
-	 *  <li><code>[jQuery.Drag.prototype.ghost ghost]</code> - copys the draggable and drags the cloned element</li>
-	 *  <li><code>[jQuery.Drag.prototype.horizontal horizontal]</code> - limits the scroll to horizontal movement</li>
-	 *  <li><code>[jQuery.Drag.prototype.location location]</code> - where the drag should be on the screen</li>
-	 *  <li><code>[jQuery.Drag.prototype.mouseElementPosition mouseElementPosition]</code> - where the mouse should be on the drag</li>
-	 *  <li><code>[jQuery.Drag.prototype.only only]</code> - only have drags, no drops</li>
-	 *  <li><code>[jQuery.Drag.prototype.representative representative]</code> - move another element in place of this element</li>
-	 *  <li><code>[jQuery.Drag.prototype.revert revert]</code> - animate the drag back to its position</li>
-	 *  <li><code>[jQuery.Drag.prototype.vertical vertical]</code> - limit the drag to vertical movement</li>
-	 *  <li><code>[jQuery.Drag.prototype.limit limit]</code> - limit the drag within an element (*limit plugin)</li>
-	 *  <li><code>[jQuery.Drag.prototype.scrolls scrolls]</code> - scroll scrollable areas when dragging near their boundries (*scroll plugin)</li>
-	 * </ul>
-	 * <h2>Demo</h2>
-	 * Now lets see some examples:
-	 * @demo jquery/event/drag/drag.html 1000
+	 *
 	 * @constructor
 	 * The constructor is never called directly.
 	 */
@@ -202,7 +143,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
          * noSelection method turns off text selection during a drag event.
          * This method is called by default unless a event is listening to the 'dragdown' event.
          *
-         *  ## Example
+         * ## Example
          *
          *      $('div.drag').bind('dragdown', function(elm,event,drag){
          *          drag.noSelection();
@@ -222,14 +163,15 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 		},
 
         /**
-         * selection method turns on text selection that was previously turned off during the drag event.
-         * This method is called by default in 'destroy' unless a event is listening to the 'dragdown' event.
+         * @hide
+         * `selection()` method turns on text selection that was previously turned off during the drag event.
+         * This method is always called.
          * 
-         *  ## Example
+         * ## Example
          *
-         *      $('div.drag').bind('dragdown', function(elm,event,drag){
-         *          drag.noSelection();
-         *      });
+         *     $('div.drag').bind('dragdown', function(elm,event,drag){
+         *       drag.selection();
+         *     });
          */
 		selection: function(elm) {
             if(this.selectionDisabled){
@@ -308,7 +250,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 			clearSelection();
 			/**
 			 * @attribute location
-			 * The location of where the element should be in the page.  This 
+			 * `drag.location` is a vector specifying where the element should be in the page.  This 
 			 * takes into account the start position of the cursor on the element.
 			 * 
 			 * If the drag is going to be moved to an unacceptable location, you can call preventDefault in
@@ -321,6 +263,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 			 *     });
 			 *     
 			 * You can also set the location to where it should be on the page.
+			 * 
 			 */
 			this.location = pointer.minus(this.mouseElementPosition); // the offset between the mouse pointer and the representative that the user asked for
 			// position = mouse - (dragOffset - dragTopLeft) - mousePosition
@@ -340,12 +283,23 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 			}
 		},
 		/**
-		 * Sets the position of this drag.  
+		 * `position( newOffsetVector )` sets the position of the movingElement.  This is overwritten by 
+		 * the [$.Drag::scrolls], [$.Drag::limit] and [$.Drag::step] plugins 
+		 * to make sure the moving element scrolls some element
+		 * or stays within some boundary.  This function is exposed and documented so you could do the same.
 		 * 
-		 * The limit and scroll plugins
-		 * overwrite this to make sure the drag follows a particular path.
+		 * The following approximates how step does it:
 		 * 
-		 * @param {jQuery.Vector} newOffsetv the position of the element (not the mouse)
+		 *     var oldPosition = $.Drag.prototype.position;
+		 *     $.Drag.prototype.position = function( offsetPositionv ) {
+		 *       if(this._step){
+		 *         // change offsetPositionv to be on the step value
+		 *       }
+		 *       
+		 *       oldPosition.call(this, offsetPosition)
+		 *     }
+		 * 
+		 * @param {jQuery.Vector} newOffsetv the new [$.Drag::location] of the element.
 		 */
 		position: function( newOffsetv ) { //should draw it on the page
 			var style, dragged_element_css_offset = this.currentDelta(),
@@ -424,7 +378,15 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 			this.movingElement = this.element = this.event = null;
 		},
 		/**
-		 * Stops drag drop from running.
+		 * `cancel()` stops a drag motion from from running.  This also stops any other events from firing, meaning
+		 * that "dragend" will not be called.
+		 * 
+		 *     $("#todos").on(".handle", "draginit", function( ev, drag ) {
+		 *       if(drag.movingElement.hasClass("evil")){
+		 *         drag.cancel();	
+		 *       }
+		 *     })
+		 * 
 		 */
 		cancel: function() {
 			this._cancelled = true;
@@ -436,13 +398,27 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 
 		},
 		/**
-		 * Clones the element and uses it as the moving element.
-		 * @return {jQuery.fn} the ghost
+		 * `drag.ghost( [parent] )` clones the element and uses it as the 
+		 * moving element, leaving the original dragged element in place.  The `parent` option can
+		 * be used to specify where the ghost element should be temporarily added into the 
+		 * DOM.  This method should be called in "draginit".
+		 * 
+		 *     $("#todos").on(".handle", "draginit", function( ev, drag ) {
+		 *       drag.ghost();
+		 *     })
+		 * 
+		 * @param {HTMLElement} [parent] the parent element of the newly created ghost element. If not provided the 
+		 * ghost element is added after the moving element.
+		 * @return {jQuery.fn} the ghost element to do whatever you want with it.
 		 */
-		ghost: function( loc ) {
+		ghost: function( parent ) {
 			// create a ghost by cloning the source element and attach the clone to the dom after the source element
 			var ghost = this.movingElement.clone().css('position', 'absolute');
-			(loc ? $(loc) : this.movingElement).after(ghost);
+			if( parent ) {
+				$(parent).append(ghost);
+			} else {
+				$(this.movingElement).after(ghost)
+			}
 			ghost.width(this.movingElement.width()).height(this.movingElement.height());
 			// put the ghost in the right location ...
 			ghost.offset(this.movingElement.offset())
@@ -454,10 +430,26 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 			return ghost;
 		},
 		/**
-		 * Use a representative element, instead of the movingElement.
-		 * @param {HTMLElement} element the element you want to actually drag
-		 * @param {Number} offsetX the x position where you want your mouse on the object
-		 * @param {Number} offsetY the y position where you want your mouse on the object
+		 * `drag.representative( element, [offsetX], [offsetY])` tells the drag motion to use
+		 * a different element than the one that began the drag motion. 
+		 * 
+		 * For example, instead of
+		 * dragging an drag-icon of a todo element, you want to move some other representation of
+		 * the todo element (or elements).  To do this you might:
+		 * 
+		 *     $("#todos").on(".handle", "draginit", function( ev, drag ) {
+		 *       // create what we'll drag
+		 *       var rep = $('<div/>').text("todos")
+		 *         .appendTo(document.body)
+		 *       // indicate we want our mouse on the top-right of it
+		 *       drag.representative(rep, rep.width(), 0);
+		 *     })
+		 * 
+		 * @param {HTMLElement} element the element you want to actually drag.  This should be 
+		 * already in the DOM.
+		 * @param {Number} offsetX the x position where you want your mouse on the representative element (defaults to 0)
+		 * @param {Number} offsetY the y position where you want your mouse on the representative element (defaults to 0)
+		 * @return {drag} returns the drag object for chaining.
 		 */
 		representative: function( element, offsetX, offsetY ) {
 			this._offsetX = offsetX || 0;
@@ -474,44 +466,84 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 			}).show();
 			this.noSelection(this.movingElement)
 			this.mouseElementPosition = new $.Vector(this._offsetX, this._offsetY);
+			return this;
 		},
 		/**
-		 * Makes the movingElement go back to its original position after drop.
-		 * @codestart
-		 * ".handle dragend" : function( el, ev, drag ) {
-		 *    drag.revert()
-		 * }
-		 * @codeend
+		 * `revert([val])` makes the [$.Drag::representative representative] element revert back to it
+		 * original position after the drag motion has completed.  The revert is done with an animation.
+		 * 
+		 *     $("#todos").on(".handle","dragend",function( ev, drag ) {
+		 *       drag.revert();
+		 *     })
+		 * 
 		 * @param {Boolean} [val] optional, set to false if you don't want to revert.
+		 * @return {drag} the drag object for chaining
 		 */
 		revert: function( val ) {
 			this._revert = val === undefined ? true : val;
 			return this;
 		},
 		/**
-		 * Isolates the drag to vertical movement.
+		 * `drag.vertical()` isolates the drag to vertical movement.  For example:
+		 * 
+		 *     $("#images").on(".thumbnail","draginit", function(ev, drag){
+		 *       drag.vertical();
+		 *     });
+		 * 
+		 * Call `vertical()` in "draginit" or "dragdown".
+		 * 
+		 * @return {drag} the drag object for chaining.
 		 */
 		vertical: function() {
 			this._vertical = true;
 			return this;
 		},
 		/**
-		 * Isolates the drag to horizontal movement.
+		 * `drag.horizontal()` isolates the drag to horizontal movement.  For example:
+		 * 
+		 *     $("#images").on(".thumbnail","draginit", function(ev, drag){
+		 *       drag.horizontal();
+		 *     });
+		 * 
+		 * Call `horizontal()` in "draginit" or "dragdown".
+		 * 
+		 * @return {drag} the drag object for chaining.
 		 */
 		horizontal: function() {
 			this._horizontal = true;
-			return true;
+			return this;
 		},
 		/**
-		 * Respondables will not be alerted to this drag.
+		 * `only(only)` indicates if you __only__ want a drag motion and the drag should
+		 * not notify drops.  The default value is `false`.  Call it with no arguments or pass it true
+		 * to prevent drop events.
+		 * 
+		 *     $("#images").on(".thumbnail","dragdown", function(ev, drag){
+		 * 	     drag.only();
+		 *     });
+		 * 
+		 * @param {Boolean} [only] true if you want to prevent drops, false if otherwise.
+		 * @return {Boolean} the current value of only.
 		 */
 		only: function( only ) {
 			return (this._only = (only === undefined ? true : only));
 		},
 		
 		/**
-		 * Sets the distance from the mouse before the item begins dragging.
-		 * @param {Number} val
+		 * `distance([val])` sets or reads the distance the mouse must move before a drag motion is started.  This should be set in
+		 * "dragdown" and delays "draginit" being called until the distance is covered.  The distance
+		 * is measured in pixels.  The default distance is 0 pixels meaning the drag motion starts on the first
+		 * mousemove after a mousedown.
+		 * 
+		 * Set this to make drag motion a little "stickier" to start.
+		 * 
+		 *     $("#images").on(".thumbnail","dragdown", function(ev, drag){
+		 *       drag.distance(10);
+		 *     });
+		 * 
+		 * @param {Number} [val] The number of pixels the mouse must move before "draginit" is called.
+		 * @return {drag|Number} returns the drag instance for chaining if the drag value is being set or the
+		 * distance value if the distance is being read.
 		 */
 		distance:function(val){
 			if(val !== undefined){
@@ -524,7 +556,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 	});
 
 	/**
-	 * @add jQuery.event.special
+	 * @add jQuery.event.drag
 	 */
 	event.setupHelper([
 	/**

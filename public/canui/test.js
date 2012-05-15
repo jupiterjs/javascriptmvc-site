@@ -1,0 +1,17 @@
+steal('funcunit')
+.then(
+	'./layout/sortable/sortable_test.js',
+	'./layout/wrap/wrap_test.js',
+	'./layout/fill/fill_test.js',
+	'./layout/block/block_test.js',
+	'./layout/split/split_test.js',
+	'./layout/modal/modal_test.js'
+).then(
+	'./nav/slider/slider_test.js',
+	'./nav/accordion/accordion_test.js',
+	'./nav/selectable/selectable_test.js'
+).then(
+	'./data/list/list_test.js'
+).then(
+	'./util/rpc/test/qunit/rpc_test.js'
+);

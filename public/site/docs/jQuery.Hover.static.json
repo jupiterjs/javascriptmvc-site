@@ -1,0 +1,1 @@
+c({"name": "jQuery.Hover.static", "type": "static", "parents": ["jQuery.Hover"], "comment": "", "src": "jquery/event/hover/hover.js", "line": 14, "children": ["jQuery.Hover.static.delay", "jQuery.Hover.static.distance"]})

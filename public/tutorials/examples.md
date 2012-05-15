@@ -1,3 +1,4 @@
+@hide
 @page examples Examples
 @parent index 5
 @description Example application to learn from.

@@ -15,28 +15,30 @@ of making quality, maintainable applications in the shortest amount of time.
 
 ### Sub Projects
 
-DoneJS is comprised of 4 sub projects:
+DoneJS is comprised of 6 sub projects:
 
   - [DocumentJS] - A documentation engine
   - [FuncUnit] - A web testing framework
   - [canjs CanJS] - CanJS framework.
   - [stealjs StealJS] - A code manager : dependency management, code cleaning, building, etc.
+  - [jquerypp jQuery++] - jQuery extensions
+  - [canui CanUI] - User interface components build with CanJS and jQuery++
 
 ### Plugins 
 
 Sub-projects are futher broken down into plugins.  Just [steal] the ones you need.  Plugins load 
 their own dependencies and won't load duplicate files.  It looks like:
 
-    steal('jquery/model',
-          'jquery/view/ejs',
-          'jquery/controller',
+    steal('can/model',
+          'can/view/ejs',
+          'can/control',
           function($){
           ...
           });
 
 
 <div class='whisper'>
-  P.S. <code>steal('jquery')</code> adds <code>jquery/jquery.js</code>
+  P.S. <code>steal('can/util')</code> adds <code>can/util/util.js</code>
  to your project. </div>
 
 ## License

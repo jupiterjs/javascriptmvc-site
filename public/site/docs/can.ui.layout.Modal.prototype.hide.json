@@ -1,0 +1,1 @@
+c({"name": "can.ui.layout.Modal.prototype.hide", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.layout.Modal.prototype"], "comment": "<p>Hide modal element and overlay if overlay exists</p>", "src": "canui/layout/modal/modal.js", "line": 175, "children": []})

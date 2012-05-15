@@ -1,0 +1,1 @@
+c({"name": "can.ui.data.Grid.empty", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.data.Grid"], "comment": "<p>Remove all children from the table</p>", "src": "canui/data/grid/grid.js", "line": 205, "children": []})

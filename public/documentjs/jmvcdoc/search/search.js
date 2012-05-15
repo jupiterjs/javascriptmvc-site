@@ -1,11 +1,11 @@
-steal('jquery/controller',
-	'jquery/lang/observe/delegate',
+steal('can/control',
+	'can/observe/delegate',
 	'documentjs/jmvcdoc/models/search.js',function($){
 
 /**
  * @class Jmvcdoc.Search
  */
-$.Controller('Jmvcdoc.Search',
+can.Control('Jmvcdoc.Search',
 /* @Static */
 {
 	defaults : {
@@ -21,21 +21,21 @@ $.Controller('Jmvcdoc.Search',
 		var parent = this.input.parent();
 		this.remove = $("<span title='clear term' class='remove'></span>").appendTo(parent);
 		
-		this._super(parent,options);
+		can.Control.prototype.setup.call(parent,options);
 	},
 	init : function(){
 		this.input.attr('disabled', false)
 	},
 	"input keyup" : function(el, ev){
 		clearTimeout(this.searchTimer);
-		if((el.val() == "" && typeof $.route.attr('who') == 'undefined') || ev.keyCode == 27){
-			$.route.attrs({search: ""}, true);
+		if((el.val() == "" && typeof can.route.attr('who') == 'undefined') || ev.keyCode == 27){
+			can.route.attrs({ who : "index" }, true);
 		} else if(el.val() != ""){
-			this.searchTimer = setTimeout(this.callback('search'),200)
+			this.searchTimer = setTimeout($.proxy('search', this),200)
 		}
 	},
 	search : function(){
-		$.route.attrs({
+		can.route.attrs({
 			search: this.input.val()
 		}, true);
 	},
@@ -49,7 +49,7 @@ $.Controller('Jmvcdoc.Search',
 		}
 	},
 	".remove click":function(el, events){
-		$.route.attrs({
+		can.route.attr({
 			search: ""
 		}, true);
 	},

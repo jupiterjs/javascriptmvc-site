@@ -1,0 +1,1 @@
+c({"name": "jQuery.Vector.prototype.toString", "params": {}, "ret": {"description": "", "type": "String"}, "type": "function", "parents": ["jQuery.Vector.prototype"], "comment": "<p>returns (x,y)</p>", "src": "jquery/lang/vector/vector.js", "line": 109, "children": []})

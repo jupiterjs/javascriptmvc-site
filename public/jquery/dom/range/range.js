@@ -4,9 +4,9 @@ steal('jquery','jquery/dom/compare').then(function($){
 
 /**
  * @function jQuery.fn.range
- * @parent $.Range
+ * @parent jQuery.Range
  * 
- * Returns a jQuery.Range for the element selected.
+ * Returns a jQuery.Range for the selected element.
  * 
  *     $('#content').range()
  */
@@ -36,31 +36,8 @@ bisect = function(el, start, end){
 support = {};
 /**
  * @Class jQuery.Range
- * @parent dom
- * @tag alpha
- * 
- * Provides text range helpers for creating, moving, 
- * and comparing ranges cross browser.
- * 
- * ## Examples
- * 
- *     // Get the current range
- *     var range = $.Range.current()
- *     
- *     // move the end of the range 2 characters right
- *     range.end("+2")
- *     
- *     // get the startOffset of the range and the container
- *     range.start() //-> { offset: 2, container: HTMLELement }
- *     
- *     //get the most common ancestor element
- *     var parent = range.parent()
- *     
- *     //select the parent
- *     var range2 = new $.Range(parent)
- * 
- * @constructor
- * 
+ * @parent jQuery.Range
+ *
  * Returns a jQuery range object.
  * 
  * @param {TextRange|HTMLElement|Point} [range] An object specifiying a 
@@ -388,7 +365,11 @@ $.extend($.Range.prototype,
 	 * @return {TextRectangle} - The client rects.
 	 */
 	rect : function(from){
-		var rect = this.range.getBoundingClientRect()
+		var rect = this.range.getBoundingClientRect();
+		// for some reason in webkit this gets a better value
+		if(!rect.height && !rect.width){
+			rect = this.range.getClientRects()[0]
+		}
 		if(from === 'page'){
 			var off = scrollOffset();
 			rect = $.extend({}, rect);
@@ -403,40 +384,51 @@ $.extend($.Range.prototype,
 	 * rect coordinates from the page.
 	 */
 	rects : function(from){
-		var rects = $.makeArray( this.range.getClientRects() ).sort(function(rect1, rect2){
+		// order rects by size 
+		var rects = $.map($.makeArray( this.range.getClientRects() ).sort(function(rect1, rect2){
 			return  rect2.width*rect2.height - rect1.width*rect1.height;
+		}), function(rect){
+			return $.extend({}, rect)
 		}),
 			i=0,j,
 			len = rects.length;
-		//return rects;
-		//rects are sorted, largest to smallest	
+		
+		// safari returns overlapping client rects
+		// - big rects can contain 2 smaller rects
+		// - some rects can contain 0 - width rects
+		// - we don't want these 0 width rects
 		while(i < rects.length){
 			var cur = rects[i],
 				found = false;
 			
 			j = i+1;
-			for(j = i+1; j < rects.length; j++){
-				if( withinRect(cur, rects[j] ) ) {
-					found = rects[j];
-					break;
+			while( j < rects.length ){
+				if( withinRect( cur, rects[j] ) ) {
+					if(!rects[j].width){
+						rects.splice(j,1)
+					} else {
+						found = rects[j];
+						break;
+					}
+				} else {
+					j++;
 				}
 			}
+			
+			
 			if(found){
 				rects.splice(i,1)
 			}else{
 				i++;
 			}
 			
-			
 		}
 		// safari will be return overlapping ranges ...
 		if(from == 'page'){
 			var off = scrollOffset();
-			return $.map(rects, function(item){
-				var i = $.extend({}, item)
-				i.top += off.top;
-				i.left += off.left;
-				return i;
+			return $.each(rects, function(ith, item){
+				item.top += off.top;
+				item.left += off.left;
 			})
 		}
 		
@@ -565,7 +557,9 @@ $.extend($.Range.prototype,
 	 */
 	select = range.selectNodeContents ? function(el){
 		if(!el){
-			this.window().getSelection().addRange(this.range);
+			var selection = this.window().getSelection();
+			selection.removeAllRanges();
+			selection.addRange(this.range);
 		}else {
 			this.range.selectNodeContents(el);
 		}

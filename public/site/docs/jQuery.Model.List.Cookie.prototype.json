@@ -1,0 +1,1 @@
+c({"name": "jQuery.Model.List.Cookie.prototype", "type": "prototype", "parents": ["jQuery.Model.List.Cookie"], "comment": "", "src": "jquery/model/list/cookie/cookie.js", "line": 46, "children": ["jQuery.Model.List.Cookie.prototype.retrieve", "jQuery.Model.List.Cookie.prototype.store"]})

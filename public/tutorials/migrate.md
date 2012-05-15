@@ -1,4 +1,4 @@
-@page migrate Upgrading to 3.2
+@page migrate Migrating from JavaScriptMVC
 @parent tutorials 9
 
 There are many new feature in DoneJS 3.2 that help you build great JavaScript applications.

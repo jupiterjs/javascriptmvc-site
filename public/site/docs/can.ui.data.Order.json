@@ -1,0 +1,1 @@
+c({"name": "can.ui.data.Order", "type": "class", "comment": "<p>Adds sort ordering to widgets</p>", "src": "canui/data/order/order.js", "line": 8, "children": ["can.ui.data.Order.static", "can.ui.data.Order.prototype"]})

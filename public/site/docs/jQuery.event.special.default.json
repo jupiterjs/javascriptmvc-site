@@ -1,0 +1,1 @@
+c({"name": "jQuery.event.special.default", "type": "attribute", "parents": ["specialevents", "jQuery.event.special"], "comment": "", "plugin": "jquery/event/default", "download": "http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/event/default/default.js", "test": "jquery/event/default/qunit.html", "src": "jquery/event/default/default.js", "line": 59, "children": []})

@@ -1,0 +1,1 @@
+c({"name": "can.ui.nav.Slider.prototype", "type": "prototype", "parents": ["can.ui.nav.Slider"], "comment": "", "src": "canui/nav/slider/slider.js", "line": 72, "children": ["can.ui.nav.Slider.prototype.val"]})

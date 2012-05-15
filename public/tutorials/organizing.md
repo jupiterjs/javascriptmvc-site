@@ -6,7 +6,7 @@ large apps.  Break up your applications into small
 pieces.  Then assemble those testable, bite-sized pieces 
 into your big application.
 
-DoneJS 3.X is built with this pattern in 
+DoneJS is built with this pattern in
 mind. As opposed to a single flat 'scripts' folder, 
 DoneJS breaks up your app into
 manageable, isolated modules. This tutorial discusses
@@ -37,15 +37,15 @@ app's codebase.  What works for 10 files does not work for 100.
 
 Complicating matters, an individual JavaScript file might have dependencies on
 non-JavaScript resources.  It's easy to imagine a menu needing 
-a specific stylesheet, images, or [jQuery.View client side template] to run.  
+a specific stylesheet, images, or [can.view client side template] to run.
 
 Spreading these dependencies across images, styles, templates etc folders
-leads to bad organization and potentially bad performance.  For example, it can be
+leads to bad organization and potentially bad performance. For example, it can be
 hard to know if a particular style rule is needed.
 
 ### The Fix
 
-DoneJS gives each resource you author it's own folder.  Typically,
+DoneJS gives each resource you author it's own folder. Typically,
 the folder will hold the resource, the its demo page, test page,
 test script, and any other files specific to that resource.
 
@@ -65,19 +65,15 @@ The idea is that we can work on <code>tabs.js</code> in complete isolation.
 Before we discuss best practices for organizing your application, a little
 throat clearing ...
 
-> Every app is different. Providing a single folder structure for
-all applications is impossible. However, there are several useful 
-patterns that when understood can keep your
-application under control. DoneJS is extremely flexible so use your best judgement!
+> Every app is different. Providing a single folder structure for all applications is impossible. However, there are several useful  patterns that when understood can keep your application under control. DoneJS is extremely flexible so use your best judgement!
 
 This guide walks you through starting with a small-ish example app and where you would add
 features over time.  Before the example, it's good to know some JavaScript terminology:
 
-
 ### App and Library Folders
 
 In general, a DoneJS application is divided into two root folders: an app folder and
-library folder. The app folder code typically 'steals' and configures 'library' code.  
+library folder. The app folder code typically *steals* and configures *library* code.
 
 #### Application Folder 
 
@@ -86,16 +82,11 @@ application.  The code in this folder is very unlikely to be
 used in other places.  The folder name reflects the name of the application 
 being built.  
 
-Create an application folder structure with:
-
-    js jquery\generate\app cms
-
-
-#### Library Folders 
+#### Library Folders
 
 A library folder is for general code that 
-can be reused across several applications.  It is the perfect place for 
-reusable controls like a tabs widget.  Typically folder names reflect
+can be reused across several applications. It is the perfect place for
+reusable controls like a tabs widget. Typically folder names reflect
 the name of the organization building the controls.  
 
 ### Resource Types
