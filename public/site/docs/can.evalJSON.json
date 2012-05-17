@@ -1,0 +1,1 @@
+c({"name": "can.evalJSON", "params": {"src": {"description": "", "type": "", "optional": false, "order": 0, "name": "src"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.toJSON"], "comment": "<p>Evaluates a given piece of json source.</p>", "src": "can/util/json.js", "line": 141, "children": []})

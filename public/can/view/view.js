@@ -5,11 +5,7 @@ steal("can/util")
 	// `can.view`  
 	// _Templating abstraction._
 
-	// Convert a path like string into something that's ok for an `element` ID.
-	var toId = function( src ) {
-		return src.split(/\/|\./g).join("_");
-	},
-		isFunction = can.isFunction,
+	var isFunction = can.isFunction,
 		makeArray = can.makeArray,
 		// Used for hookup `id`s.
 		hookupId = 1,
@@ -31,13 +27,22 @@ steal("can/util")
 
 	can.extend( $view, {
 		frag: function(result){
-			var frag = can.buildFragment([result],[document.body]).fragment;
+			var frag = can.buildFragment(result,document.body);
 			// If we have an empty frag...
 			if(!frag.childNodes.length) { 
 				frag.appendChild(document.createTextNode(''))
 			}
 			return $view.hookup(frag);
 		},
+    // Convert a path like string into something that's ok for an `element` ID.
+    toId : function( src ) {
+      return can.map(src.split(/\/|\./g), function( part ) {
+        // Dont include empty strings in toId functions
+        if ( part ) {
+          return part;
+        }
+      }).join("_");
+    },
 		hookup: function(fragment){
 			var hookupEls = [],
 				id, 
@@ -46,7 +51,7 @@ steal("can/util")
 				i=0;
 			
 			// Get all `childNodes`.
-			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(i, node){
+			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(node){
 				if(node.nodeType === 1){
 					hookupEls.push(node)
 					hookupEls.push.apply(hookupEls, can.makeArray( node.getElementsByTagName('*')))
@@ -180,23 +185,37 @@ steal("can/util")
 		preload: function( ) {},
 		/**
 		 * @function render
-		 * `can.view.render(view, data, [helpers], callback)` Returns the rendered markup produced by the corresponding template
-		 * engine. If you pass a deferred object in as data, render returns
+		 * `can.view.render(view, data, [helpers], callback)` returns the rendered markup produced by the corresponding template
+		 * engine as String. If you pass a deferred object in as data, render returns
 		 * a deferred resolving to the rendered markup.
+		 * 
+		 * `can.view.render` is commonly used for sub-templates.
 		 * 
 		 * ## Example
 		 * 
-		 *     can.view.render("//views/myview.ejs", {
-		 *       count: 0
-		 *     },
-		 *     function(result) {
-		 *       //do something with result
-		 *     }
+		 * _welcome.ejs_ looks like:
+		 * 
+		 *     <h1>Hello <%= hello %></h1>
+		 * 
+		 * Render it to a string like:
+		 * 
+		 *     can.view.render("welcome.ejs",{hello: "world"})
+		 *       //-> <h1>Hello world</h1>
+		 * 
+		 * ## Use as a Subtemplate
+		 * 
+		 * If you have a template like:
+		 * 
+		 *     <ul>
+		 *       <% list(items, function(item){ %>
+		 *         <%== can.view.render("item.ejs",item) %>
+		 *       <% }) %>
+		 *     </ul>
 		 * 
 		 * @param {String|Object} view the path of the view template or a view object
 		 * @param {Object} data the object passed to a template
 		 * @param {Object} [helpers] additional helper methods to be passed to the view template
-		 * @param {Function} callback function executed after template has been processed
+		 * @param {Function} [callback] function executed after template has been processed
 		 * @param {String|Object} returns a string of processed text or a deferred that resolves to the processed text
 		 * 
 		 */
@@ -325,6 +344,11 @@ steal("can/util")
 				return d;
 			};
 
+			//If the url has a #, we assume we want to use an inline template
+			//from a script element and not current page's HTML
+			if( url.match(/^#/) ) {
+				url = url.substr(1);
+			}
 			// If we have an inline template, derive the suffix from the `text/???` part.
 			// This only supports `<script>` tags.
 			if ( el = document.getElementById(url) ) {
@@ -341,7 +365,7 @@ steal("can/util")
 			}
 	
 			// Convert to a unique and valid id.
-			id = toId(url);
+			id = can.view.toId(url);
 	
 			// If an absolute path, use `steal` to get it.
 			// You should only be using `//` if you are using `steal`.
@@ -411,5 +435,43 @@ steal("can/util")
 		usefulPart = function( resolved ) {
 			return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved
 		};
+	
+	
+	if ( window.steal ) {
+		steal.type("view js", function( options, success, error ) {
+			var type = can.view.types["." + options.type],
+				id = can.view.toId(options.rootSrc);
+
+			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "').then(function($){" + "can.view.preload('" + id + "'," + options.text + ");\n})";
+			success();
+		})
+	}
+
+	//!steal-pluginify-remove-start
+	can.extend(can.view, {
+		register: function( info ) {
+			this.types["." + info.suffix] = info;
+
+			if ( window.steal ) {
+				steal.type(info.suffix + " view js", function( options, success, error ) {
+					var type = can.view.types["." + options.type],
+						id = can.view.toId(options.rootSrc+'');
+
+					options.text = type.script(id, options.text)
+					success();
+				})
+			}
+		},
+		registerScript: function( type, id, src ) {
+			return "can.view.preload('" + id + "'," + $view.types["." + type].script(id, src) + ");";
+		},
+		preload: function( id, renderer ) {
+			can.view.cached[id] = new can.Deferred().resolve(function( data, helpers ) {
+				return renderer.call(data, data, helpers);
+			});
+		}
+
+	});
+	//!steal-pluginify-remove-end
 	
 });

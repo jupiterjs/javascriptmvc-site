@@ -1,0 +1,1 @@
+c({"name": "jQuery.Vector.prototype.height", "type": "attribute", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Returns the 2nd value of the vector</p>", "ret": {"description": "", "type": "Number"}, "src": "jquery/lang/vector/vector.js", "line": 104, "children": []})

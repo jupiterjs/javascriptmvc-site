@@ -71,7 +71,7 @@ function(){
 						
 
 					var children = $()
-					value.each(function(name, val){
+					value.each(function(val, name){
 						var section = self.draw(indent+1, /*isList ? undefined :*/ name, val);
 						children.push(section);
 					})
@@ -381,8 +381,8 @@ function(){
 				this.measure.appendTo(document.body)
 				this.measure.css({left: "0px", top: "-1000px"})
 			},
-			"mouseleave" : function(el, ev){
-				if(this.ready){
+			"{window} click" : function(el, ev){
+				if(this.ready && ev.target !== this.element[0]){
 					this.element.remove();
 				}
 			},

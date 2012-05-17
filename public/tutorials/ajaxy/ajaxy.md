@@ -27,11 +27,10 @@ After installing DoneJS, open a command line to
 the [steal.static.root steal.root] folder (where you unzipped 
 DoneJS).  
 
-
 We'll use the application generator to generate an application
 skeleton folder.  Run:
 
-    js jquery/generate/app ajaxy
+    js done/generate/app ajaxy
 
 ## The Code
 
@@ -93,11 +92,11 @@ __ajaxy/fixtures/videos.html__
 Finally, change <code>ajaxy.js</code> to look like:
 
 
-    steal('jquery/controller',
+    steal('can/control',
           'jquery/event/hashchange', 
           'steal/html',function(){
           
-    $.Controller('Ajaxy',{
+    can.Control('Ajaxy',{
         init : function(){
             this.updateContent()
         },
@@ -121,9 +120,7 @@ Finally, change <code>ajaxy.js</code> to look like:
         }
     })
     
-    $('#content').ajaxy();
-    
-    });
+    new Ajaxy('#content');
 
 When a hashchange (<code>"{window} hashchange"</code>) event occurs, Ajaxy
 uses the <code>window.location.hash</code> value to make a 

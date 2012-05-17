@@ -1264,6 +1264,10 @@
 	steal.p.load = before(steal.p.load, function(){
 		var raw = this.options;
 		
+		// if we are already loading / loaded
+		if(this.loading || this.isLoaded){
+			return;
+		} 
 		// if it's a string, get it's extension and check if
 		// it is a registered type, if it is ... set the type
 		if(!raw.type){
@@ -1405,8 +1409,7 @@
 	
 	var cssCount = 0,
 		createSheet = doc && doc.createStyleSheet,
-		lastSheet,
-		lastSheetOptions;
+		lastSheet;
 	
 	steal.type("css", function css_type(options, success, error){
 		if(options.text){ // less
@@ -1429,31 +1432,21 @@
 		} else {
 			if( createSheet ){
 				// IE has a 31 sheet and 31 import per sheet limit
-				if(cssCount == 0){
-					lastSheet = document.createStyleSheet(options.src);
-					lastSheetOptions = options;
-					cssCount++;
-				} else {
-					var relative = File(options.src).joinFrom(
-						File(lastSheetOptions.src).dir());
-						
-					lastSheet.addImport( relative );
-					cssCount++;
-					if(cssCount == 30){
-						cssCount = 0;
-					}
+				if(cssCount == 30 || !lastSheet){
+					lastSheet = document.createStyleSheet();
+					cssCount = 0;
 				}
-				success()
-				return;
+
+				lastSheet.addImport(options.src);
+				cssCount++;
+			} else {
+				options = options || {};
+				var link = doc[STR_CREATE_ELEMENT]('link');
+				link.rel = options.rel || "stylesheet";
+				link.href = options.src;
+				link.type = 'text/css';
+				head().appendChild(link);
 			}
-	
-			
-			options = options || {};
-			var link = doc[STR_CREATE_ELEMENT]('link');
-			link.rel = options.rel || "stylesheet";
-			link.href = options.src;
-			link.type = 'text/css';
-			head().appendChild(link);
 		}
 		
 		success();

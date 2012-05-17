@@ -9,5 +9,3 @@ load("steal/test/run.js");
 load("funcunit/test/run.js");
 
 load("jquery/test/run.js");
-
-

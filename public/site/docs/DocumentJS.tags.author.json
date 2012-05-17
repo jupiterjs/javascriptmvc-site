@@ -1,0 +1,1 @@
+c({"name": "DocumentJS.tags.author", "type": "class", "comment": "<p>Describes who the author of a class is.</p>\n\n<h3>Example:</h3>\n\n<pre><code class='javascript'>/*\n * @author Justin Meyer\n * @author Brian Moschel\n */</code></pre> ", "tags": ["documentation"], "parents": ["DocumentJS.tags"], "src": "documentjs/tags/author.js", "line": 1, "children": []})

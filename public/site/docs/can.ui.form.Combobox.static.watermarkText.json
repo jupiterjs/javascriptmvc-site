@@ -1,0 +1,1 @@
+c({"name": "can.ui.form.Combobox.static.watermarkText", "type": "attribute", "parents": ["can.ui.form.Combobox.static"], "comment": "<p>Text that appears if nothing is selected.</p>", "hide": true, "src": "canui/form/combobox/combobox.js", "line": 111, "children": []})

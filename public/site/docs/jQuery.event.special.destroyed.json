@@ -1,0 +1,1 @@
+c({"name": "jQuery.event.special.destroyed", "type": "attribute", "parents": ["specialevents", "jQuery.event.special"], "comment": "", "download": "http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/dom/destroyed/destroyed.js", "test": "jquery/event/destroyed/qunit.html", "src": "jquery/event/destroyed/destroyed.js", "line": 4, "children": []})

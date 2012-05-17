@@ -40,7 +40,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 		attrMap = {
 			"class" : "className"
 		},
-		bool = can.each(["checked","disabled","readonly","required"], function(i,n){
+		bool = can.each(["checked","disabled","readonly","required"], function(n){
 			attrMap[n] = n;
 		}),
 		setAttr = function(el, attrName, val){
@@ -72,7 +72,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 			// toggle the 'matched' indicator
 			oldObserved.matched = !oldObserved.matched;
 			
-			can.each(observed, function(i, ob){
+			can.each(observed, function(ob){
 				// if the observe/attribute pair is being observed
 				if(oldObserved[ob.obj._namespace+"|"+ob.attr]){
 					// mark at as observed
@@ -99,7 +99,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 				// for the element to be destroyed and unbind
 				// all event handlers for garbage collection.
 				can.bind.call(el,'destroyed', function(){
-					can.each(oldObserved, function(i, ob){
+					can.each(oldObserved, function(ob){
 						if(typeof ob !== 'boolean'){
 							ob.obj.unbind(ob.attr, cb)
 						}
@@ -413,7 +413,7 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 
 				pendingHookups = [];
 				return can.view.hook(function(el){
-					can.each(hooks, function(i, fn){
+					can.each(hooks, function(fn){
 						fn(el);
 					})
 				});
@@ -714,16 +714,25 @@ steal('can/view', 'can/util/string').then(function( $ ) {
 	 */
 	EJS.Helpers.prototype = {
 		/**
-		 * Renders a partial view.  This is deprecated in favor of <code>can.View()</code>.
+		 * @function list
+		 *
+		 * `can.EJS.Helpers.list` iterates over an observable list and
+		 * sets up live binding. `list` takes a list of observables and a callback 
+		 * function with the signature `callback( currentItem, index, itemList )`
+		 *
+		 * Typically, this will look like:
+		 *
+		 *     <% list(items, function(item){ %>
+		 *          <li><%= item.attr('name') %></li>
+		 *     <% }) %>
+		 *
+		 * Whenever the list of observables changes, such as when an item is added or removed, 
+		 * the EJS view will redraw the list in the DOM.
 		 */
-		view: function( url, data, helpers ) {
-			return $View(url, data || this._data, helpers || this._extras); 		
-		},
 		list : function(list, cb){
-			list.attr('length')
-			for(var i = 0, len = list.length; i < len; i++){
-				cb(list[i], i, list)
-			}
+			can.each(list, function(item, i){
+				cb(item, i, list)
+			})
 		}
 	};
 

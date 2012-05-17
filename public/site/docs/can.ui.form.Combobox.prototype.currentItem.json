@@ -1,0 +1,1 @@
+c({"name": "can.ui.form.Combobox.prototype.currentItem", "type": "attribute", "parents": ["can.ui.form.Combobox.prototype"], "comment": "<p>if (!this.options.maxHeight ) {\n            this.options.maxHeight = this.Class.defaults.maxHeight;\n        }</p>", "hide": true, "src": "canui/form/combobox/combobox.js", "line": 184, "children": []})

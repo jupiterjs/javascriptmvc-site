@@ -1,0 +1,1 @@
+c({"name": "can.ui.nav.Accordion.prototype.resize", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.nav.Accordion.prototype"], "comment": "<p>Occurs when resize was triggered.\nCall when an insert or DOM modification happens.</p>", "src": "canui/nav/accordion/accordion.js", "line": 269, "children": []})

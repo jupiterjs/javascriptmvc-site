@@ -1,0 +1,1 @@
+c({"name": "can.ui.form.Combobox.static.filterEnabled", "type": "attribute", "parents": ["can.ui.form.Combobox.static"], "comment": "<p>maxHeight: 320,</p>", "hide": true, "src": "canui/form/combobox/combobox.js", "line": 91, "children": []})

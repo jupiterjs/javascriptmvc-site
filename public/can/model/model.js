@@ -1,5 +1,5 @@
 // this file should not be stolen directly
-steal('can/observe',function(){
+steal('can/observe', function() {
 	
 	// ## model.js  
 	// `can.Model`  
@@ -281,7 +281,9 @@ steal('can/observe',function(){
 		destroy : {
 			type : "delete",
 			data : function(id){
-				return {}[this.id] = id;
+				var args = {};
+				args[this.id] = id;
+				return args;
 			}
 		},
 		/**
@@ -409,12 +411,13 @@ steal('can/observe',function(){
 		 * 
 		 * To implement with a function, `findOne` is passed __params__ to specify
 		 * the instance retrieved from the server and it should return a
-		 * deferred that resolves to the model data. For example:
+		 * deferred that resolves to the model data.  Also notice that you now need to
+		 * build the URL manually. For example:
 		 * 
 		 *     Recipe = can.Model({
 		 *       findOne : function(params){
 		 *         return $.ajax({
-		 *           url: '/recipes/{id}.json',
+		 *           url: '/recipes/' + params.id,
 		 *           type: 'get',
 		 *           dataType: 'json'})
 		 *       }
@@ -479,41 +482,44 @@ steal('can/observe',function(){
 	
 	
 	can.Observe("can.Model",{
-		setup : function(){
+		setup : function(base){
 			can.Observe.apply(this, arguments);
 			if(this === can.Model){
 				return;
 			}
 			var self = this;
 			
-			can.each(ajaxMethods, function(name, method){
+			can.each(ajaxMethods, function(method, name){
 				if ( ! can.isFunction( self[name] )) {
 					self[name] = ajaxMaker(method, self[name]);
 				}
 			});
 			var clean = can.proxy(this._clean, self);
-			can.each({findAll : "models", findOne: "model"}, function(name, method){
+			can.each({findAll : "models", findOne: "model"}, function(method, name){
+				
 				var old = self[name];
-				self[name] = function(params, success, error){
+				can.Construct._overwrite(self, base, name, function(params, success, error){
+					// this._super to trick it to load super
+					this._super;
 					// Increment requests.
 					self._reqs++;
 					// Make the request.
-					return pipe( old.call(self,params),
-						self, 
+					return pipe( old.call( this, params ),
+						this, 
 						method ).then(success,error).then(clean, clean);
-				}
-				
+				});
 			})
 			// Convert `findAll` and `findOne`.
 			var oldFindAll
 			if(self.fullName == "can.Model"){
-				self.fullName = "Model"+(++modelNum);
+				self.fullName = self._shortName = "Model"+(++modelNum);
 			}
 			// Ddd ajax converters.
 			this.store = {};
 			this._reqs = 0;
 			this._url = this._shortName+"/{"+this.id+"}"
 		},
+		_ajax : ajaxMaker,
 		_clean : function(){
 			this._reqs--;
 			if(!this._reqs){
@@ -606,9 +612,15 @@ steal('can/observe',function(){
 		 * [can.Model.model].
 		 */
 		models: function( instancesRawData ) {
+
 			if ( ! instancesRawData ) {
 				return;
 			}
+      
+      if ( instancesRawData instanceof this.List ) {
+        return instancesRawData;
+      }
+
 			// Get the list type.
 			var self = this,
 				res = new( self.List || ML),
@@ -640,12 +652,12 @@ steal('can/observe',function(){
 			}
 			//!steal-remove-end
 
-			can.each(raw, function( i, rawPart ) {
+			can.each(raw, function( rawPart ) {
 				res.push( self.model( rawPart ));
 			});
 
 			if ( ! arr ) { // Push other stuff onto `array`.
-				can.each(instancesRawData, function(prop, val){
+				can.each(instancesRawData, function(val, prop){
 					if ( prop !== 'data' ) {
 						res[prop] = val;
 					}
@@ -723,9 +735,9 @@ steal('can/observe',function(){
 			if ( attributes instanceof this ) {
 				attributes = attributes.serialize();
 			}
-			var model = this.store[attributes.id] || new this( attributes );
+			var model = this.store[attributes[this.id]] || new this( attributes );
 			if(this._reqs){
-				this.store[attributes.id] = model;
+				this.store[attributes[this.id]] = model;
 			}
 			return model;
 		}
@@ -1034,7 +1046,7 @@ steal('can/observe',function(){
 	 *   - Removes the model from the global list if its used.
 	 * 
 	 */
-	"destroyed"], function( i, funcName ) {
+	"destroyed"], function( funcName ) {
 		can.Model.prototype[funcName] = function( attrs ) {
 			var stub, 
 				constructor = this.constructor;
@@ -1059,7 +1071,7 @@ steal('can/observe',function(){
   /**
    * @class can.Model.List
    * @inherits can.Observe.List
-   * @parent index
+   * @parent canjs
    *
    * Works exactly like [can.Observe.List] and has all of the same properties,
    * events, and functions as an observable list. The only difference is that 

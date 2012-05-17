@@ -1,0 +1,1 @@
+c({"name": "jQuery.Vector.prototype.equals", "params": {}, "ret": {"description": "", "type": "jQuery.Vector"}, "type": "function", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Returns the current vector if it is equal to the vector passed in. <br />\nFalse if otherwise.</p>", "src": "jquery/lang/vector/vector.js", "line": 63, "children": []})

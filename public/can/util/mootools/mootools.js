@@ -1,7 +1,7 @@
 steal({
 	src: './mootools-core-1.4.3.js',
 	_skip: true
-}, '../event.js','../fragment', function(){
+}, '../event.js','../fragment', 'can/util/array/each.js',function(){
 	// mootools.js
 	// ---------
 	// _MooTools node list._
@@ -22,18 +22,6 @@ steal({
 	can.map = function(arr, fn){
 		return Array.from(arr||[]).map(fn);
 	}
-	can.each = function(elements, callback) {
-    	var i, key;
-	    if (typeof  elements.length == 'number' && elements.pop)
-	      for(i = 0; i < elements.length; i++) {
-	        if(callback(i, elements[i]) === false) return elements;
-	      }
-	    else
-	      for(key in elements) {
-	        if(callback(key, elements[key]) === false) return elements;
-	      }
-	    return elements;
-  	}
 
 	// Map object helpers.
 	can.extend = function(first){
@@ -177,6 +165,8 @@ steal({
 				delete requestOptions[option]
 			}
 		}
+		// Mootools defaults to 'post', but Can expects a default of 'get'
+		requestOptions.method = requestOptions.method || 'get';
 
 		var success = options.success,
 			error = options.error;
@@ -221,7 +211,7 @@ steal({
 	};
 	can.append = function(wrapped, html){
 		if(typeof html === 'string'){
-			html = can.buildFragment([html],[]).fragment
+			html = can.buildFragment(html)
 		}
 		return wrapped.grab(html)
 	}

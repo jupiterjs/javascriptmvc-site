@@ -9,7 +9,7 @@ Inputs are anything a widget consumes from the outside world.  This can include 
 
 Outputs are anything a widget visibly produces for the outside world.  This can include DOM created, events triggered, callback functions executed, data changed, etc.  For example, a grid widget might produce "pageChanged" or "columnSorted" events.
 
-Let's examine the inputs and outputs of the _MXUI.Data.Grid_ widget.
+Let's examine the inputs and outputs of the [can.ui.data.Grid] widget.
 
 @image tutorials/images/inputs_outputs.jpg
 
@@ -17,21 +17,22 @@ Let's examine the inputs and outputs of the _MXUI.Data.Grid_ widget.
 
 One of the reusable modules in the Contacts app is List. The List is a simple widget that takes a model, gets and lists data, and listens for updates to the items to update and/or destroy rows.
 
-	$("#category .list_wrapper").mxui_data_list({
+	new can.ui.data.List("#category .list_wrapper", {
 		model : Contacts.Models.Category,
-		show : "//contacts/views/categoryList",
-		create: "//contacts/views/categoryCreate"
+		show : "//contacts/views/categoryList.ejs",
+		create: "//contacts/views/categoryCreate.ejs",
+		callback : this.proxy('updateList', Contacts.Models.Category)
 	})
 
-In this app, the category, location, and company sections are all filters for the contacts grid. Upon clicking one of these rows, the grid is filtered with the selection. These lists are all managed using _MXUI.Data.List_.  We'll walk through how this widget works to illustrate creating reusable, self contained modules.
+In this app, the category, location, and company sections are all filters for the contacts grid. Upon clicking one of these rows, the grid is filtered with the selection. These lists are all managed using [can.ui.data.List].  We'll walk through how this widget works to illustrate creating reusable, self contained modules.
 
 ### Getting the List Data
 
-When initialized, you pass the List a [jQuery.model model] class.  CanJS models have a standard API to perform CRUD operations.  Every model implements a [jQuery.Model.static.findAll findAll] method, which we can leverage to fetch data.
+When initialized, you pass the List a [can.Model model] construct. CanJS models have a standard API to perform CRUD operations. Every model implements a [can.Model.static.findAll findAll] method, which we can leverage to fetch data.
 
-	this.options.model.findAll(this.options.params, this.callback('list'))
+	this.options.model.findAll(this.options.params, this.proxy('list'))
 
-If you look at the models in _contacts/models_, you'll notice findAll is missing. By default, models will request data using REST standards, as described in [jquery.model.encapsulate Service Encapsulation]. Every model has a findAll method, implemented in the based [jquery.model jQuery.Model] class.
+If you look at the models in _contacts/models_, you'll notice findAll is missing. By default, models will request data using REST standards, as described in [services Ajax Service Guidelines]. Every model has a findAll method, implemented in the based [can.Model] class.
 
 ### Drawing the List
 
@@ -44,7 +45,7 @@ One of List's parameters is a 'list' template.  After the model has completed it
 	
 ### Capturing Updates
 
-In a live application, data changes.  The List should be aware of these changes and update its UI accordingly.  List listens for updates for its given model and refreshes UI with the latest data.
+In a live application, data changes.  The List should be aware of these changes and update its UI accordingly. List listens for updates for its given model and refreshes UI with the latest data.
 
 	"{model} updated" : function(model, ev, item){
     	var el = item.elements(this.element).html(this.options.show, item);
@@ -77,8 +78,8 @@ As items are clicked in the list, a "selected" visual state is applied to the it
 		el.trigger("activate", el.model());
 	}
 	
-In the above code, we  trigger an _activate_ event.  This event is one of List's outputs that we listen to using [jquery.controller.listening event delegation].  As opposed to applications listening for "click" events, we use activate to provide a level of abstraction.  This allows the widget to provide other ways to activate a row, such as keyboard navigation or clicking.  We could even expand this widget to use touch events for mobile devices, and applications wouldn't have to change.  For more information on this you can read the [mvc.controller Controller] documentation. 
+In the above code, we  trigger an _activate_ event.  This event is one of List's outputs that we listen to using [can.Control event delegation].  As opposed to applications listening for "click" events, we use activate to provide a level of abstraction.  This allows the widget to provide other ways to activate a row, such as keyboard navigation or clicking.  We could even expand this widget to use touch events for mobile devices, and applications wouldn't have to change.  For more information on this you can read the [can.Control] documentation.
 
-The mission of this widget was simple: create a list of data that updates itself as the items change.  You and I have probably written this a dozen times in our applications.  This List widget provides a reusable API because it has generic and well defined inputs and outputs.
+The mission of this widget was simple: create a list of data that updates itself as the items change. You and I have probably written this a dozen times in our applications.  This List widget provides a reusable API because it has generic and well defined inputs and outputs.
 
 Next up, we will discuss how to [contacts.glue glue] our isolated modules into a full application.

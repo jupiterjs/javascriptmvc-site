@@ -1,11 +1,10 @@
-@page mvc.controller Controller
+@page mvc.controller Control
 @parent mvc 3
 
-CanJS's controllers are many things.  They are a jQuery plugin factory.  They can be used as a traditional view, making pagination widgets and grid controls.  Or, they can be used as a traditional controller, initializing and controllers and hooking them up to models.  Mostly, controller's are a really great way of organizing your application's code.
+CanJS's controls are many things.  They can be used as a traditional view, making pagination widgets and grid controls.  Or, they can be used as a traditional controller, initializing and controllers and hooking them up to models.  Mostly, controls are a really great way of organizing your application's code.
 
-Controllers provide a number of handy features such as:
+Controls provide a number of handy features such as:
 
- - jQuery plugin creation
  - automatic binding
  - default options
  - automatic determinism
@@ -44,9 +43,9 @@ But within a Model-View-Controller architecture, Controllers listen to the View 
       self.find('.next')[this.canNext() ? 'addClass' : 'removeClass']('enabled');
     })
 
-But, it doesn't unbind from paginate!  Forgetting to remove event handlers is potentially a source of errors.  However, both the tooltip and nextPrev would not error.  Instead both will silently kill an application's performance.  Fortunately, $.Controller makes this __easy__ and __organized__.  We can write tooltip like:
+But, it doesn't unbind from paginate!  Forgetting to remove event handlers is potentially a source of errors.  However, both the tooltip and nextPrev would not error.  Instead both will silently kill an application's performance.  Fortunately, can.Control makes this __easy__ and __organized__.  We can write tooltip like:
 
-    $.Controller('Tooltip',{
+    can.Control('Tooltip',{
       init: function(){
         this.element.show()
       },
@@ -57,11 +56,11 @@ But, it doesn't unbind from paginate!  Forgetting to remove event handlers is po
       }
     })
 
-When the document is clicked and the element is removed from the DOM, $.Controller will automatically unbind the document click handler.  
+When the document is clicked and the element is removed from the DOM, can.Control will automatically unbind the document click handler.  
 
-$.Controller can do the same thing for the nextPrev widget binding to the the paginate model:
+can.Control can do the same thing for the nextPrev widget binding to the the paginate model:
 
-    $.Controller('Nextprev',{
+    can.Control('Nextprev',{
       ".next click" : function(){
         var paginate = this.options.paginate;
         paginate.attr('offset', paginate.offset+paginate.limit);
@@ -81,20 +80,20 @@ $.Controller can do the same thing for the nextPrev widget binding to the the pa
 
 If the element <code>#pagebuttons</code> is removed from the page, the Nextprev controller instance will automatically unbind from the paginate model. 
 
-Now that your appetite for error free code is properly whetted, the following details how $.Controller works.
+Now that your appetite for error free code is properly whetted, the following details how can.Control works.
 
 ### Overview
 
-$.Controller inherits from $.Class.  To create a Controller class, call <code>$.Controller( NAME, classProperties, instanceProperties )</code> with the name of your controller, static methods, and instance methods.  The following is the start of a reusable list widget:
+can.Control inherits from can.Construct.  To create a Controller class, call <code>can.Control( NAME, classProperties, instanceProperties )</code> with the name of your controller, static methods, and instance methods.  The following is the start of a reusable list widget:
 
-    $.Controller("List", {
+    can.Control("List", {
       defaults : {}
     },{
       init : function(){  },
       "li click" : function(){  }
     })
 
-When a controller class is created, it creates a jQuery helper method of a similar name.  The helper method is primarily use to create new instances of controller on elements in the page.  The helper method name is the controller's name underscored, with any periods replaced with underscores.  For example, the helper for <code>$.Controller('App.FooBar')</code> is <code>$(el).app_foo_bar()</code>.
+When a controller class is created, it creates a jQuery helper method of a similar name.  The helper method is primarily use to create new instances of controller on elements in the page.  The helper method name is the controller's name underscored, with any periods replaced with underscores.  For example, the helper for <code>can.Control('App.FooBar')</code> is <code>$(el).app_foo_bar()</code>.
 
 ### Controller Instantiation 
 
@@ -113,7 +112,7 @@ When a controller is created, it calls the controller's prototype init method wi
 
 The following updates the List controller to request tasks from the model and render them with an optional template passed to the list:
 
-    $.Controller("List", {
+    can.Control("List", {
       defaults : {
         template: "items.ejs"
       }
@@ -133,7 +132,7 @@ If we don't provide a template, List will default to using items.ejs.
 
 ### Event Binding
 
-As mentioned in $.Controller's introduction, it's most powerful feature is it's ability to bind and unbind event handlers.  
+As mentioned in can.Control's introduction, it's most powerful feature is it's ability to bind and unbind event handlers.  
 
 When a controller is created, it looks for action methods.  Action methods are methods that look like event handlers.  For example, <code>"li click"</code>.  These actions are bound using <code>jQuery.bind</code> or <code>jQuery.delegate</code>.  When the controller is destroyed, by removing the controller's element from the page or calling destroy on the controller, these events are unbound, preventing memory leaks.
 
@@ -152,13 +151,13 @@ Action functions get called back with the jQuery-wrapped element or object that 
 
 ### Templated Actions
 
-$.Controller supports templated actions.  Templated actions can be used to bind to other objects, customize the event type, or customize the selector.
+can.Control supports templated actions.  Templated actions can be used to bind to other objects, customize the event type, or customize the selector.
 
 Controller replaces the parts of your actions that look like <code>{OPTION}</code> with a value in the controller's options or the window. 
 
 The following is a skeleton of a menu that lets you customize the menu to show sub-menus on different events:
 
-    $.Controller("Menu",{
+    can.Control("Menu",{
       "li {openEvent}" : function(){
         // show subchildren
       }
@@ -172,7 +171,7 @@ The following is a skeleton of a menu that lets you customize the menu to show s
 
 We could enhance the menu further to allow customization of the menu element tag:
 
-    $.Controller("Menu",{
+    can.Control("Menu",{
       defaults : {menuTag : "li"}
     },{
       "{menuTag} {openEvent}" : function(){
@@ -184,7 +183,7 @@ We could enhance the menu further to allow customization of the menu element tag
 
 Templated actions let you bind to elements or objects outside the controller's element.  For example, the Task model from the $.Model section produces a "created" event when a new Task is created.  We can make our list widget listen to tasks being created and automatically add these tasks to the list like:
 
-    $.Controller("List", {
+    can.Control("List", {
       defaults : {
         template: "items.ejs"
       }
@@ -201,7 +200,7 @@ The <code>"{Task} create"</code> gets called with the Task model, the created ev
 
 But, it's much better to make List work with any model.  Instead of hard coding tasks, we'll make controller take a model as an option:
 
-    $.Controller("List", {
+    can.Control("List", {
       defaults : {
         template: "items.ejs",
         model: null
@@ -244,7 +243,7 @@ To later get that element given a model instance, you can call <code>modelInstan
 
 Putting it together, list becomes:
 
-    $.Controller("List", {
+    can.Control("List", {
       defaults : {
         template: "items.ejs",
         model: null

@@ -1,0 +1,1 @@
+c({"name": "Syn.static.isFocusable", "params": {"elem": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "elem"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Syn.static"], "comment": "<p>Returns if an element is focusable</p>", "hide": true, "src": "funcunit/syn/synthetic.js", "line": 323, "children": []})

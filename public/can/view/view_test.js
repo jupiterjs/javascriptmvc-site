@@ -20,7 +20,7 @@ module("can/view");
 if(window.Jaml){
 	test("multiple template types work", function(){
 		
-		can.each(["micro","ejs","jaml"/*, "tmpl"*/], function(i, ext){
+		can.each(["micro","ejs","jaml"/*, "tmpl"*/], function( ext){
 			var div = can.$(document.createElement('div'));
 				
 			can.append(div, can.view("//can/view/test/qunit/template."+ext,{"message" :"helloworld"}))
@@ -31,6 +31,22 @@ if(window.Jaml){
 		})
 	});
 }
+
+test("buildFragment works right", function(){
+	can.append( can.$("#qunit-test-area"), can.view("//can/view/test/qunit/plugin.ejs",{}) )
+	ok(/something/.test( can.$("#something span")[0].firstChild.nodeValue ),"something has something");
+	can.remove( can.$("#something") );
+	can.append( can.$("#qunit-test-area"), can.view("//can/view/test/qunit/plugin.ejs",{}) )
+	ok(/something/.test( can.$("#something span")[0].firstChild.nodeValue ),"something has something");
+	can.remove( can.$("#something") );
+	can.append( can.$("#qunit-test-area"), can.view("//can/view/test/qunit/plugin.ejs",{}) )
+	ok(/something/.test( can.$("#something span")[0].firstChild.nodeValue ),"something has something");
+	can.remove( can.$("#something") );
+	can.append( can.$("#qunit-test-area"), can.view("//can/view/test/qunit/plugin.ejs",{}) )
+	ok(/something/.test( can.$("#something span")[0].firstChild.nodeValue ),"something has something");
+	can.remove( can.$("#something") );
+})
+
 
 test("plugin in ejs", function(){
 
@@ -92,6 +108,24 @@ test("inline templates other than 'tmpl' like ejs", function(){
 	div.appendChild(can.view('test_ejs', {name: 'Henry'}))
 
 	equal( div.getElementsByTagName("span")[0].firstChild.nodeValue , 'Henry');
+});
+
+//canjs issue #31
+test("render inline templates with a #", function(){
+	var script = document.createElement('script');
+	script.setAttribute('type', 'test/ejs')
+	script.setAttribute('id', 'test_ejs')
+	script.text = '<span id="new_name"><%= name %></span>';
+	document.getElementById("qunit-test-area").appendChild(script);
+	
+	var div = document.createElement('div');
+	div.appendChild(can.view('#test_ejs', {name: 'Henry'}));
+
+	//make sure we aren't returning the current document as the template
+	equals(div.getElementsByTagName("script").length, 0, "Current document was not used as template")
+	if(div.getElementsByTagName("span").length === 1) {
+		equal( div.getElementsByTagName("span")[0].firstChild.nodeValue , 'Henry');
+	}
 });
 
 test("object of deferreds", function(){

@@ -18,7 +18,7 @@
 		src: url,
 		type: "js",
 		_skip: true
-	}, "../event.js").then(
+	}, "../event.js",'can/util/array/each.js').then(
 
 	function() {
 
@@ -47,17 +47,6 @@
 			return Y.Array.map(can.makeArray(arr || []), fn);
 		};
 
-		can.each = function( elements, callback ) {
-			var i, key;
-			if ( typeof elements.length == 'number' && elements.pop ) for ( i = 0; i < elements.length; i++ ) {
-				if ( callback(i, elements[i]) === false ) return elements;
-			}
-			else for ( key in elements ) {
-				if ( callback(key, elements[key]) === false ) return elements;
-			}
-			return elements;
-		};
-
 		// Map object helpers.
 		can.extend = function( first ) {
 			var deep = first === true ? 1 : 0,
@@ -70,7 +59,7 @@
 			return target;
 		}
 		can.param = function( object ) {
-			return Y.QueryString.stringify(object)
+			return Y.QueryString.stringify(object, {arrayKey: true})
 		}
 		can.isEmptyObject = function( object ) {
 			return Y.Object.isEmpty(object);
@@ -106,23 +95,21 @@
 		can.get = function( wrapped, index ) {
 			return wrapped._nodes[index];
 		}
-		can.buildFragment = function( frags, nodes ) {
-			var owner = nodes.length && nodes[0].ownerDocument,
-				frag = Y.Node.create(frags[0], owner);
+		can.buildFragment = function( html, node ) {
+			var owner = node && node.ownerDocument,
+				frag = Y.Node.create(html, owner);
 			frag = (frag && frag.getDOMNode()) || document.createDocumentFragment();
 			if ( frag.nodeType !== 11 ) {
 				var tmp = document.createDocumentFragment();
 				tmp.appendChild(frag)
 				frag = tmp;
 			}
-			return {
-				fragment: frag
-			}
+			return frag;
 		}
 		can.append = function( wrapped, html ) {
 			wrapped.each(function( node ) {
 				if ( typeof html === 'string' ) {
-					html = can.buildFragment([html], []).fragment
+					html = can.buildFragment(html, node)
 				}
 				node.append(html)
 			});

@@ -1,7 +1,8 @@
 @class can.route
 @inherits can.Observe
 @plugin can/route
-@parent index
+@parent canjs
+
 
 `can.route(route, defults)` helps manage browser history (and
 client state) by
@@ -164,6 +165,16 @@ routes given to `can.data`,
 are editable so experiment!
 
 @iframe can/route/demo.html 980
+
+## IE Compatibility
+
+Internet Explorer 6 and 7 does not support `window.onhashchange`. 
+Even Internet Explorer 8 running in IE7 compatibility mode reports `true` 
+for `onhashchange` in window, even though the event isn't supported.
+
+If you are using jQuery, you can include Ben Alman's [HashChange Plugin http://benalman.com/projects/jquery-hashchange-plugin/]
+to support the event in the unsupported browser(s).  Include `can/route/hashchange.js`
+in your file to support those browsers.
 
 ## Using routes with `can.Control`
 

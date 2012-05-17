@@ -18,7 +18,7 @@ Download [http://www.java.com/en/download/index.jsp Java here].
 There are 2 ways to get DoneJS:
 
  - [http://donejs.com/builder.html Downloading]
- - [developwithgit Installing DoneJS with Git]
+ - Installing DoneJS with Git
  
 We (and the [http://forum.donejs.com/ community]) would much prefer you to develop with git.  DoneJS is built 
 around modular development so it fits in perfectly
@@ -40,18 +40,19 @@ unzip in a public folder where the server hosts static content.
 
 ## Installing DoneJS with Git.
 
-DoneJS is comprised of four sub projects:
+DoneJS is comprised of several subprojects:
 
- - [http://github.com/jupiterjs/steal]
- - [http://github.com/jupiterjs/canjs]
- - [http://github.com/jupiterjs/documentjs]
- - [http://github.com/jupiterjs/funcunit]
+ - [CanJS](http://github.com/jupiterjs/canjs)
+ - [jQuery++](http://github.com/jupiterjs/jquerypp)
+ - [StealJS](http://github.com/jupiterjs/steal)
+ - [DocumentJS](http://github.com/jupiterjs/documentjs)
+ - [FuncUnit](http://github.com/jupiterjs/funcunit)
+ - [CanUI](http://github.com/jupiterjs/canui)
 
 You want to fork each project and add it as a submodule to your project 
 in a public folder (where your server keeps static content).
 If these words mean nothing to you, or you'd like more 
-explanation, you might want to read
-[developwithgit Developing With Git].
+explanation, you might want to read [developwithgit Developing With Git].
 
 Forking the repos looks like:
 

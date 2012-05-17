@@ -83,7 +83,7 @@ can.$ = Zepto
 
 	can.makeArray = function(arr){
 		var ret = []
-		can.each(arr, function(i,a){
+		can.each(arr, function(a, i){
 			ret[i] = a
 		})
 		return ret;
@@ -179,7 +179,7 @@ can.$ = Zepto
 	can.isEmptyObject = function(object){
 		var name;
 		for(name in object){};
-		return name !== undefined;
+		return name === undefined;
 	}
 
 	// Make extend handle `true` for deep.
@@ -198,4 +198,4 @@ can.$ = Zepto
 
 
 	
-}).then('../deferred.js')
+}).then('../deferred.js','can/util/array/each.js')

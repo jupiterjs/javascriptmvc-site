@@ -30,15 +30,15 @@ Heres a visual representation of how this app is broken up into modules.
 
 The code for these widgets is divided into three top level folders: MXUI, Jupiter, and Contacts.
 
-### MXUI
+### CanUI
 
-[https://github.com/jupiterjs/mxui MXUI]  (MX User Interface) is a CanJS widget library. The Grid and List widgets from MXUI are used in Contacts.
+[https://github.com/jupiterjs/canui CanUI] is a CanJS widget library. The Grid and List widgets from CanUI are used in Contacts.
 
-### Jupiter
+### Bitovi
 
-Each isolated module lives in its own directory.  Those directories are then grouped in a namespace, for example _Jupiter_ or the name of your company.  These modules are intended to be reused across applications.
+Each isolated module lives in its own directory.  Those directories are then grouped in a namespace, for example _Bitovi_ or the name of your company. These modules are intended to be reused across applications.
 
-The Jupiter folder contains:
+The Bitovi folder contains:
 
 * create - renders a form to create a new instance from a data source.
 * style - attaches jQuery UI styles to elements.
@@ -50,22 +50,22 @@ Finally, we need a widget that loads the modules and ties them together into a a
 
 This widget will be where the application starts, loading each module, initializing them, and gluing them together.
 
-	$.Controller("Contacts.Controller", {
+	can.Control("Contacts.Control", {
 		init: function(){
-			
-			this.params = new Mxui.Data();
-			
-			$("#category .list_wrapper").mxui_data_list({
+			this.params = new can.ui.Data();
+			new can.ui.data.List("#category .list_wrapper", {
 				model : Contacts.Models.Category,
-				show : "//contacts/views/categoryList",
-				create: "//contacts/views/categoryCreate"
-			});
-				
-			$("#location .list_wrapper").mxui_data_list({
+				show : "//contacts/views/categoryList.ejs",
+				create: "//contacts/views/categoryCreate.ejs",
+				callback : this.proxy('updateList', Contacts.Models.Category)
+			})
+
+			new can.ui.data.List("#location .list_wrapper", {
 				model : Contacts.Models.Location,
 				show : "//contacts/views/categoryList",
-				create: "//contacts/views/categoryCreate"
-			});
+				create: "//contacts/views/categoryCreate",
+				callback : this.proxy('updateList', Contacts.Models.Location)
+			})
 
 The contacts widget listens for events using event delegation and communicates with cousin widgets.
 

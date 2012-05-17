@@ -1,3 +1,4 @@
+@hide
 @page examples Examples
 @parent index 5
 @description Example application to learn from.
@@ -21,7 +22,7 @@ This article walks through a simple video player application utilizing Popcorn.j
 This article covers:
 
 - Installing and running the Application
-- Templated Events with [jQuery.Controller $.Controller]
+- Templated Events with [can.Control can.Control]
 - How PlayerMX is built
 
 ## [srchr Srchr] - [open application &#x21D7;](../examples/srchr/index.html)

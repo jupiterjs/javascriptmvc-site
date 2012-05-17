@@ -1,8 +1,8 @@
-steal('jquery/controller',
-	  'jquery/event/hashchange', 
+steal('can/control',
+	  'can/util/hashchange.js',
 	  'steal/html',function(){
 	
-	$.Controller('Ajaxy',{
+	can.Control('Ajaxy',{
 		init : function(){
 			this.updateContent()
 		},
@@ -23,5 +23,5 @@ steal('jquery/controller',
 		}
 	})
 	
-	$('#content').ajaxy()
+	new Ajaxy('#content');
 })

@@ -20,7 +20,7 @@ into the pit of success!
 To create your application, open a console window and 
 navigate to your public directory. Run:
 
-    > js jquery\generate\app cookbook
+    > js done\generate\app cookbook
 
 
 This script creates an application folder and 
@@ -57,7 +57,7 @@ you need to make another page for your app you
 can generate it:
 
 @codestart text
-> js jquery\generate\page cookbook index.html
+> js done\generate\page cookbook index.html
 Generating ... index.html
 @codeend
 
@@ -115,14 +115,14 @@ We'll use the scaffold generator to quickly create:
 To scaffold recipes run the following in the command-line console:
 
 @codestart text
-> js jquery\generate\scaffold Cookbook.Models.Recipe
+> js done\generate\scaffold Cookbook.Models.Recipe
 @codeend
 
 Here's what each part does:
 
 __recipe.js__
 
-Creates a recipe [jQuery.Model model] that is used
+Creates a recipe [can.Model model] that is used
 to create, retrieve, updated, and delete 
 recipes on the server.
 
@@ -175,8 +175,8 @@ looks like:
 	    'cookbook/list',
 	    function(){					// configure your application
     		
-    		$('#recipes').cookbook_recipe_list();
-    		$('#create').cookbook_recipe_create();
+    		new Cookbook.Recipe.List('#recipes');
+    		new Cookbook.Recipe.Create('#create');
     })
 
 You'll notice that it now loads <code>cookbook/create</code>
@@ -261,9 +261,9 @@ The Cookbook application can be broken into 5 parts:
 
 <code>cookbook/models/recipe.js</code> looks like:
 
-    steal('jquery/model', function(){
+    steal('can/model', function(){
     
-      $.Model('Cookbook.Models.Recipe',
+      can.Model('Cookbook.Models.Recipe',
       {
         findAll: "/recipes.json",
         findOne : "/recipes/{id}.json", 
@@ -274,7 +274,7 @@ The Cookbook application can be broken into 5 parts:
       {});
     })
 
-This loads [jQuery.Model $.Model] and uses it to create a 
+This loads [can.Model can.Model] and uses it to create a 
 <code>Cookbook.Models.Recipe</code> class.  This class lets us
 create, retrieve, update, and delete models programmatically like:
 
@@ -317,13 +317,13 @@ where fixtures come in.
 
 ### The Recipe Fixture
 
-[jQuery.fixture Fixtures] intercept Ajax requests and 
+[can.fixture Fixtures] intercept Ajax requests and 
 simulate the response. They are a great tool that enables
 you to start work on the front end without a ready server.
 
 Open <code>cookbook/fixtures/fixtures.js</code> and you will find:
 
-    $.fixture.make("recipe", 5, function(i, recipe){
+    can.fixture.make("recipe", 5, function(i, recipe){
     	var descriptions = ["grill fish", "make ice", "cut onions"]
     	return {
     		name: "recipe "+i,
@@ -345,14 +345,14 @@ independent of the rest of the application.
 Open <code>cookbook/recipe/create/create.js</code> to
 see the Cookbook.Recipe.Create control's code:
 
-    steal( 'jquery/controller',
-           'jquery/view/ejs',
+    steal( 'can/control',
+           'can/view/ejs',
            'jquery/dom/form_params',
-           'jquery/controller/view',
+           'can/control/view',
            'cookbook/models' )
     .then('./views/init.ejs', function($){
 
-      $.Controller('Cookbook.Recipe.Create',
+      can.Control('Cookbook.Recipe.Create',
       {
         init : function(){
           this.element.html(this.view());
@@ -374,7 +374,7 @@ This code uses [steal] to load dependencies and then creates a
 a <code>cookbook_recipe_create</code> jQuery helper function that
 can be called on a form element like:
 
-    $('form#create').cookbook_recipe_create()
+    new Cookbook.Recipe.Create('form#create')
 
 When the jQuery plugin is called, the controller's <code>init</code>
 method is called and runs 
@@ -400,7 +400,7 @@ listens for recipes being created and adds them to the list.
 Open <code>cookbook/recipe/list/list.js</code> to
 see the Cookbook.Recipe.Create control's code:
 
-    $.Controller('Cookbook.Recipe.List',
+    can.Control('Cookbook.Recipe.List',
     {
       init : function(){
         this.element.html(this.view('init',Cookbook.Models.Recipe.findAll()) )

@@ -159,6 +159,26 @@ test("helpers", function() {
 	equals(can.$('#hookup')[0].innerHTML, "Simple");
 });
 
+test('list helper', function(){
+	
+	var text = "<% list(todos, function(todo){ %><div><%= todo.name %></div><% }) %>";
+		Todos = new can.Observe.List([
+			{id: 1, name: 'Dishes'}
+		]),
+		compiled = new can.EJS({text: text}).render({todos: Todos}),
+		div = document.createElement('div');
+
+		div.appendChild(can.view.frag(compiled))
+		equals(div.getElementsByTagName('div').length, 1, '1 item in list')
+
+		Todos.push({id: 2, name: 'Laundry'})
+		equals(div.getElementsByTagName('div').length, 2, '2 items in list')
+
+		Todos.splice(0, 2);
+		equals(div.getElementsByTagName('div').length, 0, '0 items in list')
+
+});
+
 test("attribute single unescaped, html single unescaped", function(){
 
 	var text = "<div id='me' class='<%== task.attr('completed') ? 'complete' : ''%>'><%== task.attr('name') %></div>";
@@ -498,7 +518,7 @@ test("unescape bindings change", function(){
 	var completed = function(){
 		l.attr('length');
 		var num = 0;
-		l.each(function(i, item){
+		l.each(function(item){
 			if(item.attr('complete')){
 				num++;
 			}
@@ -542,7 +562,7 @@ test("escape bindings change", function(){
 	var completed = function(){
 		l.attr('length');
 		var num = 0;
-		l.each(function(i, item){
+		l.each(function(item){
 			if(item.attr('complete')){
 				num++;
 			}
@@ -580,7 +600,7 @@ test("tag bindings change", function(){
 	var completed = function(){
 		l.attr('length');
 		var num = 0;
-		l.each(function(i, item){
+		l.each(function(item){
 			if(item.attr('complete')){
 				num++;
 			}
@@ -617,7 +637,7 @@ test("attribute value bindings change", function(){
 	var completed = function(){
 		l.attr('length');
 		var num = 0;
-		l.each(function(i, item){
+		l.each(function(item){
 			if(item.attr('complete')){
 				num++;
 			}

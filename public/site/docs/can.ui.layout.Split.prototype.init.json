@@ -1,0 +1,1 @@
+c({"name": "can.ui.layout.Split.prototype.init", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.layout.Split.prototype"], "comment": "<p>Init method called by CanJS base control.</p>", "hide": true, "src": "canui/layout/split/split.js", "line": 140, "children": []})

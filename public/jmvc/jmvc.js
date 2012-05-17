@@ -10,4 +10,5 @@ steal('can/construct',
 	'can/observe/delegate',
 	'can/observe/validations',
 	'can/route',
-	'can/view/ejs')
+	'can/view/ejs',
+	'can/view/modifiers')

@@ -26,7 +26,7 @@ This type of architecture in not desirable for many reasons:
 
 ### Event Oriented Architecture
 
-Rather than using callbacks, the contacts application uses EOA.  One good example is how the grid is filtered from a user clicking an item in a list.
+Rather than using callbacks, the contacts application uses EOA. One good example is how the grid is filtered from a user clicking an item in a list.
 
 As items are clicked in the list, it triggers an "activate" event, including the selected row’s model instance in the event.  
 
