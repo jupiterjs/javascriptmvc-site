@@ -1,0 +1,1 @@
+c({"name": "jQuery.Drop.static.clear", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Drop.static"], "comment": "<p>Called after dragging has stopped.</p>", "hide": true, "src": "jquery/event/drop/drop.js", "line": 359, "children": []})

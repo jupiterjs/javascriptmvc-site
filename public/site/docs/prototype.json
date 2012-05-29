@@ -1,1 +1,1 @@
-c({"name": "prototype", "type": "prototype", "comment": "", "src": "can/view/ejs/ejs.js", "line": 206, "children": ["prototype.render"]})
+c({"name": "prototype", "type": "prototype", "comment": "", "src": "funcunit/browser/waits.js", "line": 146, "children": ["prototype.exists", "prototype.missing", "prototype.visible", "prototype.invisible", "prototype.wait", "prototype.then"]})

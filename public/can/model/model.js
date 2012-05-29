@@ -15,7 +15,7 @@ steal('can/observe', function() {
 			arguments[0] = model[func](arguments[0])
 			d.resolve.apply(d, arguments)
 		},function(){
-			d.resolveWith.apply(this,arguments)
+			d.rejectWith.apply(this,arguments)
 		})
 		return d;
 	},
@@ -96,6 +96,63 @@ steal('can/observe', function() {
 	/** 
 	 * @Static
 	 */
+	//
+		/**
+		 * @function bind
+		 * `bind(eventType, handler(event, instance))` listens to
+		 * __created__, __updated__, __destroyed__ events on all 
+		 * instances of the model.
+		 * 
+		 *     Task.bind("created", function(ev, createdTask){
+		 * 	     this //-> Task
+		 *       createdTask.attr("name") //-> "Dishes"
+		 *     })
+		 *     
+		 *     new Task({name: "Dishes"}).save();
+		 * 
+		 * @param {String} eventType The type of event.  It must be
+		 * `"created"`, `"udpated"`, `"destroyed"`.
+		 * 
+		 * @param {Function} handler(event,instance) A callback function
+		 * that gets called with the event and instance that was
+		 * created, destroyed, or updated.
+		 * 
+		 * @return {can.Model} the model constructor function.
+		 */
+		// 
+		/**
+		 * @function unbind
+		 * `unbind(eventType, handler)` removes a listener
+		 * attached with [can.Model.bind].
+		 * 
+		 *     var handler = function(ev, createdTask){
+		 * 	     
+		 *     }
+		 *     Task.bind("created", handler)
+		 *     Task.unbind("created", handler)
+		 * 
+		 * You have to pass the same function to `unbind` that you
+		 * passed to `bind`.
+		 * 
+		 * @param {String} eventType The type of event.  It must be
+		 * `"created"`, `"udpated"`, `"destroyed"`.
+		 * 
+		 * @param {Function} handler(event,instance) A callback function
+		 * that was passed to `bind`.
+		 * 
+		 * @return {can.Model} the model constructor function.
+		 */
+		// 
+		/**
+		 * @attribute id
+		 * The name of the id field.  Defaults to 'id'. Change this if it is something different.
+		 * 
+		 * For example, it's common in .NET to use Id.  Your model might look like:
+		 * 
+		 *     Friend = can.Model({
+		 *       id: "Id"
+		 *     },{});
+		 */
 	ajaxMethods = {
 		/**
 		 * @function create
@@ -116,7 +173,7 @@ steal('can/observe', function() {
 		 *     new Recipe({name: "hot dog"}).save();
 		 * 
 		 * 
-		 * ## Implmeent with a Function
+		 * ## Implement with a Function
 		 * 
 		 * You can also implement create by yourself. Create gets called 
 		 * with `attrs`, which are the [can.Observe::serialize serialized] model 
@@ -487,31 +544,25 @@ steal('can/observe', function() {
 			if(this === can.Model){
 				return;
 			}
-			var self = this;
-			
+			var self = this,
+				clean = can.proxy(this._clean, self);
+				
 			can.each(ajaxMethods, function(method, name){
 				if ( ! can.isFunction( self[name] )) {
 					self[name] = ajaxMaker(method, self[name]);
 				}
+				if (self["make"+can.capitalize(name)]){
+					var newMethod = self["make"+can.capitalize(name)](self[name]);
+					can.Construct._overwrite(self, base, name,function(){
+						this._super;
+						this._reqs++;
+						return newMethod.apply(this, arguments).then(clean, clean);
+					})
+				}
 			});
-			var clean = can.proxy(this._clean, self);
-			can.each({findAll : "models", findOne: "model"}, function(method, name){
-				
-				var old = self[name];
-				can.Construct._overwrite(self, base, name, function(params, success, error){
-					// this._super to trick it to load super
-					this._super;
-					// Increment requests.
-					self._reqs++;
-					// Make the request.
-					return pipe( old.call( this, params ),
-						this, 
-						method ).then(success,error).then(clean, clean);
-				});
-			})
-			// Convert `findAll` and `findOne`.
-			var oldFindAll
-			if(self.fullName == "can.Model"){
+
+
+			if(!self.fullName || self.fullName == base.fullName){
 				self.fullName = self._shortName = "Model"+(++modelNum);
 			}
 			// Ddd ajax converters.
@@ -617,9 +668,9 @@ steal('can/observe', function() {
 				return;
 			}
       
-      if ( instancesRawData instanceof this.List ) {
-        return instancesRawData;
-      }
+			if ( instancesRawData instanceof this.List ) {
+				return instancesRawData;
+			}
 
 			// Get the list type.
 			var self = this,
@@ -735,68 +786,12 @@ steal('can/observe', function() {
 			if ( attributes instanceof this ) {
 				attributes = attributes.serialize();
 			}
-			var model = this.store[attributes[this.id]] || new this( attributes );
+			var model = this.store[attributes[this.id]] ? this.store[attributes[this.id]].attr(attributes) : new this( attributes );
 			if(this._reqs){
 				this.store[attributes[this.id]] = model;
 			}
 			return model;
 		}
-		/**
-		 * @function bind
-		 * `bind(eventType, handler(event, instance))` listens to
-		 * __created__, __updated__, __destroyed__ events on all 
-		 * instances of the model.
-		 * 
-		 *     Task.bind("created", function(ev, createdTask){
-		 * 	     this //-> Task
-		 *       createdTask.attr("name") //-> "Dishes"
-		 *     })
-		 *     
-		 *     new Task({name: "Dishes"}).save();
-		 * 
-		 * @param {String} eventType The type of event.  It must be
-		 * `"created"`, `"udpated"`, `"destroyed"`.
-		 * 
-		 * @param {Function} handler(event,instance) A callback function
-		 * that gets called with the event and instance that was
-		 * created, destroyed, or updated.
-		 * 
-		 * @return {can.Model} the model constructor function.
-		 */
-		// 
-		/**
-		 * @function unbind
-		 * `unbind(eventType, handler)` removes a listener
-		 * attached with [can.Model.bind].
-		 * 
-		 *     var handler = function(ev, createdTask){
-		 * 	     
-		 *     }
-		 *     Task.bind("created", handler)
-		 *     Task.unbind("created", handler)
-		 * 
-		 * You have to pass the same function to `unbind` that you
-		 * passed to `bind`.
-		 * 
-		 * @param {String} eventType The type of event.  It must be
-		 * `"created"`, `"udpated"`, `"destroyed"`.
-		 * 
-		 * @param {Function} handler(event,instance) A callback function
-		 * that was passed to `bind`.
-		 * 
-		 * @return {can.Model} the model constructor function.
-		 */
-		// 
-		/**
-		 * @attribute id
-		 * The name of the id field.  Defaults to 'id'. Change this if it is something different.
-		 * 
-		 * For example, it's common in .NET to use Id.  Your model might look like:
-		 * 
-		 *     Friend = can.Model({
-		 *       id: "Id"
-		 *     },{});
-		 */
 	},
 	/**
 	 * @prototype
@@ -1022,6 +1017,19 @@ steal('can/observe', function() {
 		}
 	});
 	
+
+	
+				
+	can.each({makeFindAll : "models", makeFindOne: "model"}, function(method, name){
+		can.Model[name] = function(oldFind){
+			return function(params, success, error){
+				return pipe( oldFind.call( this, params ),
+							this, 
+							method ).then(success,error)
+			}
+		};
+	});
+				
 		can.each([
 	/**
 	 * @function created

@@ -56,8 +56,15 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 	 * @plugin jquery/event/drop
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/event/drop/drop.js
 	 * @test jquery/event/drag/qunit.html
-	 * 
-	 * The constructor is never called directly.
+	 *
+	 * The `$.Drop` constructor is never called directly but an instance of `$.Drag` is passed as the second argument
+	 * to the `dropinit`, `dropover`, `dropmove`, `dropon`, and `dropend` event handlers. The third argument will be
+	 * an instance of [jQuery.Drag]:
+	 *
+	 *      $('#dropper').on('dropover', function(el, drop, drag) {
+	 *          // drop -> $.Drop
+	 *          // drag -> $.Drag
+	 *      });
 	 */
 	$.Drop = function(callbacks, element){
 		jQuery.extend(this,callbacks);
@@ -85,6 +92,9 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 	});
 	
 	$.extend($.Drop,{
+		/**
+		 * @static
+		 */
 		lowerName: "drop",
 		_rootElements: [], //elements that are listening for drops
 		_elements: $(),    //elements that can be dropped on
@@ -151,7 +161,7 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 			responder.callHandlers(this.lowerName+'move',responder.element[0], event, mover)
 		},
 		/**
-		 * Gets all elements that are droppable and adds them to a list.
+		 * `$.Drop.compile()` gets all elements that are droppable and adds them to a list.
 		 * 
 		 * This should be called if and when new drops are added to the page
 		 * during the motion of a single drag.
@@ -363,6 +373,9 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 	$.Drag.responder = $.Drop;
 	
 	$.extend($.Drop.prototype,{
+		/**
+		 * @prototype
+		 */
 		callHandlers: function( method, el, ev, drag ) {
 			var length = this[method] ? this[method].length : 0
 			for(var i =0; i < length; i++){
@@ -370,16 +383,20 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 			}
 		},
 		/**
-		 * Caches positions of draggable elements.  This should be called in dropinit.  For example:
-		 * @codestart
-		 * dropinit: function( el, ev, drop ) { drop.cache_position() }
-		 * @codeend
+		 * `drop.cache(value)` sets the drop to cache positions of draggable elements.
+		 * This should be called in `dropinit`. For example:
+		 *
+		 *      $('#dropable').on('dropinit', function( el, ev, drop ) {
+		 *          drop.cache();
+		 *      });
+		 *
+		 * @param {Boolean} [value=true] Whether to cache drop elements or not.
 		 */
 		cache: function( value ) {
 			this._cache = value != null ? value : true;
 		},
 		/**
-		 * Prevents this drop from being dropped on.
+		 * `drop.cancel()` prevents this drop from being dropped on.
 		 */
 		cancel: function() {
 			this._canceled = true;

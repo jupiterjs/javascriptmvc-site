@@ -219,16 +219,18 @@ define("plugd/trigger",["dojo"], function(dojo){
 
 	can.each = function(elements, callback) {
 		var i = 0, key;
-		if (typeof  elements.length == 'number' && elements.pop) {
-			elements.attr && elements.attr('length');
-			for(var len = elements.length; i < len; i++) {
-				if(callback(elements[i], i, elements) === false) return elements;
-			}
-		} else {
-			for(key in elements) {
-				if(callback(elements[key], key) === false) return elements;
-			}
-		}
+    if ( elements ) {
+      if (typeof  elements.length == 'number' && elements.pop) {
+        elements.attr && elements.attr('length');
+        for(var len = elements.length; i < len; i++) {
+          if(callback(elements[i], i, elements) === false) return elements;
+        }
+      } else {
+        for(key in elements) {
+          if(callback(elements[key], key) === false) return elements;
+        }
+      }
+    }
 		return elements;
 	}
 ;
@@ -1534,7 +1536,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 			arguments[0] = model[func](arguments[0])
 			d.resolve.apply(d, arguments)
 		},function(){
-			d.resolveWith.apply(this,arguments)
+			d.rejectWith.apply(this,arguments)
 		})
 		return d;
 	},
@@ -1612,7 +1614,10 @@ define("plugd/trigger",["dojo"], function(dojo){
 	//		`url` - The default url to use as indicated as a property on the model.
 	//		`type` - The default http request type
 	//		`data` - A method that takes the `arguments` and returns `data` used for ajax.
-		ajaxMethods = {
+		//
+				// 
+				// 
+			ajaxMethods = {
 				create : {
 			url : "_shortName",
 			type :"post"
@@ -1667,31 +1672,24 @@ define("plugd/trigger",["dojo"], function(dojo){
 			if(this === can.Model){
 				return;
 			}
-			var self = this;
-			
+			var self = this,
+				clean = can.proxy(this._clean, self);
+				
 			can.each(ajaxMethods, function(method, name){
 				if ( ! can.isFunction( self[name] )) {
 					self[name] = ajaxMaker(method, self[name]);
 				}
+				if (self["make"+can.capitalize(name)]){
+					var newMethod = self["make"+can.capitalize(name)](self[name]);
+					can.Construct._overwrite(self, base, name,function(){
+						this._super;
+						this._reqs++;
+						return newMethod.apply(this, arguments).then(clean, clean);
+					})
+				}
 			});
-			var clean = can.proxy(this._clean, self);
-			can.each({findAll : "models", findOne: "model"}, function(method, name){
-				
-				var old = self[name];
-				can.Construct._overwrite(self, base, name, function(params, success, error){
-					// this._super to trick it to load super
-					this._super;
-					// Increment requests.
-					self._reqs++;
-					// Make the request.
-					return pipe( old.call( this, params ),
-						this, 
-						method ).then(success,error).then(clean, clean);
-				});
-			})
-			// Convert `findAll` and `findOne`.
-			var oldFindAll
-			if(self.fullName == "can.Model"){
+
+			if(!self.fullName || self.fullName == base.fullName){
 				self.fullName = self._shortName = "Model"+(++modelNum);
 			}
 			// Ddd ajax converters.
@@ -1716,9 +1714,9 @@ define("plugd/trigger",["dojo"], function(dojo){
 				return;
 			}
       
-      if ( instancesRawData instanceof this.List ) {
-        return instancesRawData;
-      }
+			if ( instancesRawData instanceof this.List ) {
+				return instancesRawData;
+			}
 
 			// Get the list type.
 			var self = this,
@@ -1767,15 +1765,13 @@ define("plugd/trigger",["dojo"], function(dojo){
 			if ( attributes instanceof this ) {
 				attributes = attributes.serialize();
 			}
-			var model = this.store[attributes[this.id]] || new this( attributes );
+			var model = this.store[attributes[this.id]] ? this.store[attributes[this.id]].attr(attributes) : new this( attributes );
 			if(this._reqs){
 				this.store[attributes[this.id]] = model;
 			}
 			return model;
 		}
-				// 
-				// 
-			},
+	},
 		{
 				isNew: function() {
 			var id = getId(this);
@@ -1817,6 +1813,19 @@ define("plugd/trigger",["dojo"], function(dojo){
 		}
 	});
 	
+
+	
+				
+	can.each({makeFindAll : "models", makeFindOne: "model"}, function(method, name){
+		can.Model[name] = function(oldFind){
+			return function(params, success, error){
+				return pipe( oldFind.call( this, params ),
+							this, 
+							method ).then(success,error)
+			}
+		};
+	});
+				
 		can.each([
 		"created",
 		"updated",
@@ -1963,12 +1972,13 @@ define("plugd/trigger",["dojo"], function(dojo){
         // Extract the variable names and replace with `RegExp` that will match
 		// an atual URL with values.
 		var names = [],
-			test = url.replace(matcher, function( whole, name ) {
-				names.push(name)
+			test = url.replace(matcher, function( whole, name, i ) {
+				names.push(name);
+				var next = "\\"+( url.substr(i+whole.length,1) || "&" )
 				// a name without a default value HAS to have a value
 				// a name that has a default value can be empty
 				// The `\\` is for string-escaping giving single `\` for `RegExp` escaping.
-				return "([^\\/\\&]"+(defaults[name] ? "*" : "+")+")"
+				return "([^" +next+"]"+(defaults[name] ? "*" : "+")+")"
 			});
 
 		// Add route in a form that can be easily figured out.
@@ -1990,7 +2000,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 	};
 
 	extend(can.route, {
-				param: function( data ) {
+				param: function( data , _setRoute ) {
 			// Check if the provided data keys match the names in any routes;
 			// Get the one with the most matches.
 			var route,
@@ -2032,16 +2042,21 @@ define("plugd/trigger",["dojo"], function(dojo){
                         return data[name] === route.defaults[name] ? "" : encodeURIComponent( data[name] );
                     }),
                     after;
-					// Remove matching default values
-					each(route.defaults, function(val,name){
-						if(cpy[name] === val) {
-							delete cpy[name]
-						}
-					})
-					
-					// The remaining elements of data are added as 
-					// `&amp;` separated parameters to the url.
-					after = can.param(cpy);
+				// Remove matching default values
+				each(route.defaults, function(val,name){
+					if(cpy[name] === val) {
+						delete cpy[name]
+					}
+				})
+				
+				// The remaining elements of data are added as 
+				// `&amp;` separated parameters to the url.
+				after = can.param(cpy);
+				// if we are paraming for setting the hash
+				// we also want to make sure the route value is updated
+				if(_setRoute){
+					can.route.attr('route',route.route);
+				}
 				return res + (after ? "&" + after : "")
 			}
             // If no route was found, there is no hash URL, only paramters.
@@ -2132,10 +2147,25 @@ define("plugd/trigger",["dojo"], function(dojo){
         curParams,
         // Deparameterizes the portion of the hash of interest and assign the
         // values to the `can.route.data` removing existing values no longer in the hash.
+        // setState is called typically by hashchange which fires asynchronously
+        // So it's possible that someone started changing the data before the 
+        // hashchange event fired.  For this reason, it will not set the route data
+        // if the data is changing and the hash already matches the hash that was set.
         setState = function() {
-			curParams = can.route.deparam( location.href.split(/#!?/)[1] || "" );
-			can.route.attr(curParams, true);
-		};
+        	var hash = location.href.split(/#!?/)[1] || ""
+			curParams = can.route.deparam( hash );
+			
+			
+			// if the hash data is currently changing, and
+			// the hash is what we set it to anyway, do NOT change the hash
+			if(!changingData || hash !== lastHash){
+				can.route.attr(curParams, true);
+			}
+		},
+		// The last hash caused by a data change
+		lastHash,
+		// Are data changes pending that haven't yet updated the hash
+		changingData;
 
 	// If the hash changes, update the `can.route.data`.
 	can.bind.call(window,'hashchange', setState);
@@ -2143,11 +2173,16 @@ define("plugd/trigger",["dojo"], function(dojo){
 	// If the `can.route.data` changes, update the hash.
     // Using `.serialize()` retrieves the raw data contained in the `observable`.
     // This function is ~~throttled~~ debounced so it only updates once even if multiple values changed.
-	can.route.bind("change", function() {
+    // This might be able to use batchNum and avoid this.
+	can.route.bind("change", function(ev, attr) {
+		// indicate that data is changing
+		changingData = 1;
 		clearTimeout( timer );
 		timer = setTimeout(function() {
+			// indicate that the hash is set to look like the data
+			changingData = 0;
 			var serialized = can.route.data.serialize();
-			location.hash = "#!" + can.route.param(serialized)
+			location.hash = "#!" + (lastHash = can.route.param(serialized, true))
 		}, 1);
 	});
 	// `onready` event...
@@ -2191,6 +2226,9 @@ define("plugd/trigger",["dojo"], function(dojo){
 		// Moves `this` to the first argument, wraps it with `jQuery` if it's an element
 		shifter = function shifter(context, name) {
 			var method = typeof name == "string" ? context[name] : name;
+			if(!isFunction(method)){
+				method = context[method];
+			}
 			return function() {
 				context.called = name;
     			return method.apply(context, [this.nodeName ? can.$(this) : this].concat( slice.call(arguments, 0)));
@@ -2216,11 +2254,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 
 				// Calculate and cache actions.
 				control.actions = {};
-
 				for ( funcName in control.prototype ) {
-					if (funcName == 'constructor' || ! isFunction(control.prototype[funcName]) ) {
-						continue;
-					}
 					if ( control._isAction(funcName) ) {
 						control.actions[funcName] = control._action(funcName);
 					}
@@ -2229,7 +2263,15 @@ define("plugd/trigger",["dojo"], function(dojo){
 		},
 		// Return `true` if is an action.
 				_isAction: function( methodName ) {
-			return !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
+			
+			var val = this.prototype[methodName],
+				type = typeof val;
+			// if not the constructor
+			return (methodName !== 'constructor') &&
+				// and is a function or links to a function
+				( type == "function" || (type == "string" &&  isFunction(this.prototype[val] ) ) ) &&
+				// and is in special, a processor, or has a funny character
+			    !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
 		},
 		// Takes a method name and the options passed to a control
 		// and tries to return the data necessary to pass to a processor
@@ -2238,7 +2280,7 @@ define("plugd/trigger",["dojo"], function(dojo){
 			
 			// If we don't have options (a `control` instance), we'll run this 
 			// later.  
-      paramReplacer.lastIndex = 0;
+      		paramReplacer.lastIndex = 0;
 			if ( options || ! paramReplacer.test( methodName )) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
@@ -2417,8 +2459,12 @@ define("plugd/trigger",["dojo"], function(dojo){
 					
 					var d = can.route.attr();
 					delete d.route;
+					if(can.isFunction(controller[funcName])){
+						controller[funcName]( d )
+					}else {
+						controller[controller[funcName]](d)
+					}
 					
-					controller[funcName]( d )
 				}
 			}
 		can.route.bind( 'change', check );

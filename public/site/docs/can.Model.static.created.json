@@ -1,1 +1,0 @@
-c({"name": "can.Model.static.created", "type": "function", "parents": ["can.Model.static"], "comment": "<p>Called by save after a new instance is created.  Publishes 'created'.</p>", "hide": true, "params": {"attrs": {"order": 0, "description": "", "name": "attrs", "type": "Object", "optional": false}}, "src": "can/model/model.js", "line": 1025, "children": []})

@@ -1,0 +1,1 @@
+c({"name": "FuncUnit.animationsDone", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Waits until all animations in the page have completed.  Only works\nif the tested page has jQuery present.</p>", "src": "funcunit/browser/waits.js", "line": 136, "children": []})

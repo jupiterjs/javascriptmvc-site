@@ -1,0 +1,1 @@
+c({"name": "jQuery.Drop.static", "type": "static", "parents": ["jQuery.Drop"], "comment": "", "src": "jquery/event/drop/drop.js", "line": 94, "children": ["jQuery.Drop.static.sortByDeepestChild", "jQuery.Drop.static.isAffected", "jQuery.Drop.static.deactivate", "jQuery.Drop.static.activate", "jQuery.Drop.static.compile", "jQuery.Drop.static.clear"]})

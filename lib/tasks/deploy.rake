@@ -47,7 +47,7 @@ namespace :deploy do
 		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git donejs'
 		sh 'git submodule update --init'
 
-		sh 'cd donejs && git checkout donejs && git pull git@github.com:jupiterjs/donejs.git donejs'
+		sh 'cd donejs && git pull git@github.com:jupiterjs/donejs.git'
 		sh 'cd donejs && git submodule update --init --recursive'
 
 		sh 'cd examples/todo && git checkout master && git pull git@github.com:jupiterjs/cantodo.git master'
