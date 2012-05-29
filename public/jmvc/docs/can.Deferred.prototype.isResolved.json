@@ -1,1 +1,0 @@
-c({"name": "can.Deferred.prototype.isResolved", "type": "function", "parents": ["can.Deferred.prototype"], "comment": "<p><code>deferred.isResolved()</code> returns whether a Deferred object has been resolved.</p>\n\n<pre><code>var def = can.Deferred();\nvar resolved = def.isResolved(); \n</code></pre>", "src": "can/util/util.js", "line": 552, "children": []})

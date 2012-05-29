@@ -1,1 +1,1 @@
-c({"name": "can.view.cached", "type": "attribute", "parents": ["can.view"], "comment": "<p>Cached are put in this object</p>", "hide": true, "src": "can/view/view.js", "line": 96, "children": []})
+c({"name": "can.view.cached", "type": "attribute", "parents": ["can.view"], "comment": "<p>Cached are put in this object</p>", "hide": true, "src": "can/view/view.js", "line": 89, "children": []})
