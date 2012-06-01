@@ -1,1 +1,1 @@
-c({"name": "jQuery.View", "children": ["Jaml", "Micro", "jQuery.tmpl", "view.deferreds", "view.deferreds"]})
+c({"name": "jQuery.View", "children": ["view.deferreds", "view.deferreds"]})

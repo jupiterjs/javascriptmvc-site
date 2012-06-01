@@ -3,7 +3,15 @@
 
 @plugin jquery/dom/dimensions
 
-`jQuery.dimensions` adds support for setting and animating inner and outer dimensions.
+`jQuery.dimensions` adds support for animating and setting inner and outer dimensions.
+It overwrites
+
+* `[jQuery.fn.outerHeight jQuery.fn.outerHeight(value, includeMargins)]`
+* `[jQuery.fn.outerWidth jQuery.fn.outerWidth(value, includeMargins)]`
+* `[jQuery.fn.innerHeight jQuery.fn.innerHeight(value)]`
+* `[jQuery.fn.innerWidth jQuery.fn.innerWidth(value)]`
+
+to let you set these properties and extends [animate](http://api.jquery.com/animate/) to animate them.
 
 ## Use
 
@@ -11,11 +19,6 @@ When writing reusable plugins, you often want to
 set or animate an element's width and height that include its padding,
 border, or margin.  This is especially important in plugins that
 allow custom styling.
-
-The dimensions plugin overwrites [jQuery.fn.outerHeight outerHeight],
-[jQuery.fn.outerWidth outerWidth], [jQuery.fn.innerHeight innerHeight] 
-and [jQuery.fn.innerWidth innerWidth] to let you set these properties and
-extends [animate](http://api.jquery.com/animate/) to animate them.
 
 ## Quick Examples
 

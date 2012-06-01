@@ -1,1 +1,1 @@
-c({"name": "jQuery.Vector.prototype.top", "type": "attribute", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Same as y()</p>", "ret": {"description": "", "type": "Number"}, "src": "jquery/lang/vector/vector.js", "line": 105, "children": []})
+c({"name": "jQuery.Vector.prototype.top", "type": "attribute", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Alias for [jQuery.Vector.prototype.y].</p>", "hide": true, "ret": {"description": "", "type": "Number"}, "src": "jquery/lang/vector/vector.js", "line": 134, "children": []})

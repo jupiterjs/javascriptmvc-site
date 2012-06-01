@@ -1,1 +1,1 @@
-c({"name": "jquerymx", "children": ["specialevents", "dom"]})
+c({"name": "jquerymx", "children": ["dom", "specialevents"]})

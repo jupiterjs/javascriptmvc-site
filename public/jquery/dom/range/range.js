@@ -2,17 +2,18 @@ steal('jquery','jquery/dom/compare').then(function($){
 // TODOS ...
 // Ad
 
+$.fn.range =
 /**
  * @function jQuery.fn.range
  * @parent jQuery.Range
- * 
- * Returns a jQuery.Range for the selected element.
- * 
- *     $('#content').range()
+ *
+ * `$.fn.range` returns a new [jQuery.Range] instance for the first selected element.
+ *
+ *     $('#content').range() //-> range
  *
  * @return {$.Range} A $.Range instance for the selected element
  */
-$.fn.range = function(){
+function(){
 	return $.Range(this[0])
 }
 
@@ -40,7 +41,7 @@ support = {};
  * @Class jQuery.Range
  * @parent jQuery.Range
  *
- * Creates a a new range object.
+ * Depending on the object passed, the selected text will be different.
  * 
  * @param {TextRange|HTMLElement|Point} [range] An object specifiying a 
  * range.  Depending on the object, the selected text will be different.  $.Range supports the
@@ -60,31 +61,43 @@ support = {};
  *   - __TextRange__ a raw text range object.
  */
 $.Range = function(range){
+	// If it's called w/o new, call it with new!
 	if(this.constructor !== $.Range){
 		return new $.Range(range);
 	}
+	// If we are passed a jQuery-wrapped element, get the raw element
 	if(range && range.jquery){
 		range = range[0];
 	}
-	// create one
+	// If we have an element, or nothing
 	if(!range || range.nodeType){
+		// create a range
 		this.win = getWindow(range)
 		if(this.win.document.createRange){
 			this.range = this.win.document.createRange()
 		}else{
 			this.range = this.win.document.body.createTextRange()
 		}
+		// if we have an element, make the range select it
 		if(range){
 			this.select(range)
 		}
-		
-	} else if (range.clientX != null || range.pageX != null || range.left != null) {
-		this.moveToPoint(range)
-	} else if (range.originalEvent && range.originalEvent.touches && range.originalEvent.touches.length) {
+	} 
+	// if we are given a point
+	else if (range.clientX != null || range.pageX != null || range.left != null) {
+		this.moveToPoint(range);
+	} 
+	// if we are given a touch event
+	else if (range.originalEvent && range.originalEvent.touches && range.originalEvent.touches.length) {
 		this.moveToPoint(range.originalEvent.touches[0])
-	} else if (range.originalEvent && range.originalEvent.changedTouches && range.originalEvent.changedTouches.length) {
+	
+	} 
+	// if we are a normal event
+	else if (range.originalEvent && range.originalEvent.changedTouches && range.originalEvent.changedTouches.length) {
 		this.moveToPoint(range.originalEvent.changedTouches[0])
-	} else {
+	} 
+	// given a TextRange or something else?
+	else {
 		this.range = range;
 	} 
 };
@@ -120,6 +133,20 @@ current = function(el){
 $.extend($.Range.prototype,
 /** @prototype **/
 {
+	/**
+	 * `range.moveToPoint(point)` moves the range end and start position to a specific point.
+	 * A point can be specified like:
+	 *
+	 *      //client coordinates
+	 *      {clientX: 200, clientY: 300}
+	 *
+	 *      //page coordinates
+	 *      {pageX: 200, pageY: 300}
+	 *      {top: 200, left: 300}
+	 *
+	 * @param point The point to move the range to
+	 * @return {$.Range}
+	 */
 	moveToPoint : function(point){
 		var clientX = point.clientX, clientY = point.clientY
 		if(!clientX){
@@ -262,7 +289,7 @@ $.extend($.Range.prototype,
 	 *
 	 *         $('#foo').range().start("+4")
 	 *
-	 * Note that end can return a text node. To get the containing element use this:
+	 * Note that `start` can return a text node. To get the containing element use this:
 	 *
 	 *     var startNode = range.start().container;
 	 *     if( startNode.nodeType === Node.TEXT_NODE ||
@@ -296,12 +323,29 @@ $.extend($.Range.prototype,
 				if(typeof set == 'number'){
 					this.range.setStart(this.range.startContainer, set)
 				} else if(typeof set == 'string') {
-					this.range.setStart(this.range.startContainer, this.range.startOffset+ parseInt(set,10) );
+					var res = callMove(this.range.startContainer, this.range.startOffset, parseInt(set,10))
+					this.range.setStart(res.node, res.offset );
 				} else {
 					this.range.setStart(set.container, set.offset)
 				}
 			} else {
-				throw 'todo'
+				if(typeof set == "string"){
+					this.range.moveStart('character', parseInt(set,10))
+				} else {
+					// get the current end container
+					var container = this.start().container,
+						offset
+					if(typeof set == "number") {
+						offset = set
+					} else {
+						container = set.container
+						offset = set.offset
+					}
+					var newPoint = $.Range(container).collapse();
+					//move it over offset characters
+					newPoint.range.move(offset);
+					this.move("START_TO_START",newPoint);
+				}
 			}
 			return this;
 		}
@@ -309,8 +353,8 @@ $.extend($.Range.prototype,
 
 	},
 	/**
-	 * `range.end([end])` or gets the end of the range.
-	 * It takes similar options as [jQuery.Range.prototype.start]:
+	 * `range.end([end])` gets or sets the end of the range.
+	 * It takes similar options as [jQuery.Range::start start]:
 	 *
 	 * - __Object__ - an object with the new end container and offset like
 	 *
@@ -323,7 +367,7 @@ $.extend($.Range.prototype,
 	 *
 	 *         $('#foo').range().end("+4")
 	 *
-	 * Note that end can return a text node. To get the containing element use this:
+	 * Note that `end` can return a text node. To get the containing element use this:
 	 *
 	 *     var startNode = range.end().container;
 	 *     if( startNode.nodeType === Node.TEXT_NODE ||
@@ -355,11 +399,30 @@ $.extend($.Range.prototype,
 			if (this.range.setEnd) {
 				if(typeof set == 'number'){
 					this.range.setEnd(this.range.endContainer, set)
+				} else if(typeof set == 'string') {
+					var res = callMove(this.range.endContainer, this.range.endOffset, parseInt(set,10))
+					this.range.setEnd(res.node, res.offset );
 				} else {
 					this.range.setEnd(set.container, set.offset)
 				}
 			} else {
-				throw 'todo'
+				if(typeof set == "string"){
+					this.range.moveEnd('character', parseInt(set,10));
+				} else {
+					// get the current end container
+					var container = this.end().container,
+						offset
+					if(typeof set == "number") {
+						offset = set
+					} else {
+						container = set.container
+						offset = set.offset
+					}
+					var newPoint = $.Range(container).collapse();
+					//move it over offset characters
+					newPoint.range.move(offset);
+					this.move("END_TO_START",newPoint);
+				}
 			}
 			return this;
 		}
@@ -427,6 +490,7 @@ $.extend($.Range.prototype,
 	 *
 	 * @param {String} [from] how the rects coordinates should be given (viewport or page).  Provide 'page' for 
 	 * rect coordinates from the page.
+	 * @return {Array} The client rects
 	 */
 	rects : function(from){
 		// order rects by size 
@@ -490,7 +554,7 @@ $.extend($.Range.prototype,
 	/**
 	 * @function compare
 	 *
-	 * `range.compare([compareRange])` compares one range to another range.
+	 * `range.compare(type, compareRange)` compares one range to another range.
 	 * 
 	 * ## Example
 	 * 
@@ -502,13 +566,13 @@ $.extend($.Range.prototype,
 	 * 
 	 * 
 	 *
-	 * @param {Object} type Specifies the boundry of the
+	 * @param {String} type Specifies the boundary of the
 	 * range and the <code>compareRange</code> to compare.
 	 * 
-	 *   - START\_TO\_START - the start of the range and the start of compareRange
-	 *   - START\_TO\_END - the start of the range and the end of compareRange
-	 *   - END\_TO\_END - the end of the range and the end of compareRange
-	 *   - END\_TO\_START - the end of the range and the start of compareRange
+	 *   - `"START_TO_START"` - the start of the range and the start of compareRange
+	 *   - `"START_TO_END"` - the start of the range and the end of compareRange
+	 *   - `"END_TO_END"` - the end of the range and the end of compareRange
+	 *   - `"END_TO_START"` - the end of the range and the start of compareRange
 	 *   
 	 * @param {$.Range} compareRange The other range
 	 * to compare against.
@@ -543,10 +607,10 @@ $.extend($.Range.prototype,
 	 * @param {String} type a string indicating the ranges boundary point
 	 * to move to which referenceRange boundary point where:
 	 * 
-	 *   - START\_TO\_START - the start of the range moves to the start of referenceRange
-	 *   - START\_TO\_END - the start of the range move to the end of referenceRange
-	 *   - END\_TO\_END - the end of the range moves to the end of referenceRange
-	 *   - END\_TO\_START - the end of the range moves to the start of referenceRange
+	 *   - `"START_TO_START"` - the start of the range moves to the start of referenceRange
+	 *   - `"START\_TO\_END"` - the start of the range move to the end of referenceRange
+	 *   - `"END_TO_END"` - the end of the range moves to the end of referenceRange
+	 *   - `"END_TO_START"` - the end of the range moves to the start of referenceRange
 	 *   
 	 * @param {jQuery.Range} referenceRange
 	 * @return {jQuery.Range} the original range for chaining
@@ -582,7 +646,12 @@ $.extend($.Range.prototype,
 	fn.
 	/**
 	 * `range.clone()` clones the range and returns a new $.Range
-	 * object.
+	 * object:
+	 *
+	 *      var range = new $.Range(document.getElementById('text'));
+	 *      var newRange = range.clone();
+	 *      range.start('+2');
+	 *      range.select();
 	 * 
 	 * @return {jQuery.Range} returns the range as a $.Range.
 	 */
@@ -595,11 +664,19 @@ $.extend($.Range.prototype,
 	 * @function
 	 *
 	 * `range.select([el])` selects an element with this range.  If nothing
-	 * is provided, makes the current
-	 * range appear as if the user has selected it.
+	 * is provided, makes the current range appear as if the user has selected it.
 	 * 
-	 * This works with text nodes.
-	 * 
+	 * This works with text nodes. For example with:
+	 *
+	 *      <div id="text">This is a text</div>
+	 *
+	 * $.Range can select `is a` like this:
+	 *
+	 *      var range = new $.Range(document.getElementById('text'));
+	 *      range.start('+5');
+	 *      range.end('-5');
+	 *      range.select();
+	 *
 	 * @param {HTMLElement} [el] The element in which this range should be selected
 	 * @return {jQuery.Range} the range for chaining.
 	 */
@@ -665,6 +742,60 @@ var iterate = function(elems, cb){
 	}
 
 }, 
+isText = function(node){
+	return node.nodeType === 3 || node.nodeType === 4
+},
+iteratorMaker = function(toChildren, toNext){
+	return function( node, mustMoveRight ) {
+		// first try down
+		if(node[toChildren] && !mustMoveRight){
+			return isText(node[toChildren]) ? 
+				node[toChildren] :
+			 	arguments.callee(node[toChildren])
+		} else if(node[toNext]) {
+			return isText(node[toNext]) ? 
+				node[toNext] :
+			 	arguments.callee(node[toNext])
+		} else if(node.parentNode){
+			return arguments.callee(node.parentNode, true)
+		}
+	}
+},
+getNextTextNode = iteratorMaker("firstChild","nextSibling"),
+getPrevTextNode = iteratorMaker("lastChild","previousSibling"),
+callMove = function(container, offset, howMany){
+	if(isText(container)){
+		return move(container, offset+howMany)
+	} else {
+		return container.childNodes[offset] ?
+			move(container.childNodes[offset] , howMany) :
+			move(container.lastChild, howMany , true)
+		return 
+	}
+},
+move = function(from, howMany, adjust){
+	var mover = howMany < 0 ? 
+		getPrevTextNode : getNextTextNode;
+		
+	howMany = Math.abs(howMany);
+	
+	if(!isText(from)){
+		from = mover(from)
+	}
+	if(adjust){
+		//howMany = howMany + from.nodeValue.length
+	}
+	while(from && howMany >= from.nodeValue.length){
+		hasMany  = howMany- from.nodeValue.length;
+		from = mover(from)
+	}
+	return {
+		node: from,
+		offset: mover === getNextTextNode ?
+			howMany : 
+			from.nodeValue.length - howMany
+	}
+},
 supportWhitespace,
 isWhitespace = function(el){
 	if(supportWhitespace == null){

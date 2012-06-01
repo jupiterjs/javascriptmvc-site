@@ -1,1 +1,0 @@
-c({"name": "Jaml.Node.multiLineTag", "params": {}, "ret": {"description": "<p>True to render this tag as multi-line</p>", "type": "Boolean"}, "type": "function", "parents": ["Jaml.Node"], "comment": "<p>Returns true if this tag should be rendered with multiple newlines (e.g. if it contains child nodes)</p>", "src": "jquery/view/jaml/jaml.js", "line": 169, "children": []})

@@ -1,1 +1,1 @@
-c({"name": "jQuery.Hover.prototype", "type": "prototype", "parents": ["jQuery.Hover"], "comment": "", "src": "jquery/event/hover/hover.js", "line": 46, "children": ["jQuery.Hover.prototype.delay", "jQuery.Hover.prototype.distance", "jQuery.Hover.prototype.leave"]})
+c({"name": "jQuery.Hover.prototype", "type": "prototype", "parents": ["jQuery.Hover"], "comment": "", "src": "jquery/event/hover/hover.js", "line": 53, "children": ["jQuery.Hover.prototype.delay", "jQuery.Hover.prototype.distance", "jQuery.Hover.prototype.leave"]})

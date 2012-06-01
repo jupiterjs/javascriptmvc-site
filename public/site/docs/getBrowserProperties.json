@@ -1,0 +1,1 @@
+c({"name": "getBrowserProperties", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Feature detection borrowed by Modernizr</p>", "src": "jquery/dom/animate/animate.js", "line": 81, "children": []})

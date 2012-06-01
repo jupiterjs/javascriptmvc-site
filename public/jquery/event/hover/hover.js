@@ -8,7 +8,7 @@ steal('jquery/event','jquery/event/livehack').then(function($){
  * Creates a new hover. The constructor should not be called directly.
  *
  * An instance of `$.Hover` is passed as the second argument to each
- * `jQuery.event.hover` handler:
+ * [jQuery.event.hover] event handler:
  *
  *      $('#menu').on("hoverinit", function(ev, hover) {
  *          // Set the hover distance to 20px
@@ -26,10 +26,14 @@ $.Hover = function(){
 $.extend($.Hover,{
 	/**
 	 * @attribute delay
+	 *
 	 * `$.Hover.delay` is the delay (in milliseconds) after which the hover is
 	 * activated by default.
 	 *
 	 * Set this value as a global default. The default is 100ms.
+	 *
+	 *      // Set the global hover delay to 1 second
+	 *      $.Hover.delay = 1000;
 	 */
 	delay: 100,
 	/**
@@ -39,6 +43,9 @@ $.extend($.Hover,{
 	 * travel within the time of [jQuery.Hover.delay] in order to activate a hover.
 	 *
 	 * Set this value as a global default. The default is 10px.
+	 *
+	 *      // Set the global hover distance to 1 pixel
+	 *      $.Hover.distance = 1;
 	 */
 	distance: 10,
 	leave : 0
@@ -49,8 +56,13 @@ $.extend($.Hover,{
  */
 $.extend($.Hover.prototype,{
 	/**
-	 * Sets the delay for this hover. This method should only be used in
-	 * [jQuery.event.hover.hoverinit hoverinit].
+	 * `hover.delay(time)` sets the delay (in ms) for this hover.
+	 * This method should only be used in [jQuery.event.hover.hoverinit hoverinit]:
+	 *
+	 *      $('.hoverable').on('hoverinit', function(ev, hover) {
+	 *          // Set the delay to 500ms
+	 *          hover.delay(500);
+	 *      });
 	 *
 	 * @param {Number} delay the number of milliseconds used to determine a hover
 	 * @return {$.Hover} The hover object
@@ -60,8 +72,13 @@ $.extend($.Hover.prototype,{
 		return this;
 	},
 	/**
-	 * Sets the distance for this hover. This method should only be used in
-	 * [jQuery.event.hover.hoverinit hoverinit].
+	 * `hover.distance(px) sets the maximum distance (in pixels) the mouse is allowed to travel in order to activate
+	 * the hover. This method should only be used in [jQuery.event.hover.hoverinit hoverinit]:
+	 *
+	 *      $('.hoverable').on('hoverinit', function(ev, hover) {
+	 *          // Set the distance to 1px
+	 *          hover.distance(1);
+	 *      });
 	 *
 	 * @param {Number} distance the max distance in pixels a mouse can move to be considered a hover
 	 * @return {$.Hover} The hover object
@@ -71,8 +88,13 @@ $.extend($.Hover.prototype,{
 		return this;
 	},
 	/**
-	 * Sets a delay after which the hover stops. This method should only be used in
-	 * [jQuery.event.hover.hoverinit hoverinit].
+	 * `hover.leave(delay)` sets a delay for how long the hover should stay active after the mouse left.
+	 * This method should only be used in [jQuery.event.hover.hoverinit hoverinit]:
+	 *
+	 *      $('.hoverable').on('hoverinit', function(ev, hover) {
+	 *          // Stay active for another second after the mouse left
+	 *          hover.leave(1000);
+	 *      });
 	 *
 	 * @param {Number} delay the number of milliseconds the hover should stay active after the mouse leaves
 	 * @return {$.Hover} The hover object
@@ -161,31 +183,35 @@ var event = $.event,
 		}, hover._delay)
 		
 	};
-		
+
 /**
- * @add jQuery.event.hover
+ * @add jQuery.event.special
  */
 event.setupHelper( [
 /**
  * @attribute hoverinit
+ * @parent jQuery.event.hover
  *
  * `hoverinit` is called when a hover is about to start (on `mouseenter`). Listen for `hoverinit` events to configure
- * [jQuery.Hover.prototype.delay] and [jQuery.Hover.prototype.distance]
+ * [jQuery.Hover::delay delay] and [jQuery.Hover::distance distance]
  * for this specific event:
  *
  *      $(".option").on("hoverinit", function(ev, hover){
  *          //set the distance to 10px
- *          hover.distance(10)
+ *          hover.distance(10);
  *          //set the delay to 200ms
- *          hover.delay(10)
+ *          hover.delay(10);
+ *          // End the hover one second after the mouse leaves
+ *          hover.leave(1000);
  *      })
  */
 "hoverinit", 
 /**
  * @attribute hoverenter
+ * @parent jQuery.event.hover
  *
  * `hoverenter` events are called when the mouses less than [jQuery.Hover.prototype.distance] pixels in
- * [jQuery.Hover.prototype.delay] milliseconds.
+ * [jQuery.Hover.prototype.delay delay] milliseconds.
  *
  *      $(".option").on("hoverenter", function(ev, hover){
  *          $(this).addClass("hovering");
@@ -194,6 +220,7 @@ event.setupHelper( [
 "hoverenter",
 /**
  * @attribute hoverleave
+ * @parent jQuery.event.hover
  *
  * `hoverleave` is called when the mouse leaves an element that has been hovered.
  *
@@ -204,6 +231,7 @@ event.setupHelper( [
 "hoverleave",
 /**
  * @attribute hovermove
+ * @parent jQuery.event.hover
  *
  * `hovermove` is called when a `mousemove` occurs on an element that has been hovered.
  *

@@ -1,1 +1,0 @@
-c({"name": "on", "type": "attribute", "comment": "<p>On lets you programatically turn off fixtures.  This is mostly used for testing.</p>\n\n<pre><code>can.fixture.on = false\nTask.findAll({}, function(){\n  can.fixture.on = true;\n})\n</code></pre>", "src": "can/util/fixture/fixture.js", "line": 894, "children": []})

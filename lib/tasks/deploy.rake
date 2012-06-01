@@ -69,7 +69,7 @@ namespace :deploy do
 		announce 'Running crawl script...'
 
 		Dir.chdir('donejs') do
-			sh './js jmvc/scripts/crawl.js'
+			sh './js site/scripts/crawl.js'
 		end
 
 		echo 'Done.'
@@ -98,7 +98,7 @@ namespace :deploy do
 		sh 'git repack'
 	end
 
-	task :prepare => [:update, :build, :copy, :commit_site] do
+	task :prepare => [:update, :build, :copy, :crawl, :commit_site] do
 		puts
 		puts 'Preparing to deploy...'
 		puts

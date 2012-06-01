@@ -3,50 +3,95 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 	//somehow need to keep track of elements with selectors on them.  When element is removed, somehow we need to know that
 	//
 	/**
-	 * @add jQuery.event.drop
+	 * @add jQuery.event.special
 	 */
 	var eventNames = [
 	/**
 	 * @attribute dropover
-	 * Called when a drag is first moved over this drop element.
+	 * @parent jQuery.event.drop
+	 * 
+	 * `dropover` is triggered when a [jQuery.event.drag drag] is first moved onto this
+	 * drop element.
+	 * The event handler gets an instance of [jQuery.Drag] passed as the second and a
+	 * [jQuery.Drop] as the third parameter.
+	 * This event can be used to highlight the element when a drag is moved over it:
 	 *
-	 * Drop events are covered in more detail in [jQuery.Drop].
+	 *      $('.droparea').on('dropover', function(ev, drop, drag) {
+	 *          $(this).addClass('highlight');
+	 *      });
 	 */
 	"dropover",
 	/**
 	 * @attribute dropon
-	 * Called when a drag is dropped on a drop element.
+	 * @parent jQuery.event.drop
+	 * 
+	 * `dropon` is triggered when a drag is dropped on a drop element.
+	 * The event handler gets an instance of [jQuery.Drag] passed as the second and a
+	 * [jQuery.Drop] as the third parameter.
 	 *
-	 * Drop events are covered in more detail in [jQuery.Drop].
+	 *      $('.droparea').on('dropon', function(ev, drop, drag) {
+	 *          $(this).html('Dropped: ' + drag.element.text());
+	 *      });
 	 */
 	"dropon",
 	/**
 	 * @attribute dropout
-	 * Called when a drag is moved out of this drop.
+	 * @parent jQuery.event.drop
+	 * 
+	 * `dropout` is called when a drag is moved out of this drop element.
+	 * The event handler gets an instance of [jQuery.Drag] passed as the second and a
+	 * [jQuery.Drop] as the third parameter.
 	 *
-	 * Drop events are covered in more detail in [jQuery.Drop].
+	 *      $('.droparea').on('dropover', function(ev, drop, drag) {
+	 *          // Remove the drop element highlight
+	 *          $(this).removeClass('highlight');
+	 *      });
 	 */
 	"dropout",
 	/**
 	 * @attribute dropinit
+	 * @parent jQuery.event.drop
+	 * 
+	 * `dropinit` is called when a drag motion starts and the drop elements are initialized.
+	 * The event handler gets an instance of [jQuery.Drag] passed as the second and a
+	 * [jQuery.Drop] as the third parameter.
+	 * Calling [jQuery.Drop.prototype.cancel drop.cancel()] prevents the element from
+	 * being dropped on:
 	 *
-	 * Called when a drag motion starts and the drop elements are initialized.
-	 *
-	 * Drop events are covered in more detail in [jQuery.Drop].
+	 *      $('.droparea').on('dropover', function(ev, drop, drag) {
+	 *          if(drag.element.hasClass('not-me')) {
+	 *            drop.cancel();
+	 *          }
+	 *      });
 	 */
 	"dropinit",
 	/**
 	 * @attribute dropmove
-	 * Called repeatedly when a drag is moved over a drop.
+	 * @parent jQuery.event.drop
+	 * 
+	 * `dropmove` is triggered repeatedly when a drag is moved over a drop
+	 * (similar to a mousemove).
+	 * The event handler gets an instance of [jQuery.Drag] passed as the second and a
+	 * [jQuery.Drop] as the third parameter.
 	 *
-	 * Drop events are covered in more detail in [jQuery.Drop].
+	 *      $('.droparea').on('dropmove', function(ev, drop, drag) {
+	 *          $(this).html(drag.location.x() + '/' + drag.location.y());
+	 *      });
 	 */
 	"dropmove",
 	/**
 	 * @attribute dropend
-	 * Called when the drag is done for this drop.
+	 * @parent jQuery.event.drop
+	 * 
+	 * `dropend` is called when the drag motion is done for this drop element.
+	 * The event handler gets an instance of [jQuery.Drag] passed as the second and a
+	 * [jQuery.Drop] as the third parameter.
 	 *
-	 * Drop events are covered in more detail in [jQuery.Drop].
+	 *
+	 *      $('.droparea').on('dropend', function(ev, drop, drag) {
+	 *          // Remove the drop element highlight
+	 *          $(this).removeClass('highlight');
+	 *      });
 	 */
 	"dropend"];
 	
@@ -57,9 +102,9 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/event/drop/drop.js
 	 * @test jquery/event/drag/qunit.html
 	 *
-	 * The `$.Drop` constructor is never called directly but an instance of `$.Drag` is passed as the second argument
-	 * to the `dropinit`, `dropover`, `dropmove`, `dropon`, and `dropend` event handlers. The third argument will be
-	 * an instance of [jQuery.Drag]:
+	 * The `jQuery.Drop` constructor is never called directly but an instance is passed to the
+	 * to the `dropinit`, `dropover`, `dropmove`, `dropon`, and `dropend` event handlers as the
+	 * third argument (the second will be the [jQuery.Drag]):
 	 *
 	 *      $('#dropper').on('dropover', function(el, drop, drag) {
 	 *          // drop -> $.Drop
@@ -172,14 +217,14 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 		 * 
 		 * After adding an element or drop, call compile.
 		 * 
-		 * $("#midpoint").bind("dropover",function(){
-		 * 		// when a drop hovers over midpoint,
-		 *      // make drop a drop.
-		 * 		$("#drop").bind("dropover", function(){
+		 *      $("#midpoint").bind("dropover",function(){
+		 * 		    // when a drop hovers over midpoint,
+		 *          // make drop a drop.
+		 * 		    $("#drop").bind("dropover", function(){
 		 * 			
-		 * 		});
-		 * 		$.Drop.compile();
-		 * 	});
+		 * 		    });
+		 * 		    $.Drop.compile();
+		 * 	    });
 		 */
 		compile: function( event, drag ) {
 			// if we called compile w/o a current drag
@@ -384,7 +429,7 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 		},
 		/**
 		 * `drop.cache(value)` sets the drop to cache positions of draggable elements.
-		 * This should be called in `dropinit`. For example:
+		 * This should be called on `dropinit`. For example:
 		 *
 		 *      $('#dropable').on('dropinit', function( el, ev, drop ) {
 		 *          drop.cache();
@@ -397,6 +442,12 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 		},
 		/**
 		 * `drop.cancel()` prevents this drop from being dropped on.
+		 *
+		 *      $('.droparea').on('dropover', function(ev, drop, drag) {
+		 *          if(drag.element.hasClass('not-me')) {
+		 *            drop.cancel();
+		 *          }
+		 *      });
 		 */
 		cancel: function() {
 			this._canceled = true;

@@ -1,0 +1,1 @@
+c({"name": "passThrough", "type": "attribute", "comment": "<p>Returns whether the animation should be passed to the original\njQuery.fn.animate.</p>", "src": "jquery/dom/animate/animate.js", "line": 43, "children": []})
