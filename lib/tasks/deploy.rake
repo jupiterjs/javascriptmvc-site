@@ -65,6 +65,16 @@ namespace :deploy do
 		end
 	end
 
+	task :crawl do
+		announce 'Running crawl script...'
+
+		Dir.chdir('donejs') do
+			sh './js jmvc/scripts/crawl.js'
+		end
+
+		echo 'Done.'
+	end
+
 	task :copy do
 		announce 'Copying files to local directory...'
 
