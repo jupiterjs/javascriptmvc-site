@@ -22,6 +22,7 @@ steal('steal/generate',
 	'can/observe/validations',
 	'can/route',
 	'can/view/ejs',
+	'can/util/fixture',
 	'can/view/modifiers')
 .then('jquery/build/lib.js')
 .then('funcunit')

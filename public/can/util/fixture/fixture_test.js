@@ -131,8 +131,8 @@ test("can.fixture.make fixtures",function(){
 test("simulating an error", function(){
 	var st = '{type: "unauthorized"}';
 	
-	can.fixture("/foo", function(){
-		return [401,st]
+	can.fixture("/foo", function(request, response){
+		return response(401,st);
 	});
 	stop();
 	
@@ -142,8 +142,9 @@ test("simulating an error", function(){
 	}).done(function(){
 		ok(false, "success called");
 		start();
-	}).fail(function(dfd){
+	}).fail(function(original, type, text){
 		ok(true, "error called");
+		equal(text, st, 'Original text passed')
 		start();
 	});
 })
@@ -344,6 +345,49 @@ test("can.fixture.make with can.Model", function() {
 				start();
 			});
 		});
+	});
+});
+
+test("can.fixture with response callback", 4, function() {
+	can.fixture.delay = 10;
+	can.fixture("responseCb", function(orig, response) {
+		response({sweet: "ness"});
+	});
+	can.fixture("responseErrorCb", function(orig, response) {
+		response(404, 'This is an error from callback');
+	});
+
+	stop();
+	can.ajax({
+		url : 'responseCb',
+		dataType : 'json'
+	}).done(function(data) {
+		equals(data.sweet,"ness","can.get works");
+		start();
+	});
+
+	stop();
+	can.ajax({
+		url : 'responseErrorCb',
+		dataType : 'json'
+	}).fail(function(orig, error, text) {
+		equal(error, 'error', 'Got error status');
+		equal(text, 'This is an error from callback', 'Got error text');
+		start();
+	});
+
+	stop();
+	can.fixture("cbWithTimeout",function(orig, response){
+		setTimeout(function() {
+			response([{  epic : 'ness'  }]);
+		}, 10 );
+	});
+	can.ajax({
+		url : 'cbWithTimeout',
+		dataType : 'json'
+	}).done(function(data) {
+		equals(data[0].epic,"ness","Got responsen with timeout");
+		start();
 	});
 });
 

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head><script type="text/javascript" src="http://localhost:5555?[]&amp;_=0.3690676561091095"></script>
+	<title>can.route.deparam</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/production.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+	<script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-2302003-4'],
+				['_trackPageview'],
+				['_trackPageLoadTime']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+<script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911069516" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!&amp;disqus_version=1338845651&amp;1338911071570" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!canjs&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!canjs&amp;disqus_version=1338845651&amp;1338911073322" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911075109" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.plugin&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.plugin&amp;disqus_version=1338845651&amp;1338911076886" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.route&amp;disqus_version=1338845651&amp;1338911078633" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.view&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.view&amp;disqus_version=1338845651&amp;1338911080273" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.destroy&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.destroy&amp;disqus_version=1338845651&amp;1338911081875" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.element&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.element&amp;disqus_version=1338845651&amp;1338911083561" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.on&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.on&amp;disqus_version=1338845651&amp;1338911085218" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.options&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.options&amp;disqus_version=1338845651&amp;1338911086876" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.setup&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.setup&amp;disqus_version=1338845651&amp;1338911088579" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.defaults&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.defaults&amp;disqus_version=1338845651&amp;1338911090146" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.processors&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.processors&amp;disqus_version=1338845651&amp;1338911091769" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.route&amp;disqus_version=1338845651&amp;1338911093493" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.EJS&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.EJS&amp;disqus_version=1338845651&amp;1338911095169" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!jquerypp&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!jquerypp&amp;disqus_version=1338845651&amp;1338911096817" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Construct&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Construct&amp;disqus_version=1338845651&amp;1338911098464" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Model&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Model&amp;disqus_version=1338845651&amp;1338911100246" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Model.List&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Model.List&amp;disqus_version=1338845651&amp;1338911101853" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Observe&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Observe&amp;disqus_version=1338845651&amp;1338911103525" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Observe.List&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Observe.List&amp;disqus_version=1338845651&amp;1338911105183" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.util&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.util&amp;disqus_version=1338845651&amp;lazy=0&amp;1338911106850" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.view&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.view&amp;disqus_version=1338845651&amp;1338911108476" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.plugin.static.pluginName&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.plugin.static.pluginName&amp;disqus_version=1338845651&amp;1338911110269" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.update&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.update&amp;disqus_version=1338845651&amp;1338911111928" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!jQuery.fn.control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!jQuery.fn.control&amp;disqus_version=1338845651&amp;1338911113541" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!jQuery.fn.controls&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!jQuery.fn.controls&amp;disqus_version=1338845651&amp;1338911115170" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!id&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!id&amp;disqus_version=1338845651&amp;lazy=0&amp;1338911116800" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.view.ext&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.view.ext&amp;disqus_version=1338845651&amp;1338911118464" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.off&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.off&amp;disqus_version=1338845651&amp;1338911120141" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.route.current&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.route.current&amp;disqus_version=1338845651&amp;1338911121824" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.route.deparam&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.route.deparam&amp;disqus_version=1338845651&amp;1338911123587" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="content">
+			<div id="searchRoundCorners">
+				<div class="jmvcdoc_search"><input id="search" type="input"><span title="clear term" class="remove"></span></div>
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu"></ul>
+			</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					DoneJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!canjs" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					CanJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!can.route" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					can.route
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!can.route.current" class="result choice function" style="padding-left: 20px" data-name="can.route.current">
+		    	
+					<span class="faded">can.route.</span>current
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.deparam" class="result choice function open" style="padding-left: 20px" data-name="can.route.deparam">
+		    	
+					<span class="faded">can.route.</span>deparam
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.link" class="result choice function" style="padding-left: 20px" data-name="can.route.link">
+		    	
+					<span class="faded">can.route.</span>link
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.param" class="result choice function" style="padding-left: 20px" data-name="can.route.param">
+		    	
+					<span class="faded">can.route.</span>param
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.ready" class="result choice function" style="padding-left: 20px" data-name="can.route.ready">
+		    	
+					<span class="faded">can.route.</span>ready
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.url" class="result choice function" style="padding-left: 20px" data-name="can.route.url">
+		    	
+					<span class="faded">can.route.</span>url
+				
+			</a>
+			
+		
+	</div>
+</div></div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content candoc_content_helpers_demo candoc_content_helpers_iframe candoc_content_helpers_api candoc_content_helpers_highlight candoc_content_helpers_image candoc_content_helpers_disqus"><div class="top">
+	<div class="content">
+	    <h1>can.route.deparam&nbsp;
+	    	<span class="function type"><span class="typeEnd">function</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+		
+			<a href="undefined/blob/master/route/route.js#L172">Source</a>
+		
+	</div>
+</div>
+ <div class="comment"><p>Creates a data object based on the query string passed into it. This is 
+useful to create an object based on the <code>location.hash</code>.</p>
+
+<pre><code class=" javascript">can.route.deparam(<span class="string">"id=5&amp;type=videos"</span>) 
+     <span class="comment">// -&gt; { id: 5, type: "videos" }</span>
+</code></pre>
+
+<p>It's important to make sure the hash or exclamantion point is not passed
+to <code>can.route.deparam</code> otherwise it will be included in the first property's
+name.</p>
+
+<pre><code class=" javascript">can.route.attr(<span class="string">"id"</span>, <span class="number">5</span>) <span class="comment">// location.hash -&gt; #!id=5</span>
+can.route.attr(<span class="string">"type"</span>, <span class="string">"videos"</span>) 
+     <span class="comment">// location.hash -&gt; #!id=5&amp;type=videos</span>
+can.route.deparam(location.hash) 
+     <span class="comment">// -&gt; { #!id: 5, type: "videos" }</span>
+</code></pre>
+
+<p><code>can.route.deparam</code> will try and find a matching route and, if it does,
+will deconstruct the URL and parse our the key/value parameters into the data object.</p>
+
+<pre><code class=" javascript">can.route(<span class="string">":type/:id"</span>)
+
+can.route.deparam(<span class="string">"videos/5"</span>);
+     <span class="comment">// -&gt; { id: 5, route: ":type/:id", type: "videos" }</span>
+</code></pre></div>
+ <h2>API</h2>
+ <pre><code class=" javascript">can.route.deparam(url) -&gt; Object</code></pre>
+  
+  <div class="params">
+  
+    
+      <div class="param ">
+          <label>url</label>
+          <code>{String}</code> 
+		   <p>Query string to be turned into an object.</p>
+      </div>
+ 
+ 
+     <div class="return">
+         <label>returns</label> 
+         <code>{Object}</code> 
+		 <p>Data object containing properties and values from the string</p>
+     </div>
+    
+ 
+ </div></div>
+			<div id="disqus_thread" style="display: block; "><div id="dsq-content-stub"><img width="71" height="17" alt="DISQUS" src="data:image/png;base64,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"><img width="16" height="11" alt="..." src="data:image/gif;base64,R0lGODlhEAALAPQAAP///z2LqeLt8dvp7u7090GNqz2LqV+fuJ/F1IW2ycrf51aatHWswaXJ14i4ys3h6FmctUCMqniuw+vz9eHs8fb5+meku+Tu8vT4+cfd5bbT3tbm7PH2+AAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" style="margin:0 0 3px 5px"></div><div id="dsq-content" style="display: none; "></div></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://bitovi.com">� Bitovi Consulting - DoneJS Training and Support</a>
+	<a class="api_links" href="http://bitovi.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script type="text/javascript">
+	DOCS_SRC_MAP = {
+		'funcunit' : 'https://github.com/jupiterjs/funcunit',
+		'jquery' : 'https://github.com/jupiterjs/jquerymx',
+		'steal' : 'https://github.com/jupiterjs/steal',
+		'documentjs' : 'https://github.com/jupiterjs/documentjs',
+		mxui : 'https://github.com/jupiterjs/mxui'
+	};
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 1338911000257;
+	COMMENTS_LOCATION = 'http://jmvcs3.disqus.com/embed.js';
+	steal = {
+		loaded: ['documentjs/jmvcdoc/production.css']
+	}
+</script>
+<script type="text/javascript" src="../steal/steal.production.js?documentjs/jmvcdoc">
+</script>
+
+<style type="text/css">
+	body > iframe { width: 0;}
+	#dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
+</style>
+
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head><script type="text/javascript" src="http://localhost:5555?[]&amp;_=0.6249334462918341"></script>
+	<title>can.EJS</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/production.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+	<script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-2302003-4'],
+				['_trackPageview'],
+				['_trackPageLoadTime']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+<script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911069516" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!&amp;disqus_version=1338845651&amp;1338911071570" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!canjs&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!canjs&amp;disqus_version=1338845651&amp;1338911073322" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911075109" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.plugin&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.plugin&amp;disqus_version=1338845651&amp;1338911076886" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.route&amp;disqus_version=1338845651&amp;1338911078633" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.view&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.view&amp;disqus_version=1338845651&amp;1338911080273" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.destroy&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.destroy&amp;disqus_version=1338845651&amp;1338911081875" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.element&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.element&amp;disqus_version=1338845651&amp;1338911083561" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.on&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.on&amp;disqus_version=1338845651&amp;1338911085218" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.options&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.options&amp;disqus_version=1338845651&amp;1338911086876" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.setup&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.setup&amp;disqus_version=1338845651&amp;1338911088579" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.defaults&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.defaults&amp;disqus_version=1338845651&amp;1338911090146" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.processors&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.processors&amp;disqus_version=1338845651&amp;1338911091769" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.route&amp;disqus_version=1338845651&amp;1338911093493" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.EJS&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.EJS&amp;disqus_version=1338845651&amp;1338911095169" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="content">
+			<div id="searchRoundCorners">
+				<div class="jmvcdoc_search"><input id="search" type="input"><span title="clear term" class="remove"></span></div>
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu"></ul>
+			</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					DoneJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!canjs" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					CanJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!can.EJS" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					can.EJS
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!can.EJS.Helpers" class="result choice class" style="padding-left: 20px" data-name="can.EJS.Helpers">
+		    	
+					<span class="faded">can.EJS.</span>Helpers
+				
+			</a>
+			
+		
+	</div>
+</div></div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content candoc_content_helpers_demo candoc_content_helpers_iframe candoc_content_helpers_api candoc_content_helpers_highlight candoc_content_helpers_image candoc_content_helpers_disqus"><div class="top">
+	<div class="content">
+	    <h1>can.EJS&nbsp;
+	    	<span class="class type"><span class="typeEnd">class</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+		
+	</div>
+</div>
+<p>EJS provides <strong>live</strong> ERB style client-side templates. Use EJS 
+with <a href="#!can.view">can.view</a> and for live templating use EJS with <a href="#!can.Observe">can.Observe</a>.</p>
+
+<h2>Basic Example</h2>
+
+<p>The following renders a Teacher's name and students into an element.  First, 
+create a teacher template in a script tag like:</p>
+
+<pre><code class=" javascript">&lt;script type=<span class="string">'text/ejs'</span> id=<span class="string">'teacherEJS'</span>&gt;
+
+  &lt;h2 class=<span class="string">'&lt;%= teacher.grade &lt; '</span>c<span class="string">'? "good" : "bad" %&gt;'</span>&gt;
+    &lt;%= teacher.name %&gt;
+  &lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;% <span class="keyword">for</span>(<span class="keyword">var</span> i =<span class="number">0</span>; i&lt; teacher.students.length; i++){ %&gt;
+      &lt;li&gt;&lt;%= teacher.students[i].name %&gt;&lt;/li&gt;
+    &lt;% } %&gt;
+  &lt;/ul&gt;
+
+&lt;/script&gt;
+</code></pre>
+
+<p>Notice the magic tags?  Those are things that look like <code>&lt;% %&gt;</code> and 
+<code>&lt;%= %&gt;</code>.  Code between <code>&lt;% %&gt;</code> is run and the return value of code
+between <code>&lt;%= %&gt;</code> is inserted into the page.</p>
+
+<p>Next, create a teacher and use can.view to render the template:</p>
+
+<pre><code class=" javascript"><span class="keyword">var</span> teacher = {
+  name : <span class="string">"Mr. Smith"</span>,
+  grade : <span class="string">"a"</span>,
+  students : [
+    {name : <span class="string">"Suzy"</span>},
+    {name : <span class="string">"Payal"</span>},
+    {name : <span class="string">"Curtis"</span>},
+    {name : <span class="string">"Alexis"</span>}
+  ]
+};
+
+document.getElementById(<span class="string">'teacher'</span>)
+  .appendChild( can.view(<span class="string">"teacherEjs"</span>, teacher) )
+</code></pre>
+
+<p>This results in HTML like:</p>
+
+<pre><code class=" javascript">&lt;div id=<span class="string">'teachers'</span>&gt;
+  &lt;h2 class=<span class="string">'good'</span>&gt;
+    Mr. Smith
+  &lt;/h2&gt;
+
+  &lt;ul&gt;
+     &lt;li&gt;Suzy&lt;/li&gt;
+     &lt;li&gt;Payal&lt;/li&gt;
+     &lt;li&gt;Curtis&lt;/li&gt;
+     &lt;li&gt;Alexis&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>This is nice, but what if we change properties of the teacher?</p>
+
+<h2>Basic Live Binding Example</h2>
+
+<p>EJS sets up live templating binding when a <a href="#!can.Observe">can.Observe</a>'s properties are read 
+via <a href="#!can.Observe.prototype.attr">attr</a> within a magic tag.  To make this template
+respond to changes in the teacher data, first rewrite the template
+to use the attr method to read properties and <code>list( observeList, cb(item, i) )</code>
+to iterate through a list like:</p>
+
+<pre><code class=" javascript">&lt;script type=<span class="string">'text/ejs'</span> id=<span class="string">'teacherEJS'</span>&gt;
+
+  &lt;h2 class=<span class="string">'&lt;%= teacher.attr('</span>grade<span class="string">') &lt; '</span>c<span class="string">'? "good" : "bad" %&gt;'</span>&gt;
+    &lt;%= teacher.attr(<span class="string">'name'</span>) %&gt;
+  &lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;% list(teacher.students, <span class="function"><span class="keyword">function</span><span class="params">(student)</span>{</span> %&gt;
+      &lt;li&gt;&lt;%= student.attr(<span class="string">'name'</span>) %&gt;&lt;/li&gt;
+    &lt;% }) %&gt;
+  &lt;/ul&gt;
+
+&lt;/script&gt;
+</code></pre>
+
+<p><strong>Note:</strong> The end of this page discusses why using <code>list</code> is 
+helpful, but it does nothing fancy.</p>
+
+<p>Next, turn your teacher into a <code>new can.Observe(object)</code> and pass
+that to <code>can.view</code>:</p>
+
+<pre><code class=" javascript"><span class="keyword">var</span> teacher = can.Observe({
+  name : <span class="string">"Mr. Smith"</span>,
+  grade : <span class="string">"a"</span>
+  students : [
+    {name : <span class="string">"Suzy"</span>},
+    {name : <span class="string">"Payal"</span>},
+    {name : <span class="string">"Curtis"</span>},
+    {name : <span class="string">"Alexis"</span>}
+  ]
+});
+
+document.getElementById(<span class="string">'teacher'</span>)
+  .appendChild( can.view(<span class="string">"teacherEjs"</span>, teacher) );
+</code></pre>
+
+<p>Finally, update some properties of teacher and slap your 
+head with disbelief ...</p>
+
+<pre><code class=" javascript">teacher.attr(<span class="string">'name'</span>,<span class="string">"Prof. Snape"</span>)
+teacher.attr(<span class="string">'grade'</span>,<span class="string">'f+'</span>)
+teacher.attr(<span class="string">'students'</span>).push({
+  name : <span class="string">"Harry Potter"</span>
+})
+</code></pre>
+
+<p>... but don't slap it too hard, you'll need it for building awesome apps.</p>
+
+<h2>Demo</h2>
+
+<p>The following demo shows an EJS template being rendered with observable data. 
+It demonstrates live binding to attributes. The template and all data properties 
+are editable, so experiment!</p>
+
+<div class="iframe_wrapper" data-iframe-src="can/view/ejs/demo.html" data-iframe-height="1020"><iframe src="file:////Users/daff/Jupiter/heroku/donejs/donejs/can/view/ejs/demo.html" height="1020"></iframe></div>
+
+<h2>Magic Tags</h2>
+
+<p>EJS uses 5 types of tags:</p>
+
+<p><strong><code>&lt;% CODE %&gt;</code></strong> - Runs JS Code.</p>
+
+<p>This type of magic tag does not modify the template but is used for JS control statements 
+like for-loops, if/else, switch, etc.  Some examples:</p>
+
+<pre><code class=" javascript">&lt;% <span class="keyword">if</span>( items.attr(<span class="string">'length'</span>) === <span class="number">0</span> ) { %&gt;
+    &lt;tr&gt;&lt;td&gt;You have no items&lt;<span class="regexp">/td&gt;&lt;/</span>tr&gt;
+&lt;% } <span class="keyword">else</span> { %&gt;
+    &lt;% list(items, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span> %&gt;
+      &lt;tr&gt; .... &lt;/tr&gt;
+    &lt;% }) %&gt;
+&lt;% } %&gt;
+
+
+&lt;% <span class="keyword">var</span> address = person.attr(<span class="string">'address'</span>) %&gt;
+&lt;span&gt;&lt;%= address.attr(<span class="string">'street'</span>) %&gt;&lt;span&gt;
+</code></pre>
+
+<p><strong><code>&lt;%= CODE %&gt;</code></strong> - Runs JS Code and writes the <em>escaped</em> result into the result of the template.</p>
+
+<p>The following results in the user seeing "my favorite element is &lt;blink&gt;BLINK&lt;blink&gt;" and not
+<blink>BLINK</blink>.</p>
+
+<pre><code class=" javascript"> &lt;div&gt;my favorite element is &lt;%= <span class="string">'&lt;blink&gt;BLINK&lt;/blink&gt;'</span> %&gt;.&lt;/div&gt;
+</code></pre>
+
+<p><strong><code>&lt;%== CODE %&gt;</code></strong>  - Runs JS Code and writes the <em>unescaped</em> result into the result of the template.</p>
+
+<p>The following results in "my favorite element is <b>B</b>.". Using <code>&lt;%==</code> is useful
+for sub-templates.</p>
+
+<pre><code class=" javascript">     &lt;div&gt;my favorite element is &lt;%== <span class="string">'&lt;B&gt;B&lt;/B&gt;'</span> %&gt;.&lt;/div&gt;
+</code></pre>
+
+<p><strong><code>&lt;%% CODE %&gt;</code></strong> - Writes &lt;% CODE %&gt; to the result of the template.  This is very useful for generators.</p>
+
+<pre><code class=" javascript">     &lt;%%= <span class="string">'hello world'</span> %&gt;
+</code></pre>
+
+<p><strong><code>&lt;%# CODE %&gt;</code></strong>  - Used for comments.  This does nothing.</p>
+
+<pre><code class=" javascript">     &lt;%# <span class="string">'hello world'</span> %&gt;
+</code></pre>
+
+<h2>Live Binding</h2>
+
+<p>EJS allows live binding by wrapping magic tag content within a function. When <code>attr()</code> is called 
+to update an observable object, these functions are executed to return the new value.</p>
+
+<pre><code class=" javascript"><span class="comment">// Suppose an observable "foo":</span>
+
+<span class="keyword">var</span> foo = can.Observe({
+  count: <span class="string">'0'</span>
+});
+
+<span class="comment">// Suppose also, the above observable is passed to our view:</span>
+
+&lt;%= foo.attr(<span class="string">'bar'</span>) %&gt;
+
+<span class="comment">// EJS locates the magic tag and turns the above into:</span>
+
+<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> <span class="keyword">return</span> foo.attr(<span class="string">'bar'</span>); }
+
+<span class="comment">// As "foo" is updated using attr(), this function is called again to</span>
+<span class="comment">// render the view with the new value.</span>
+</code></pre>
+
+<p>This means that each function tag has a closure will reference variables in it's 
+parent functions. This can cause problems if you don't understand closures in 
+JavaScript. For example, the following binding does not work:</p>
+
+<pre><code class=" javascript">&lt;% <span class="keyword">for</span>(<span class="keyword">var</span> i =<span class="number">0</span>; i &lt; items.attr(<span class="string">'length'</span>); i++){ %&gt;
+  &lt;li&gt;&lt;%= items[i].attr(<span class="string">'name'</span>) %&gt;&lt;/li&gt;
+&lt;% } %&gt;
+</code></pre>
+
+<p>This is because it gets turned into:</p>
+
+<pre><code class=" javascript">&lt;% <span class="keyword">for</span>(<span class="keyword">var</span> i =<span class="number">0</span>; i &lt; items.attr(<span class="string">'length'</span>); i++){ %&gt;
+  LIVEBIND( <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span> <span class="keyword">return</span> items[i].attr(<span class="string">'name'</span>) )
+&lt;% } %&gt;
+</code></pre>
+
+<p>When the wrapping function is called again, <code>i</code> will 
+not be the index of the item, but instead be items.length.</p>
+
+<p>The [can.EJS.Helpers::view view]<code>(observeList,function(item,index,list){})</code> method in EJS should be used to iterate through observe lists:</p>
+
+<pre><code class=" javascript">&lt;% list(items, <span class="function"><span class="keyword">function</span><span class="params">(item)</span>{</span> %&gt;
+  &lt;li&gt;&lt;%= item.attr(<span class="string">'name'</span>) %&gt;&lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
+
+<h2>Advanced Live Binding</h2>
+
+<p>Once you get the hang of how EJS works, it makes live-binding of complex
+calculations possible.  The following extends a <a href="#!can.Model.List">can.Model.List</a> to suppot a <code>completed</code> method that
+returns the total number of completed items in the list.  It can be used in a template like:</p>
+
+<pre><code class=" javascript">&lt;h2&gt;&lt;%= todos.complete() %&gt; Complete Todos &lt;/h2&gt;
+</code></pre>
+
+<p>And implemented like:</p>
+
+<pre><code class=" javascript">Todo.List = can.Model.List({
+  completed: <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">var</span> count = <span class="number">0</span>;
+
+    <span class="keyword">this</span>.attr(<span class="string">'length'</span>);
+    <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span><span class="params">(i, todo)</span> {</span>
+      <span class="keyword">if</span>(<span class="keyword">this</span>.attr(<span class="string">'completed'</span>)) {
+        count++;
+      }
+    });
+
+    <span class="keyword">return</span> count;
+  }
+});
+</code></pre>
+
+<p><code>completed</code> listens on changes to the list (via <code>this.attr('length')</code>) and 
+each item's <code>'completed'</code> property.  EJS keeps track of which observe/attribute pairs are called
+by <code>.complete()</code>.  If they change, EJS will automatically unbind.</p>
+
+<p>Adding a "completed" helper function to the todo model list to return the number of completed todos:</p>
+
+<p><strong>Note:</strong> The object passed into the view becomes "this" within the view template.</p>
+
+<pre><code class=" javascript"><span class="keyword">var</span> todos = Todo.findAll({}); <span class="comment">//returns a can.Model.List</span>
+can.view(<span class="string">'//todo/views/init.ejs'</span>, todos)
+</code></pre>
+
+
+  <div class="params">
+  
+    
+ 
+ </div></div>
+			<div id="disqus_thread" style="display: block; "><div id="dsq-content-stub"><img width="71" height="17" alt="DISQUS" src="data:image/png;base64,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"><img width="16" height="11" alt="..." src="data:image/gif;base64,R0lGODlhEAALAPQAAP///z2LqeLt8dvp7u7090GNqz2LqV+fuJ/F1IW2ycrf51aatHWswaXJ14i4ys3h6FmctUCMqniuw+vz9eHs8fb5+meku+Tu8vT4+cfd5bbT3tbm7PH2+AAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" style="margin:0 0 3px 5px"></div><div id="dsq-content" style="display: none; "></div></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://bitovi.com">� Bitovi Consulting - DoneJS Training and Support</a>
+	<a class="api_links" href="http://bitovi.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script type="text/javascript">
+	DOCS_SRC_MAP = {
+		'funcunit' : 'https://github.com/jupiterjs/funcunit',
+		'jquery' : 'https://github.com/jupiterjs/jquerymx',
+		'steal' : 'https://github.com/jupiterjs/steal',
+		'documentjs' : 'https://github.com/jupiterjs/documentjs',
+		mxui : 'https://github.com/jupiterjs/mxui'
+	};
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 1338911000257;
+	COMMENTS_LOCATION = 'http://jmvcs3.disqus.com/embed.js';
+	steal = {
+		loaded: ['documentjs/jmvcdoc/production.css']
+	}
+</script>
+<script type="text/javascript" src="../steal/steal.production.js?documentjs/jmvcdoc">
+</script>
+
+<style type="text/css">
+	body > iframe { width: 0;}
+	#dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
+</style>
+
+
+</body>
+</html>

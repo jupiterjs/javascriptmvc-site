@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head><script type="text/javascript" src="http://localhost:5555?[]&amp;_=0.6908124522306025"></script>
+	<title>can.Control.prototype.update</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/production.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+	<script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-2302003-4'],
+				['_trackPageview'],
+				['_trackPageLoadTime']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+<script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911069516" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!&amp;disqus_version=1338845651&amp;1338911071570" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!canjs&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!canjs&amp;disqus_version=1338845651&amp;1338911073322" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911075109" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.plugin&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.plugin&amp;disqus_version=1338845651&amp;1338911076886" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.route&amp;disqus_version=1338845651&amp;1338911078633" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.view&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.view&amp;disqus_version=1338845651&amp;1338911080273" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.destroy&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.destroy&amp;disqus_version=1338845651&amp;1338911081875" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.element&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.element&amp;disqus_version=1338845651&amp;1338911083561" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.on&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.on&amp;disqus_version=1338845651&amp;1338911085218" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.options&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.options&amp;disqus_version=1338845651&amp;1338911086876" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.setup&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.setup&amp;disqus_version=1338845651&amp;1338911088579" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.defaults&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.defaults&amp;disqus_version=1338845651&amp;1338911090146" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.processors&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.processors&amp;disqus_version=1338845651&amp;1338911091769" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.route&amp;disqus_version=1338845651&amp;1338911093493" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.EJS&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.EJS&amp;disqus_version=1338845651&amp;1338911095169" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!jquerypp&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!jquerypp&amp;disqus_version=1338845651&amp;1338911096817" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Construct&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Construct&amp;disqus_version=1338845651&amp;1338911098464" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Model&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Model&amp;disqus_version=1338845651&amp;1338911100246" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Model.List&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Model.List&amp;disqus_version=1338845651&amp;1338911101853" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Observe&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Observe&amp;disqus_version=1338845651&amp;1338911103525" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Observe.List&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Observe.List&amp;disqus_version=1338845651&amp;1338911105183" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.util&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.util&amp;disqus_version=1338845651&amp;lazy=0&amp;1338911106850" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.view&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.view&amp;disqus_version=1338845651&amp;1338911108476" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.plugin.static.pluginName&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.plugin.static.pluginName&amp;disqus_version=1338845651&amp;1338911110269" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.update&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.update&amp;disqus_version=1338845651&amp;1338911111928" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="content">
+			<div id="searchRoundCorners">
+				<div class="jmvcdoc_search"><input id="search" type="input"><span title="clear term" class="remove"></span></div>
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu"></ul>
+			</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					DoneJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!canjs" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					CanJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!can.Control" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					can.Control
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!can.Control.plugin" class="selected choice page" style="padding-left: 40px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					plugin
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!can.Control.plugin.static.pluginName" class="result choice attribute" style="padding-left: 20px" data-name="can.Control.plugin.static.pluginName">
+		    	
+					<span class="faded">can.Control.plugin.</span>static.pluginName
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.Control.prototype.update" class="result choice function open" style="padding-left: 20px" data-name="can.Control.prototype.update">
+		    	
+					<span class="faded">can.Control.</span>prototype.update
+				
+			</a>
+			
+		
+			
+		    <a href="#!jQuery.fn.control" class="result choice function" style="padding-left: 20px" data-name="jQuery.fn.control">
+		    	
+					<span class="faded"></span>$.fn.control
+				
+			</a>
+			
+		
+			
+		    <a href="#!jQuery.fn.controls" class="result choice function" style="padding-left: 20px" data-name="jQuery.fn.controls">
+		    	
+					<span class="faded">$.fn.</span>controls
+				
+			</a>
+			
+		
+	</div>
+</div></div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content candoc_content_helpers_demo candoc_content_helpers_iframe candoc_content_helpers_api candoc_content_helpers_highlight candoc_content_helpers_image candoc_content_helpers_disqus"><div class="top">
+	<div class="content">
+	    <h1>can.Control.prototype.update&nbsp;
+	    	<span class="function type"><span class="typeEnd">function</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    
+	    
+		
+		
+		
+			<a href="undefined/blob/master/control/plugin/plugin.js#L172">Source</a>
+		
+	</div>
+</div>
+ <div class="comment"><p>Update extends <a href="#!can.Control.prototype.options">options</a> 
+with the <code>options</code> argument and rebinds all events.  It 
+re-configures the control.</p>
+
+<p>For example, the following control wraps a recipe form. When the form
+is submitted, it creates the recipe on the server.  When the recipe
+is <code>created</code>, it resets the form with a new instance.</p>
+
+<pre><code class=" javascript"><span class="keyword">var</span> Creator = can.Control({
+  <span class="string">"{recipe} created"</span> : <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    <span class="keyword">this</span>.update({recipe : <span class="keyword">new</span> Recipe()});
+    <span class="keyword">this</span>.element[<span class="number">0</span>].reset();
+    <span class="keyword">this</span>.element.find(<span class="string">"[type=submit]"</span>).val(<span class="string">"Create Recipe"</span>)
+  },
+  <span class="string">"submit"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span>
+    ev.preventDefault();
+    <span class="keyword">var</span> recipe = <span class="keyword">this</span>.options.recipe;
+    recipe.attrs( <span class="keyword">this</span>.element.formParams() );
+    <span class="keyword">this</span>.element.find(<span class="string">"[type=submit]"</span>).val(<span class="string">"Saving..."</span>)
+    recipe.save();
+  }
+});
+
+$(<span class="string">'#createRecipes'</span>).creator({ recipe : <span class="keyword">new</span> Recipe() })
+</code></pre>
+
+<p><em>Update</em> is called if a control's plugin helper is called with the plugin options on an element
+that already has a control instance of the same type. If you want to implement your
+own update method make sure to call the old one either using the <a href="#!can.Construct.super">super</a> plugin or
+by calling <code>can.Control.prototype.update.apply(this, arguments);</code>.
+For example, you can change the content of the control element every time the options change:</p>
+
+<pre><code class=" javascript"><span class="keyword">var</span> Plugin = can.Control({
+    pluginName: <span class="string">'myPlugin'</span>
+  }, {
+    init : <span class="function"><span class="keyword">function</span><span class="params">(el, options)</span> {</span>
+      <span class="keyword">this</span>.updateCount = <span class="number">0</span>;
+      <span class="keyword">this</span>.update({
+        text : <span class="string">'Initialized'</span>
+      });
+    },
+    update : <span class="function"><span class="keyword">function</span><span class="params">(options)</span> {</span>
+      <span class="comment">// Call the can.Control update first.</span>
+      <span class="comment">// Use this._super when using can/construct/super</span>
+      can.Control.prototype.update.call(<span class="keyword">this</span>, options);
+      <span class="keyword">this</span>.element.html(<span class="keyword">this</span>.options.text + <span class="string">' '</span> +
+        (++<span class="keyword">this</span>.updateCount) + <span class="string">' times'</span>);
+    }
+});
+
+$(<span class="string">'#control'</span>).myPlugin();
+$(<span class="string">'#control'</span>).html();
+<span class="comment">// Initialized. Updated 1 times</span>
+
+$(<span class="string">'#control'</span>).myPlugin({ text : <span class="string">'Calling update. Updated'</span> });
+$(<span class="string">'#control'</span>).html();
+<span class="comment">// Calling update. Updated 2 times</span>
+</code></pre>
+
+<div class="demo_wrapper" data-demo-src="can/control/plugin/demo-update.html"><div class="demo">
+  <h3 class="demo_header header reset">
+    <span class="ui-icon ui-icon-triangle-1-s"></span>
+    <a href="javascript://">Demo</a>
+  </h3>
+  <div class="demo_content content" style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; height: 81px; ">
+    <iframe height="100%" frameborder="0" src="file:////Users/daff/Jupiter/heroku/donejs/donejs/can/control/plugin/demo-update.html" style="height: 76px; "></iframe>
+  </div>
+  <h3 class="html_header header reset">
+    <span class="ui-icon ui-icon-triangle-1-e"></span>
+    <a href="javascript://">HTML</a>
+  </h3>
+  <div class="html_content content" style="display: none"><pre><code class="html"><span class="tag">&lt;<span class="keyword">form</span><span class="attribute"> action=<span class="value">""</span></span><span class="attribute"> id=<span class="value">"createRecipes"</span></span>&gt;</span>
+<span class="tag">&lt;<span class="keyword">input</span><span class="attribute"> type=<span class="value">"text"</span></span><span class="attribute"> name=<span class="value">"name"</span></span>&gt;</span>
+<span class="tag">&lt;<span class="keyword">input</span><span class="attribute"> type=<span class="value">"submit"</span></span><span class="attribute"> value=<span class="value">"Create Recipe"</span></span>&gt;</span>
+<span class="tag">&lt;<span class="keyword">ul</span><span class="attribute"> id=<span class="value">"list"</span></span>&gt;</span><span class="tag">&lt;/<span class="keyword">ul</span>&gt;</span>
+<span class="tag">&lt;/<span class="keyword">form</span>&gt;</span></code></pre></div>
+  <h3 class="source_header header reset">
+    <span class="ui-icon ui-icon-triangle-1-e"></span>
+    <a href="javascript://">Source</a>
+  </h3>
+  <div class="source_content content" style="display: none"><pre><code class="javascript"></code></pre></div>
+</div></div></div>
+ <h2>API</h2>
+ <pre><code class=" javascript">can.control.update(options) -&gt; undefined</code></pre>
+  
+  <div class="params">
+  
+    
+      <div class="param ">
+          <label>options</label>
+          <code>{Object}</code> 
+		   <p>A list of options to merge with 
+<a href="#!can.Control.prototype.options">this.options</a>.  Often this method
+is called by the <a href="#!can.Control.plugin">jQuery helper function</a>.</p>
+      </div>
+ 
+ 
+     <div class="return">
+         <label>returns</label> 
+         <code>{undefined}</code> 
+		 
+     </div>
+    
+ 
+ </div></div>
+			<div id="disqus_thread" style="display: block; "><div id="dsq-content-stub"><img width="71" height="17" alt="DISQUS" src="data:image/png;base64,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"><img width="16" height="11" alt="..." src="data:image/gif;base64,R0lGODlhEAALAPQAAP///z2LqeLt8dvp7u7090GNqz2LqV+fuJ/F1IW2ycrf51aatHWswaXJ14i4ys3h6FmctUCMqniuw+vz9eHs8fb5+meku+Tu8vT4+cfd5bbT3tbm7PH2+AAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" style="margin:0 0 3px 5px"></div><div id="dsq-content" style="display: none; "></div></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://bitovi.com">� Bitovi Consulting - DoneJS Training and Support</a>
+	<a class="api_links" href="http://bitovi.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script type="text/javascript">
+	DOCS_SRC_MAP = {
+		'funcunit' : 'https://github.com/jupiterjs/funcunit',
+		'jquery' : 'https://github.com/jupiterjs/jquerymx',
+		'steal' : 'https://github.com/jupiterjs/steal',
+		'documentjs' : 'https://github.com/jupiterjs/documentjs',
+		mxui : 'https://github.com/jupiterjs/mxui'
+	};
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 1338911000257;
+	COMMENTS_LOCATION = 'http://jmvcs3.disqus.com/embed.js';
+	steal = {
+		loaded: ['documentjs/jmvcdoc/production.css']
+	}
+</script>
+<script type="text/javascript" src="../steal/steal.production.js?documentjs/jmvcdoc">
+</script>
+
+<style type="text/css">
+	body > iframe { width: 0;}
+	#dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
+</style>
+
+
+</body>
+</html>

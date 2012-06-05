@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head><script type="text/javascript" src="http://localhost:5555?[]&amp;_=0.5945815113373101"></script>
+	<title>can.route</title>
+	<link rel="stylesheet" type="text/css" href="../documentjs/jmvcdoc/production.css">
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico">
+	<script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-2302003-4'],
+				['_trackPageview'],
+				['_trackPageLoadTime']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+	</script>
+<script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911069516" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!&amp;disqus_version=1338845651&amp;1338911071570" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!canjs&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!canjs&amp;disqus_version=1338845651&amp;1338911073322" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control&amp;disqus_version=1338845651&amp;1338911075109" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.plugin&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.plugin&amp;disqus_version=1338845651&amp;1338911076886" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.route&amp;disqus_version=1338845651&amp;1338911078633" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.view&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.view&amp;disqus_version=1338845651&amp;1338911080273" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.destroy&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.destroy&amp;disqus_version=1338845651&amp;1338911081875" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.element&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.element&amp;disqus_version=1338845651&amp;1338911083561" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.on&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.on&amp;disqus_version=1338845651&amp;1338911085218" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.options&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.options&amp;disqus_version=1338845651&amp;1338911086876" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.prototype.setup&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.prototype.setup&amp;disqus_version=1338845651&amp;1338911088579" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.defaults&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.defaults&amp;disqus_version=1338845651&amp;1338911090146" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.Control.static.processors&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.Control.static.processors&amp;disqus_version=1338845651&amp;1338911091769" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"><script src="http://jmvcs3.disqus.com/thread.js?url=file:////Users/daff/Jupiter/heroku/donejs/donejs/site/docs.html?steal%5Bbrowser%5D=phantomjs&steal%5BstartFiles%5D=steal/browser/phantomjs/client.js#!can.route&amp;title=&amp;sort=&amp;per_page&amp;category_id=&amp;developer=0&amp;identifier=#!can.route&amp;disqus_version=1338845651&amp;1338911093493" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/build/system//defaults.css"><script src="http://mediacdn.disqus.com/1338845651/build/system/disqus.js?" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="http://mediacdn.disqus.com/1338845651/uploads/themes/7884a9652e94555c70f96b6be63be216/theme.css?252"></head><body>
+<div id="documentation">
+	<div id="top">
+		<div class="content">
+			<div id="searchRoundCorners">
+				<div class="jmvcdoc_search"><input id="search" type="input"><span title="clear term" class="remove"></span></div>
+			</div>
+			<div id="defaults">
+				<ul id="menu" class="ui-menu"></ul>
+			</div>
+		</div>
+	</div>
+	<div id="bottom">
+		<div id="nav" class="jmvcdoc_nav">
+
+	<div id="selected">
+		    
+				
+		<div class="content">
+			    <a href="#!" class="selected choice page" style="padding-left: 20px">
+			    	
+					DoneJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!canjs" class="selected choice page" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					CanJS
+				</a>
+				
+		</div>
+			
+				<div class="spacer"><div>&nbsp;</div></div>
+			
+			
+				
+		<div class="content">
+			    <a href="#!can.route" class="selected choice class" style="padding-left: 20px">
+			    	
+						<span class="remove" title="close"></span>
+					
+					can.route
+				</a>
+				
+		</div>
+			
+			
+	</div>
+
+<div id="results" style="display: block">
+	<div class="content">
+	    
+			
+		    <a href="#!can.route.current" class="result choice function" style="padding-left: 20px" data-name="can.route.current">
+		    	
+					<span class="faded">can.route.</span>current
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.deparam" class="result choice function" style="padding-left: 20px" data-name="can.route.deparam">
+		    	
+					<span class="faded">can.route.</span>deparam
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.link" class="result choice function" style="padding-left: 20px" data-name="can.route.link">
+		    	
+					<span class="faded">can.route.</span>link
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.param" class="result choice function" style="padding-left: 20px" data-name="can.route.param">
+		    	
+					<span class="faded">can.route.</span>param
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.ready" class="result choice function" style="padding-left: 20px" data-name="can.route.ready">
+		    	
+					<span class="faded">can.route.</span>ready
+				
+			</a>
+			
+		
+			
+		    <a href="#!can.route.url" class="result choice function" style="padding-left: 20px" data-name="can.route.url">
+		    	
+					<span class="faded">can.route.</span>url
+				
+			</a>
+			
+		
+	</div>
+</div></div>
+		<div id="doc_container">
+			<div id="doc" class="jmvcdoc_content candoc_content_helpers_demo candoc_content_helpers_iframe candoc_content_helpers_api candoc_content_helpers_highlight candoc_content_helpers_image candoc_content_helpers_disqus"><div class="top">
+	<div class="content">
+	    <h1>can.route&nbsp;
+	    	<span class="class type"><span class="typeEnd">class</span></span>&nbsp;
+	    	<span class="favorite favoriteoff">&nbsp;&nbsp;&nbsp;</span></h1>
+	    
+	    <div class="inherits">
+	        inherits: <a href="#&amp;who=can.Observe">can.Observe</a>
+	    </div>
+	    
+	    
+	    
+	    <div class="plugin">
+	        plugin: can/route
+	    </div>
+	    
+		
+		
+		
+	</div>
+</div>
+<p><code>can.route(route, defults)</code> helps manage browser history (and
+client state) by
+synchronizing the window.location.hash with
+an <a href="#!can.Observe">can.Observe</a>.</p>
+
+<h2>Background Information</h2>
+
+<p>To support the browser's back button and bookmarking
+in an Ajax application, most applications use
+the <code>window.location.hash</code>.  By
+changing the hash (via a link or JavaScript), 
+one is able to add to the browser's history 
+without changing the page.</p>
+
+<p>This provides the basics needed to
+create history enabled Ajax websites.  However,
+<code>can.route</code> addresses several other needs such as:</p>
+
+<ul>
+<li>Pretty urls (actually hashes)</li>
+<li>Keeping routes independent of application code</li>
+<li>Listening to specific parts of the history changing</li>
+<li>Setup / Teardown of widgets.</li>
+</ul>
+
+<h2>How it works</h2>
+
+<p><code>can.route</code> is a <a href="#!can.Observe">can.Observe</a> that represents the
+<code>window.location.hash</code> as an 
+object.  For example, if the hash looks like:</p>
+
+<pre><code class=" javascript">#!type=videos&amp;id=<span class="number">5</span>
+</code></pre>
+
+<p>the data in <code>can.route</code> looks like:</p>
+
+<pre><code class=" javascript">{ type: <span class="string">'videos'</span>, id: <span class="number">5</span> }
+</code></pre>
+
+<p><code>can.route</code> keeps the state of the hash in-sync with the <code>data</code> contained within 
+<code>can.route</code>.</p>
+
+<h2>can.Observe</h2>
+
+<p><code>can.route</code> is a <a href="#!can.Observe">can.Observe</a>. Understanding
+<code>can.Observe</code> is essential for using <code>can.route</code> correctly.</p>
+
+<p>You can listen to changes in an Observe with <code>bind(eventName, handler(ev, args...))</code> and
+change can.route's properties with 
+<a href="#!can.Observe.prototype.attr">attr</a>.</p>
+
+<h3>Listening to changes in an Observable</h3>
+
+<p>Listen to changes in history 
+by <a href="#!can.Observe.prototype.bind">bind</a>ing to
+changes in <code>can.route</code> like:</p>
+
+<pre><code class=" javascript">can.route.bind(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span><span class="params">(ev, attr, how, newVal, oldVal)</span> {</span>
+
+})
+</code></pre>
+
+<ul>
+<li><code>attr</code> - the name of the changed attribute</li>
+<li><code>how</code> - the type of Observe change event (add, set or remove)</li>
+<li><code>newVal</code>/<code>oldVal</code> - the new and old values of the attribute</li>
+</ul>
+
+<p>You can also listen to specific changes 
+with <a href="#!can.Observe.delegate">delegate</a>:</p>
+
+<pre><code class=" javascript">can.route.delegate(<span class="string">'id'</span>,<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span> ... })
+</code></pre>
+
+<p>Observe lets you listen to the following events:</p>
+
+<ul>
+<li>change - any change to the object</li>
+<li>add - a property is added</li>
+<li>set - a property value is added or changed</li>
+<li>remove - a property is removed</li>
+</ul>
+
+<p>Listening for <code>add</code> is useful for widget setup
+behavior, <code>remove</code> is useful for teardown.</p>
+
+<h3>Updating an observable</h3>
+
+<p>Create changes in the route data with <a href="#!can.Observe.prototype.attr">attr</a> like:</p>
+
+<pre><code class=" javascript">can.route.attr(<span class="string">'type'</span>,<span class="string">'images'</span>);
+</code></pre>
+
+<p>Or change multiple properties at once like:</p>
+
+<pre><code class=" javascript">can.route.attr({type: <span class="string">'pages'</span>, id: <span class="number">5</span>}, <span class="literal">true</span>)
+</code></pre>
+
+<p>When you make changes to can.route, they will automatically
+change the <code>hash</code>.</p>
+
+<h2>Creating a Route</h2>
+
+<p>Use <code>can.route(url, defaults)</code> to create a 
+route. A route is a mapping from a url to 
+an object (that is the can.route's state). 
+In order to map to a specific properties in the url,
+prepend a colon to the name of the property like:</p>
+
+<pre><code class=" javascript">can.route( <span class="string">"!#content/:type"</span> )
+</code></pre>
+
+<p>If no routes are added, or no route is matched, 
+can.route's data is updated with the <a href="#!can.deparam">deparamed</a>
+hash.</p>
+
+<pre><code class=" javascript">location.hash = <span class="string">"#!type=videos"</span>;
+<span class="comment">// can.route -&gt; {type : "videos"}</span>
+</code></pre>
+
+<p>Once routes are added and the hash changes,
+can.route looks for matching routes and uses them
+to update can.route's data.</p>
+
+<pre><code class=" javascript">can.route( <span class="string">"!#content/:type"</span> );
+location.hash = <span class="string">"#!content/images"</span>;
+<span class="comment">// can.route -&gt; {type : "images"}</span>
+can.route.attr( <span class="string">"type"</span>, <span class="string">"songs"</span> )
+<span class="comment">// location.hash -&gt; "#!content/songs"</span>
+</code></pre>
+
+<p>Default values can also be added:</p>
+
+<pre><code class=" javascript">can.route(<span class="string">"content/:type"</span>,{type: <span class="string">"videos"</span> });
+location.hash = <span class="string">"#!content/"</span>
+<span class="comment">// can.route -&gt; {type : "videos"}</span>
+</code></pre>
+
+<h2>Delay setting can.route</h2>
+
+<p>By default, <code>can.route</code> sets its initial data
+on document ready.  Sometimes, you want to wait to set 
+this data.  To wait, call:</p>
+
+<pre><code class=" javascript">can.route.ready(<span class="literal">false</span>);
+</code></pre>
+
+<p>and when ready, call:</p>
+
+<pre><code class=" javascript">can.route.ready(<span class="literal">true</span>);
+</code></pre>
+
+<h2>Changing the route.</h2>
+
+<p>Typically, you never want to set <code>location.hash</code>
+directly.  Instead, you can change properties on <code>can.route</code>
+like:</p>
+
+<pre><code class=" javascript">can.route.attr(<span class="string">'type'</span>, <span class="string">'videos'</span>)
+</code></pre>
+
+<p>This will automatically look up the appropriate 
+route and update the hash.</p>
+
+<p>Often, you want to create links.  <code>can.route</code> provides
+the <a href="#!can.route.link">can.route.link</a> and <a href="#!can.route.url">can.route.url</a> helpers to make this 
+easy:</p>
+
+<pre><code class=" javascript">can.route.link(<span class="string">"Videos"</span>, {type: <span class="string">'videos'</span>})
+</code></pre>
+
+<h2>Demo</h2>
+
+<p>The following demo shows the relationship between <code>window.location.hash</code>,
+routes given to <code>can.data</code>,
+<code>can.route</code>'s data, and events on <code>can.data</code>.  Most properties 
+are editable so experiment!</p>
+
+<div class="iframe_wrapper" data-iframe-src="can/route/demo.html" data-iframe-height="980"><iframe src="file:////Users/daff/Jupiter/heroku/donejs/donejs/can/route/demo.html" height="980"></iframe></div>
+
+<h2>IE Compatibility</h2>
+
+<p>Internet Explorer 6 and 7 does not support <code>window.onhashchange</code>. 
+Even Internet Explorer 8 running in IE7 compatibility mode reports <code>true</code> 
+for <code>onhashchange</code> in window, even though the event isn't supported.</p>
+
+<p>If you are using jQuery, you can include Ben Alman's [HashChange Plugin http://benalman.com/projects/jquery-hashchange-plugin/]
+to support the event in the unsupported browser(s).  Include <code>can/route/hashchange.js</code>
+in your file to support those browsers.</p>
+
+<h2>Using routes with <code>can.Control</code></h2>
+
+<p>Using templated event handlers, it is possible to listen to changes to
+<code>can.route</code> within <code>can.Control</code>. This is convenient as it allows the
+control to listen to and make changes whenever the route is modified, 
+even outside of the control itself.</p>
+
+<pre><code class=" javascript"><span class="comment">// create the route</span>
+can.route(<span class="string">"!#content/:type"</span>)
+
+<span class="comment">// the route has changed</span>
+<span class="string">"{can.route} change"</span>: <span class="function"><span class="keyword">function</span><span class="params">(ev, attr, how, newVal, oldVal)</span> {</span>
+    <span class="keyword">if</span> (attr === <span class="string">"type"</span>) {
+        <span class="comment">// the route has a type</span>
+    }
+}
+</code></pre>
+
+<h3>Creating and binding routes with <code>can.Control.route</code></h3>
+
+<p>Using <a href="#!can.Control.route">can.Control.route</a>, a builtin plugin to CanJS, cuts down on the amount
+of code needed to work with <code>can.route</code> in <code>can.Control</code>. With this plugin, it is possible
+to both create routes and bind to <code>can.route</code> at the same time. Instead of creating
+several routes to handle changes to <strong>type</strong> and <strong>id</strong>, write something like this
+in a control:</p>
+
+<pre><code class=" javascript"><span class="comment">// the route is empty</span>
+<span class="string">"route"</span>: <span class="function"><span class="keyword">function</span><span class="params">(data)</span> {</span>
+
+},
+<span class="comment">// the route has a type</span>
+<span class="string">":type route"</span>: <span class="function"><span class="keyword">function</span><span class="params">(data)</span> {</span>
+
+}, 
+<span class="comment">// the route has a type and id</span>
+<span class="string">":type/:id route"</span>: <span class="function"><span class="keyword">function</span><span class="params">(data)</span> {</span>
+
+}
+</code></pre>
+
+<h3>Getting more specific with the <code>can.Observe.delegate</code> plugin</h3>
+
+<p>Sometimes, you might only want to trigger a function when the route changes
+only once, even if the route change gets called multiple times. By using the 
+<a href="#!can.Observe.delegate">can.Observe.delegate</a> plugin, this is extremely easy. This plugin allows you to 
+listen to change, set, add, and remove on <code>can.route</code>.</p>
+
+<p>If you wanted to, say, show a list of recipes when  <strong>type</strong> was set to recipe
+and show a specific recipe when <strong>id</strong> was set, you could do something like:</p>
+
+<pre><code class=" javascript"><span class="string">"{can.route} type=recipe set"</span>: 
+        <span class="function"><span class="keyword">function</span><span class="params">( ev, prop, how, newVal, oldVal )</span> {</span>
+    <span class="comment">// show list of recipes</span>
+},
+<span class="string">"recipe/:id"</span>: <span class="function"><span class="keyword">function</span><span class="params">(data)</span> {</span>
+    <span class="comment">// show a single recipe</span>
+}
+</code></pre>
+
+<p>If we didn't only listen to when recipe is set, then every time we chose to
+show a single recipe, we would create and show the list of recipes again which 
+would not very efficient.</p>
+
+	<h2>API</h2>
+
+
+<pre><code class=" javascript">can.route(url, defaults) -&gt; can.route</code></pre>
+
+  <div class="params">
+  
+	    
+	      <div class="param ">
+	          <label>url</label>
+	          <code>{String}</code>
+			  <p>the fragment identifier to match.  The fragment identifier
+should start with either a character (a-Z) or colon (:).  Examples</p>
+
+<pre><code class=" javascript">can.route(<span class="string">":foo"</span>)
+can.route(<span class="string">"foo/:bar"</span>)
+</code></pre>
+	      </div>
+	   
+	      <div class="param optional">
+	          <label>defaults</label>
+	          <code>{optional:Object}</code>
+			  <p>an object of default values</p>
+	      </div>
+	 
+ 
+ 
+     <div class="return">
+         <label>returns</label> 
+         <code>{can.route}</code>
+		 
+     </div>
+    
+ 
+ </div></div>
+			<div id="disqus_thread" style="display: block; "><div id="dsq-content-stub"><img width="71" height="17" alt="DISQUS" src="data:image/png;base64,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"><img width="16" height="11" alt="..." src="data:image/gif;base64,R0lGODlhEAALAPQAAP///z2LqeLt8dvp7u7090GNqz2LqV+fuJ/F1IW2ycrf51aatHWswaXJ14i4ys3h6FmctUCMqniuw+vz9eHs8fb5+meku+Tu8vT4+cfd5bbT3tbm7PH2+AAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" style="margin:0 0 3px 5px"></div><div id="dsq-content" style="display: none; "></div></div>
+		</div>
+	</div>
+</div>
+<div id="low">
+	<a href="http://bitovi.com">� Bitovi Consulting - DoneJS Training and Support</a>
+	<a class="api_links" href="http://bitovi.com/docs/api.html#&amp;who=api"></a>
+</div>
+<script type="text/javascript">
+	DOCS_SRC_MAP = {
+		'funcunit' : 'https://github.com/jupiterjs/funcunit',
+		'jquery' : 'https://github.com/jupiterjs/jquerymx',
+		'steal' : 'https://github.com/jupiterjs/steal',
+		'documentjs' : 'https://github.com/jupiterjs/documentjs',
+		mxui : 'https://github.com/jupiterjs/mxui'
+	};
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 1338911000257;
+	COMMENTS_LOCATION = 'http://jmvcs3.disqus.com/embed.js';
+	steal = {
+		loaded: ['documentjs/jmvcdoc/production.css']
+	}
+</script>
+<script type="text/javascript" src="../steal/steal.production.js?documentjs/jmvcdoc">
+</script>
+
+<style type="text/css">
+	body > iframe { width: 0;}
+	#dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
+</style>
+
+
+</body>
+</html>

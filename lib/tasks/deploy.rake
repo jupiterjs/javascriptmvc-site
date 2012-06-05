@@ -60,6 +60,7 @@ namespace :deploy do
 
 		Dir.chdir('donejs') do
 			sh './js can/util/make.js'
+			sh './js jquery/build/make.js'
 			sh './js site/scripts/doc.js'
 			sh 'cd can/util/docco && npm install && node generate.js'
 		end
@@ -98,7 +99,7 @@ namespace :deploy do
 		sh 'git repack'
 	end
 
-	task :prepare => [:update, :build, :copy, :crawl, :commit_site] do
+	task :prepare => [:update, :build, :copy, :commit_site] do
 		puts
 		puts 'Preparing to deploy...'
 		puts
