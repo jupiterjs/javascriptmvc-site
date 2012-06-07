@@ -63,6 +63,7 @@ namespace :deploy do
 			sh './js jquery/build/make.js'
 			sh './js site/scripts/doc.js'
 			sh 'cd can/util/docco && npm install && node generate.js'
+			sh 'cd jquery/build/docco && npm install && node generate.js'
 		end
 	end
 
