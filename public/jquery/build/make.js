@@ -3,8 +3,7 @@ load("steal/rhino/rhino.js");
 steal('steal/build/pluginify', 'jquery/build/stealify.js', 'jquery/build/amdify.js', 'jquery/build/extract.js',
 function() {
 
-	var extend = steal.extend,
-		out = "jquery/dist/",
+	var out = "jquery/dist/",
 		excludes = [ 'steal/dev',
 			"can/util/jquery/jquery.1.7.1.js",
 			"jquery/build/lib.js" ];
@@ -76,7 +75,7 @@ function() {
 			"jquery/dom/form_params/form_params.js" : "jquerypp/form_params",
 			"jquery/dom/range/range.js" : "jquerypp/range",
 			"jquery/dom/selection/selection.js" : "jquerypp/selection",
-			"jquery/dom/styles/styles.js" : "jquerypp/syles",
+			"jquery/dom/styles/styles.js" : "jquerypp/styles",
 			"jquery/dom/within/within.js" : "jquerypp/within",
 			"jquery/event/default/default.js" : "jquerypp/event/default",
 			"jquery/event/destroyed/destroyed.js" : "jquerypp/event/destroyed",

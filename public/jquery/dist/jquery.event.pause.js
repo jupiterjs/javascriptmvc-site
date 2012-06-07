@@ -1,11 +1,7 @@
-/** 
- * jquery.event.pause.js
- * 
- * Dependencies:
- * 
- * - jquery.event.default.js
- * 
- */
+// Dependencies:
+//
+//    - jquery.event.default.js
+
 (function($){
 
 

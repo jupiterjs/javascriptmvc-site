@@ -1,11 +1,14 @@
 (function( $ ) {
 
 	var getComputedStyle = document.defaultView && document.defaultView.getComputedStyle,
+		// The following variables are used to convert camelcased attribute names
+		// into dashed names, e.g. borderWidth to border-width
 		rupper = /([A-Z])/g,
 		rdashAlpha = /-([a-z])/ig,
 		fcamelCase = function( all, letter ) {
 			return letter.toUpperCase();
 		},
+		// Returns the computed style for an elementn
 		getStyle = function( elem ) {
 			if ( getComputedStyle ) {
 				return getComputedStyle(elem, null);
@@ -14,20 +17,23 @@
 				return elem.currentStyle;
 			}
 		},
+		// Checks for float px and numeric values
 		rfloat = /float/i,
 		rnumpx = /^-?\d+(?:px)?$/i,
 		rnum = /^-?\d/;
 
+	// Returns a list of styles for a given element
 	$.styles = function( el, styles ) {
 		if (!el ) {
 			return null;
 		}
-		var currentS = getStyle(el),
+		var  currentS = getStyle(el),
 			oldName, val, style = el.style,
 			results = {},
 			i = 0,
 			left, rsLeft, camelCase, name;
 
+		// Go through each style
 		for (; i < styles.length; i++ ) {
 			name = styles[i];
 			oldName = name.replace(rdashAlpha, fcamelCase);
@@ -37,19 +43,24 @@
 				oldName = "cssFloat";
 			}
 
+			// If we have getComputedStyle available
 			if ( getComputedStyle ) {
+				// convert camelcased property names to dashed name
 				name = name.replace(rupper, "-$1").toLowerCase();
+				// use getPropertyValue of the current style object
 				val = currentS.getPropertyValue(name);
+				// default opacity is 1
 				if ( name === "opacity" && val === "" ) {
 					val = "1";
 				}
 				results[oldName] = val;
 			} else {
+				// Without getComputedStyles
 				camelCase = name.replace(rdashAlpha, fcamelCase);
 				results[oldName] = currentS[name] || currentS[camelCase];
 
-
-				if (!rnumpx.test(results[oldName]) && rnum.test(results[oldName]) ) { //convert to px
+				// convert to px
+				if (!rnumpx.test(results[oldName]) && rnum.test(results[oldName]) ) {
 					// Remember the original values
 					left = style.left;
 					rsLeft = el.runtimeStyle.left;
@@ -85,38 +96,42 @@
 	 * @return {Object} an object of `style` : `value` pairs
 	 */
 	$.fn.styles = function() {
+		// Pass the arguments as an array to $.styles
 		return $.styles(this[0], $.makeArray(arguments));
 	};
 })(jQuery);
 (function ($) {
 
-	var animationNum = 0,
-		//Animation events implies animations right?
-		//gets the last editable stylesheet or creates one
-		getLastStyleSheet = function () {
-			var sheets = document.styleSheets,
-				x = sheets.length - 1,
-				foundSheet = null,
-				style;
+	// Overwrites `jQuery.fn.animate` to use CSS 3 animations if possible
 
-			while (x >= 0 && !foundSheet) {
-				if (sheets[x].cssRules || sheets[x].rules) {
-					//any stylesheet which we can access cssRules is good
-					foundSheet = sheets[x];
-				}
-				x -= 1;
-			}
+	var
+		// The global animation counter
+		animationNum = 0,
+		// The stylesheet for our animations
+		styleSheet = null,
+		// The animation cache
+		cache = [],
+		// Stores the browser properties like transition end event name and prefix
+		browser = null,
+		// Store the original $.fn.animate
+		oldanimate = $.fn.animate,
 
-			if (!foundSheet) {
-				style = document.createElement('style');
+		// Return the stylesheet, create it if it doesn't exists
+		getStyleSheet = function () {
+			if(!styleSheet) {
+				var style = document.createElement('style');
+				style.setAttribute("type", "text/css");
+				style.setAttribute("media", "screen");
+
 				document.getElementsByTagName('head')[0].appendChild(style);
 				if (!window.createPopup) { /* For Safari */
 					style.appendChild(document.createTextNode(''));
 				}
-				foundSheet = sheets[sheets.length - 1];
+
+				styleSheet = style.sheet;
 			}
 
-			return foundSheet;
+			return styleSheet;
 		},
 
 		//removes an animation rule from a sheet
@@ -131,85 +146,80 @@
 			}
 		},
 
-		/**
-		 * Returns whether the animation should be passed to the original
-		 * jQuery.fn.animate.
-		 */
+		// Returns whether the animation should be passed to the original $.fn.animate.
 		passThrough = function (props, ops) {
 			var nonElement = !(this[0] && this[0].nodeType),
 				isInline = !nonElement && $(this).css("display") === "inline" && $(this).css("float") === "none";
 
 			for (var name in props) {
 				if (props[name] == 'show' || props[name] == 'hide' // jQuery does something with these two values
-					|| jQuery.isArray(props[name]) // Arrays for individual easing
+					|| $.isArray(props[name]) // Arrays for individual easing
 					|| props[name] < 0 // Negative values not handled the same
 					|| name == 'zIndex' || name == 'z-index'
-					// Firefox doesn't animate 'auto' properties
-					// https://bugzilla.mozilla.org/show_bug.cgi?id=571344
-					// || (browser.prefix == '-moz-' && (name == 'font-size' || name == 'fontSize'))
 					) {  // unit-less value
 					return true;
 				}
 			}
 
 			return props.jquery === true || browser === null ||
-				jQuery.isEmptyObject(props) || // Animating empty properties
-				jQuery.isPlainObject(ops) || // Second parameter is an object - anifast only handles numbers
-				typeof ops == 'string' || // Second parameter is a string like 'slow' TODO: remove
+				// Animating empty properties
+				$.isEmptyObject(props) ||
+				// Second parameter is an object - we can only handle primitives
+				$.isPlainObject(ops) ||
+				// Second parameter is a string like 'slow' TODO: remove
+				typeof ops == 'string' ||
+				// Inline and non elements
 				isInline || nonElement;
 		},
 
-		/**
-		 * Return the CSS number (with px added as the default unit if the value is a number)
-		 */
-		cssNumber = function(origName, value) {
-			if (typeof value === "number" && !jQuery.cssNumber[ origName ]) {
+		// Gets a CSS number (with px added as the default unit if the value is a number)
+		cssValue = function(origName, value) {
+			if (typeof value === "number" && !$.cssNumber[ origName ]) {
 				return value += "px";
 			}
 			return value;
 		},
 
-		/**
-		 * Feature detection borrowed by Modernizr
-		 */
-		getBrowserProperties = function(){
-			var t,
-				el = document.createElement('fakeelement'),
-				transitions = {
-					'transition': {
-						transitionEnd : 'transitionEnd',
-						prefix : ''
-					},
-					/*
-					'OTransition': {
-						transitionEnd : 'oTransitionEnd',
-						prefix : '-o-'
-					},
-					'MSTransition': {
-						transitionEnd : 'msTransitionEnd',
-						prefix : '-ms-'
-					},
-					*/
-					'MozTransition': {
-						transitionEnd : 'animationend',
-						prefix : '-moz-'
-					},
-					'WebkitTransition': {
-						transitionEnd : 'webkitAnimationEnd',
-						prefix : '-webkit-'
+		// Feature detection borrowed by http://modernizr.com/
+		getBrowser = function(){
+			if(!browser) {
+				var t,
+					el = document.createElement('fakeelement'),
+					transitions = {
+						'transition': {
+							transitionEnd : 'transitionEnd',
+							prefix : ''
+						},
+	//					'OTransition': {
+	//						transitionEnd : 'oAnimationEnd',
+	//						prefix : '-o-'
+	//					},
+	//					'MSTransition': {
+	//						transitionEnd : 'msTransitionEnd',
+	//						prefix : '-ms-'
+	//					},
+						'MozTransition': {
+							transitionEnd : 'animationend',
+							prefix : '-moz-'
+						},
+						'WebkitTransition': {
+							transitionEnd : 'webkitAnimationEnd',
+							prefix : '-webkit-'
+						}
+					}
+
+				for(t in transitions){
+					if( el.style[t] !== undefined ){
+						browser = transitions[t];
 					}
 				}
-
-			for(t in transitions){
-				if( el.style[t] !== undefined ){
-					return transitions[t];
-				}
 			}
-			return null;
+			return browser;
 		},
 
-		// Properties that Firefox can't animate if set to 'auto'
+		// Properties that Firefox can't animate if set to 'auto':
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=571344
+		// Provides a converter that returns the actual value
 		ffProps = {
 			top : function(el) {
 				return el.position().top;
@@ -228,29 +238,20 @@
 			}
 		},
 
-		browser = getBrowserProperties(),
-
-		/**
-		 * Add browser specific prefix
-		 */
+		// Add browser specific prefix
 		addPrefix = function(properties) {
 			var result = {};
-			jQuery.each(properties, function(name, value) {
+			$.each(properties, function(name, value) {
 				result[browser.prefix + name] = value;
 			});
 			return result;
 		},
 
-		// The animation cache
-		cache = [],
-
-		/**
-		 * Returns the animation name for a given style. It either uses a cached
-		 * version or adds it to the stylesheet, removing the oldest style if the
-		 * cache has reached a certain size.
-		 */
+		// Returns the animation name for a given style. It either uses a cached
+		// version or adds it to the stylesheet, removing the oldest style if the
+		// cache has reached a certain size.
 		getAnimation = function(style) {
-			var lastSheet, name, last;
+			var sheet, name, last;
 
 			// Look up the cached style, set it to that name and reset age if found
 			// increment the age for any other animation
@@ -264,12 +265,11 @@
 			});
 
 			if(!name) { // Add a new style
-				lastSheet = getLastStyleSheet()
-				name = "animate" + (animationNum++);
+				sheet = getStyleSheet();
+				name = "jquerypp_animation_" + (animationNum++);
 				// get the last sheet and insert this rule into it
-				lastSheet.insertRule("@" + browser.prefix + "keyframes " + name + ' ' + style,
-					lastSheet.cssRules.length);
-
+				sheet.insertRule("@" + browser.prefix + "keyframes " + name + ' ' + style,
+					(sheet.cssRules && sheet.cssRules.length) || 0);
 				cache.push({
 					name : name,
 					style : style,
@@ -284,51 +284,50 @@
 				// Remove the last (oldest) item from the cache if it has more than 20 items
 				if(cache.length > 20) {
 					last = cache.pop();
-					removeAnimation(lastSheet, last.name);
+					removeAnimation(sheet, last.name);
 				}
 			}
 
 			return name;
-		},
-
-		oldanimate = jQuery.fn.animate;
+		};
 
 	/**
-	 * @function jQuery.fn.animate
-	 * @parent jQuery.animate
+	 * @function $.fn.animate
+	 * @parent $.animate
 	 *
 	 * Animate CSS properties using native CSS animations, if possible.
-	 * Uses the original [jQuery.fn.animate()](http://api.jquery.com/animate/) otherwise.
+	 * Uses the original [$.fn.animate()](http://api.$.com/animate/) otherwise.
 	 *
 	 * @param {Object} props The CSS properties to animate
 	 * @param {Integer|String|Object} [speed=400] The animation duration in ms.
-	 * Will use jQuery.fn.animate if a string or object is passed
+	 * Will use $.fn.animate if a string or object is passed
 	 * @param {Function} [callback] A callback to execute once the animation is complete
 	 * @return {jQuery} The jQuery element
 	 */
-	jQuery.fn.animate = function (props, speed, callback) {
+	$.fn.animate = function (props, speed, callback) {
 		//default to normal animations if browser doesn't support them
 		if (passThrough.apply(this, arguments)) {
 			return oldanimate.apply(this, arguments);
 		}
-		if (jQuery.isFunction(speed)) {
+		if ($.isFunction(speed)) {
 			callback = speed;
 		}
 
+		// Add everything to the animation queue
 		this.queue('fx', function(done) {
-
-			// Add everything to the animation queue
-			// Most of of these calls need to happen once per element
-			var current, //current CSS values
-				properties = [], // The list of properties passed
+			var
+				//current CSS values
+				current,
+				// The list of properties passed
+				properties = [],
 				to = "",
 				prop,
 				self = $(this),
-				duration = jQuery.fx.speeds[speed] || speed || jQuery.fx.speeds._default,
+				duration = $.fx.speeds[speed] || speed || $.fx.speeds._default,
 				//the animation keyframe name
 				animationName,
 				// The key used to store the animation hook
-				dataKey = animationName + '.run',
+				dataKey,
 				//the text for the keyframe
 				style = "{ from {",
 				// The animation end event handler.
@@ -347,7 +346,7 @@
 						callback.call(self[0], true)
 					}
 
-					jQuery.removeData(self, dataKey, true);
+					$.removeData(self, dataKey, true);
 				}
 
 			for(prop in props) {
@@ -357,28 +356,29 @@
 			if(browser.prefix === '-moz-') {
 				// Normalize 'auto' properties in FF
 				$.each(properties, function(i, prop) {
-					var converter = ffProps[jQuery.camelCase(prop)];
+					var converter = ffProps[$.camelCase(prop)];
 					if(converter && self.css(prop) == 'auto') {
 						self.css(prop, converter(self));
 					}
 				});
 			}
 
-			// Use jQuery.styles
+			// Use $.styles
 			current = self.styles.apply(self, properties);
-			jQuery.each(properties, function(i, cur) {
+			$.each(properties, function(i, cur) {
 				// Convert a camelcased property name
 				var name = cur.replace(/([A-Z]|^ms)/g, "-$1" ).toLowerCase();
-				style += name + " : " + cssNumber(cur, current[cur]) + "; ";
-				to += name + " : " + cssNumber(cur, props[cur]) + "; ";
+				style += name + " : " + cssValue(cur, current[cur]) + "; ";
+				to += name + " : " + cssValue(cur, props[cur]) + "; ";
 			});
 
 			style += "} to {" + to + " }}";
 
 			animationName = getAnimation(style);
+			dataKey = animationName + '.run';
 
 			// Add a hook which will be called when the animation stops
-			jQuery._data(this, dataKey, {
+			$._data(this, dataKey, {
 				stop : function(gotoEnd) {
 					// Pause the animation
 					self.css(addPrefix({
@@ -386,7 +386,8 @@
 					}));
 					// Unbind the animation end handler
 					self.off(browser.transitionEnd, animationEnd);
-					if(!gotoEnd) { // We were told not to finish the animation
+					if(!gotoEnd) {
+						// We were told not to finish the animation
 						// Call animationEnd but set the CSS to the current computed style
 						animationEnd(self.styles.apply(self, properties), false);
 					} else {
@@ -403,8 +404,9 @@
 				"animation-fill-mode": "forwards"
 			}));
 
+			// Attach the transition end event handler to run only once
 			self.one(browser.transitionEnd, function() {
-				// Call animationEnd using the current properties
+				// Call animationEnd using the passed properties
 				animationEnd(props, true);
 				done();
 			});
@@ -438,42 +440,50 @@
  * @param {HTMLElement|jQuery} element an element or jQuery collection to compare against.
  * @return {Number} A number representing a bitmask deatiling how the elements are positioned from each other.
  */
+
+// See http://ejohn.org/blog/comparing-document-position/
 jQuery.fn.compare = function(element){ //usually 
-	//element is usually a relatedTarget, but element/c it is we have to avoid a few FF errors
-	
-	try{ //FF3 freaks out with XUL
+	try{
+		// Firefox 3 throws an error with XUL - we can't use compare then
 		element = element.jquery ? element[0] : element;
 	}catch(e){
 		return null;
 	}
-	if (window.HTMLElement) { //make sure we aren't coming from XUL element
 
+	// make sure we aren't coming from XUL element
+	if (window.HTMLElement) {
 		var s = HTMLElement.prototype.toString.call(element)
 		if (s == '[xpconnect wrapped native prototype]' || s == '[object XULElement]' || s === '[object Window]') {
 			return null;
 		}
-
 	}
+
 	if(this[0].compareDocumentPosition){
+		// For browsers that support it, use compareDocumentPosition
+		// https://developer.mozilla.org/en/DOM/Node.compareDocumentPosition
 		return this[0].compareDocumentPosition(element);
 	}
+
+	// this[0] contains element
 	if(this[0] == document && element != document) return 8;
-	var number = (this[0] !== element && this[0].contains(element) && 16) + (this[0] != element && element.contains(this[0]) && 8),
+
+	var number =
+			// this[0] contains element
+			(this[0] !== element && this[0].contains(element) && 16) +
+			// element contains this[0]
+			(this[0] != element && element.contains(this[0]) && 8),
 		docEl = document.documentElement;
+
+	// Use the sourceIndex
 	if(this[0].sourceIndex){
+		// this[0] precedes element
 		number += (this[0].sourceIndex < element.sourceIndex && 4)
+		// element precedes foo[0]
 		number += (this[0].sourceIndex > element.sourceIndex && 2)
+		// The nodes are in different documents
 		number += (this[0].ownerDocument !== element.ownerDocument ||
 			(this[0] != docEl && this[0].sourceIndex <= 0 ) ||
 			(element != docEl && element.sourceIndex <= 0 )) && 1
-	}else{
-		var range = document.createRange(), 
-			sourceRange = document.createRange(),
-			compare;
-		range.selectNode(this[0]);
-		sourceRange.selectNode(element);
-		compare = range.compareBoundaryPoints(Range.START_TO_START, sourceRange);
-		
 	}
 
 	return number;
@@ -728,17 +738,20 @@ jQuery.fn.compare = function(element){ //usually
      * @return {String} the value of the cookie or {undefined} when setting the cookie.
      */
     jQuery.cookie = function(name, value, options) {
-        if (typeof value != 'undefined') { // name and value given, set cookie
+        if (typeof value != 'undefined') {
+            // name and value given, set cookie
             options = options ||
             {};
             if (value === null) {
                 value = '';
                 options.expires = -1;
             }
+	        // convert value to JSON string
             if (typeof value == 'object' && jQuery.toJSON) {
                 value = jQuery.toJSON(value);
             }
             var expires = '';
+	        // Set expiry
             if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
                 var date;
                 if (typeof options.expires == 'number') {
@@ -756,6 +769,7 @@ jQuery.fn.compare = function(element){ //usually
             var path = options.path ? '; path=' + (options.path) : '';
             var domain = options.domain ? '; domain=' + (options.domain) : '';
             var secure = options.secure ? '; secure' : '';
+	        // Set the cookie name=value;expires=;path=;domain=;secure-
             document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
         }
         else { // only name given, get cookie
@@ -766,11 +780,13 @@ jQuery.fn.compare = function(element){ //usually
                     var cookie = jQuery.trim(cookies[i]);
                     // Does this cookie string begin with the name we want?
                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                    // Get the cookie value
                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                         break;
                     }
                 }
             }
+	        // Parse JSON from the cookie into an object
             if (jQuery.evalJSON && cookieValue && cookieValue.match(/^\s*\{/)) {
                 try {
                     cookieValue = jQuery.evalJSON(cookieValue);
@@ -785,7 +801,9 @@ jQuery.fn.compare = function(element){ //usually
 })(jQuery);
 (function($) {
 
-var weird = /button|select/i, //margin is inside border
+var
+	//margin is inside border
+	weird = /button|select/i,
 	getBoxes = {},
     checks = {
         width: ["Left", "Right"],
@@ -903,6 +921,7 @@ height:
  * @return {jQuery|Number} Returns the inner height or the jQuery wrapped elements
  * if you are setting the inner height.
  */
+// for each 'height' and 'width'
 "Height" }, function(lower, Upper) {
 
     //used to get the padding and border for an element in a given direction
@@ -929,23 +948,28 @@ height:
     $.fn["outer" + Upper] = function(v, margin) {
         var first = this[0];
 		if (typeof v == 'number') {
+			// Setting the value
             first && this[lower](v - getBoxes[lower](first, {padding: true, border: true, margin: margin}))
             return this;
         } else {
+			// Return the old value
             return first ? checks["oldOuter" + Upper].call(this, v) : null;
         }
     }
     $.fn["inner" + Upper] = function(v) {
         var first = this[0];
 		if (typeof v == 'number') {
+			// Setting the value
             first&& this[lower](v - getBoxes[lower](first, { padding: true }))
             return this;
         } else {
+			// Return the old value
             return first ? checks["oldInner" + Upper].call(this, v) : null;
         }
     }
     //provides animations
 	var animate = function(boxes){
+		// Return the animation function
 		return function(fx){
 			if (fx.state == 0) {
 	            fx.start = $(fx.elem)[lower]();
@@ -955,16 +979,17 @@ height:
 		}
 	}
     $.fx.step["outer" + Upper] = animate({padding: true, border: true})
-	
 	$.fx.step["outer" + Upper+"Margin"] =  animate({padding: true, border: true, margin: true})
-	
 	$.fx.step["inner" + Upper] = animate({padding: true})
 
 })
 
 })(jQuery);
 (function( $ ) {
-	var keyBreaker = /[^\[\]]+/g,
+	var
+		// use to parse bracket notation like my[name][attribute]
+		keyBreaker = /[^\[\]]+/g,
+		// converts values that look like numbers and booleans and removes empty strings
 		convertValue = function( value ) {
 			if ( $.isNumeric( value )) {
 				return parseFloat( value );
@@ -2198,6 +2223,7 @@ $.fn.selection.getCharElement = getCharElement;
 
 })(jQuery);
 (function($){
+	// Checks if x and y coordinates are within a box with left, top, width and height
    var withinBox = function(x, y, left, top, width, height ){
         return (y >= top &&
                 y <  top + height &&
@@ -2228,14 +2254,18 @@ $.fn.within= function(left, top, useOffsetCache) {
         if (this == document.documentElement) {
 			return ret.push(this);
 		}
+
+	    // uses either the cached offset or .offset()
         var offset = useOffsetCache ? 
 						jQuery.data(this,"offsetCache") || jQuery.data(this,"offsetCache", q.offset()) : 
 						q.offset();
 
-        var res =  withinBox(left, top,  offset.left, offset.top,
+        // Check if the given coordinates are within the area of the current element
+	    var res =  withinBox(left, top,  offset.left, offset.top,
                                     this.offsetWidth, this.offsetHeight );
 
         if (res) {
+	        // Add it to the results
 			ret.push(this);
 		}
     });
@@ -2267,15 +2297,16 @@ $.fn.withinBox = function(left, top, width, height, useOffsetCache){
 
         if(this == document.documentElement) return  ret.push(this);
 
+	    // use cached offset or .offset()
         var offset = cache ? 
 			jQuery.data(this,"offset") || 
 			jQuery.data(this,"offset", q.offset()) : 
 			q.offset();
 
 
-        var ew = q.width(), eh = q.height();
-
-		res =  !( (offset.top > top+height) || (offset.top +eh < top) || (offset.left > left+width ) || (offset.left+ew < left));
+        var ew = q.width(), eh = q.height(),
+	        // Checks if the element offset is within the given box
+	        res =  !( (offset.top > top+height) || (offset.top +eh < top) || (offset.left > left+width ) || (offset.left+ew < left));
 
         if(res)
             ret.push(this);
@@ -2408,14 +2439,18 @@ $event.trigger =  function defaultTriggerer( event, data, elem, onlyHandlers){
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/dom/destroyed/destroyed.js
 	 * @test jquery/event/destroyed/qunit.html
 	 */
+
+	// Store the old jQuery.cleanData
 	var oldClean = jQuery.cleanData;
 
+	// Overwrites cleanData which is called by jQuery on manipulation methods
 	$.cleanData = function( elems ) {
 		for ( var i = 0, elem;
 		(elem = elems[i]) !== undefined; i++ ) {
+			// Trigger the destroyed event
 			$(elem).triggerHandler("destroyed");
-			//$.event.remove( elem, 'destroyed' );
 		}
+		// Call the old jQuery.cleanData
 		oldClean(elems);
 	};
 
@@ -4245,6 +4280,100 @@ $.extend($.Scrollable.prototype,{
 		oldPosition.call(this, offsetPositionv)
 	}
 
+})(jQuery);
+(function () {
+	// http://bitovi.com/blog/2012/04/faster-jquery-event-fix.html
+	// https://gist.github.com/2377196
+
+	// IE 8 has Object.defineProperty but it only defines DOM Nodes. According to
+	// http://kangax.github.com/es5-compat-table/#define-property-ie-note
+	// All browser that have Object.defineProperties also support Object.defineProperty properly
+	if(Object.defineProperties) {
+		var
+			// Use defineProperty on an object to set the value and return it
+			set = function (obj, prop, val) {
+				if(val !== undefined) {
+					Object.defineProperty(obj, prop, {
+						value : val
+					});
+				}
+				return val;
+			},
+			// special converters
+			special = {
+				pageX : function (original) {
+					var eventDoc = this.target.ownerDocument || document;
+					doc = eventDoc.documentElement;
+					body = eventDoc.body;
+					return original.clientX + ( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) - ( doc && doc.clientLeft || body && body.clientLeft || 0 );
+				},
+				pageY : function (original) {
+					var eventDoc = this.target.ownerDocument || document;
+					doc = eventDoc.documentElement;
+					body = eventDoc.body;
+					return original.clientY + ( doc && doc.scrollTop || body && body.scrollTop || 0 ) - ( doc && doc.clientTop || body && body.clientTop || 0 );
+				},
+				relatedTarget : function (original) {
+					if(!original) {
+						return;
+					}
+					return original.fromElement === this.target ? original.toElement : original.fromElement;
+				},
+				metaKey : function (originalEvent) {
+					return originalEvent.ctrlKey;
+				},
+				which : function (original) {
+					return original.charCode != null ? original.charCode : original.keyCode;
+				}
+			};
+
+		// Get all properties that should be mapped
+		jQuery.each(jQuery.event.keyHooks.props.concat(jQuery.event.mouseHooks.props).concat(jQuery.event.props), function (i, prop) {
+			if (prop !== "target") {
+				(function () {
+					Object.defineProperty(jQuery.Event.prototype, prop, {
+						get : function () {
+							// get the original value, undefined when there is no original event
+							var originalValue = this.originalEvent && this.originalEvent[prop];
+							// overwrite getter lookup
+							return this['_' + prop] !== undefined ? this['_' + prop] : set(this, prop,
+								// if we have a special function and no value
+								special[prop] && originalValue === undefined ?
+									// call the special function
+									special[prop].call(this, this.originalEvent) :
+									// use the original value
+									originalValue)
+						},
+						set : function (newValue) {
+							// Set the property with underscore prefix
+							this['_' + prop] = newValue;
+						}
+					});
+				})();
+			}
+		});
+
+		jQuery.event.fix = function (event) {
+			if (event[ jQuery.expando ]) {
+				return event;
+			}
+			// Create a jQuery event with at minimum a target and type set
+			var originalEvent = event,
+				event = jQuery.Event(originalEvent);
+			event.target = originalEvent.target;
+			// Fix target property, if necessary (#1925, IE 6/7/8 & Safari2)
+			if (!event.target) {
+				event.target = originalEvent.srcElement || document;
+			}
+
+			// Target should not be a text node (#504, Safari)
+			if (event.target.nodeType === 3) {
+				event.target = event.target.parentNode;
+			}
+
+			return event;
+		}
+	}
 })(jQuery);
 (function($){
 /**

@@ -1,11 +1,7 @@
-/** 
- * jquery.event.swipe.js
- * 
- * Dependencies:
- * 
- * - jquery.event.livehack.js
- * 
- */
+// Dependencies:
+//
+//    - jquery.event.livehack.js
+
 (function($){
 // TODO remove this, phantom supports touch AND click, but need to make funcunit support touch so its testable
 var isPhantom = /Phantom/.test(navigator.userAgent),

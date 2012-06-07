@@ -1,0 +1,1 @@
+c({"name": "prototype._hidden", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["prototype"], "comment": "<p>Hide the DOM node that represents this controller.</p>", "hide": true, "src": "canui/form/combobox/dropdown/dropdown.js", "line": 387, "children": []})

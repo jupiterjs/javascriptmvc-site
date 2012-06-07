@@ -1,12 +1,8 @@
-/** 
- * jquery.event.drag.js
- * 
- * Dependencies:
- * 
- * - jquery.lang.vector.js
- * - jquery.event.livehack.js
- * 
- */
+// Dependencies:
+//
+//    - jquery.lang.vector.js
+//    - jquery.event.livehack.js
+
 (function( $ ) {
 	//modify live
 	//steal the live handler ....

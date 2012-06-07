@@ -1,7 +1,3 @@
-/** 
- * jquery.lang.json.js
- * 
- */
 (function($){
     /**
      * @page jQuery.toJSON jQuery.toJSON

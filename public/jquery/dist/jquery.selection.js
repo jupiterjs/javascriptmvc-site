@@ -1,12 +1,8 @@
-/** 
- * jquery.selection.js
- * 
- * Dependencies:
- * 
- * - jquery.range.js
- * - jquery.compare.js
- * 
- */
+// Dependencies:
+//
+//    - jquery.range.js
+//    - jquery.compare.js
+
 (function($){
 
 var getWindow = function( element ) {

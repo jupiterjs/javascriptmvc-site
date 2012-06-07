@@ -1,7 +1,3 @@
-/** 
- * jquery.event.default.js
- * 
- */
 (function($){
 
 /**

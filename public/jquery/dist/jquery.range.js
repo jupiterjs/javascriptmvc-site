@@ -1,11 +1,7 @@
-/** 
- * jquery.range.js
- * 
- * Dependencies:
- * 
- * - jquery.compare.js
- * 
- */
+// Dependencies:
+//
+//    - jquery.compare.js
+
 (function($){
 // TODOS ...
 // Ad

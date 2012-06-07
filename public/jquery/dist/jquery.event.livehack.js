@@ -1,7 +1,3 @@
-/** 
- * jquery.event.livehack.js
- * 
- */
 (function() {
 
 	var event = jQuery.event,

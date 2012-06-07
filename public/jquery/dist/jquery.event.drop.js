@@ -1,15 +1,11 @@
-/** 
- * jquery.event.drop.js
- * 
- * Dependencies:
- * 
- * - jquery.event.drag.js
- * - jquery.within.js
- * - jquery.compare.js
- * - jquery.lang.vector.js
- * - jquery.event.livehack.js
- * 
- */
+// Dependencies:
+//
+//    - jquery.event.drag.js
+//    - jquery.within.js
+//    - jquery.compare.js
+//    - jquery.lang.vector.js
+//    - jquery.event.livehack.js
+
 (function($){
 	var event = $.event;
 	//somehow need to keep track of elements with selectors on them.  When element is removed, somehow we need to know that

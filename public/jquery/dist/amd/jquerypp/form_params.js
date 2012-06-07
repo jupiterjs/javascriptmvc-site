@@ -1,6 +1,9 @@
 define(['jquery'], function(jQuery) { 
 (function( $ ) {
-	var keyBreaker = /[^\[\]]+/g,
+	var
+		// use to parse bracket notation like my[name][attribute]
+		keyBreaker = /[^\[\]]+/g,
+		// converts values that look like numbers and booleans and removes empty strings
 		convertValue = function( value ) {
 			if ( $.isNumeric( value )) {
 				return parseFloat( value );

@@ -1,0 +1,1 @@
+c({"name": "DocumentJS.types.attribute.static.parent", "type": "attribute", "parents": ["DocumentJS.types.attribute.static"], "comment": "<p>Possible scopes for @attribute.</p>", "src": "documentjs/types/attribute.js", "line": 47, "children": []})

@@ -1,11 +1,7 @@
-/** 
- * jquery.event.hover.js
- * 
- * Dependencies:
- * 
- * - jquery.event.livehack.js
- * 
- */
+// Dependencies:
+//
+//    - jquery.event.livehack.js
+
 (function($){
 /**
  * @class jQuery.Hover

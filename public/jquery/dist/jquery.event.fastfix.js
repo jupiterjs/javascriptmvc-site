@@ -1,7 +1,3 @@
-/** 
- * jquery.event.fastfix.js
- * 
- */
 (function () {
 	// http://bitovi.com/blog/2012/04/faster-jquery-event-fix.html
 	// https://gist.github.com/2377196
@@ -10,7 +6,9 @@
 	// http://kangax.github.com/es5-compat-table/#define-property-ie-note
 	// All browser that have Object.defineProperties also support Object.defineProperty properly
 	if(Object.defineProperties) {
-		var set = function (obj, prop, val) {
+		var
+			// Use defineProperty on an object to set the value and return it
+			set = function (obj, prop, val) {
 				if(val !== undefined) {
 					Object.defineProperty(obj, prop, {
 						value : val
@@ -18,6 +16,7 @@
 				}
 				return val;
 			},
+			// special converters
 			special = {
 				pageX : function (original) {
 					var eventDoc = this.target.ownerDocument || document;
@@ -40,18 +39,12 @@
 				metaKey : function (originalEvent) {
 					return originalEvent.ctrlKey;
 				},
-				/* TODO this was in here twice. Probably wrong
-				 which : function(original){
-				 var button = original.button;
-				 return ( button & 1 ? 1 : ( button & 2 ? 3 : ( button & 4 ? 2 : 0 ) ) );
-				 },
-				 */
 				which : function (original) {
 					return original.charCode != null ? original.charCode : original.keyCode;
 				}
-			},
-			oldEvent = jQuery.Event;
+			};
 
+		// Get all properties that should be mapped
 		jQuery.each(jQuery.event.keyHooks.props.concat(jQuery.event.mouseHooks.props).concat(jQuery.event.props), function (i, prop) {
 			if (prop !== "target") {
 				(function () {
@@ -69,6 +62,7 @@
 									originalValue)
 						},
 						set : function (newValue) {
+							// Set the property with underscore prefix
 							this['_' + prop] = newValue;
 						}
 					});
