@@ -1,8 +1,6 @@
-define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__drag, __within, __compare, __vector, __livehack, jQuery) { 
+define(['jquerypp/compare','jquerypp/within','jquerypp/event/drag','jquery','jquerypp/event/livehack','jquerypp/util/vector'], function(__compare, __within, __drag, jQuery, __livehack, __vector) { 
 (function($){
 	var event = $.event;
-	//somehow need to keep track of elements with selectors on them.  When element is removed, somehow we need to know that
-	//
 	/**
 	 * @add jQuery.event.special
 	 */
@@ -149,7 +147,7 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 		// adds an element as a 'root' element
 		// this element might have events that we need to respond to
 		addElement: function( el ) {
-			//check other elements
+			// check other elements
 			for(var i =0; i < this._rootElements.length ; i++  ){
 				if(el ==this._rootElements[i]) return;
 			}
@@ -168,6 +166,7 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 		* For a list of affected drops, sorts them by which is deepest in the DOM first.
 		*/ 
 		sortByDeepestChild: function( a, b ) {
+			// Use jQuery.compare to compare two elements
 			var compare = a.element.compare(b.element);
 			if(compare & 16 || compare & 4) return 1;
 			if(compare & 8 || compare & 2) return -1;
@@ -200,7 +199,6 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 		 */
 		activate: function( responder, mover, event ) { //this is where we should call over
 			mover.over(event, responder)
-			//this.last_active = responder;
 			responder.callHandlers(this.lowerName+'over',responder.element[0], event, mover);
 		},
 		move: function( responder, mover, event ) {
@@ -234,7 +232,6 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 			}else if(!this.dragging){
 				this.dragging = drag;
 				this.last_active = [];
-				//this._elements = $();
 			}
 			var el, 
 				drops, 
@@ -252,8 +249,6 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 
 				// get drop elements by selector
 				for(selector in drops){ 
-					
-					
 					dropResponders = selector ? jQuery(selector, el) : [el];
 					
 					// for each drop element
@@ -268,18 +263,16 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 				}
 			}
 			// once all callbacks are added, call init on everything ...
-			// todo ... init could be called more than once?
 			this.add(newEls, event, dragging)
 		},
+
 		// adds the drag callbacks object to the element or merges other callbacks ...
 		// returns true or false if the element is new ...
 		// onlyNew lets only new elements add themselves
 		addCallbacks : function(el, callbacks, onlyNew){
-			
 			var origData = $.data(el,"_dropData");
 			if(!origData){
 				$.data(el,"_dropData", new $.Drop(callbacks, el));
-				//this._elements.push(el);
 				return true;
 			}else if(!onlyNew){
 				var origCbs = origData;
@@ -327,7 +320,7 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 				self = this,
 				drag;
 				
-			//what's still affected ... we can also move element out here
+			// what's still affected ... we can also move element out here
 			while( i < this._elements.length){
 				drag = $.data(this._elements[i],"_dropData");
 				
@@ -341,10 +334,9 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 					}
 				}
 			}
-			
 
-			
-			affected.sort(this.sortByDeepestChild); //we should only trigger on lowest children
+			// we should only trigger on lowest children
+			affected.sort(this.sortByDeepestChild);
 			event.stopRespondPropagate = function(){
 				propagate = false;
 			}
@@ -354,7 +346,7 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 			// all these will be active
 			this.last_active = affected;
 			
-			//deactivate everything in last_active that isn't active
+			// deactivate everything in last_active that isn't active
 			for (j = 0; j < oldLastActive.length; j++) {
 				la = oldLastActive[j];
 				i = 0;
@@ -374,8 +366,8 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 				this.activate(toBeActivated[i], moveable, event);
 				if(!propagate) return;
 			}
-			//activate everything in affected that isn't in last_active
-			
+
+			// activate everything in affected that isn't in last_active
 			for (i = 0; i < affected.length; i++) {
 				this.move(affected[i], moveable, event);
 				
@@ -388,7 +380,7 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 				dropData;
 			
 			// call dropon
-			//go through the actives ... if you are over one, call dropped on it
+			// go through the actives ... if you are over one, call dropped on it
 			for(var i = 0; i < this.last_active.length; i++){
 				la = this.last_active[i]
 				if( this.isAffected(event.vector(), moveable, la)  && la[this.endName]){
@@ -409,11 +401,11 @@ define(['jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/uti
 		 */
 		clear: function() {
 		  this._elements.each(function(){
+			 // remove temporary drop data
 		  	$.removeData(this,"_dropData")
 		  })
 		  this._elements = $();
 		  delete this.dragging;
-		  //this._responders = [];
 		}
 	})
 	$.Drag.responder = $.Drop;

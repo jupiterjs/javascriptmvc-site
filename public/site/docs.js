@@ -6,8 +6,7 @@ steal('steal/generate',
 	'steal/less',
 	'steal/clean',
 	'steal/parse',
-	'steal/html/crawl',
-	'steal/instrument')
+	'steal/html/crawl')
 .then('documentjs')
 .then('can/construct',
 	'can/construct/proxy',

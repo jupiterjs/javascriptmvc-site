@@ -1,6 +1,5 @@
 define(['jquerypp/util/json','jquery'], function(__json, jQuery) { 
 (function() {
-    // break
     /**
      * @function jQuery.cookie
      * @parent jquerypp

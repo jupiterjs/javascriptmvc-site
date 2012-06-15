@@ -1,4 +1,4 @@
-define(['jquerypp/event/drop','jquerypp/event/drag','jquerypp/within','jquerypp/compare','jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__drop, __drag, __within, __compare, __vector, __livehack, jQuery) { 
+define(['jquerypp/event/drop','jquerypp/compare','jquerypp/within','jquerypp/event/drag','jquery','jquerypp/event/livehack','jquerypp/util/vector'], function(__drop, __compare, __within, __drag, jQuery, __livehack, __vector) { 
 (function($){ //needs drop to determine if respondable
 
 /**

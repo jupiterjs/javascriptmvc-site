@@ -1,4 +1,4 @@
-define(['jquery','jquerypp/styles'], function(jQuery, __styles) { 
+define(['jquerypp/styles','jquery'], function(__styles, jQuery) { 
 (function ($) {
 
 	// Overwrites `jQuery.fn.animate` to use CSS 3 animations if possible
@@ -51,22 +51,26 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 				isInline = !nonElement && $(this).css("display") === "inline" && $(this).css("float") === "none";
 
 			for (var name in props) {
-				if (props[name] == 'show' || props[name] == 'hide' // jQuery does something with these two values
-					|| $.isArray(props[name]) // Arrays for individual easing
-					|| props[name] < 0 // Negative values not handled the same
+				// jQuery does something with these values
+				if (props[name] == 'show' || props[name] == 'hide' || props[name] == 'toggle'
+					// Arrays for individual easing
+					|| $.isArray(props[name])
+					// Negative values not handled the same
+					|| props[name] < 0
+					// unit-less value
 					|| name == 'zIndex' || name == 'z-index'
-					) {  // unit-less value
+					) {
 					return true;
 				}
 			}
 
-			return props.jquery === true || browser === null ||
+			return props.jquery === true || getBrowser() === null ||
 				// Animating empty properties
 				$.isEmptyObject(props) ||
+				// We can't do custom easing
+				ops.length == 4 || typeof ops[2] == 'string' ||
 				// Second parameter is an object - we can only handle primitives
 				$.isPlainObject(ops) ||
-				// Second parameter is a string like 'slow' TODO: remove
-				typeof ops == 'string' ||
 				// Inline and non elements
 				isInline || nonElement;
 		},
@@ -89,14 +93,14 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 							transitionEnd : 'transitionEnd',
 							prefix : ''
 						},
-	//					'OTransition': {
-	//						transitionEnd : 'oAnimationEnd',
-	//						prefix : '-o-'
-	//					},
-	//					'MSTransition': {
-	//						transitionEnd : 'msTransitionEnd',
-	//						prefix : '-ms-'
-	//					},
+//						'OTransition': {
+//							transitionEnd : 'oTransitionEnd',
+//							prefix : '-o-'
+//						},
+//						'MSTransition': {
+//							transitionEnd : 'msTransitionEnd',
+//							prefix : '-ms-'
+//						},
 						'MozTransition': {
 							transitionEnd : 'animationend',
 							prefix : '-moz-'
@@ -141,7 +145,7 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 		addPrefix = function(properties) {
 			var result = {};
 			$.each(properties, function(name, value) {
-				result[browser.prefix + name] = value;
+				result[getBrowser().prefix + name] = value;
 			});
 			return result;
 		},
@@ -167,7 +171,7 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 				sheet = getStyleSheet();
 				name = "jquerypp_animation_" + (animationNum++);
 				// get the last sheet and insert this rule into it
-				sheet.insertRule("@" + browser.prefix + "keyframes " + name + ' ' + style,
+				sheet.insertRule("@" + getBrowser().prefix + "keyframes " + name + ' ' + style,
 					(sheet.cssRules && sheet.cssRules.length) || 0);
 				cache.push({
 					name : name,
@@ -203,17 +207,16 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 	 * @param {Function} [callback] A callback to execute once the animation is complete
 	 * @return {jQuery} The jQuery element
 	 */
-	$.fn.animate = function (props, speed, callback) {
+	$.fn.animate = function (props, speed, easing, callback) {
 		//default to normal animations if browser doesn't support them
 		if (passThrough.apply(this, arguments)) {
 			return oldanimate.apply(this, arguments);
 		}
-		if ($.isFunction(speed)) {
-			callback = speed;
-		}
+
+		var optall = jQuery.speed(speed, easing, callback);
 
 		// Add everything to the animation queue
-		this.queue('fx', function(done) {
+		this.queue(optall.queue, function(done) {
 			var
 				//current CSS values
 				current,
@@ -222,7 +225,7 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 				to = "",
 				prop,
 				self = $(this),
-				duration = $.fx.speeds[speed] || speed || $.fx.speeds._default,
+				duration = optall.duration,
 				//the animation keyframe name
 				animationName,
 				// The key used to store the animation hook
@@ -237,12 +240,14 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 					self.css(addPrefix({
 						"animation-duration" : "",
 						"animation-name" : "",
-						"animation-fill-mode" : ""
+						"animation-fill-mode" : "",
+						"animation-play-state" : ""
 					}));
 
-					if (callback && exec) {
+					// Call the original callback
+					if (optall.old && exec) {
 						// Call success, pass the DOM element as the this reference
-						callback.call(self[0], true)
+						optall.old.call(self[0], true)
 					}
 
 					$.removeData(self, dataKey, true);
@@ -252,7 +257,7 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 				properties.push(prop);
 			}
 
-			if(browser.prefix === '-moz-') {
+			if(getBrowser().prefix === '-moz-') {
 				// Normalize 'auto' properties in FF
 				$.each(properties, function(i, prop) {
 					var converter = ffProps[$.camelCase(prop)];
@@ -284,7 +289,7 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 						'animation-play-state' : 'paused'
 					}));
 					// Unbind the animation end handler
-					self.off(browser.transitionEnd, animationEnd);
+					self.off(getBrowser().transitionEnd, animationEnd);
 					if(!gotoEnd) {
 						// We were told not to finish the animation
 						// Call animationEnd but set the CSS to the current computed style
@@ -304,7 +309,7 @@ define(['jquery','jquerypp/styles'], function(jQuery, __styles) {
 			}));
 
 			// Attach the transition end event handler to run only once
-			self.one(browser.transitionEnd, function() {
+			self.one(getBrowser().transitionEnd, function() {
 				// Call animationEnd using the passed properties
 				animationEnd(props, true);
 				done();

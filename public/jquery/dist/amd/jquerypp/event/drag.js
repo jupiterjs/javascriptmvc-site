@@ -1,19 +1,30 @@
-define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__vector, __livehack, jQuery) { 
+define(['jquerypp/event/livehack','jquerypp/util/vector','jquery'], function(__livehack, __vector, jQuery) { 
 (function( $ ) {
 	//modify live
 	//steal the live handler ....
 	var bind = function( object, method ) {
-		var args = Array.prototype.slice.call(arguments, 2);
-		return function() {
-			var args2 = [this].concat(args, $.makeArray(arguments));
-			return method.apply(object, args2);
-		};
-	},
+			var args = Array.prototype.slice.call(arguments, 2);
+			return function() {
+				var args2 = [this].concat(args, $.makeArray(arguments));
+				return method.apply(object, args2);
+			};
+		},
 		event = $.event,
+		// function to clear the window selection if there is one
 		clearSelection = window.getSelection ? function(){
-				window.getSelection().removeAllRanges()
-			} : function(){};
-	// var handle = event.handle; //unused
+			window.getSelection().removeAllRanges()
+		} : function(){},
+
+		supportTouch = "ontouchend" in document,
+		// Use touch events or map it to mouse events
+		startEvent = supportTouch ? "touchstart" : "mousedown",
+		stopEvent = supportTouch ? "touchend" : "mouseup",
+		moveEvent = supportTouch ? "touchmove" : "mousemove",
+		// On touchmove events the default (scrolling) event has to be prevented
+		preventTouchScroll = function(ev) {
+			ev.preventDefault();
+		};
+
 	/**
 	 * @class jQuery.Drag
 	 * @parent jQuery.event.drag
@@ -43,11 +54,13 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 		 * @hide
 		 */
 		mousedown: function( ev, element ) {
-			var isLeftButton = ev.button === 0 || ev.button == 1;
-			if (!isLeftButton || this.current ) {
+			var isLeftButton = ev.button === 0 || ev.button == 1,
+				doEvent = isLeftButton || supportTouch;
+
+			if (!doEvent || this.current ) {
 				return;
-			} //only allows 1 drag at a time, but in future could allow more
-			//ev.preventDefault();
+			}
+
 			//create Drag
 			var drag = new $.Drag(),
 				delegate = ev.delegateTarget || element,
@@ -75,13 +88,14 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 			}, ev);
 		}
 	});
-	
+
 	/**
 	 * @Prototype
 	 */
 	$.extend($.Drag.prototype, {
 		setup: function( options, ev ) {
 			$.extend(this, options);
+
 			this.element = $(this.element);
 			this.event = ev;
 			this.moved = false;
@@ -91,11 +105,16 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 			this._mousemove = mousemove;
 			this._mouseup = mouseup;
 			this._distance = options.distance ? options.distance : 0;
-			
-			this.mouseStartPosition = ev.vector(); //where the mouse is located
-			
-			$(document).bind('mousemove', mousemove);
-			$(document).bind('mouseup', mouseup);
+
+			//where the mouse is located
+			this.mouseStartPosition = ev.vector();
+
+			$(document).bind(moveEvent, mousemove);
+			$(document).bind(stopEvent, mouseup);
+			if(supportTouch) {
+				// On touch devices we want to disable scrolling
+				$(document).bind(moveEvent, preventTouchScroll);
+			}
 
 			if (!this.callEvents('down', this.element, ev) ) {
 			    this.noSelection(this.delegate);
@@ -117,22 +136,31 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 		 * @hide
 		 */
 		destroy: function() {
-			$(document).unbind('mousemove', this._mousemove);
-			$(document).unbind('mouseup', this._mouseup);
+			// Unbind the mouse handlers attached for dragging
+			$(document).unbind(moveEvent, this._mousemove);
+			$(document).unbind(stopEvent, this._mouseup);
+			if(supportTouch) {
+				// Enable scrolling again for touch devices when the drag is done
+				$(document).unbind(moveEvent, preventTouchScroll);
+			}
+
 			if (!this.moved ) {
 				this.event = this.element = null;
 			}
 
-            this.selection(this.delegate);
+			if(!supportTouch) {
+                this.selection(this.delegate);
+			}
 			this.destroyed();
 		},
 		mousemove: function( docEl, ev ) {
 			if (!this.moved ) {
 				var dist = Math.sqrt( Math.pow( ev.pageX - this.event.pageX, 2 ) + Math.pow( ev.pageY - this.event.pageY, 2 ));
+				// Don't initialize the drag if it hasn't been moved the minimum distance
 				if(dist < this._distance){
 					return false;
 				}
-				
+				// Otherwise call init and indicate that the drag has moved
 				this.init(this.element, ev);
 				this.moved = true;
 			}
@@ -141,7 +169,6 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 			if ( this._start_position && this._start_position.equals(pointer) ) {
 				return;
 			}
-			//e.preventDefault();
 			this.draw(pointer, ev);
 		},
 		
@@ -167,8 +194,8 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
          */
 		noSelection: function(elm) {
             elm = elm || this.delegate
-            
 			document.documentElement.onselectstart = function() {
+                // Disables selection
 				return false;
 			};
 			document.documentElement.unselectable = "on";
@@ -188,7 +215,7 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
          *     });
          */
 		selection: function() {
-            if(this.selectionDisabled){
+            if(this.selectionDisabled) {
                 document.documentElement.onselectstart = function() {};
                 document.documentElement.unselectable = "off";
                 this.selectionDisabled.css('-moz-user-select', '');
@@ -197,9 +224,11 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 
 		init: function( element, event ) {
 			element = $(element);
-			var startElement = (this.movingElement = (this.element = $(element))); //the element that has been clicked on
+			//the element that has been clicked on
+			var startElement = (this.movingElement = (this.element = $(element)));
 			//if a mousemove has come after the click
-			this._cancelled = false; //if the drag has been cancelled
+			//if the drag has been cancelled
+			this._cancelled = false;
 			this.event = event;
 			
 			/**
@@ -207,27 +236,28 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 			 * The position of start of the cursor on the element
 			 */
 			this.mouseElementPosition = this.mouseStartPosition.minus(this.element.offsetv()); //where the mouse is on the Element
-			//this.callStart(element, event);
 			this.callEvents('init', element, event);
 
-			//Check what they have set and respond accordingly
-			//  if they canceled
+			// Check what they have set and respond accordingly if they canceled
 			if ( this._cancelled === true ) {
 				return;
 			}
-			//if they set something else as the element
+			// if they set something else as the element
 			this.startPosition = startElement != this.movingElement ? this.movingElement.offsetv() : this.currentDelta();
 
 			this.makePositioned(this.movingElement);
+			// Adjust the drag elements z-index to a high value
 			this.oldZIndex = this.movingElement.css('zIndex');
 			this.movingElement.css('zIndex', 1000);
 			if (!this._only && this.constructor.responder ) {
+				// calls $.Drop.prototype.compile if there is a drop element
 				this.constructor.responder.compile(event, this);
 			}
 		},
 		makePositioned: function( that ) {
 			var style, pos = that.css('position');
 
+			// Position properly, set top and left to 0px for Opera
 			if (!pos || pos == 'static' ) {
 				style = {
 					position: 'relative'
@@ -250,7 +280,7 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 		/**
 		 * Returns the position of the movingElement by taking its top and left.
 		 * @hide
-		 * @return {Vector}
+		 * @return {$.Vector}
 		 */
 		currentDelta: function() {
 			return new $.Vector(parseInt(this.movingElement.css('left'), 10) || 0, parseInt(this.movingElement.css('top'), 10) || 0);
@@ -279,9 +309,9 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 			 * You can also set the location to where it should be on the page.
 			 * 
 			 */
-			this.location = pointer.minus(this.mouseElementPosition); // the offset between the mouse pointer and the representative that the user asked for
-			// position = mouse - (dragOffset - dragTopLeft) - mousePosition
-			
+				// the offset between the mouse pointer and the representative that the user asked for
+			this.location = pointer.minus(this.mouseElementPosition);
+
 			// call move events
 			this.move(event);
 			if ( this._cancelled ) {
@@ -291,7 +321,7 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 				this.position(this.location);
 			}
 
-			//fill in
+			// fill in
 			if (!this._only && this.constructor.responder ) {
 				this.constructor.responder.show(pointer, this, event);
 			}
@@ -318,12 +348,12 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 		position: function( newOffsetv ) { //should draw it on the page
 			var style, dragged_element_css_offset = this.currentDelta(),
 				//  the drag element's current left + top css attributes
-				dragged_element_position_vector = // the vector between the movingElement's page and css positions
-				this.movingElement.offsetv().minus(dragged_element_css_offset); // this can be thought of as the original offset
+				// the vector between the movingElement's page and css positions
+				// this can be thought of as the original offset
+				dragged_element_position_vector =   this.movingElement.offsetv().minus(dragged_element_css_offset);
 			this.required_css_position = newOffsetv.minus(dragged_element_position_vector);
 
 			this.offsetv = newOffsetv;
-			//dragged_element vector can probably be cached.
 			style = this.movingElement[0].style;
 			if (!this._cancelled && !this._horizontal ) {
 				style.top = this.required_css_position.top() + "px";
@@ -347,9 +377,11 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 		 * @param {Event} event a mouseup event signalling drag/drop has completed
 		 */
 		end: function( event ) {
+			// If canceled do nothing
 			if ( this._cancelled ) {
 				return;
 			}
+			// notify the responder - usually a $.Drop instance
 			if (!this._only && this.constructor.responder ) {
 				this.constructor.responder.end(event, this);
 			}
@@ -358,6 +390,7 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 
 			if ( this._revert ) {
 				var self = this;
+				// animate moving back to original position
 				this.movingElement.animate({
 					top: this.startPosition.top() + "px",
 					left: this.startPosition.left() + "px"
@@ -386,6 +419,7 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 				});
 			}
 			if ( this._removeMovingElement ) {
+				// Remove the element when using drag.ghost()
 				this.movingElement.remove();
 			}
 
@@ -404,8 +438,8 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 		 */
 		cancel: function() {
 			this._cancelled = true;
-			//this.end(this.event);
 			if (!this._only && this.constructor.responder ) {
+				// clear the drops
 				this.constructor.responder.clear(this.event.vector(), this, this.event);
 			}
 			this.destroy();
@@ -470,7 +504,7 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 			this._offsetY = offsetY || 0;
 
 			var p = this.mouseStartPosition;
-
+			// Just set the representative as the drag element
 			this.movingElement = $(element);
 			this.movingElement.css({
 				top: (p.y() - this._offsetY) + "px",
@@ -559,7 +593,7 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 		 * @return {drag|Number} returns the drag instance for chaining if the drag value is being set or the
 		 * distance value if the distance is being read.
 		 */
-		distance:function(val){
+		distance: function(val){
 			if(val !== undefined){
 				this._distance = val;
 				return this;
@@ -682,9 +716,8 @@ define(['jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__v
 	 *       // Clean up when the drag motion is done
 	 *     });
 	 */
-	'dragend'], "mousedown", function( e ) {
+	'dragend'], startEvent, function( e ) {
 		$.Drag.mousedown.call($.Drag, e, this);
-
 	});
 })(jQuery);
 })

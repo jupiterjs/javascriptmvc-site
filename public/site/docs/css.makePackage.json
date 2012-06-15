@@ -1,0 +1,1 @@
+c({"name": "css.makePackage", "params": {"steals": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "steals"}, "where": {"description": "", "type": "Object", "optional": false, "order": 1, "name": "where"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "", "src": "steal/build/css/css.js", "line": 45, "children": []})

@@ -1,4 +1,4 @@
-define(['jquerypp/event/drag','jquerypp/styles','jquerypp/util/vector','jquerypp/event/livehack','jquery'], function(__drag, __styles, __vector, __livehack, jQuery) { 
+define(['jquerypp/styles','jquerypp/event/drag','jquery','jquerypp/event/livehack','jquerypp/util/vector'], function(__styles, __drag, jQuery, __livehack, __vector) { 
 (function( $ ) {
 
 

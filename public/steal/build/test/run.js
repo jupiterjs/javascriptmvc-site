@@ -2,23 +2,33 @@
 /**
  * Tests compressing a very basic page and one that is using steal
  */
+
+load('steal/build/pluginify/test/pluginify_test.js')
+load('steal/build/js/js_test.js')
+load('steal/build/open/test/open_test.js')
+load('steal/build/css/test/css_test.js')
+load('steal/build/packages/test/packages_test.js')
+
+// not working yet below here
+
+
 load('steal/rhino/rhino.js')
 steal('steal/test/test.js', function( s ) {
-	STEALPRINT = false;
+	// STEALPRINT = false;
 	s.test.module("steal/build")
 	
 	s.test.test("steal.dev removes parens", function(){
 		load('steal/rhino/rhino.js')
 		var dev = readFile('steal/build/test/dev.js'),
 			devCleaned = readFile('steal/build/test/devCleaned.js');
-		steal("steal/build","steal/build/scripts").then(function(s2){
-			var a = steal.build.builders.scripts.clean("var bla;var foo;steal.dev.log('hi')")
+		steal("steal/build","steal/build/js").then(function(s2){
+			var a = steal.build.js.clean("var bla;var foo;steal.dev.log('hi')")
 			s.test.equals(a, "var bla;var foo;", "clean works")
-			var b = steal.build.builders.scripts.clean("var bla;steal.dev.log('hi()');var foo;steal.dev.log('onetwo(bla())')")
+			var b = steal.build.js.clean("var bla;steal.dev.log('hi()');var foo;steal.dev.log('onetwo(bla())')")
 			s.test.equals(b, "var bla;;var foo;", "clean works with parens")
-			var c = steal.build.builders.scripts.clean("var bla;steal.dev.warn('hi()');var foo;steal.dev.warn('onetwo(bla())')")
+			var c = steal.build.js.clean("var bla;steal.dev.warn('hi()');var foo;steal.dev.warn('onetwo(bla())')")
 			s.test.equals(b, "var bla;;var foo;", "clean works with warn")
-			var d = steal.build.builders.scripts.clean(dev);
+			var d = steal.build.js.clean(dev);
 			s.test.equals(d, devCleaned, "clean really works")
 		});
 		s.test.clear();
@@ -26,7 +36,7 @@ steal('steal/test/test.js', function( s ) {
 	
 	s.test.test("less packages correctly", function(){
 		load('steal/rhino/rhino.js')
-		steal("steal/build","steal/build/scripts","steal/build/styles", "steal/build/apps").then(function(s2){
+		steal("steal/build","steal/build/js","steal/build/css", "steal/build/apps").then(function(s2){
 			s2.build("steal/build/test/styles/styles.html", {
 				to: 'steal/build/test/styles'
 			})
@@ -68,7 +78,7 @@ steal('steal/test/test.js', function( s ) {
 	
 	s.test.test("using stealjs", function(){
 		load('steal/rhino/rhino.js')
-		steal("steal/build","steal/build/scripts").then(function(s2){
+		steal("steal/build","steal/build/js").then(function(s2){
 			s2.build("steal/build/test/stealpage.html", {
 				to: 'steal/build/test'
 			})

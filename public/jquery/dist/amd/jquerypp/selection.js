@@ -1,4 +1,4 @@
-define(['jquery','jquerypp/range','jquerypp/compare'], function(jQuery, __range, __compare) { 
+define(['jquerypp/range','jquery','jquerypp/compare'], function(__range, jQuery, __compare) { 
 (function($){
 
 var getWindow = function( element ) {
@@ -41,7 +41,8 @@ getElementsSelection = function(el, win){
 	}
 	return {
 		start: startPos,
-		end : endPos
+		end : endPos,
+		width : endPos - startPos
 	};
 },
 // Text selection works differently for selection in an input vs
@@ -57,9 +58,9 @@ getSelection = function(el){
 		 	&& document.activeElement != el 
 			&& el.selectionStart == el.selectionEnd 
 			&& el.selectionStart == 0){
-			return {start: el.value.length, end: el.value.length};
+			return {start: el.value.length, end: el.value.length, width: 0};
 		}
-		return  {start: el.selectionStart, end: el.selectionEnd}
+		return  {start: el.selectionStart, end: el.selectionEnd, width: el.selectionEnd - el.selectionStart};
 	} 
 	// getSelection means a 'normal' element in a standards browser.
 	else if(win.getSelection){
@@ -76,7 +77,8 @@ getSelection = function(el){
 				var start = r.text.length
 				return {
 					start: start,
-					end: start + real.text.length
+					end: start + real.text.length,
+					width: real.text.length
 				}
 			}
 			// This works on textareas and other elements
@@ -105,7 +107,7 @@ getSelection = function(el){
 				return res
 			}
 		}catch(e){
-			return {start: el.value.length, end: el.value.length};
+			return {start: el.value.length, end: el.value.length, width: 0};
 		}
 	} 
 },
@@ -125,7 +127,6 @@ select = function( el, start, end ) {
 			el.selectionEnd = end;
 		}
 	} else if (el.createTextRange) {
-		//el.focus();
 		var r = el.createTextRange();
 		r.moveStart('character', start);
 		end = end || start;
@@ -141,7 +142,7 @@ select = function( el, start, end ) {
 		range.setStart(ranges[0].el, ranges[0].count);
 		range.setEnd(ranges[1].el, ranges[1].count);
 		
-		// removeAllRanges is suprisingly necessary for webkit ... BOOO!
+		// removeAllRanges is necessary for webkit
         sel.removeAllRanges();
         sel.addRange(range);
 		
@@ -155,7 +156,6 @@ select = function( el, start, end ) {
 	}
 
 },
-// TODO: can this be removed?
 // If one of the range values is within start and len, replace the range
 // value with the element and its offset.
 replaceWithLess = function(start, len, range, el){
@@ -172,7 +172,6 @@ replaceWithLess = function(start, len, range, el){
 			};;
 	}
 },
-// TODO: can this be removed?
 getCharElement = function( elems , range, len ) {
 	var elem,
 		start;
@@ -200,7 +199,7 @@ getCharElement = function( elems , range, len ) {
  * Set or retrieve the currently selected text range. It works on all elements:
  *
  *      $('#text').selection(8, 12)
- *      $('#text').selection() // -> { start : 8, end : 12 }
+ *      $('#text').selection() // -> { start : 8, end : 12, width: 4 }
  *
  * @param {Number} [start] Start position of the selection range
  * @param {Number} [end] End position of the selection range
@@ -209,6 +208,7 @@ getCharElement = function( elems , range, len ) {
  *
  * - __start__ - The number of characters from the start of the element to the start of the selection.
  * - __end__ - The number of characters from the start of the element to the end of the selection.
+ * - __width__ - The width of the selection range.
  *
  * when no arguments are passed.
  */
