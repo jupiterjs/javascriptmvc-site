@@ -91,5 +91,5 @@ $.fn.withinBox = function(left, top, width, height, useOffsetCache){
     return this.pushStack( jQuery.unique( ret ), "withinBox", jQuery.makeArray(arguments).join(",") );
 }
     
-})(jQuery);
+})(jQuery);;
 })

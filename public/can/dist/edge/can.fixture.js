@@ -272,9 +272,7 @@ var compareMethods = {
 
 				delete settings.fixture;
 
-				//@steal-remove-start
-				log("looking for fixture in " + url);
-				//@steal-remove-end
+				
 
 				settings.url = url;
 				settings.data = null;
@@ -286,9 +284,7 @@ var compareMethods = {
 				}
 			}
 			else {
-				//@steal-remove-start
-				log("using a dynamic fixture for " + settings.type + " " + settings.url);
-				//@steal-remove-end
+				
 
 				//it's a function ... add the fixture datatype so our fixture transport handles it
 				// TODO: make everything go here for timing and other fun stuff
@@ -537,6 +533,10 @@ var compareMethods = {
 			}
 			settings.fixture = fixture;
 			overwrites.push(settings)
+		} else {
+			can.each(settings, function(fixture, url){
+				$fixture(url, fixture);
+			})
 		}
 	};
 	var replacer = can.replacer;
@@ -1013,4 +1013,4 @@ var compareMethods = {
 
 	//Expose this for fixture debugging
 	can.fixture.overwrites = overwrites;
-})(this.can, this )
+})(this.can, this );

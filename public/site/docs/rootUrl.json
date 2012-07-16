@@ -1,0 +1,1 @@
+c({"name": "rootUrl", "type": "attribute", "comment": "<p>@attributes can.util.fixture.rootUrl</p>\n\n<p>Defaults to <code>steal.root</code> unless set.</p>", "parents": ["can.util.fixture"], "src": "can/util/fixture/fixture.js", "line": 919, "children": []})

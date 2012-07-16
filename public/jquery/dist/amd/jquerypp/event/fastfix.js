@@ -92,5 +92,5 @@ define(['jquery'], function(jQuery) {
 			return event;
 		}
 	}
-})(jQuery);
+})(jQuery);;
 })

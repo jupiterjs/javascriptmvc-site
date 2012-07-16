@@ -1,1 +1,0 @@
-c({"name": "prototype.hide", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["prototype"], "comment": "<p>Animate the Dropdown out of view and reset the watermark.</p>", "src": "canui/form/combobox/dropdown/dropdown.js", "line": 369, "children": []})

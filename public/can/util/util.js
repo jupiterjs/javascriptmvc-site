@@ -1,4 +1,5 @@
 can = {};
+
 if (window.STEALSTANDALONE){
 	steal('can/util/standalone')
 } else if (window.STEALDOJO){
@@ -13,7 +14,28 @@ if (window.STEALSTANDALONE){
 	steal('can/util/jquery')
 }
 
+/**
+ @function can.isDeferred
+ @parent can.util
 
+ `can.isDeferred` returns if an object is an instance of [can.Deferred].
+
+ ## Example
+
+ Convert any value to a Deferred:
+
+ function convertDeferred(dfd) {
+ return can.isDeferred(dfd) ? dfd : can.Deferred(dfd);
+ }
+
+ @param {String} str the string to trim
+ @return {String} the value of the string
+ */
+can.isDeferred = function( obj ) {
+	var isFunction = can.isFunction;
+	// Returns `true` if something looks like a deferred.
+	return obj && isFunction(obj.then) && isFunction(obj.pipe)
+}
 
 /**
 @function can.trim
@@ -294,7 +316,13 @@ __Delegate/undelegate binding to an HTMLElement__
 /**
 @function can.trigger
 @parent can.util
-*/
+
+Trigger an event on an element or object.
+
+@param {can.$|Object} obj The object to trigger the event on
+@param {String} event The event to trigger
+@param {Array} [args] The event data
+ */
 //
 /**
 @function can.ajax

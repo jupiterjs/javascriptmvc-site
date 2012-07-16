@@ -1,198 +1,289 @@
 (function(can, window, undefined){
-	// zepto.js
-	// ---------
-	// _Zepto node list._
 
-// Extend what you can out of Zepto.
-$.extend(can,Zepto);
-
-var arrHas = function(obj, name){
-	return obj[0] && obj[0][name] || obj[name]
-}
-
-// Do what's similar for jQuery.
-can.trigger = function(obj, event, args, bubble){
-	if(obj.trigger){
-		obj.trigger(event, args)
-	} else if(arrHas(obj, "dispatchEvent")){
-		if(bubble === false){
-			$([obj]).triggerHandler(event, args)
-		} else {
-			$([obj]).trigger(event, args)
-		}
-		
+	// Register as an AMD module if supported, otherwise attach to the window
+	if ( typeof define === "function" && define.amd ) {
+		define( "can", [], function () { return can; } );
 	} else {
-		if(typeof event == "string"){
-			event = {type: event}
-		}
-		event.target = event.target || obj;
-		event.data = args;
-		can.dispatch.call(obj, event)
-	}
-	
-}
-
-can.$ = Zepto
-
-	can.bind = function( ev, cb){
-		// If we can bind to it...
-		if(this.bind){
-			this.bind(ev, cb)
-		} else if(arrHas(this, "addEventListener")){
-			$([this]).bind(ev, cb)
-		} else {
-			can.addEvent.call(this, ev, cb)
-		}
-		return this;
-	}
-	can.unbind = function(ev, cb){
-		// If we can bind to it...
-		if(this.unbind){
-			this.unbind(ev, cb)
-		} else if(arrHas(this, "addEventListener")){
-			$([this]).unbind(ev, cb)
-		} else {
-			can.removeEvent.call(this, ev, cb)
-		}
-		return this;
-	}
-	can.delegate = function(selector,ev, cb){
-		if(this.delegate){
-			this.delegate(selector, ev, cb)
-		} else {
-			$([this]).delegate(selector,ev, cb)
-		}
-	}
-	can.undelegate = function(selector,ev, cb){
-		if(this.undelegate){
-			this.undelegate(selector, ev, cb)
-		} else {
-			$([this]).undelegate(selector,ev, cb)
-		}
+		window.can = can;
 	}
 
-	$.each(["append","filter","addClass","remove","data"], function(i,name){
-		can[name] = function(wrapped){
-			return wrapped[name].apply(wrapped, can.makeArray(arguments).slice(1))
-		}
-	})
+;
 
-	can.makeArray = function(arr){
-		var ret = []
-		can.each(arr, function(a, i){
-			ret[i] = a
-		})
-		return ret;
-	};
-	can.inArray =function(item, arr){
-		return arr.indexOf(item)
-	}
-	
-	can.proxy = function(f, ctx){
-		return function(){
-			return f.apply(ctx, arguments)
-		}
-	}
-	
-	// Make ajax.
-	var XHR = $.ajaxSettings.xhr;
-	$.ajaxSettings.xhr = function(){
-		var xhr = XHR()
-		var open = xhr.open;
-		xhr.open = function(type, url, async){
-			open.call(this, type, url, ASYNC === undefined ? true : ASYNC)
-		}
-		return xhr;
-	}
-	var ASYNC;
-	var AJAX = $.ajax;
-	var updateDeferred = function(xhr, d){
-		for(var prop in xhr){
-			if(typeof d[prop] == 'function'){
-				d[prop] = function(){
-					xhr[prop].apply(xhr, arguments)
+	can.each = function (elements, callback, context) {
+		var i = 0,
+		    key;
+		if (elements) {
+			if (typeof elements.length == 'number' && elements.pop) {
+				elements.attr && elements.attr('length');
+				for (var len = elements.length; i < len; i++) {
+					if (callback.call(context || elements[i], elements[i], i, elements) === false) {
+						break;
+					}
 				}
 			} else {
-				d[prop] = prop[xhr]
+				for (key in elements) {
+					if (callback.call(context || elements[i], elements[key], key, elements) === false) {
+						break;
+					}
+				}
 			}
 		}
+		return elements;
 	}
-	can.ajax = function(options){
-		
-		var success = options.success,
-			error = options.error;
-		var d = can.Deferred();
-		
-		options.success = function(){
-			
-			updateDeferred(xhr, d);
-			d.resolve.apply(d, arguments);
-			success && success.apply(this,arguments);
-		}
-		options.error = function(){
-			updateDeferred(xhr, d);
-			d.reject.apply(d, arguments);
-			error && error.apply(this,arguments);
-		}
-		if(options.async === false){
-			ASYNC = false
-		}
-		var xhr = AJAX(options);
-		ASYNC = undefined;
-		updateDeferred(xhr, d);
-		return d;
+;
+
+	// deferred.js
+	// ---------
+	// _Lightweight, jQuery style deferreds._
+	
+	var Deferred = function( func ) {
+		if ( ! ( this instanceof Deferred ))
+			return new Deferred();
+
+		this._doneFuncs = [];
+		this._failFuncs = [];
+		this._resultArgs = null;
+		this._status = "";
+
+		// Check for option `function` -- call it with this as context and as first 
+		// parameter, as specified in jQuery API.
+		func && func.call(this, this);
 	};
-	
-
-	
-
-	
-	
-	// Make destroyed and empty work.
-	$.fn.empty = function(){
-		return this.each(function(){ 
-			$.cleanData(this.getElementsByTagName('*'))
-			this.innerHTML = '' 
-		}) 
-	}
-	
-	$.fn.remove= function () {
-		$.cleanData(this);
-		this.each(function () {
-			if (this.parentNode != null) {
-				// might be a text node
-				this.getElementsByTagName && $.cleanData(this.getElementsByTagName('*'))
-				this.parentNode.removeChild(this);
+	can.Deferred = Deferred;
+	can.when = Deferred.when = function() {
+		var args = can.makeArray( arguments );
+		if (args.length < 2) {
+			var obj = args[0];
+			if (obj && ( can.isFunction( obj.isResolved ) && can.isFunction( obj.isRejected ))) {
+				return obj;			
+			} else {
+				return Deferred().resolve(obj);
 			}
-		});
-		return this;
-    }
-    
-    
-    can.trim = function(str){
-    	return str.trim();
-    }
-	can.isEmptyObject = function(object){
-		var name;
-		for(name in object){};
-		return name === undefined;
-	}
+		} else {
+			
+			var df = Deferred(),
+				done = 0,
+				// Resolve params -- params of each resolve, we need to track them down 
+				// to be able to pass them in the correct order if the master 
+				// needs to be resolved.
+				rp = [];
 
-	// Make extend handle `true` for deep.
-	can.extend = function(first){
-		if(first === true){
-			var args = can.makeArray(arguments);
-			args.shift();
-			return $.extend.apply($, args)
+			can.each(args, function(arg, j){
+				arg.done(function() {
+					rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
+					if (++done == args.length) {
+						df.resolve.apply(df, rp);
+					}
+				}).fail(function() {
+					df.reject(arguments);
+				});
+			});
+
+			return df;
+			
 		}
-		return $.extend.apply($, arguments)
 	}
-
-	can.get = function(wrapped, index){
-		return wrapped[index];
-	}
-
 	
+	var resolveFunc = function(type, _status){
+		return function(context){
+			var args = this._resultArgs = (arguments.length > 1) ? arguments[1] : [];
+			return this.exec(context, this[type], args, _status);
+		}
+	},
+	doneFunc = function(type, _status){
+		return function(){
+			var self = this;
+			// In Safari, the properties of the `arguments` object are not enumerable, 
+			// so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
+			can.each(Array.prototype.slice.call(arguments), function( v, i, args ) {
+				if ( ! v )
+					return;
+				if ( v.constructor === Array ) {
+					args.callee.apply(self, v)
+				} else {
+					// Immediately call the `function` if the deferred has been resolved.
+					if (self._status === _status)
+						v.apply(self, self._resultArgs || []);
+	
+					self[type].push(v);
+				}
+			});
+			return this;
+		}
+	};
+
+	can.extend( Deferred.prototype, {
+		pipe : function(done, fail){
+			var d = can.Deferred();
+			this.done(function(){
+				d.resolve( done.apply(this, arguments) );
+			});
+			
+			this.fail(function(){
+				if(fail){
+					d.reject( fail.apply(this, arguments) );
+				} else {
+					d.reject.apply(d, arguments);
+				}
+			});
+			return d;
+		},
+		resolveWith : resolveFunc("_doneFuncs","rs"),
+		rejectWith : resolveFunc("_failFuncs","rj"),
+		done : doneFunc("_doneFuncs","rs"),
+		fail : doneFunc("_failFuncs","rj"),
+		always : function() {
+			var args = can.makeArray(arguments);
+			if (args.length && args[0])
+				this.done(args[0]).fail(args[0]);
+
+			return this;
+		},
+
+		then : function() {
+			var args = can.makeArray( arguments );
+			// Fail `function`(s)
+			if (args.length > 1 && args[1])
+				this.fail(args[1]);
+
+			// Done `function`(s)
+			if (args.length && args[0])
+				this.done(args[0]);
+
+			return this;
+		},
+
+		isResolved : function() {
+			return this._status === "rs";
+		},
+
+		isRejected : function() {
+			return this._status === "rj";
+		},
+
+		reject : function() {
+			return this.rejectWith(this, arguments);
+		},
+
+		resolve : function() {
+			return this.resolveWith(this, arguments);
+		},
+
+		exec : function(context, dst, args, st) {
+			if (this._status !== "")
+				return this;
+
+			this._status = st;
+
+			can.each(dst, function(d){
+				d.apply(context, args);
+			});
+
+			return this;
+		}
+	});
+
+	// fragment.js
+	// ---------
+	// _DOM Fragment support._
+	
+	var table = document.createElement('table'),
+		tableRow = document.createElement('tr'),
+		containers = {
+		  'tr': document.createElement('tbody'),
+		  'tbody': table, 'thead': table, 'tfoot': table,
+		  'td': tableRow, 'th': tableRow,
+		  '*': document.createElement('div')
+		},
+		fragmentRE = /^\s*<(\w+)[^>]*>/,
+		fragment  = function(html, name) {
+			if (name === undefined) {
+				name = fragmentRE.test(html) && RegExp.$1;
+			}
+			if (!(name in containers)) name = '*';
+			var container = containers[name];
+			// IE's parser will strip any `<tr><td>` tags when `innerHTML`
+			// is called on a `tbody`. To get around this, we construct a 
+			// valid table with a `tbody` that has the `innerHTML` we want. 
+			// Then the container is the `firstChild` of the `tbody`.
+			// [source](http://www.ericvasilik.com/2006/07/code-karma.html).
+			if(name === "tr") {
+				var temp = document.createElement('div');
+				temp.innerHTML = "<table><tbody>" + html + "</tbody></table>";
+				container = temp.firstChild.firstChild;
+			} else {
+				container.innerHTML = '' + html;
+			}
+			// IE8 barfs if you pass slice a `childNodes` object, so make a copy.
+			var tmp = {},
+				children = container.childNodes;
+			tmp.length = children.length;
+			for(var i=0; i<children.length; i++){
+				tmp[i] = children[i];
+			}
+			return [].slice.call(tmp);
+		}
+	
+	can.buildFragment = function(html, nodes){
+		var parts = fragment(html),
+			frag = document.createDocumentFragment();
+		parts.forEach(function(part){
+			frag.appendChild(part);
+		})
+		return frag;
+	};
+
+	// event.js
+	// ---------
+	// _Basic event wrapper._
+can.addEvent = function(event, fn){
+	if(!this.__bindEvents){
+		this.__bindEvents = {};
+	}
+	var eventName = event.split(".")[0];
+	
+	if(!this.__bindEvents[eventName]){
+		this.__bindEvents[eventName] = [];
+	}
+	this.__bindEvents[eventName].push({
+		handler: fn,
+		name: event
+	});
+	return this;
+};
+can.removeEvent = function(event, fn){
+	if(!this.__bindEvents){
+		return;
+	}
+	var i =0,
+		events = this.__bindEvents[event.split(".")[0]],
+		ev;
+	while(i < events.length){
+		ev = events[i]
+		if((fn && ev.handler === fn) || (!fn && ev.name === event)){
+			events.splice(i, 1);
+		} else {
+			i++;
+		}
+	}	
+	return this;
+};
+can.dispatch = function(event){
+	if(!this.__bindEvents){
+		return;
+	}
+	
+	var eventName = event.type.split(".")[0],
+		handlers = (this.__bindEvents[eventName] || []).slice(0),
+		self= this,
+		args = [event].concat(event.data || []);
+		
+	can.each(handlers, function(ev){
+		event.data = args.slice(1);
+		ev.handler.apply(self, args);
+	});
+}
+
 ;
 
 	// data.js
@@ -429,674 +520,190 @@ can.$ = Zepto
 	
 ;
 
-	// event.js
-	// ---------
-	// _Basic event wrapper._
-can.addEvent = function(event, fn){
-	if(!this.__bindEvents){
-		this.__bindEvents = {};
-	}
-	var eventName = event.split(".")[0];
 	
-	if(!this.__bindEvents[eventName]){
-		this.__bindEvents[eventName] = [];
-	}
-	this.__bindEvents[eventName].push({
-		handler: fn,
-		name: event
-	});
-	return this;
-};
-can.removeEvent = function(event, fn){
-	if(!this.__bindEvents){
-		return;
-	}
-	var i =0,
-		events = this.__bindEvents[event.split(".")[0]],
-		ev;
-	while(i < events.length){
-		ev = events[i]
-		if((fn && ev.handler === fn) || (!fn && ev.name === event)){
-			events.splice(i, 1);
-		} else {
-			i++;
-		}
-	}	
-	return this;
-};
-can.dispatch = function(event){
-	if(!this.__bindEvents){
-		return;
-	}
-	
-	var eventName = event.type.split(".")[0],
-		handlers = (this.__bindEvents[eventName] || []).slice(0),
-		self= this,
-		args = [event].concat(event.data || []);
+	// returns the
+    // - observes and attr methods are called by func
+	// - the value returned by func
+	// ex: `{value: 100, observed: [{obs: o, attr: "completed"}]}`
+	var getValueAndObserved = function(func, self){
 		
-	can.each(handlers, function(ev){
-		event.data = args.slice(1);
-		ev.handler.apply(self, args);
-	});
-}
-
-;
-
-	// fragment.js
-	// ---------
-	// _DOM Fragment support._
-	
-	var table = document.createElement('table'),
-		tableRow = document.createElement('tr'),
-		containers = {
-		  'tr': document.createElement('tbody'),
-		  'tbody': table, 'thead': table, 'tfoot': table,
-		  'td': tableRow, 'th': tableRow,
-		  '*': document.createElement('div')
-		},
-		fragmentRE = /^\s*<(\w+)[^>]*>/,
-		fragment  = function(html, name) {
-			if (name === undefined) {
-				name = fragmentRE.test(html) && RegExp.$1;
-			}
-			if (!(name in containers)) name = '*';
-			var container = containers[name];
-			// IE's parser will strip any `<tr><td>` tags when `innerHTML`
-			// is called on a `tbody`. To get around this, we construct a 
-			// valid table with a `tbody` that has the `innerHTML` we want. 
-			// Then the container is the `firstChild` of the `tbody`.
-			// [source](http://www.ericvasilik.com/2006/07/code-karma.html).
-			if(name === "tr") {
-				var temp = document.createElement('div');
-				temp.innerHTML = "<table><tbody>" + html + "</tbody></table>";
-				container = temp.firstChild.firstChild;
-			} else {
-				container.innerHTML = '' + html;
-			}
-			// IE8 barfs if you pass slice a `childNodes` object, so make a copy.
-			var tmp = {},
-				children = container.childNodes;
-			tmp.length = children.length;
-			for(var i=0; i<children.length; i++){
-				tmp[i] = children[i];
-			}
-			return [].slice.call(tmp);
-		}
-	
-	can.buildFragment = function(html, nodes){
-		var parts = fragment(html),
-			frag = document.createDocumentFragment();
-		parts.forEach(function(part){
-			frag.appendChild(part);
-		})
-		return frag;
-	};
-
-	// zepto.js
-	// ---------
-	// _Zepto node list._
-
-// Extend what you can out of Zepto.
-$.extend(can,Zepto);
-
-var arrHas = function(obj, name){
-	return obj[0] && obj[0][name] || obj[name]
-}
-
-// Do what's similar for jQuery.
-can.trigger = function(obj, event, args, bubble){
-	if(obj.trigger){
-		obj.trigger(event, args)
-	} else if(arrHas(obj, "dispatchEvent")){
-		if(bubble === false){
-			$([obj]).triggerHandler(event, args)
-		} else {
-			$([obj]).trigger(event, args)
-		}
-		
-	} else {
-		if(typeof event == "string"){
-			event = {type: event}
-		}
-		event.target = event.target || obj;
-		event.data = args;
-		can.dispatch.call(obj, event)
-	}
-	
-}
-
-can.$ = Zepto
-
-	can.bind = function( ev, cb){
-		// If we can bind to it...
-		if(this.bind){
-			this.bind(ev, cb)
-		} else if(arrHas(this, "addEventListener")){
-			$([this]).bind(ev, cb)
-		} else {
-			can.addEvent.call(this, ev, cb)
-		}
-		return this;
-	}
-	can.unbind = function(ev, cb){
-		// If we can bind to it...
-		if(this.unbind){
-			this.unbind(ev, cb)
-		} else if(arrHas(this, "addEventListener")){
-			$([this]).unbind(ev, cb)
-		} else {
-			can.removeEvent.call(this, ev, cb)
-		}
-		return this;
-	}
-	can.delegate = function(selector,ev, cb){
-		if(this.delegate){
-			this.delegate(selector, ev, cb)
-		} else {
-			$([this]).delegate(selector,ev, cb)
-		}
-	}
-	can.undelegate = function(selector,ev, cb){
-		if(this.undelegate){
-			this.undelegate(selector, ev, cb)
-		} else {
-			$([this]).undelegate(selector,ev, cb)
-		}
-	}
-
-	$.each(["append","filter","addClass","remove","data"], function(i,name){
-		can[name] = function(wrapped){
-			return wrapped[name].apply(wrapped, can.makeArray(arguments).slice(1))
-		}
-	})
-
-	can.makeArray = function(arr){
-		var ret = []
-		can.each(arr, function(a, i){
-			ret[i] = a
-		})
-		return ret;
-	};
-	can.inArray =function(item, arr){
-		return arr.indexOf(item)
-	}
-	
-	can.proxy = function(f, ctx){
-		return function(){
-			return f.apply(ctx, arguments)
-		}
-	}
-	
-	// Make ajax.
-	var XHR = $.ajaxSettings.xhr;
-	$.ajaxSettings.xhr = function(){
-		var xhr = XHR()
-		var open = xhr.open;
-		xhr.open = function(type, url, async){
-			open.call(this, type, url, ASYNC === undefined ? true : ASYNC)
-		}
-		return xhr;
-	}
-	var ASYNC;
-	var AJAX = $.ajax;
-	var updateDeferred = function(xhr, d){
-		for(var prop in xhr){
-			if(typeof d[prop] == 'function'){
-				d[prop] = function(){
-					xhr[prop].apply(xhr, arguments)
-				}
-			} else {
-				d[prop] = prop[xhr]
-			}
-		}
-	}
-	can.ajax = function(options){
-		
-		var success = options.success,
-			error = options.error;
-		var d = can.Deferred();
-		
-		options.success = function(){
-			
-			updateDeferred(xhr, d);
-			d.resolve.apply(d, arguments);
-			success && success.apply(this,arguments);
-		}
-		options.error = function(){
-			updateDeferred(xhr, d);
-			d.reject.apply(d, arguments);
-			error && error.apply(this,arguments);
-		}
-		if(options.async === false){
-			ASYNC = false
-		}
-		var xhr = AJAX(options);
-		ASYNC = undefined;
-		updateDeferred(xhr, d);
-		return d;
-	};
-	
-
-	
-
-	
-	
-	// Make destroyed and empty work.
-	$.fn.empty = function(){
-		return this.each(function(){ 
-			$.cleanData(this.getElementsByTagName('*'))
-			this.innerHTML = '' 
-		}) 
-	}
-	
-	$.fn.remove= function () {
-		$.cleanData(this);
-		this.each(function () {
-			if (this.parentNode != null) {
-				// might be a text node
-				this.getElementsByTagName && $.cleanData(this.getElementsByTagName('*'))
-				this.parentNode.removeChild(this);
-			}
-		});
-		return this;
-    }
-    
-    
-    can.trim = function(str){
-    	return str.trim();
-    }
-	can.isEmptyObject = function(object){
-		var name;
-		for(name in object){};
-		return name === undefined;
-	}
-
-	// Make extend handle `true` for deep.
-	can.extend = function(first){
-		if(first === true){
-			var args = can.makeArray(arguments);
-			args.shift();
-			return $.extend.apply($, args)
-		}
-		return $.extend.apply($, arguments)
-	}
-
-	can.get = function(wrapped, index){
-		return wrapped[index];
-	}
-
-	
-;
-
-	// zepto.js
-	// ---------
-	// _Zepto node list._
-
-// Extend what you can out of Zepto.
-$.extend(can,Zepto);
-
-var arrHas = function(obj, name){
-	return obj[0] && obj[0][name] || obj[name]
-}
-
-// Do what's similar for jQuery.
-can.trigger = function(obj, event, args, bubble){
-	if(obj.trigger){
-		obj.trigger(event, args)
-	} else if(arrHas(obj, "dispatchEvent")){
-		if(bubble === false){
-			$([obj]).triggerHandler(event, args)
-		} else {
-			$([obj]).trigger(event, args)
-		}
-		
-	} else {
-		if(typeof event == "string"){
-			event = {type: event}
-		}
-		event.target = event.target || obj;
-		event.data = args;
-		can.dispatch.call(obj, event)
-	}
-	
-}
-
-can.$ = Zepto
-
-	can.bind = function( ev, cb){
-		// If we can bind to it...
-		if(this.bind){
-			this.bind(ev, cb)
-		} else if(arrHas(this, "addEventListener")){
-			$([this]).bind(ev, cb)
-		} else {
-			can.addEvent.call(this, ev, cb)
-		}
-		return this;
-	}
-	can.unbind = function(ev, cb){
-		// If we can bind to it...
-		if(this.unbind){
-			this.unbind(ev, cb)
-		} else if(arrHas(this, "addEventListener")){
-			$([this]).unbind(ev, cb)
-		} else {
-			can.removeEvent.call(this, ev, cb)
-		}
-		return this;
-	}
-	can.delegate = function(selector,ev, cb){
-		if(this.delegate){
-			this.delegate(selector, ev, cb)
-		} else {
-			$([this]).delegate(selector,ev, cb)
-		}
-	}
-	can.undelegate = function(selector,ev, cb){
-		if(this.undelegate){
-			this.undelegate(selector, ev, cb)
-		} else {
-			$([this]).undelegate(selector,ev, cb)
-		}
-	}
-
-	$.each(["append","filter","addClass","remove","data"], function(i,name){
-		can[name] = function(wrapped){
-			return wrapped[name].apply(wrapped, can.makeArray(arguments).slice(1))
-		}
-	})
-
-	can.makeArray = function(arr){
-		var ret = []
-		can.each(arr, function(a, i){
-			ret[i] = a
-		})
-		return ret;
-	};
-	can.inArray =function(item, arr){
-		return arr.indexOf(item)
-	}
-	
-	can.proxy = function(f, ctx){
-		return function(){
-			return f.apply(ctx, arguments)
-		}
-	}
-	
-	// Make ajax.
-	var XHR = $.ajaxSettings.xhr;
-	$.ajaxSettings.xhr = function(){
-		var xhr = XHR()
-		var open = xhr.open;
-		xhr.open = function(type, url, async){
-			open.call(this, type, url, ASYNC === undefined ? true : ASYNC)
-		}
-		return xhr;
-	}
-	var ASYNC;
-	var AJAX = $.ajax;
-	var updateDeferred = function(xhr, d){
-		for(var prop in xhr){
-			if(typeof d[prop] == 'function'){
-				d[prop] = function(){
-					xhr[prop].apply(xhr, arguments)
-				}
-			} else {
-				d[prop] = prop[xhr]
-			}
-		}
-	}
-	can.ajax = function(options){
-		
-		var success = options.success,
-			error = options.error;
-		var d = can.Deferred();
-		
-		options.success = function(){
-			
-			updateDeferred(xhr, d);
-			d.resolve.apply(d, arguments);
-			success && success.apply(this,arguments);
-		}
-		options.error = function(){
-			updateDeferred(xhr, d);
-			d.reject.apply(d, arguments);
-			error && error.apply(this,arguments);
-		}
-		if(options.async === false){
-			ASYNC = false
-		}
-		var xhr = AJAX(options);
-		ASYNC = undefined;
-		updateDeferred(xhr, d);
-		return d;
-	};
-	
-
-	
-
-	
-	
-	// Make destroyed and empty work.
-	$.fn.empty = function(){
-		return this.each(function(){ 
-			$.cleanData(this.getElementsByTagName('*'))
-			this.innerHTML = '' 
-		}) 
-	}
-	
-	$.fn.remove= function () {
-		$.cleanData(this);
-		this.each(function () {
-			if (this.parentNode != null) {
-				// might be a text node
-				this.getElementsByTagName && $.cleanData(this.getElementsByTagName('*'))
-				this.parentNode.removeChild(this);
-			}
-		});
-		return this;
-    }
-    
-    
-    can.trim = function(str){
-    	return str.trim();
-    }
-	can.isEmptyObject = function(object){
-		var name;
-		for(name in object){};
-		return name === undefined;
-	}
-
-	// Make extend handle `true` for deep.
-	can.extend = function(first){
-		if(first === true){
-			var args = can.makeArray(arguments);
-			args.shift();
-			return $.extend.apply($, args)
-		}
-		return $.extend.apply($, arguments)
-	}
-
-	can.get = function(wrapped, index){
-		return wrapped[index];
-	}
-
-	
-;
-
-	// deferred.js
-	// ---------
-	// _Lightweight, jQuery style deferreds._
-	
-	var Deferred = function( func ) {
-		if ( ! ( this instanceof Deferred ))
-			return new Deferred();
-
-		this._doneFuncs = [];
-		this._failFuncs = [];
-		this._resultArgs = null;
-		this._status = "";
-
-		// Check for option `function` -- call it with this as context and as first 
-		// parameter, as specified in jQuery API.
-		func && func.call(this, this);
-	};
-	can.Deferred = Deferred;
-	can.when = Deferred.when = function() {
-		var args = can.makeArray( arguments );
-		if (args.length < 2) {
-			var obj = args[0];
-			if (obj && ( can.isFunction( obj.isResolved ) && can.isFunction( obj.isRejected ))) {
-				return obj;			
-			} else {
-				return Deferred().resolve(obj);
-			}
-		} else {
-			
-			var df = Deferred(),
-				done = 0,
-				// Resolve params -- params of each resolve, we need to track them down 
-				// to be able to pass them in the correct order if the master 
-				// needs to be resolved.
-				rp = [];
-
-			can.each(args, function(arg, j){
-				arg.done(function() {
-					rp[j] = (arguments.length < 2) ? arguments[0] : arguments;
-					if (++done == args.length) {
-						df.resolve.apply(df, rp);
-					}
-				}).fail(function() {
-					df.reject(arguments);
+		var oldReading;
+		if (can.Observe) {
+			// Set a callback on can.Observe to know
+			// when an attr is read.
+			// Keep a reference to the old reader
+			// if there is one.  This is used
+			// for nested live binding.
+			oldReading = can.Observe.__reading;
+			can.Observe.__reading = function(obj, attr){
+				// Add the observe and attr that was read
+				// to `observed`
+				observed.push({
+					obj: obj,
+					attr: attr
 				});
-			});
-
-			return df;
-			
+			}
 		}
-	}
-	
-	var resolveFunc = function(type, _status){
-		return function(context){
-			var args = this._resultArgs = (arguments.length > 1) ? arguments[1] : [];
-			return this.exec(context, this[type], args, _status);
+		
+		var observed = [],
+			// Call the "wrapping" function to get the value. `observed`
+			// will have the observe/attribute pairs that were read.
+			value = func.call(self);
+
+		// Set back so we are no longer reading.
+		if(can.Observe){
+			can.Observe.__reading = oldReading;
+		}
+		return {
+			value : value,
+			observed : observed
 		}
 	},
-	doneFunc = function(type, _status){
-		return function(){
-			var self = this;
-			// In Safari, the properties of the `arguments` object are not enumerable, 
-			// so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
-			can.each(Array.prototype.slice.call(arguments), function( v, i, args ) {
-				if ( ! v )
-					return;
-				if ( v.constructor === Array ) {
-					args.callee.apply(self, v)
-				} else {
-					// Immediately call the `function` if the deferred has been resolved.
-					if (self._status === _status)
-						v.apply(self, self._resultArgs || []);
-	
-					self[type].push(v);
-				}
-			});
-			return this;
-		}
-	};
-
-	can.extend( Deferred.prototype, {
-		pipe : function(done, fail){
-			var d = can.Deferred();
-			this.done(function(){
-				d.resolve( done.apply(this, arguments) );
-			});
+		// Calls `callback(newVal, oldVal)` everytime an observed property
+		// called within `getterSetter` is changed and creates a new result of `getterSetter`.
+		// Also returns an object that can teardown all event handlers.
+		computeBinder = function(getterSetter, context, callback){
+			// track what we are observing
+			var observing = {},
+				// a flag indicating if this observe/attr pair is already bound
+				matched = true,
+				// the data to return 
+				data = {
+					// we will maintain the value while live-binding is taking place
+					value : undefined,
+					// a teardown method that stops listening
+					teardown: function(){
+						for ( var name in observing ) {
+							var ob = observing[name];
+							ob.observe.obj.unbind(ob.observe.attr, onchanged);
+							delete observing[name];
+						}
+					}
+				};
 			
-			this.fail(function(){
-				if(fail){
-					d.reject( fail.apply(this, arguments) );
-				} else {
-					d.reject.apply(d, arguments);
+			// when a property value is cahnged
+			var onchanged = function(){
+				// store the old value
+				var oldValue = data.value,
+					// get the new value
+					newvalue = getValueAndBind();
+				// update the value reference (in case someone reads)
+				data.value = newvalue
+				// if a change happened
+				if(newvalue !== oldValue){
+					callback(newvalue, oldValue);
+				};
+			};
+			
+			// gets the value returned by `getterSetter` and also binds to any attributes
+			// read by the call
+			var getValueAndBind = function(){
+				var info = getValueAndObserved( getterSetter, context ),
+					newObserveSet = info.observed;
+				
+				var value = info.value;
+				matched = !matched;
+				
+				// go through every attribute read by this observe
+				can.each(newObserveSet, function(ob){
+					// if the observe/attribute pair is being observed
+					if(observing[ob.obj._namespace+"|"+ob.attr]){
+						// mark at as observed
+						observing[ob.obj._namespace+"|"+ob.attr].matched = matched;
+					} else {
+						// otherwise, set the observe/attribute on oldObserved, marking it as being observed
+						observing[ob.obj._namespace+"|"+ob.attr] = {
+							matched: matched,
+							observe: ob
+						};
+						ob.obj.bind(ob.attr, onchanged)
+					}
+				});
+				
+				// Iterate through oldObserved, looking for observe/attributes
+				// that are no longer being bound and unbind them
+				for ( var name in observing ) {
+					var ob = observing[name];
+					if(ob.matched !== matched){
+						ob.observe.obj.unbind(ob.observe.attr, onchanged);
+						delete observing[name];
+					}
 				}
-			});
-			return d;
-		},
-		resolveWith : resolveFunc("_doneFuncs","rs"),
-		rejectWith : resolveFunc("_failFuncs","rj"),
-		done : doneFunc("_doneFuncs","rs"),
-		fail : doneFunc("_failFuncs","rj"),
-		always : function() {
-			var args = can.makeArray(arguments);
-			if (args.length && args[0])
-				this.done(args[0]).fail(args[0]);
-
-			return this;
-		},
-
-		then : function() {
-			var args = can.makeArray( arguments );
-			// Fail `function`(s)
-			if (args.length > 1 && args[1])
-				this.fail(args[1]);
-
-			// Done `function`(s)
-			if (args.length && args[0])
-				this.done(args[0]);
-
-			return this;
-		},
-
-		isResolved : function() {
-			return this._status === "rs";
-		},
-
-		isRejected : function() {
-			return this._status === "rj";
-		},
-
-		reject : function() {
-			return this.rejectWith(this, arguments);
-		},
-
-		resolve : function() {
-			return this.resolveWith(this, arguments);
-		},
-
-		exec : function(context, dst, args, st) {
-			if (this._status !== "")
-				return this;
-
-			this._status = st;
-
-			can.each(dst, function(d){
-				d.apply(context, args);
-			});
-
-			return this;
+				return value;
+			}
+			// set the initial value
+			data.value = getValueAndBind();
+			data.isListening = ! can.isEmptyObject(observing);
+			return data;
 		}
-	});
-
-	can.each = function (elements, callback, context) {
-		var i = 0,
-		    key;
-		if (elements) {
-			if (typeof elements.length == 'number' && elements.pop) {
-				elements.attr && elements.attr('length');
-				for (var len = elements.length; i < len; i++) {
-					if (callback.call(context || elements[i], elements[i], i, elements) === false) {
-						break;
+	
+	// if no one is listening ... we can not calculate every time
+		can.compute = function(getterSetter, context){
+		if(getterSetter.isComputed){
+			return getterSetter;
+		}
+		// get the value right away
+		// TODO: eventually we can defer this until a bind or a read
+		var computedData,
+			bindings = 0,
+			computed,
+			canbind = true;
+		if(typeof getterSetter === "function"){
+			computed = function(value){
+				if(value === undefined){
+					// we are reading
+					if(computedData){
+						return computedData.value;
+					} else {
+						return getterSetter.call(context || this)
 					}
-				}
-			} else {
-				for (key in elements) {
-					if (callback.call(context || elements[i], elements[key], key, elements) === false) {
-						break;
-					}
+				} else {
+					return getterSetter.apply(context || this, arguments)
 				}
 			}
+			
+		} else {
+			// we just gave it a value
+			computed = function(val){
+				if(val === undefined){
+					return getterSetter;
+				} else {
+					var old = getterSetter;
+					getterSetter = val;
+					if( old !== val){
+						can.trigger(computed, "change",[val, old]);
+					}
+					
+					return val;
+				}
+				
+			}
+			canbind = false;
 		}
-		return elements;
-	}
-;
+				computed.isComputed = true;
+		
+
+				computed.bind = function(ev, handler){
+			can.addEvent.apply(computed, arguments);
+			if( bindings === 0 && canbind){
+				// setup live-binding
+				computedData = computeBinder(getterSetter, context || this, function(newValue, oldValue){
+					can.trigger(computed, "change",[newValue, oldValue])
+				});
+			}
+			bindings++;
+		}
+				computed.unbind = function(ev, handler){
+			can.removeEvent.apply(computed, arguments);
+			bindings--;
+			if( bindings === 0 && canbind){
+				computedData.teardown();
+			}
+			
+		};
+		return computed;
+	};
+	can.compute.binder = computeBinder;
 
 	// ##string.js
 	// _Miscellaneous string utility functions._  
@@ -1105,7 +712,7 @@ can.$ = Zepto
 	// Prototype JavaScript framework, version 1.6.0.1.
 	// © 2005-2007 Sam Stephenson
 	var undHash     = /_|-/,
-		colons      = /==/,
+		colons      = /\=\=/,
 		words       = /([A-Z]+)([A-Z][a-z])/g,
 		lowUp       = /([a-z\d])([A-Z])/g,
 		dash        = /([a-z\d])([A-Z])/g,
@@ -1124,7 +731,7 @@ can.$ = Zepto
 
 		// Returns `true` if the object can have properties (no `null`s).
 		isContainer = function( current ) {
-			return /^f|^o/.test( typeof current );
+			return (/^f|^o/).test( typeof current );
 		};
 
 		can.extend(can, {
@@ -1143,11 +750,11 @@ can.$ = Zepto
 				// The parts of the name we are looking up  
 				// `['App','Models','Recipe']`
 				var parts = name ? name.split('.') : [],
-					length =  parts.length,
-					current,
-					r = 0,
-					ret, i;
-				
+				    length =  parts.length,
+				    current,
+				    r = 0,
+				    ret, i;
+
 				// Make sure roots is an `array`.
 				roots = can.isArray(roots) ? roots : [roots || window];
 				
@@ -1156,7 +763,7 @@ can.$ = Zepto
 				}
 
 				// For each root, mark it as current.
-				while( current = roots[r++] ) {
+				while ( current = roots[r++] ) {
 
 					// Walk current to the 2nd to last object or until there 
 					// is not a container.
@@ -1224,6 +831,358 @@ can.$ = Zepto
 			replacer : replacer,
 			undHash : undHash
 		});
+
+	// ## view.js
+	// `can.view`  
+	// _Templating abstraction._
+
+	var isFunction = can.isFunction,
+		makeArray = can.makeArray,
+		// Used for hookup `id`s.
+		hookupId = 1,
+		$view = can.view = function(view, data, helpers, callback){
+		// Get the result.
+		var result = $view.render(view, data, helpers, callback);
+		if(can.isDeferred(result)){
+			return result.pipe(function(result){
+				return $view.frag(result);
+			})
+		}
+		
+		// Convert it into a dom frag.
+		return $view.frag(result);
+	};
+
+	can.extend( $view, {
+		// creates a frag and hooks it up all at once
+		frag: function(result, parentNode ){
+			return $view.hookup( $view.fragment(result), parentNode );
+		},
+		// simply creates a frag
+		// this is used internally to create a frag
+		// insert it
+		// then hook it up
+		fragment: function(result){
+			var frag = can.buildFragment(result,document.body);
+			// If we have an empty frag...
+			if(!frag.childNodes.length) { 
+				frag.appendChild(document.createTextNode(''))
+			}
+			return frag;
+		},
+    // Convert a path like string into something that's ok for an `element` ID.
+    toId : function( src ) {
+      return can.map(src.toString().split(/\/|\./g), function( part ) {
+        // Dont include empty strings in toId functions
+        if ( part ) {
+          return part;
+        }
+      }).join("_");
+    },
+		hookup: function(fragment, parentNode ){
+			var hookupEls = [],
+				id, 
+				func, 
+				el,
+				i=0;
+			
+			// Get all `childNodes`.
+			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(node){
+				if(node.nodeType === 1){
+					hookupEls.push(node)
+					hookupEls.push.apply(hookupEls, can.makeArray( node.getElementsByTagName('*')))
+				}
+			});
+			// Filter by `data-view-id` attribute.
+			for (; el = hookupEls[i++]; ) {
+
+				if ( el.getAttribute && (id = el.getAttribute('data-view-id')) && (func = $view.hookups[id]) ) {
+					func(el, parentNode, id);
+					delete $view.hookups[id];
+					el.removeAttribute('data-view-id');
+				}
+			}
+			return fragment;
+		},
+				hookups: {},
+				hook: function( cb ) {
+			$view.hookups[++hookupId] = cb;
+			return " data-view-id='"+hookupId+"'";
+		},
+				cached: {},
+		cachedRenderers: {},
+				cache: true,
+				register: function( info ) {
+			this.types["." + info.suffix] = info;
+		},
+		types: {},
+				ext: ".ejs",
+				registerScript: function() {},
+				preload: function( ) {},
+				render: function( view, data, helpers, callback ) {
+			// If helpers is a `function`, it is actually a callback.
+			if ( isFunction( helpers )) {
+				callback = helpers;
+				helpers = undefined;
+			}
+	
+			// See if we got passed any deferreds.
+			var deferreds = getDeferreds(data);
+	
+	
+			if ( deferreds.length ) { // Does data contain any deferreds?
+				// The deferred that resolves into the rendered content...
+				var deferred = new can.Deferred();
+	
+				// Add the view request to the list of deferreds.
+				deferreds.push(get(view, true))
+	
+				// Wait for the view and all deferreds to finish...
+				can.when.apply(can, deferreds).then(function( resolved ) {
+					// Get all the resolved deferreds.
+					var objs = makeArray(arguments),
+						// Renderer is the last index of the data.
+						renderer = objs.pop(),
+						// The result of the template rendering with data.
+						result; 
+	
+					// Make data look like the resolved deferreds.
+					if ( can.isDeferred(data) ) {
+						data = usefulPart(resolved);
+					}
+					else {
+						// Go through each prop in data again and
+						// replace the defferreds with what they resolved to.
+						for ( var prop in data ) {
+							if ( can.isDeferred(data[prop]) ) {
+								data[prop] = usefulPart(objs.shift());
+							}
+						}
+					}
+					// Get the rendered result.
+					result = renderer(data, helpers);
+	
+					// Resolve with the rendered view.
+					deferred.resolve(result); 
+					// If there's a `callback`, call it back with the result.
+					callback && callback(result);
+				});
+				// Return the deferred...
+				return deferred;
+			}
+			else {
+				// No deferreds! Render this bad boy.
+				var response, 
+					// If there's a `callback` function
+					async = isFunction( callback ),
+					// Get the `view` type
+					deferred = get(view, async);
+	
+				// If we are `async`...
+				if ( async ) {
+					// Return the deferred
+					response = deferred;
+					// And fire callback with the rendered result.
+					deferred.then(function( renderer ) {
+						callback(renderer(data, helpers))
+					})
+				} else {
+					// if the deferred is resolved, call the cached renderer instead
+					// this is because it's possible, with recursive deferreds to
+					// need to render a view while its deferred is _resolving_.  A _resolving_ deferred
+					// is a deferred that was just resolved and is calling back it's success callbacks.
+					// If a new success handler is called while resoliving, it does not get fired by
+					// jQuery's deferred system.  So instead of adding a new callback
+					// we use the cached renderer.
+					// We also add __view_id on the deferred so we can look up it's cached renderer.
+					// In the future, we might simply store either a deferred or the cached result.
+					if(deferred.isResolved() && deferred.__view_id  ){
+						return $view.cachedRenderers[ deferred.__view_id ](data, helpers)
+					} else {
+						// Otherwise, the deferred is complete, so
+						// set response to the result of the rendering.
+						deferred.then(function( renderer ) {
+							response = renderer(data, helpers);
+						});
+					}
+					
+				}
+	
+				return response;
+			}
+		}
+	});
+
+	// Makes sure there's a template, if not, have `steal` provide a warning.
+	var	checkText = function( text, url ) {
+			if ( ! text.length ) {
+				
+				throw "can.view: No template or empty template:" + url;
+			}
+		},
+		// `Returns a `view` renderer deferred.  
+		// `url` - The url to the template.  
+		// `async` - If the ajax request should be asynchronous.  
+		// Returns a deferred.
+		get = function( url, async ) {
+			
+			
+			var suffix = url.match(/\.[\w\d]+$/),
+			type, 
+			// If we are reading a script element for the content of the template,
+			// `el` will be set to that script element.
+			el, 
+			// A unique identifier for the view (used for caching).
+			// This is typically derived from the element id or
+			// the url for the template.
+			id, 
+			// The ajax request used to retrieve the template content.
+			jqXHR, 
+			// Used to generate the response.
+			response = function( text, d ) {
+				// Get the renderer function.
+				var func = type.renderer(id, text);
+				d = d || new can.Deferred();
+				
+				// Cache if we are caching.
+				if ( $view.cache ) {
+					$view.cached[id] = d;
+					d.__view_id = id;
+					$view.cachedRenderers[id] = func;
+				}
+				d.resolve(func);
+				// Return the objects for the response's `dataTypes`
+				// (in this case view).
+				return d;
+			};
+
+			//If the url has a #, we assume we want to use an inline template
+			//from a script element and not current page's HTML
+			if( url.match(/^#/) ) {
+				url = url.substr(1);
+			}
+			// If we have an inline template, derive the suffix from the `text/???` part.
+			// This only supports `<script>` tags.
+			if ( el = document.getElementById(url) ) {
+				suffix = "."+el.type.match(/\/(x\-)?(.+)/)[2];
+			}
+	
+			// If there is no suffix, add one.
+			if (!suffix && !$view.cached[url] ) {
+				url += ( suffix = $view.ext );
+			}
+
+			if ( can.isArray( suffix )) {
+				suffix = suffix[0]
+			}
+	
+			// Convert to a unique and valid id.
+			id = can.view.toId(url);
+	
+			// If an absolute path, use `steal` to get it.
+			// You should only be using `//` if you are using `steal`.
+			if ( url.match(/^\/\//) ) {
+				var sub = url.substr(2);
+				url = ! window.steal ? 
+					"/" + sub : 
+					steal.root.mapJoin(sub);
+			}
+	
+			// Set the template engine type.
+			type = $view.types[suffix];
+	
+			// If it is cached, 
+			if ( $view.cached[id] ) {
+				// Return the cached deferred renderer.
+				return $view.cached[id];
+			
+			// Otherwise if we are getting this from a `<script>` element.
+			} else if ( el ) {
+				// Resolve immediately with the element's `innerHTML`.
+				return response(el.innerHTML);
+			} else {
+				// Make an ajax request for text.
+				var d = new can.Deferred();
+				can.ajax({
+					async: async,
+					url: url,
+					dataType: "text",
+					error: function(jqXHR) {
+						checkText("", url);
+						d.reject(jqXHR);
+					},
+					success: function( text ) {
+						// Make sure we got some text back.
+						checkText(text, url);
+						response(text, d)
+					}
+				});
+				return d;
+			}
+		},
+		// Gets an `array` of deferreds from an `object`.
+		// This only goes one level deep.
+		getDeferreds = function( data ) {
+			var deferreds = [];
+
+			// pull out deferreds
+			if ( can.isDeferred(data) ) {
+				return [data]
+			} else {
+				for ( var prop in data ) {
+					if ( can.isDeferred(data[prop]) ) {
+						deferreds.push(data[prop]);
+					}
+				}
+			}
+			return deferreds;
+		},
+		// Gets the useful part of a resolved deferred.
+		// This is for `model`s and `can.ajax` that resolve to an `array`.
+		usefulPart = function( resolved ) {
+			return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved
+		};
+	
+	
+	if ( window.steal ) {
+		steal.type("view js", function( options, success, error ) {
+			var type = can.view.types["." + options.type],
+				id = can.view.toId(options.rootSrc);
+
+			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "').then(function($){" + "can.view.preload('" + id + "'," + options.text + ");\n})";
+			success();
+		})
+	}
+
+	//!steal-pluginify-remove-start
+	can.extend(can.view, {
+		register: function( info ) {
+			this.types["." + info.suffix] = info;
+
+			if ( window.steal ) {
+				steal.type(info.suffix + " view js", function( options, success, error ) {
+					var type = can.view.types["." + options.type],
+						id = can.view.toId(options.rootSrc+'');
+
+					options.text = type.script(id, options.text)
+					success();
+				})
+			}
+			can.view[info.suffix] = function(id, text){
+				$view.preload(id, info.renderer(id, text) )
+			}
+		},
+		registerScript: function( type, id, src ) {
+			return "can.view.preload('" + id + "'," + $view.types["." + type].script(id, src) + ");";
+		},
+		preload: function( id, renderer ) {
+			can.view.cached[id] = new can.Deferred().resolve(function( data, helpers ) {
+				return renderer.call(data, data, helpers);
+			});
+		}
+
+	});
+	//!steal-pluginify-remove-end
 
 	// ## construct.js
 	// `can.Construct`  
@@ -1352,11 +1311,7 @@ can.$ = Zepto
 					_fullName = can.underscore(fullName.replace(/\./g, "_")),
 					_shortName = can.underscore(shortName);
 
-				//@steal-remove-start
-				if(current[shortName]){
-					
-				}
-				//@steal-remove-end
+				
 				
 				current[shortName] = Constructor;
 			}
@@ -1389,6 +1344,56 @@ can.$ = Zepto
 						//  
 					}
 
+	});
+
+	
+	// ## deparam.js  
+	// `can.deparam`  
+	// _Takes a string of name value pairs and returns a Object literal that represents those params._
+	var digitTest = /^\d+$/,
+		keyBreaker = /([^\[\]]+)|(\[\])/g,
+		paramTest = /([^?#]*)(#.*)?$/,
+		prep = function( str ) {
+			return decodeURIComponent( str.replace(/\+/g, " ") );
+		}
+	
+
+	can.extend(can, { 
+				deparam: function(params){
+		
+			var data = {},
+				pairs, lastPart;
+
+			if ( params && paramTest.test( params )) {
+				
+				pairs = params.split('&'),
+				
+				can.each( pairs, function( pair ) {
+
+					var parts = pair.split('='),
+						key   = prep( parts.shift() ),
+						value = prep( parts.join("=") );
+
+					current = data;
+					parts = key.match(keyBreaker);
+			
+					for ( var j = 0, l = parts.length - 1; j < l; j++ ) {
+						if (!current[parts[j]] ) {
+							// If what we are pointing to looks like an `array`
+							current[parts[j]] = digitTest.test(parts[j+1]) || parts[j+1] == "[]" ? [] : {}
+						}
+						current = current[parts[j]];
+					}
+					lastPart = parts.pop()
+					if ( lastPart == "[]" ) {
+						current.push(value)
+					} else {
+						current[lastPart] = value;
+					}
+				});
+			}
+			return data;
+		}
 	});
 
 	// ## observe.js  
@@ -1871,400 +1876,300 @@ can.$ = Zepto
 		}
 	});
 	
-	list.prototype.
-		indexOf = [].indexOf || function(item){
-		return can.inArray(item, this)
-	};
-
-	
-	// ## model.js  
-	// `can.Model`  
-	// _A `can.Observe` that connects to a RESTful interface._
-	//  
-	// Generic deferred piping function
-		var	pipe = function( def, model, func ) {
-		var d = new can.Deferred();
-		def.then(function(){
-			arguments[0] = model[func](arguments[0])
-			d.resolve.apply(d, arguments)
-		},function(){
-			d.rejectWith.apply(this,arguments)
-		})
-		return d;
-	},
-		modelNum = 0,
-		ignoreHookup = /change.observe\d+/,
-		getId = function( inst ) {
-			return inst[inst.constructor.id]
+	can.extend(list.prototype, {
+				indexOf : [].indexOf || function(item) {
+			return can.inArray(item, this)
 		},
-		// Ajax `options` generator function
-		ajax = function( ajaxOb, data, type, dataType, success, error ) {
 
+				join : [].join,
+
+				slice : function() {
+			return new this.constructor(Array.prototype.slice.apply(this, arguments));
+		},
+
+				concat : function() {
+			var args = [];
+			can.each(arguments, function(arg) {
+				args.push(arg instanceof can.Observe.List ? arg.serialize() : arg);
+			});
+			return new this.constructor(Array.prototype.concat.apply(this.serialize(), args));
+		},
+
+				forEach : function(cb, thisarg) {
+			can.each(this, can.proxy(cb, thisarg || this ));
+		}
+	});
+
+	(function() {
+	
+
+	// ## control.js
+	// `can.Control`  
+	// _Controller_
+	
+	// Binds an element, returns a function that unbinds.
+	var bind = function( el, ev, callback ) {
+
+		can.bind.call( el, ev, callback )
+
+		return function() {
+			can.unbind.call(el, ev, callback);
+		};
+	},
+		isFunction = can.isFunction,
+		extend = can.extend,
+		each = can.each,
+		slice = [].slice,
+		paramReplacer = /\{([^\}]+)\}/g,
+		special = can.getObject("$.event.special") || {},
+
+		// Binds an element, returns a function that unbinds.
+		delegate = function( el, selector, ev, callback ) {
+			can.delegate.call(el, selector, ev, callback)
+			return function() {
+				can.undelegate.call(el, selector, ev, callback);
+			};
+		},
+		
+		// Calls bind or unbind depending if there is a selector.
+		binder = function( el, ev, callback, selector ) {
+			return selector ?
+				delegate( el, can.trim( selector ), ev, callback ) : 
+				bind( el, ev, callback );
+		},
+		
+		basicProcessor;
+	
+		can.Construct("can.Control",
+		{
+		// Setup pre-processes which methods are event listeners.
+				setup: function() {
+
+			// Allow contollers to inherit "defaults" from super-classes as it 
+			// done in `can.Construct`
+			can.Construct.setup.apply( this, arguments );
+
+			// If you didn't provide a name, or are `control`, don't do anything.
+			if ( this !== can.Control ) {
+
+				// Cache the underscored names.
+				var control = this,
+					funcName;
+
+				// Calculate and cache actions.
+				control.actions = {};
+				for ( funcName in control.prototype ) {
+					if ( control._isAction(funcName) ) {
+						control.actions[funcName] = control._action(funcName);
+					}
+				}
+			}
+		},
+
+		// Moves `this` to the first argument, wraps it with `jQuery` if it's an element
+		_shifter : function( context, name ) {
+
+			var method = typeof name == "string" ? context[name] : name;
+
+			if ( ! isFunction( method )) {
+				method = context[ method ];
+			}
 			
-			// If we get a string, handle it.
-			if ( typeof ajaxOb == "string" ) {
-				// If there's a space, it's probably the type.
-				var parts = ajaxOb.split(" ")
-				ajaxOb = {
-					url : parts.pop()
+			return function() {
+				context.called = name;
+    			return method.apply(context, [this.nodeName ? can.$(this) : this].concat( slice.call(arguments, 0)));
+			};
+		},
+
+		// Return `true` if is an action.
+				_isAction: function( methodName ) {
+			
+			var val = this.prototype[methodName],
+				type = typeof val;
+			// if not the constructor
+			return (methodName !== 'constructor') &&
+				// and is a function or links to a function
+				( type == "function" || (type == "string" &&  isFunction(this.prototype[val] ) ) ) &&
+				// and is in special, a processor, or has a funny character
+			    !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
+		},
+		// Takes a method name and the options passed to a control
+		// and tries to return the data necessary to pass to a processor
+		// (something that binds things).
+				_action: function( methodName, options ) {
+			
+			// If we don't have options (a `control` instance), we'll run this 
+			// later.  
+      		paramReplacer.lastIndex = 0;
+			if ( options || ! paramReplacer.test( methodName )) {
+				// If we have options, run sub to replace templates `{}` with a
+				// value from the options or the window
+				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
+					
+					// If a `{}` resolves to an object, `convertedName` will be
+					// an array
+					arr = can.isArray(convertedName),
+					
+					// Get the parts of the function  
+					// `[convertedName, delegatePart, eventPart]`  
+					// `/^(?:(.*?)\s)?([\w\.\:>]+)$/` - Breaker `RegExp`.
+					parts = (arr ? convertedName[1] : convertedName).match(/^(?:(.*?)\s)?([\w\.\:>]+)$/);
+
+					var event = parts[2],
+					processor = processors[event] || basicProcessor;
+				return {
+					processor: processor,
+					parts: parts,
+					delegate : arr ? convertedName[0] : undefined
 				};
-				if(parts.length){
-					ajaxOb.type = parts.pop();
-				}
-			}
-
-			// If we are a non-array object, copy to a new attrs.
-			ajaxOb.data = typeof data == "object" && !can.isArray(data) ?
-				can.extend(ajaxOb.data || {}, data) : data;
-	
-
-			// Get the url with any templated values filled out.
-			ajaxOb.url = can.sub(ajaxOb.url, ajaxOb.data, true);
-
-			return can.ajax(can.extend({
-				type: type || "post",
-				dataType: dataType ||"json",
-				success : success,
-				error: error
-			}, ajaxOb ));
-		},
-		makeRequest = function( self, type, success, error, method ) {
-			var deferred ,
-				args = [self.serialize()],
-				// The model.
-				model = self.constructor,
-				jqXHR;
-
-			// `destroy` does not need data.
-			if ( type == 'destroy' ) {
-				args.shift();
-			}
-			// `update` and `destroy` need the `id`.
-			if ( type !== 'create' ) {
-				args.unshift(getId(self))
-			}
-			
-			jqXHR = model[type].apply(model, args);
-			
-			deferred = jqXHR.pipe(function(data){
-				self[method || type + "d"](data, jqXHR);
-				return self
-			})
-
-			// Hook up `abort`
-			if(jqXHR.abort){
-				deferred.abort = function(){
-					jqXHR.abort();
-				}
-			}
-			
-			return deferred.then(success,error);
-		},
-	
-	// This object describes how to make an ajax request for each ajax method.  
-	// The available properties are:
-	//		`url` - The default url to use as indicated as a property on the model.
-	//		`type` - The default http request type
-	//		`data` - A method that takes the `arguments` and returns `data` used for ajax.
-		//
-				// 
-				// 
-			ajaxMethods = {
-				create : {
-			url : "_shortName",
-			type :"post"
-		},
-				update : {
-			data : function(id, attrs){
-				attrs = attrs || {};
-				var identity = this.id;
-				if ( attrs[identity] && attrs[identity] !== id ) {
-					attrs["new" + can.capitalize(id)] = attrs[identity];
-					delete attrs[identity];
-				}
-				attrs[identity] = id;
-				return attrs;
-			},
-			type : "put"
-		},
-				destroy : {
-			type : "delete",
-			data : function(id){
-				var args = {};
-				args[this.id] = id;
-				return args;
 			}
 		},
-				findAll : {
-			url : "_shortName"
-		},
-				findOne: {}
-	},
-		// Makes an ajax request `function` from a string.
-		//		`ajaxMethod` - The `ajaxMethod` object defined above.
-		//		`str` - The string the user provided. Ex: `findAll: "/recipes.json"`.
-		ajaxMaker = function(ajaxMethod, str){
-			// Return a `function` that serves as the ajax method.
-			return function(data){
-				// If the ajax method has it's own way of getting `data`, use that.
-				data = ajaxMethod.data ? 
-					ajaxMethod.data.apply(this, arguments) :
-					// Otherwise use the data passed in.
-					data;
-				// Return the ajax method with `data` and the `type` provided.
-				return ajax(str || this[ajaxMethod.url || "_url"], data, ajaxMethod.type || "get")
-			}
-		}
-
-	
-	
-	can.Observe("can.Model",{
-		setup : function(base){
-			can.Observe.apply(this, arguments);
-			if(this === can.Model){
-				return;
-			}
-			var self = this,
-				clean = can.proxy(this._clean, self);
-				
-			can.each(ajaxMethods, function(method, name){
-				if ( ! can.isFunction( self[name] )) {
-					self[name] = ajaxMaker(method, self[name]);
-				}
-				if (self["make"+can.capitalize(name)]){
-					var newMethod = self["make"+can.capitalize(name)](self[name]);
-					can.Construct._overwrite(self, base, name,function(){
-						this._super;
-						this._reqs++;
-						return newMethod.apply(this, arguments).then(clean, clean);
-					})
-				}
-			});
-
-			if(!self.fullName || self.fullName == base.fullName){
-				self.fullName = self._shortName = "Model"+(++modelNum);
-			}
-			// Ddd ajax converters.
-			this.store = {};
-			this._reqs = 0;
-			this._url = this._shortName+"/{"+this.id+"}"
-		},
-		_ajax : ajaxMaker,
-		_clean : function(){
-			this._reqs--;
-			if(!this._reqs){
-				for(var id in this.store) {
-					if(!this.store[id]._bindings){
-						delete this.store[id];
-					}
-				}
-			}
-		},
-				models: function( instancesRawData ) {
-
-			if ( ! instancesRawData ) {
-				return;
-			}
-      
-			if ( instancesRawData instanceof this.List ) {
-				return instancesRawData;
-			}
-
-			// Get the list type.
-			var self = this,
-				res = new( self.List || ML),
-				// Did we get an `array`?
-				arr = can.isArray(instancesRawData),
-				
-				// Did we get a model list?
-				ml = (instancesRawData instanceof ML),
-
-				// Get the raw `array` of objects.
-				raw = arr ?
-
-				// If an `array`, return the `array`.
-				instancesRawData :
-
-				// Otherwise if a model list.
-				(ml ?
-
-				// Get the raw objects from the list.
-				instancesRawData.serialize() :
-
-				// Get the object's data.
-				instancesRawData.data),
-				i = 0;
-
-			
-
-			can.each(raw, function( rawPart ) {
-				res.push( self.model( rawPart ));
-			});
-
-			if ( ! arr ) { // Push other stuff onto `array`.
-				can.each(instancesRawData, function(val, prop){
-					if ( prop !== 'data' ) {
-						res[prop] = val;
-					}
-				})
-			}
-			return res;
-		},
-				model: function( attributes ) {
-			if (!attributes ) {
-				return;
-			}
-			if ( attributes instanceof this ) {
-				attributes = attributes.serialize();
-			}
-			var model = this.store[attributes[this.id]] ? this.store[attributes[this.id]].attr(attributes) : new this( attributes );
-			if(this._reqs){
-				this.store[attributes[this.id]] = model;
-			}
-			return model;
-		}
+		// An object of `{eventName : function}` pairs that Control uses to 
+		// hook up events auto-magically.
+				processors: {},
+		// A object of name-value pairs that act as default values for a 
+		// control instance
+				defaults: {}
 	},
 		{
-				isNew: function() {
-			var id = getId(this);
-			return ! ( id || id === 0 ); // If `null` or `undefined`
-		},
-				save: function( success, error ) {
-			return makeRequest(this, this.isNew() ? 'create' : 'update', success, error);
-		},
-				destroy: function( success, error ) {
-			return makeRequest(this, 'destroy', success, error, 'destroyed');
-		},
-				bind : function(eventName){
-			if ( ! ignoreHookup.test( eventName )) { 
-				if ( ! this._bindings ) {
-					this.constructor.store[getId(this)] = this;
-					this._bindings = 0;
-				}
-				this._bindings++;
+		// Sets `this.element`, saves the control in `data, binds event
+		// handlers.
+				setup: function( element, options ) {
+
+			var cls = this.constructor,
+				pluginname = cls.pluginName || cls._fullName,
+				arr;
+
+			// Want the raw element here.
+			this.element = can.$(element)
+
+			if ( pluginname && pluginname !== 'can_control') {
+				// Set element and `className` on element.
+				this.element.addClass(pluginname);
 			}
 			
-			return can.Observe.prototype.bind.apply( this, arguments );
-		},
-				unbind : function(eventName){
-			if(!ignoreHookup.test(eventName)) { 
-				this._bindings--;
-				if(!this._bindings){
-					delete this.constructor.store[getId(this)];
-				}
-			}
-			return can.Observe.prototype.unbind.apply(this, arguments);
-		},
-		// Change `id`.
-		___set: function( prop, val ) {
-			can.Observe.prototype.___set.call(this,prop, val)
-			// If we add an `id`, move it to the store.
-			if(prop === this.constructor.id && this._bindings){
-				this.constructor.store[getId(this)] = this;
-			}
-		}
-	});
-	
-
-	
-				
-	can.each({makeFindAll : "models", makeFindOne: "model"}, function(method, name){
-		can.Model[name] = function(oldFind){
-			return function(params, success, error){
-				return pipe( oldFind.call( this, params ),
-							this, 
-							method ).then(success,error)
-			}
-		};
-	});
-				
-		can.each([
-		"created",
-		"updated",
-		"destroyed"], function( funcName ) {
-		can.Model.prototype[funcName] = function( attrs ) {
-			var stub, 
-				constructor = this.constructor;
-
-			// Update attributes if attributes have been passed
-			stub = attrs && typeof attrs == 'object' && this.attr(attrs.attr ? attrs.attr() : attrs);
-
-			// Call event on the instance
-			can.trigger(this,funcName);
-			can.trigger(this,"change",funcName)
+			(arr = can.data(this.element,"controls")) || can.data(this.element,"controls",arr = []);
+			arr.push(this);
 			
+			// Option merging.
+						this.options = extend({}, cls.defaults, options);
 
-			// Call event on the instance's Class
-			can.trigger(constructor,funcName, this);
-		};
-	});
-  
-  // Model lists are just like `Observe.List` except that when their items are 
-  // destroyed, it automatically gets removed from the list.
-  	var ML = can.Observe.List('can.Model.List',{
-		setup : function(){
-			can.Observe.List.prototype.setup.apply(this, arguments );
-			// Send destroy events.
-			var self = this;
-			this.bind('change', function(ev, how){
-				if(/\w+\.destroyed/.test(how)){
-					self.splice(self.indexOf(ev.target),1);
-				}
-			})
-		}
-	})
-	
-;
+			// Bind all event handlers.
+			this.on();
 
-	
-	// ## deparam.js  
-	// `can.deparam`  
-	// _Takes a string of name value pairs and returns a Object literal that represents those params._
-	var digitTest = /^\d+$/,
-		keyBreaker = /([^\[\]]+)|(\[\])/g,
-		paramTest = /([^?#]*)(#.*)?$/,
-		prep = function( str ) {
-			return decodeURIComponent( str.replace(/\+/g, " ") );
-		}
-	
+			// Get's passed into `init`.
+						return [this.element, this.options];
+		},
+				on: function( el, selector, eventName, func ) {
+			if ( ! el ) {
 
-	can.extend(can, { 
-				deparam: function(params){
-		
-			var data = {},
-				pairs;
+				// Adds bindings.
+				this.off();
 
-			if ( params && paramTest.test( params )) {
-				
-				pairs = params.split('&'),
-				
-				can.each( pairs, function( pair ) {
-
-					var parts = pair.split('='),
-						key   = prep( parts.shift() ),
-						value = prep( parts.join("=") );
-
-					current = data;
-					parts = key.match(keyBreaker);
-			
-					for ( var j = 0, l = parts.length - 1; j < l; j++ ) {
-						if (!current[parts[j]] ) {
-							// If what we are pointing to looks like an `array`
-							current[parts[j]] = digitTest.test(parts[j+1]) || parts[j+1] == "[]" ? [] : {}
-						}
-						current = current[parts[j]];
+				// Go through the cached list of actions and use the processor 
+				// to bind
+				var cls = this.constructor,
+					bindings = this._bindings,
+					actions = cls.actions,
+					element = this.element,
+					destroyCB = can.Control._shifter(this,"destroy"),
+					funcName, ready;
+					
+				for ( funcName in actions ) {
+					if ( actions.hasOwnProperty( funcName )) {
+						ready = actions[funcName] || cls._action(funcName, this.options);
+						bindings.push(
+							ready.processor(ready.delegate || element, 
+							                ready.parts[2], 
+											ready.parts[1], 
+											funcName, 
+											this));
 					}
-					lastPart = parts.pop()
-					if ( lastPart == "[]" ) {
-						current.push(value)
-					} else {
-						current[lastPart] = value;
-					}
+				}
+	
+	
+				// Setup to be destroyed...  
+				// don't bind because we don't want to remove it.
+				can.bind.call(element,"destroyed", destroyCB);
+				bindings.push(function( el ) {
+					can.unbind.call(el,"destroyed", destroyCB);
 				});
+				return bindings.length;
 			}
-			return data;
+
+			if ( typeof el == 'string' ) {
+				func = eventName;
+				eventName = selector;
+				selector = el;
+				el = this.element;
+			}
+
+			if(func === undefined) {
+				func = eventName;
+				eventName = selector;
+				selector = null;
+			}
+
+			if ( typeof func == 'string' ) {
+				func = can.Control._shifter(this,func);
+			}
+
+			this._bindings.push( binder( el, eventName, func, selector ));
+
+			return this._bindings.length;
+		},
+		// Unbinds all event handlers on the controller.
+				off : function(){
+			var el = this.element[0]
+			each(this._bindings || [], function( value ) {
+				value(el);
+			});
+			// Adds bindings.
+			this._bindings = [];
+		},
+		// Prepares a `control` for garbage collection
+				destroy: function() {
+			var Class = this.constructor,
+				pluginName = Class.pluginName || Class._fullName,
+				controls;
+			
+			// Unbind bindings.
+			this.off();
+			
+			if(pluginName && pluginName !== 'can_control'){
+				// Remove the `className`.
+				this.element.removeClass(pluginName);
+			}
+			
+			// Remove from `data`.
+			controls = can.data(this.element,"controls");
+			controls.splice(can.inArray(this, controls),1);
+			
+			can.trigger( this, "destroyed"); // In case we want to know if the `control` is removed.
+			
+			this.element = null;
 		}
 	});
+
+	var processors = can.Control.processors,
+
+	// Processors do the binding.  
+	// They return a function that unbinds when called.  
+	//
+	// The basic processor that binds events.
+	basicProcessor = function( el, event, selector, methodName, control ) {
+		return binder( el, event, can.Control._shifter(control, methodName), selector);
+	};
+
+	// Set common events to be processed as a `basicProcessor`
+	each(["change", "click", "contextmenu", "dblclick", "keydown", "keyup", 
+		 "keypress", "mousedown", "mousemove", "mouseout", "mouseover", 
+		 "mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
+		 "focusout", "mouseenter", "mouseleave"], function( v ) {
+		processors[v] = basicProcessor;
+	});
+
+	}());
 
 	// ## route.js  
 	// `can.route`  
@@ -2540,632 +2445,6 @@ can.$ = Zepto
 	// `onready` event...
 	can.bind.call(document,"ready",can.route.ready);
 
-	// ## control.js
-	// `can.Control`  
-	// _Controller_
-	
-	// Binds an element, returns a function that unbinds.
-	var bind = function( el, ev, callback ) {
-
-		can.bind.call( el, ev, callback )
-
-		return function() {
-			can.unbind.call(el, ev, callback);
-		};
-	},
-		isFunction = can.isFunction,
-		extend = can.extend,
-		each = can.each,
-		slice = [].slice,
-    paramReplacer = /\{([^\}]+)\}/g,
-		special = can.getObject("$.event.special") || {},
-
-		// Binds an element, returns a function that unbinds.
-		delegate = function( el, selector, ev, callback ) {
-			can.delegate.call(el, selector, ev, callback)
-			return function() {
-				can.undelegate.call(el, selector, ev, callback);
-			};
-		},
-		
-		// Calls bind or unbind depending if there is a selector.
-		binder = function( el, ev, callback, selector ) {
-			return selector ?
-				delegate( el, can.trim( selector ), ev, callback ) : 
-				bind( el, ev, callback );
-		},
-		
-		// Moves `this` to the first argument, wraps it with `jQuery` if it's an element
-		shifter = function shifter(context, name) {
-			var method = typeof name == "string" ? context[name] : name;
-			if(!isFunction(method)){
-				method = context[method];
-			}
-			return function() {
-				context.called = name;
-    			return method.apply(context, [this.nodeName ? can.$(this) : this].concat( slice.call(arguments, 0)));
-			};
-		},
-		basicProcessor;
-	
-		can.Construct("can.Control",
-		{
-		// Setup pre-processes which methods are event listeners.
-				setup: function() {
-
-			// Allow contollers to inherit "defaults" from super-classes as it 
-			// done in `can.Construct`
-			can.Construct.setup.apply( this, arguments );
-
-			// If you didn't provide a name, or are `control`, don't do anything.
-			if ( this !== can.Control ) {
-
-				// Cache the underscored names.
-				var control = this,
-					funcName;
-
-				// Calculate and cache actions.
-				control.actions = {};
-				for ( funcName in control.prototype ) {
-					if ( control._isAction(funcName) ) {
-						control.actions[funcName] = control._action(funcName);
-					}
-				}
-			}
-		},
-		// Return `true` if is an action.
-				_isAction: function( methodName ) {
-			
-			var val = this.prototype[methodName],
-				type = typeof val;
-			// if not the constructor
-			return (methodName !== 'constructor') &&
-				// and is a function or links to a function
-				( type == "function" || (type == "string" &&  isFunction(this.prototype[val] ) ) ) &&
-				// and is in special, a processor, or has a funny character
-			    !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
-		},
-		// Takes a method name and the options passed to a control
-		// and tries to return the data necessary to pass to a processor
-		// (something that binds things).
-				_action: function( methodName, options ) {
-			
-			// If we don't have options (a `control` instance), we'll run this 
-			// later.  
-      		paramReplacer.lastIndex = 0;
-			if ( options || ! paramReplacer.test( methodName )) {
-				// If we have options, run sub to replace templates `{}` with a
-				// value from the options or the window
-				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
-					
-					// If a `{}` resolves to an object, `convertedName` will be
-					// an array
-					arr = can.isArray(convertedName),
-					
-					// Get the parts of the function  
-					// `[convertedName, delegatePart, eventPart]`  
-					// `/^(?:(.*?)\s)?([\w\.\:>]+)$/` - Breaker `RegExp`.
-					parts = (arr ? convertedName[1] : convertedName).match(/^(?:(.*?)\s)?([\w\.\:>]+)$/);
-
-					var event = parts[2],
-					processor = processors[event] || basicProcessor;
-				return {
-					processor: processor,
-					parts: parts,
-					delegate : arr ? convertedName[0] : undefined
-				};
-			}
-		},
-		// An object of `{eventName : function}` pairs that Control uses to 
-		// hook up events auto-magically.
-				processors: {},
-		// A object of name-value pairs that act as default values for a 
-		// control instance
-				defaults: {}
-	},
-		{
-		// Sets `this.element`, saves the control in `data, binds event
-		// handlers.
-				setup: function( element, options ) {
-
-			var cls = this.constructor,
-				pluginname = cls.pluginName || cls._fullName,
-				arr;
-
-			// Want the raw element here.
-			this.element = can.$(element)
-
-			if ( pluginname && pluginname !== 'can_control') {
-				// Set element and `className` on element.
-				this.element.addClass(pluginname);
-			}
-			
-			(arr = can.data(this.element,"controls")) || can.data(this.element,"controls",arr = []);
-			arr.push(this);
-			
-			// Option merging.
-						this.options = extend({}, cls.defaults, options);
-
-			// Bind all event handlers.
-			this.on();
-
-			// Get's passed into `init`.
-						return [this.element, this.options];
-		},
-				on: function( el, selector, eventName, func ) {
-			
-			if ( ! el ) {
-
-				// Adds bindings.
-				this.off();
-
-				// Go through the cached list of actions and use the processor 
-				// to bind
-				var cls = this.constructor,
-					bindings = this._bindings,
-					actions = cls.actions,
-					element = this.element,
-					destroyCB = shifter(this,"destroy"),
-					funcName;
-					
-				for ( funcName in actions ) {
-					if ( actions.hasOwnProperty( funcName )) {
-						ready = actions[funcName] || cls._action(funcName, this.options);
-						bindings.push(
-							ready.processor(ready.delegate || element, 
-							                ready.parts[2], 
-											ready.parts[1], 
-											funcName, 
-											this));
-					}
-				}
-	
-	
-				// Setup to be destroyed...  
-				// don't bind because we don't want to remove it.
-				can.bind.call(element,"destroyed", destroyCB);
-				bindings.push(function( el ) {
-					can.unbind.call(el,"destroyed", destroyCB);
-				});
-				return bindings.length;
-			}
-
-			if ( typeof el == 'string' ) {
-				func = eventName;
-				eventName = selector;
-				selector = el;
-				el = this.element;
-			}
-			
-			if ( typeof func == 'string' ) {
-				func = shifter(this,func);
-			}
-
-			this._bindings.push( binder( el, eventName, func, selector ));
-
-			return this._bindings.length;
-		},
-		// Unbinds all event handlers on the controller.
-				off : function(){
-			var el = this.element[0]
-			each(this._bindings || [], function( value ) {
-				value(el);
-			});
-			// Adds bindings.
-			this._bindings = [];
-		},
-		// Prepares a `control` for garbage collection
-				destroy: function() {
-			var Class = this.constructor,
-				pluginName = Class.pluginName || Class._fullName,
-				controls;
-			
-			// Unbind bindings.
-			this.off();
-			
-			if(pluginName && pluginName !== 'can_control'){
-				// Remove the `className`.
-				this.element.removeClass(pluginName);
-			}
-			
-			// Remove from `data`.
-			controls = can.data(this.element,"controls");
-			controls.splice(can.inArray(this, controls),1);
-			
-			can.trigger( this, "destroyed"); // In case we want to know if the `control` is removed.
-			
-			this.element = null;
-		}
-	});
-
-	var processors = can.Control.processors,
-
-	// Processors do the binding.  
-	// They return a function that unbinds when called.  
-	//
-	// The basic processor that binds events.
-	basicProcessor = function( el, event, selector, methodName, control ) {
-		return binder( el, event, shifter(control, methodName), selector);
-	};
-
-	// Set common events to be processed as a `basicProcessor`
-	each(["change", "click", "contextmenu", "dblclick", "keydown", "keyup", 
-		 "keypress", "mousedown", "mousemove", "mouseout", "mouseover", 
-		 "mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
-		 "focusout", "mouseenter", "mouseleave"], function( v ) {
-		processors[v] = basicProcessor;
-	});
-
-	
-	// ## control/route.js  
-	// _Controller route integration._
-	
-	can.Control.processors.route = function( el, event, selector, funcName, controller ) {
-		can.route( selector || "" )
-		var batchNum,
-			check = function( ev, attr, how ) {
-				if ( can.route.attr('route') === ( selector || "" ) && 
-				   ( ev.batchNum === undefined || ev.batchNum !== batchNum ) ) {
-					
-					batchNum = ev.batchNum;
-					
-					var d = can.route.attr();
-					delete d.route;
-					if(can.isFunction(controller[funcName])){
-						controller[funcName]( d )
-					}else {
-						controller[controller[funcName]](d)
-					}
-					
-				}
-			}
-		can.route.bind( 'change', check );
-		return function() {
-			can.route.unbind( 'change', check )
-		}
-	}
-;
-
-	// ## view.js
-	// `can.view`  
-	// _Templating abstraction._
-
-	var isFunction = can.isFunction,
-		makeArray = can.makeArray,
-		// Used for hookup `id`s.
-		hookupId = 1,
-		$view = can.view = function(view, data, helpers, callback){
-		// Get the result.
-		var result = $view.render(view, data, helpers, callback);
-		if(can.isDeferred(result)){
-			return result.pipe(function(result){
-				return $view.frag(result);
-			})
-		}
-		
-		// Convert it into a dom frag.
-		return $view.frag(result);
-	};
-
-	can.extend( $view, {
-		// creates a frag and hooks it up all at once
-		frag: function(result, parentNode ){
-			return $view.hookup( $view.fragment(result), parentNode );
-		},
-		// simply creates a frag
-		// this is used internally to create a frag
-		// insert it
-		// then hook it up
-		fragment: function(result){
-			var frag = can.buildFragment(result,document.body);
-			// If we have an empty frag...
-			if(!frag.childNodes.length) { 
-				frag.appendChild(document.createTextNode(''))
-			}
-			return frag;
-		},
-    // Convert a path like string into something that's ok for an `element` ID.
-    toId : function( src ) {
-      return can.map(src.toString().split(/\/|\./g), function( part ) {
-        // Dont include empty strings in toId functions
-        if ( part ) {
-          return part;
-        }
-      }).join("_");
-    },
-		hookup: function(fragment, parentNode ){
-			var hookupEls = [],
-				id, 
-				func, 
-				el,
-				i=0;
-			
-			// Get all `childNodes`.
-			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(node){
-				if(node.nodeType === 1){
-					hookupEls.push(node)
-					hookupEls.push.apply(hookupEls, can.makeArray( node.getElementsByTagName('*')))
-				}
-			});
-			// Filter by `data-view-id` attribute.
-			for (; el = hookupEls[i++]; ) {
-
-				if ( el.getAttribute && (id = el.getAttribute('data-view-id')) && (func = $view.hookups[id]) ) {
-					func(el, parentNode, id);
-					delete $view.hookups[id];
-					el.removeAttribute('data-view-id');
-				}
-			}
-			return fragment;
-		},
-				hookups: {},
-				hook: function( cb ) {
-			$view.hookups[++hookupId] = cb;
-			return " data-view-id='"+hookupId+"'";
-		},
-				cached: {},
-				cache: true,
-				register: function( info ) {
-			this.types["." + info.suffix] = info;
-		},
-		types: {},
-				ext: ".ejs",
-				registerScript: function() {},
-				preload: function( ) {},
-				render: function( view, data, helpers, callback ) {
-			// If helpers is a `function`, it is actually a callback.
-			if ( isFunction( helpers )) {
-				callback = helpers;
-				helpers = undefined;
-			}
-	
-			// See if we got passed any deferreds.
-			var deferreds = getDeferreds(data);
-	
-	
-			if ( deferreds.length ) { // Does data contain any deferreds?
-				// The deferred that resolves into the rendered content...
-				var deferred = new can.Deferred();
-	
-				// Add the view request to the list of deferreds.
-				deferreds.push(get(view, true))
-	
-				// Wait for the view and all deferreds to finish...
-				can.when.apply(can, deferreds).then(function( resolved ) {
-					// Get all the resolved deferreds.
-					var objs = makeArray(arguments),
-						// Renderer is the last index of the data.
-						renderer = objs.pop(),
-						// The result of the template rendering with data.
-						result; 
-	
-					// Make data look like the resolved deferreds.
-					if ( can.isDeferred(data) ) {
-						data = usefulPart(resolved);
-					}
-					else {
-						// Go through each prop in data again and
-						// replace the defferreds with what they resolved to.
-						for ( var prop in data ) {
-							if ( can.isDeferred(data[prop]) ) {
-								data[prop] = usefulPart(objs.shift());
-							}
-						}
-					}
-					// Get the rendered result.
-					result = renderer(data, helpers);
-	
-					// Resolve with the rendered view.
-					deferred.resolve(result); 
-					// If there's a `callback`, call it back with the result.
-					callback && callback(result);
-				});
-				// Return the deferred...
-				return deferred;
-			}
-			else {
-				// No deferreds! Render this bad boy.
-				var response, 
-					// If there's a `callback` function
-					async = isFunction( callback ),
-					// Get the `view` type
-					deferred = get(view, async);
-	
-				// If we are `async`...
-				if ( async ) {
-					// Return the deferred
-					response = deferred;
-					// And fire callback with the rendered result.
-					deferred.then(function( renderer ) {
-						callback(renderer(data, helpers))
-					})
-				} else {
-					// Otherwise, the deferred is complete, so
-					// set response to the result of the rendering.
-					deferred.then(function( renderer ) {
-						response = renderer(data, helpers);
-					});
-				}
-	
-				return response;
-			}
-		}
-	});
-	// Returns `true` if something looks like a deferred.
-	can.isDeferred = function( obj ) {
-		return obj && isFunction(obj.then) && isFunction(obj.pipe) // Check if `obj` is a `can.Deferred`.
-	} 
-	// Makes sure there's a template, if not, have `steal` provide a warning.
-	var	checkText = function( text, url ) {
-			if ( ! text.length ) {
-				//@steal-remove-start
-				//@steal-remove-end
-				throw "can.view: No template or empty template:" + url;
-			}
-		},
-		// `Returns a `view` renderer deferred.  
-		// `url` - The url to the template.  
-		// `async` - If the ajax request should be asynchronous.  
-		// Returns a deferred.
-		get = function( url, async ) {
-			
-			
-			var suffix = url.match(/\.[\w\d]+$/),
-			type, 
-			// If we are reading a script element for the content of the template,
-			// `el` will be set to that script element.
-			el, 
-			// A unique identifier for the view (used for caching).
-			// This is typically derived from the element id or
-			// the url for the template.
-			id, 
-			// The ajax request used to retrieve the template content.
-			jqXHR, 
-			// Used to generate the response.
-			response = function( text ) {
-				// Get the renderer function.
-				var func = type.renderer(id, text),
-					d = new can.Deferred();
-				d.resolve(func)
-				// Cache if we are caching.
-				if ( $view.cache ) {
-					$view.cached[id] = d;
-				}
-				// Return the objects for the response's `dataTypes`
-				// (in this case view).
-				return d;
-			};
-
-			//If the url has a #, we assume we want to use an inline template
-			//from a script element and not current page's HTML
-			if( url.match(/^#/) ) {
-				url = url.substr(1);
-			}
-			// If we have an inline template, derive the suffix from the `text/???` part.
-			// This only supports `<script>` tags.
-			if ( el = document.getElementById(url) ) {
-				suffix = "."+el.type.match(/\/(x\-)?(.+)/)[2];
-			}
-	
-			// If there is no suffix, add one.
-			if (!suffix ) {
-				url += ( suffix = $view.ext );
-			}
-
-			if ( can.isArray( suffix )) {
-				suffix = suffix[0]
-			}
-	
-			// Convert to a unique and valid id.
-			id = can.view.toId(url);
-	
-			// If an absolute path, use `steal` to get it.
-			// You should only be using `//` if you are using `steal`.
-			if ( url.match(/^\/\//) ) {
-				var sub = url.substr(2);
-				url = ! window.steal ? 
-					"/" + sub : 
-					steal.root.mapJoin(sub);
-			}
-	
-			// Set the template engine type.
-			type = $view.types[suffix];
-	
-			// If it is cached, 
-			if ( $view.cached[id] ) {
-				// Return the cached deferred renderer.
-				return $view.cached[id];
-			
-			// Otherwise if we are getting this from a `<script>` element.
-			} else if ( el ) {
-				// Resolve immediately with the element's `innerHTML`.
-				return response(el.innerHTML);
-			} else {
-				// Make an ajax request for text.
-				var d = new can.Deferred();
-				can.ajax({
-					async: async,
-					url: url,
-					dataType: "text",
-					error: function(jqXHR) {
-						checkText("", url);
-						d.reject(jqXHR);
-					},
-					success: function( text ) {
-						// Make sure we got some text back.
-						checkText(text, url);
-						d.resolve(type.renderer(id, text))
-						// Cache if if we are caching.
-						if ( $view.cache ) {
-							$view.cached[id] = d;
-						}
-						
-					}
-				});
-				return d;
-			}
-		},
-		// Gets an `array` of deferreds from an `object`.
-		// This only goes one level deep.
-		getDeferreds = function( data ) {
-			var deferreds = [];
-
-			// pull out deferreds
-			if ( can.isDeferred(data) ) {
-				return [data]
-			} else {
-				for ( var prop in data ) {
-					if ( can.isDeferred(data[prop]) ) {
-						deferreds.push(data[prop]);
-					}
-				}
-			}
-			return deferreds;
-		},
-		// Gets the useful part of a resolved deferred.
-		// This is for `model`s and `can.ajax` that resolve to an `array`.
-		usefulPart = function( resolved ) {
-			return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved
-		};
-	
-	
-	if ( window.steal ) {
-		steal.type("view js", function( options, success, error ) {
-			var type = can.view.types["." + options.type],
-				id = can.view.toId(options.rootSrc);
-
-			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "').then(function($){" + "can.view.preload('" + id + "'," + options.text + ");\n})";
-			success();
-		})
-	}
-
-	//!steal-pluginify-remove-start
-	can.extend(can.view, {
-		register: function( info ) {
-			this.types["." + info.suffix] = info;
-
-			if ( window.steal ) {
-				steal.type(info.suffix + " view js", function( options, success, error ) {
-					var type = can.view.types["." + options.type],
-						id = can.view.toId(options.rootSrc+'');
-
-					options.text = type.script(id, options.text)
-					success();
-				})
-			}
-		},
-		registerScript: function( type, id, src ) {
-			return "can.view.preload('" + id + "'," + $view.types["." + type].script(id, src) + ");";
-		},
-		preload: function( id, renderer ) {
-			can.view.cached[id] = new can.Deferred().resolve(function( data, helpers ) {
-				return renderer.call(data, data, helpers);
-			});
-		}
-
-	});
-	//!steal-pluginify-remove-end
-
 	// ## ejs.js
 	// `can.EJS`  
 	// _Embedded JavaScript Templates._
@@ -3188,7 +2467,8 @@ can.$ = Zepto
 			ul: "li", 
 			tbody: "tr",
 			thead: "tr",
-			tfoot: "tr"
+			tfoot: "tr",
+			select: "option"
 		},
 		// Escapes characters starting with `\`.
 		clean = function( content ) {
@@ -3237,72 +2517,6 @@ can.$ = Zepto
 		observeProp = function(name){
 			return name.indexOf("|") >= 0;
 		},
-		// This is used to setup live binding on a list of observe/attribute
-		// pairs for a given element.
-		//  - observed - an array of observe/attribute
-		//  - el - the parent element, if removed, unbinds all observes
-		//  - cb - a callback function that gets called if any observe/attribute changes
-		//  - oldObserve - a mapping of observe/attributes already bound
-		
-		liveBind = function( observed, el, cb, oldObserved ) {
-			// record if this is the first liveBind call for this magic tag
-			var first = oldObserved.matched === undefined;
-			
-			// If there is no element, teardown.
-			// This case happens when a parent block, like an `if(X){}`, replaces
-			// the content of children bindings like `<%= you.attr('name') %>` and
-			// the same property change that cause the parent block change changes
-			// the child bindings.
-			// If the parent block change did not change the child bindings, liveBind would
-			// not be called and the bindings would still be present until the
-			// parentElement `el` is removed from the page.
-			if(el == null){
-				oldObserved.teardown();
-				can.unbind.call(oldObserved.el,'destroyed', oldObserved.teardown)
-				return;
-				
-			}
-			// toggle the 'matched' indicator
-			oldObserved.matched = !oldObserved.matched;
-			
-			can.each(observed, function(ob){
-				// if the observe/attribute pair is being observed
-				if(oldObserved[ob.obj._namespace+"|"+ob.attr]){
-					// mark at as observed
-					oldObserved[ob.obj._namespace+"|"+ob.attr].matched = oldObserved.matched;
-				} else {
-					// otherwise, set the observe/attribute on oldObserved, marking it as being observed
-					ob.matched = oldObserved.matched;
-					oldObserved[ob.obj._namespace+"|"+ob.attr] = ob
-					// call `cb` when `attr` changes on the observe
-					ob.obj.bind(ob.attr, cb)
-				}
-			})
-			// Iterate through oldObserved, looking for observe/attributes
-			// that are no longer being bound and unbind them
-			for ( var name in oldObserved ) {
-				var ob = oldObserved[name];
-				if(observeProp(name) && ob.matched !== oldObserved.matched){
-					ob.obj.unbind(ob.attr);
-					delete oldObserved[name];
-				}
-			}
-			if(first){
-				// If this is the first time binding, listen
-				// for the element to be destroyed and unbind
-				// all event handlers for garbage collection.
-				oldObserved.el = el;
-				oldObserved.teardown = function(){
-					can.each(oldObserved, function(ob, name){
-						if(observeProp(name)){
-							ob.obj.unbind(ob.attr, cb)
-						}
-					});
-				};
-				can.bind.call(el,'destroyed', oldObserved.teardown)
-			}
-
-		},
 		// Returns escaped/sanatized content for anything other than a live-binding
 		contentEscape = function( txt ) {
 			return (typeof txt == 'string' || typeof txt == 'number') ?
@@ -3341,45 +2555,6 @@ can.$ = Zepto
 
 			// Finally, if all else is `false`, `toString()` it.
 			return "" + input;
-		},
-		// Returns the return value of a "wrapping" function and any
-		// observe attribute properties that were read.
-		// A wrapping function is the function that gets put around
-		// a magic tag.  For example, `<%= task.attr() %>` becomes
-		// `function(){ return task.attr() }`.  
-		getValueAndObserved = function(func, self){
-			
-			var oldReading;
-			if (can.Observe) {
-				// Set a callback on can.Observe to know
-				// when an attr is read.
-				// Keep a reference to the old reader
-				// if there is one.  This is used
-				// for nested live binding.
-				oldReading = can.Observe.__reading;
-				can.Observe.__reading = function(obj, attr){
-					// Add the observe and attr that was read
-					// to `observed`
-					observed.push({
-						obj: obj,
-						attr: attr
-					});
-				}
-			}
-			
-			var observed = [],
-				// Call the "wrapping" function to get the value. `observed`
-				// will have the observe/attribute pairs that were read.
-				value = func.call(self);
-	
-			// Set back so we are no longer reading.
-			if(can.Observe){
-				can.Observe.__reading = oldReading;
-			}
-			return {
-				value : value,
-				observed : observed
-			}
 		},
 		// The EJS constructor function
 		EJS = function( options ) {
@@ -3422,21 +2597,40 @@ can.$ = Zepto
 		// - func - the "wrapping" function.  For example:  `<%= task.attr('name') %>` becomes
 		//   `(function(){return task.attr('name')})
 				txt : function(escape, tagName, status, self, func){
+			// call the "wrapping" function and get the binding information
+			var binding = can.compute.binder(func, self, function(newVal, oldVal){
+				// call the update method we will define for each
+				// type of attribute
+				update(newVal, oldVal)
+			});
 			
-			// Get teh value returned by the wrapping function and any observe/attributes read.
-			var res = getValueAndObserved(func, self),
-				observed = res.observed,
-				value = res.value,
-				// Contains the bindings this magic tag will make.  Used when 
-				// `func` might dynamically change what it is binding to.
-				oldObserved = {},
-				// The tag type to create within the parent tagName
-				tag = (tagMap[tagName] || "span");
-
 			// If we had no observes just return the value returned by func.
-			if(!observed.length){
-				return (escape || status !== 0? contentEscape : contentText)(value);
+			if(!binding.isListening){
+				return (escape || status !== 0? contentEscape : contentText)(binding.value);
 			}
+			// The following are helper methods or varaibles that will
+			// be defined by one of the various live-updating schemes.
+			
+			// The parent element we are listening to for teardown
+			var	parentElement,
+				// if the parent element is removed, teardown the binding
+				setupTeardownOnDestroy = function(el){
+					can.bind.call(el,'destroyed', binding.teardown)
+					parentElement = el;
+				},
+				// if there is no parent, undo bindings
+				teardownCheck = function(parent){
+					if(!parent){
+						binding.teardown();
+						can.unbind.call(parentElement,'destroyed', binding.teardown)
+					}
+				},
+				// the tag type to insert
+				tag = (tagMap[tagName] || "span"),
+				// this will be filled in if binding.isListening
+				update;
+			
+			
 			// The magic tag is outside or between tags.
 			if(status == 0){
 				// Return an element tag with a hookup in place of the content
@@ -3445,22 +2639,35 @@ can.$ = Zepto
 					// If we are escaping, replace the parentNode with 
 					// a text node who's value is `func`'s return value.
 					function(el, parentNode){
-						var parent = getParentNode(el, parentNode),
-							node = document.createTextNode(value),
-							binder = function(){
-								var res = getValueAndObserved(func, self);
-								node.nodeValue = ""+res.value;
-								liveBind(res.observed, node.parentNode, binder,oldObserved);
-							};
+						// updates the text of the text node
+						update = function(newVal){
+							node.nodeValue = ""+newVal;
+							teardownCheck(node.parentNode);
+						};
 						
+						var parent = getParentNode(el, parentNode),
+							node = document.createTextNode(binding.value);
+							
 						parent.insertBefore(node, el);
 						parent.removeChild(el);
-						liveBind(observed, parent, binder,oldObserved);
+						setupTeardownOnDestroy(parent);
 					} 
 					:
 					// If we are not escaping, replace the parentNode with a
 					// documentFragment created as with `func`'s return value.
 					function(span, parentNode){
+						// updates the elements with the new content
+						update = function(newVal){
+							// is this still part of the DOM?
+							var attached = nodes[0].parentNode;
+							// update the nodes in the DOM with the new rendered value
+							if( attached ) {
+								nodes = makeAndPut(newVal, nodes);
+							}
+							teardownCheck(nodes[0].parentNode)
+						}
+						
+						// make sure we have a valid parentNode
 						parentNode = getParentNode(span, parentNode)
 						// A helper function to manage inserting the contents
 						// and removing the old contents
@@ -3488,32 +2695,19 @@ can.$ = Zepto
 							},
 							// nodes are the nodes that any updates will replace
 							// at this point, these nodes could be part of a documentFragment
-							nodes = makeAndPut(value, [span]);
-						// Anytime a live-bound attribute changes this method gets called
-						var binder = function(){
-							
-							// is this still part of the DOM?
-							var attached = nodes[0].parentNode,
-								// get the new value
-								res = getValueAndObserved(func, self);
-							// update the nodes in the DOM with the new rendered value
-							if( attached ) {
-								nodes = makeAndPut(res.value, nodes);
-							}
-							// updating the bindings (some observes may have changed)
-							liveBind(res.observed, nodes[0].parentNode, binder ,oldObserved);
-						}
-						// setup initial live-binding
-						liveBind(observed, parentNode, binder ,oldObserved);
+							nodes = makeAndPut(binding.value, [span]);
+						
+						
+						setupTeardownOnDestroy(parentNode);
+						
 				}) + "></" +tag+">";
 			// In a tag, but not in an attribute
 			} else if(status === 1){ 
 				// remember the old attr name
-				var attrName = value.replace(/['"]/g, '').split('=')[0];
+				var attrName = binding.value.replace(/['"]/g, '').split('=')[0];
 				pendingHookups.push(function(el) {
-					var binder = function() {
-						var res = getValueAndObserved(func, self),
-							parts = (res.value || "").replace(/['"]/g, '').split('='),
+					update = function(newVal){
+						var parts = (newVal|| "").replace(/['"]/g, '').split('='),
 							newAttrName = parts[0];
 						
 						// Remove if we have a change and used to have an `attrName`.
@@ -3525,15 +2719,19 @@ can.$ = Zepto
 							setAttr(el, newAttrName, parts[1]);
 							attrName = newAttrName;
 						}
-						liveBind(res.observed, el, binder,oldObserved);
 					}
-					
-					liveBind(observed, el, binder,oldObserved);
+					setupTeardownOnDestroy(el);
 				});
 
-				return value;
+				return binding.value;
 			} else { // In an attribute...
 				pendingHookups.push(function(el){
+					// update will call this attribute's render method
+					// and set the attribute accordingly
+					update = function(){
+						setAttr(el, status, hook.render())
+					}
+					
 					var wrapped = can.$(el),
 						hooks;
 					
@@ -3549,18 +2747,13 @@ can.$ = Zepto
 					var attr = getAttr(el, status),
 						// Split the attribute value by the template.
 						parts = attr.split("__!!__"),
-						hook,
-						binder = function(ev){
-							if(ev.batchNum === undefined || ev.batchNum !== hook.batchNum){
-								hook.batchNum = ev.batchNum;
-								setAttr(el, status, hook.render());
-							} 
-						};
+						hook;
 
+					
 					// If we already had a hookup for this attribute...
 					if(hooks[status]) {
 						// Just add to that attribute's list of `function`s.
-						hooks[status].funcs.push({func: func, old: oldObserved});
+						hooks[status].bindings.push(binding);
 					}
 					else {
 						// Create the hookup data.
@@ -3568,13 +2761,11 @@ can.$ = Zepto
 							render: function() {
 								var i =0,
 									newAttr = attr.replace(attributeReplace, function() {
-										var ob = getValueAndObserved(hook.funcs[i].func, self);
-										liveBind(ob.observed, el, binder, hook.funcs[i++].old)
-										return contentText( ob.value );
+										return contentText( hook.bindings[i++].value );
 									});
 								return newAttr;
 							},
-							funcs: [{func: func, old: oldObserved}],
+							bindings: [binding],
 							batchNum : undefined
 						};
 					};
@@ -3583,13 +2774,14 @@ can.$ = Zepto
 					hook = hooks[status];
 
 					// Insert the value in parts.
-					parts.splice(1,0,value);
+					parts.splice(1,0,binding.value);
 
 					// Set the attribute.
 					setAttr(el, status, parts.join(""));
 					
 					// Bind on change.
-					liveBind(observed, el, binder,oldObserved);
+					//liveBind(observed, el, binder,oldObserved);
+					setupTeardownOnDestroy(el)
 				})
 				return "__!!__";
 			}
@@ -3639,14 +2831,19 @@ can.$ = Zepto
 			
 			source = source.replace(newLine, "\n");
 			source.replace(tokenReg, function(whole, part, offset){
+				// if the next token starts after the last token ends
+				// push what's in between
 				if(offset > last){
 					tokens.push( source.substring(last, offset) );
-				} 
-				tokens.push(part)
+				}
+				// push the token 
+				tokens.push(part);
+				// update the position of the last part of the last token
 				last = offset+part.length;
 			})
-			if(last === 0){
-				tokens.push(source)
+			// if there's something at the end, add it
+			if(last < source.length){
+				tokens.push(source.substr(last))
 			}
 			
 			var content = '',
@@ -3868,7 +3065,8 @@ can.$ = Zepto
 		extend(this, extras);
 	};
 		EJS.Helpers.prototype = {
-				list : function(list, cb){
+				// TODO Deprecated!!
+		list : function(list, cb){
 			can.each(list, function(item, i){
 				cb(item, i, list)
 			})
@@ -3893,11 +3091,378 @@ can.$ = Zepto
 		}
 	});
 
-	// Register as an AMD module if supported, otherwise attach to the window
-	if ( typeof define === "function" && define.amd ) {
-		define( "can", [], function () { return can; } );
-	} else {
-		window.can = can;
+	
+	// ## control/route.js  
+	// _Controller route integration._
+	
+	can.Control.processors.route = function( el, event, selector, funcName, controller ) {
+		can.route( selector || "" )
+		var batchNum,
+			check = function( ev, attr, how ) {
+				if ( can.route.attr('route') === ( selector || "" ) && 
+				   ( ev.batchNum === undefined || ev.batchNum !== batchNum ) ) {
+					
+					batchNum = ev.batchNum;
+					
+					var d = can.route.attr();
+					delete d.route;
+					if(can.isFunction(controller[funcName])){
+						controller[funcName]( d )
+					}else {
+						controller[controller[funcName]](d)
+					}
+					
+				}
+			}
+		can.route.bind( 'change', check );
+		return function() {
+			can.route.unbind( 'change', check )
+		}
 	}
+;
 
-})(can = {}, this )
+	
+	// ## model.js  
+	// `can.Model`  
+	// _A `can.Observe` that connects to a RESTful interface._
+	//  
+	// Generic deferred piping function
+		var	pipe = function( def, model, func ) {
+		var d = new can.Deferred();
+		def.then(function(){
+			arguments[0] = model[func](arguments[0])
+			d.resolveWith(d, arguments)
+		},function(){
+			d.rejectWith(this, arguments)
+		})
+		return d;
+	},
+		modelNum = 0,
+		ignoreHookup = /change.observe\d+/,
+		getId = function( inst ) {
+			return inst[inst.constructor.id]
+		},
+		// Ajax `options` generator function
+		ajax = function( ajaxOb, data, type, dataType, success, error ) {
+
+			
+			// If we get a string, handle it.
+			if ( typeof ajaxOb == "string" ) {
+				// If there's a space, it's probably the type.
+				var parts = ajaxOb.split(" ")
+				ajaxOb = {
+					url : parts.pop()
+				};
+				if(parts.length){
+					ajaxOb.type = parts.pop();
+				}
+			}
+
+			// If we are a non-array object, copy to a new attrs.
+			ajaxOb.data = typeof data == "object" && !can.isArray(data) ?
+				can.extend(ajaxOb.data || {}, data) : data;
+	
+
+			// Get the url with any templated values filled out.
+			ajaxOb.url = can.sub(ajaxOb.url, ajaxOb.data, true);
+
+			return can.ajax(can.extend({
+				type: type || "post",
+				dataType: dataType ||"json",
+				success : success,
+				error: error
+			}, ajaxOb ));
+		},
+		makeRequest = function( self, type, success, error, method ) {
+			var deferred ,
+				args = [self.serialize()],
+				// The model.
+				model = self.constructor,
+				jqXHR;
+
+			// `destroy` does not need data.
+			if ( type == 'destroy' ) {
+				args.shift();
+			}
+			// `update` and `destroy` need the `id`.
+			if ( type !== 'create' ) {
+				args.unshift(getId(self))
+			}
+			
+			jqXHR = model[type].apply(model, args);
+			
+			deferred = jqXHR.pipe(function(data){
+				self[method || type + "d"](data, jqXHR);
+				return self
+			})
+
+			// Hook up `abort`
+			if(jqXHR.abort){
+				deferred.abort = function(){
+					jqXHR.abort();
+				}
+			}
+			
+			return deferred.then(success,error);
+		},
+	
+	// This object describes how to make an ajax request for each ajax method.  
+	// The available properties are:
+	//		`url` - The default url to use as indicated as a property on the model.
+	//		`type` - The default http request type
+	//		`data` - A method that takes the `arguments` and returns `data` used for ajax.
+		//
+				// 
+				// 
+			ajaxMethods = {
+				create : {
+			url : "_shortName",
+			type :"post"
+		},
+				update : {
+			data : function(id, attrs){
+				attrs = attrs || {};
+				var identity = this.id;
+				if ( attrs[identity] && attrs[identity] !== id ) {
+					attrs["new" + can.capitalize(id)] = attrs[identity];
+					delete attrs[identity];
+				}
+				attrs[identity] = id;
+				return attrs;
+			},
+			type : "put"
+		},
+				destroy : {
+			type : "delete",
+			data : function(id){
+				var args = {};
+				args[this.id] = id;
+				return args;
+			}
+		},
+				findAll : {
+			url : "_shortName"
+		},
+				findOne: {}
+	},
+		// Makes an ajax request `function` from a string.
+		//		`ajaxMethod` - The `ajaxMethod` object defined above.
+		//		`str` - The string the user provided. Ex: `findAll: "/recipes.json"`.
+		ajaxMaker = function(ajaxMethod, str){
+			// Return a `function` that serves as the ajax method.
+			return function(data){
+				// If the ajax method has it's own way of getting `data`, use that.
+				data = ajaxMethod.data ? 
+					ajaxMethod.data.apply(this, arguments) :
+					// Otherwise use the data passed in.
+					data;
+				// Return the ajax method with `data` and the `type` provided.
+				return ajax(str || this[ajaxMethod.url || "_url"], data, ajaxMethod.type || "get")
+			}
+		}
+
+	
+	
+	can.Observe("can.Model",{
+		setup : function(base){
+			can.Observe.apply(this, arguments);
+			if(this === can.Model){
+				return;
+			}
+			var self = this,
+				clean = can.proxy(this._clean, self);
+				
+			can.each(ajaxMethods, function(method, name){
+				if ( ! can.isFunction( self[name] )) {
+					self[name] = ajaxMaker(method, self[name]);
+				}
+				if (self["make"+can.capitalize(name)]){
+					var newMethod = self["make"+can.capitalize(name)](self[name]);
+					can.Construct._overwrite(self, base, name,function(){
+						this._super;
+						this._reqs++;
+						return newMethod.apply(this, arguments).then(clean, clean);
+					})
+				}
+			});
+
+			if(!self.fullName || self.fullName == base.fullName){
+				self.fullName = self._shortName = "Model"+(++modelNum);
+			}
+			// Ddd ajax converters.
+			this.store = {};
+			this._reqs = 0;
+			this._url = this._shortName+"/{"+this.id+"}"
+		},
+		_ajax : ajaxMaker,
+		_clean : function(){
+			this._reqs--;
+			if(!this._reqs){
+				for(var id in this.store) {
+					if(!this.store[id]._bindings){
+						delete this.store[id];
+					}
+				}
+			}
+		},
+				models: function( instancesRawData ) {
+
+			if ( ! instancesRawData ) {
+				return;
+			}
+      
+			if ( instancesRawData instanceof this.List ) {
+				return instancesRawData;
+			}
+
+			// Get the list type.
+			var self = this,
+				res = new( self.List || ML),
+				// Did we get an `array`?
+				arr = can.isArray(instancesRawData),
+				
+				// Did we get a model list?
+				ml = (instancesRawData instanceof ML),
+
+				// Get the raw `array` of objects.
+				raw = arr ?
+
+				// If an `array`, return the `array`.
+				instancesRawData :
+
+				// Otherwise if a model list.
+				(ml ?
+
+				// Get the raw objects from the list.
+				instancesRawData.serialize() :
+
+				// Get the object's data.
+				instancesRawData.data),
+				i = 0;
+
+			//!steal-remove-start
+			if ( ! raw.length ) {
+				steal.dev && 
+			}
+			//!steal-remove-end
+
+			can.each(raw, function( rawPart ) {
+				res.push( self.model( rawPart ));
+			});
+
+			if ( ! arr ) { // Push other stuff onto `array`.
+				can.each(instancesRawData, function(val, prop){
+					if ( prop !== 'data' ) {
+						res[prop] = val;
+					}
+				})
+			}
+			return res;
+		},
+				model: function( attributes ) {
+			if (!attributes ) {
+				return;
+			}
+			if ( attributes instanceof this ) {
+				attributes = attributes.serialize();
+			}
+			var model = this.store[attributes[this.id]] ? this.store[attributes[this.id]].attr(attributes) : new this( attributes );
+			if(this._reqs){
+				this.store[attributes[this.id]] = model;
+			}
+			return model;
+		}
+	},
+		{
+				isNew: function() {
+			var id = getId(this);
+			return ! ( id || id === 0 ); // If `null` or `undefined`
+		},
+				save: function( success, error ) {
+			return makeRequest(this, this.isNew() ? 'create' : 'update', success, error);
+		},
+				destroy: function( success, error ) {
+			return makeRequest(this, 'destroy', success, error, 'destroyed');
+		},
+				bind : function(eventName){
+			if ( ! ignoreHookup.test( eventName )) { 
+				if ( ! this._bindings ) {
+					this.constructor.store[getId(this)] = this;
+					this._bindings = 0;
+				}
+				this._bindings++;
+			}
+			
+			return can.Observe.prototype.bind.apply( this, arguments );
+		},
+				unbind : function(eventName){
+			if(!ignoreHookup.test(eventName)) { 
+				this._bindings--;
+				if(!this._bindings){
+					delete this.constructor.store[getId(this)];
+				}
+			}
+			return can.Observe.prototype.unbind.apply(this, arguments);
+		},
+		// Change `id`.
+		___set: function( prop, val ) {
+			can.Observe.prototype.___set.call(this,prop, val)
+			// If we add an `id`, move it to the store.
+			if(prop === this.constructor.id && this._bindings){
+				this.constructor.store[getId(this)] = this;
+			}
+		}
+	});
+	
+
+	
+				
+	can.each({makeFindAll : "models", makeFindOne: "model"}, function(method, name){
+		can.Model[name] = function(oldFind){
+			return function(params, success, error){
+				return pipe( oldFind.call( this, params ),
+							this, 
+							method ).then(success,error)
+			}
+		};
+	});
+				
+		can.each([
+		"created",
+		"updated",
+		"destroyed"], function( funcName ) {
+		can.Model.prototype[funcName] = function( attrs ) {
+			var stub, 
+				constructor = this.constructor;
+
+			// Update attributes if attributes have been passed
+			stub = attrs && typeof attrs == 'object' && this.attr(attrs.attr ? attrs.attr() : attrs);
+
+			// Call event on the instance
+			can.trigger(this,funcName);
+			can.trigger(this,"change",funcName)
+			//!steal-remove-start
+			steal.dev && ;
+			//!steal-remove-end
+
+			// Call event on the instance's Class
+			can.trigger(constructor,funcName, this);
+		};
+	});
+  
+  // Model lists are just like `Observe.List` except that when their items are 
+  // destroyed, it automatically gets removed from the list.
+  	var ML = can.Observe.List('can.Model.List',{
+		setup : function(){
+			can.Observe.List.prototype.setup.apply(this, arguments );
+			// Send destroy events.
+			var self = this;
+			this.bind('change', function(ev, how){
+				if(/\w+\.destroyed/.test(how)){
+					self.splice(self.indexOf(ev.target),1);
+				}
+			})
+		}
+	})
+	
+})(can = {}, this );

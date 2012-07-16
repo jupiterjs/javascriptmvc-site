@@ -259,5 +259,5 @@ event.setupHelper( [
 		
 
 	
-})(jQuery);
+})(jQuery);;
 })

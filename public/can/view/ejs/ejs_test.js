@@ -162,7 +162,7 @@ test("helpers", function() {
 test('list helper', function(){
 	
 	var text = "<% list(todos, function(todo){ %><div><%= todo.name %></div><% }) %>";
-		Todos = new can.Observe.List([
+	var	Todos = new can.Observe.List([
 			{id: 1, name: 'Dishes'}
 		]),
 		compiled = new can.EJS({text: text}).render({todos: Todos}),
@@ -170,10 +170,10 @@ test('list helper', function(){
 
 		div.appendChild(can.view.frag(compiled))
 		equals(div.getElementsByTagName('div').length, 1, '1 item in list')
-
+		
 		Todos.push({id: 2, name: 'Laundry'})
 		equals(div.getElementsByTagName('div').length, 2, '2 items in list')
-
+		
 		Todos.splice(0, 2);
 		equals(div.getElementsByTagName('div').length, 0, '0 items in list')
 
@@ -204,6 +204,62 @@ test("attribute single unescaped, html single unescaped", function(){
 	task.attr('completed', true);
 	
 	equals(div.getElementsByTagName('div')[0].className,"complete", "class changed to complete")
+});
+
+
+test("event binding / triggering on options", function(){
+	var frag = can.buildFragment("<select><option>a</option></select>",[document]);
+	var qta = document.getElementById('qunit-test-area');
+	qta.innerHTML = "";
+	qta.appendChild(frag);
+	
+	/*qta.addEventListener("foo", function(){
+		ok(false, "event handler called")
+	},false)*/
+	
+
+	// destroyed events should not bubble
+	
+	
+	qta.getElementsByTagName("option")[0].addEventListener("foo", function(ev){
+		ok(true,"option called");
+		ev.stopPropagation();
+		//ev.cancelBubble = true;
+	}, false);
+	
+	qta.getElementsByTagName("select")[0].addEventListener("foo", function(){
+		ok(true,"select called")
+	}, false)
+	
+	var ev = document.createEvent("HTMLEvents");
+	ev.initEvent("foo", true , true);
+	qta.getElementsByTagName("option")[0].dispatchEvent(ev); 
+	
+	//can.trigger(qta,"foo")
+	
+	stop();
+	setTimeout(function(){
+		start();
+		ok(true);
+	},100)
+})
+
+test("select live binding", function() {
+	var text = "<select><% todos.each(function(todo){ %><option><%= todo.name %></option><% }) %></select>";
+		Todos = new can.Observe.List([
+			{id: 1, name: 'Dishes'}
+		]),
+		compiled = new can.EJS({text: text}).render({todos: Todos}),
+		div = document.createElement('div');
+
+		div.appendChild(can.view.frag(compiled))
+		equals(div.getElementsByTagName('option').length, 1, '1 item in list')
+
+		Todos.push({id: 2, name: 'Laundry'})
+		equals(div.getElementsByTagName('option').length, 2, '2 items in list')
+
+		Todos.splice(0, 2);
+		equals(div.getElementsByTagName('option').length, 0, '0 items in list')
 });
 
 test("block live binding", function(){
@@ -815,6 +871,25 @@ test("nested live bindings", function(){
 /*test("memory safe without parentElement of blocks", function(){
 	
 })*/
+
+test("trailing text", function(){
+	can.view.ejs("count","There are <%= this.attr('length') %> todos")
+	var div = document.createElement('div');
+	div.appendChild( can.view("count", new can.Observe.List([{},{}])) );
+	ok(/There are 2 todos/.test(div.innerHTML), "got all text")
+})
+
+test("recursive views", function(){
+	
+	var data = new can.Observe.List([
+            {label:'branch1', children:[{id:2, label:'branch2'}]}
+        ])
+	
+	var div = document.createElement('div');
+	div.appendChild( can.view('//can/view/ejs/recursive.ejs',  {items: data}));
+	ok(/class="leaf"/.test(div.innerHTML), "we have a leaf")
+	
+})
 
 
 

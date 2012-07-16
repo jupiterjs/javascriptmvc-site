@@ -1,1 +1,0 @@
-c({"name": "URI", "type": "class", "comment": "<p>Used for getting information out of a path</p>", "construct": "<p>Takes a path</p>", "ret": {"type": "uri", "description": ""}, "params": {"path": {"order": 0, "description": "", "name": "path", "type": "String", "optional": false}}, "src": "steal/steal.js", "line": 610, "children": ["URI.normalize"]})

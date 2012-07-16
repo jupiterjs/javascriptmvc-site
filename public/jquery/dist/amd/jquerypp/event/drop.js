@@ -1,4 +1,4 @@
-define(['jquerypp/compare','jquerypp/within','jquerypp/event/drag','jquery','jquerypp/event/livehack','jquerypp/util/vector'], function(__compare, __within, __drag, jQuery, __livehack, __vector) { 
+define(['jquerypp/compare','jquerypp/within','jquerypp/event/drag','jquery','jquerypp/event/reverse','jquerypp/event/livehack','jquerypp/util/vector'], function(__compare, __within, __drag, jQuery, __reverse, __livehack, __vector) { 
 (function($){
 	var event = $.event;
 	/**
@@ -446,5 +446,5 @@ define(['jquerypp/compare','jquerypp/within','jquerypp/event/drag','jquery','jqu
 			this._canceled = true;
 		}
 	} )
-})(jQuery);
+})(jQuery);;
 })

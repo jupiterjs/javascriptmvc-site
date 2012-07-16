@@ -85,5 +85,5 @@ $.Event.prototype.resume = function(){
 	
 };
 
-})(jQuery);
+})(jQuery);;
 })

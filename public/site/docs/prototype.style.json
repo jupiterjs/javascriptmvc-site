@@ -1,1 +1,0 @@
-c({"name": "prototype.style", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["prototype"], "comment": "<p>Set up the CSS styling and dimensions to make the dropdown appear correctly.</p>", "hide": true, "src": "canui/form/combobox/dropdown/dropdown.js", "line": 57, "children": []})

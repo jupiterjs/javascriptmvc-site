@@ -1,1 +1,1 @@
-c({"name": "jquerymx.lang", "children": ["jQuery.toJSON", "jQuery.toJSON"]})
+c({"name": "jquerymx.lang", "children": ["jQuery.Object", "jQuery.toJSON", "jQuery.toJSON"]})

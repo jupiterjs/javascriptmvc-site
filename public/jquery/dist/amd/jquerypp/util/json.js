@@ -193,5 +193,5 @@ define(['jquery'], function(jQuery) {
         '"' : '\\"',
         '\\': '\\\\'
     };
-})(jQuery);
+})(jQuery);;
 })

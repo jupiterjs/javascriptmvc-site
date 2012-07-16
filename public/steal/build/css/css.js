@@ -2,47 +2,8 @@ if(!steal.build){
 	steal.build = {};	
 }
 steal(function( steal ) {
-
-	/**
-	 * Builds and compresses CSS files.
-	 * @param {Object} opener a steal opener that can give the final version of scripts
-	 * @param {Object} options options configuring the css building
-	 * 
-	 *   - __to__ where the css should be built.
-	 */
-	var css = (steal.build.css = function( opener, options ) {
-		steal.print("\nBUILDING STYLES --------------- ");
-		//where we are putting stuff
-		var folder = options.to.substr(0, options.to.length - 1),
-			//where the page is
-			pageFolder = steal.File(opener.url).dir(),
-			scriptsConverted = [],
-			currentPackage = [];
-
-		opener.each('css', true, function( link, text, i ) {
-			steal.print("   " + link.rootSrc)
-			scriptsConverted.push(link.rootSrc)
-			var converted = convert(text, link.rootSrc, folder);
-			currentPackage.push(converted)
-		});
-		steal.print("")
-		
-		if ( currentPackage.length ) {
-			steal.print("STYLE BUNDLE > " + folder + "/production.css")
-            //now that we have all the css minify and save it
-            var raw_css = currentPackage.join(""),
-				minified_css = css.min(raw_css);
-            steal.print("Nice! "+calcSavings(raw_css.length,minified_css.length));
-            steal.File(folder + "/production.css").save(minified_css);
-		} else {
-			steal.print("no styles\n")
-		}
-		
-		return {
-			name: folder+"/production.css",
-			dependencies: scriptsConverted
-		}
-	});
+	
+	var css = steal.build.css = {};
 	/**
 	 * 
 	 * @param {Object} steals
@@ -52,18 +13,18 @@ steal(function( steal ) {
 		if(!steals || !steals.length){
 			return null;
 		}
-		var directory = steal.File(where).dir()
-		var srcs = [];
-		var codez = [];
+		
+		var directory = steal.File(where).dir(),
+			srcs = [], codez = [];
+		
 		steals.forEach(function(stealOpts){
-			
 			codez.push(convert(stealOpts.text, stealOpts.rootSrc, directory))
 			srcs.push(stealOpts.rootSrc+'')
 		});
 		
 		return {
 			srcs: srcs,
-			code : codez.join('\n')
+			code : css.minify(codez.join('\n'))
 		}
 	}
 	//used to convert css referencs in one file so they will make sense from prodLocation

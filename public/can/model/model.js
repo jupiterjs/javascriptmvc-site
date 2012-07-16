@@ -13,9 +13,9 @@ steal('can/observe', function() {
 		var d = new can.Deferred();
 		def.then(function(){
 			arguments[0] = model[func](arguments[0])
-			d.resolve.apply(d, arguments)
+			d.resolveWith(d, arguments)
 		},function(){
-			d.rejectWith.apply(this,arguments)
+			d.rejectWith(this, arguments)
 		})
 		return d;
 	},
@@ -699,7 +699,7 @@ steal('can/observe', function() {
 
 			//!steal-remove-start
 			if ( ! raw.length ) {
-				steal.dev.warn("model.js models has no data.")
+				steal.dev && steal.dev.warn("model.js models has no data.")
 			}
 			//!steal-remove-end
 
@@ -1066,7 +1066,7 @@ steal('can/observe', function() {
 			can.trigger(this,funcName);
 			can.trigger(this,"change",funcName)
 			//!steal-remove-start
-			steal.dev.log("Model.js - "+ constructor.shortName+" "+ funcName);
+			steal.dev && steal.dev.log("Model.js - "+ constructor.shortName+" "+ funcName);
 			//!steal-remove-end
 
 			// Call event on the instance's Class

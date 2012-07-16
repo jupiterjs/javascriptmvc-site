@@ -854,5 +854,5 @@ scrollOffset = function( win){
 support.moveToPoint = !!$.Range().range.moveToPoint
 
 
-})(jQuery);
+})(jQuery);;
 })

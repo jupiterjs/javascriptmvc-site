@@ -1,5 +1,9 @@
-define(['jquerypp/event/livehack','jquerypp/util/vector','jquery'], function(__livehack, __vector, jQuery) { 
+define(['jquerypp/event/reverse','jquerypp/event/livehack','jquerypp/util/vector','jquery'], function(__reverse, __livehack, __vector, jQuery) { 
 (function( $ ) {
+	if(!$.event.special.move) {
+		$.event.reverse('move');
+	}
+
 	//modify live
 	//steal the live handler ....
 	var bind = function( object, method ) {
@@ -165,6 +169,7 @@ define(['jquerypp/event/livehack','jquerypp/util/vector','jquery'], function(__l
 				this.moved = true;
 			}
 
+			this.element.trigger('move', this);
 			var pointer = ev.vector();
 			if ( this._start_position && this._start_position.equals(pointer) ) {
 				return;
@@ -719,5 +724,5 @@ define(['jquerypp/event/livehack','jquerypp/util/vector','jquery'], function(__l
 	'dragend'], startEvent, function( e ) {
 		$.Drag.mousedown.call($.Drag, e, this);
 	});
-})(jQuery);
+})(jQuery);;
 })

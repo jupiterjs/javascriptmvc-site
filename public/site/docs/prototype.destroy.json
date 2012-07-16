@@ -1,1 +1,0 @@
-c({"name": "prototype.destroy", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["prototype"], "comment": "<p>Remove the list of the models from this Controller to prevent memory leaks.</p>", "hide": true, "src": "canui/form/combobox/dropdown/dropdown.js", "line": 47, "children": []})

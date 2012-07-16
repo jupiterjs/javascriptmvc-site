@@ -1,1 +1,0 @@
-c({"name": "addPrefix", "params": {"properties": {"description": "", "type": "", "optional": false, "order": 0, "name": "properties"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Add browser specific prefix</p>", "src": "jquery/dom/animate/animate.js", "line": 142, "children": []})

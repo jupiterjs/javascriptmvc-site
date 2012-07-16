@@ -1,1 +1,1 @@
-c({"name": "jQuery.Vector.prototype.width", "type": "attribute", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Alias for [jQuery.Vector.prototype.x].</p>", "hide": true, "ret": {"description": "", "type": "Number"}, "src": "jquery/lang/vector/vector.js", "line": 112, "children": []})
+c({"name": "jQuery.Vector.prototype.width", "type": "attribute", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Returns the first value of the vector</p>", "ret": {"description": "", "type": "Number"}, "src": "jquery/lang/vector/vector.js", "line": 95, "children": []})

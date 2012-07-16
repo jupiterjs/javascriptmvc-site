@@ -170,7 +170,7 @@
 			};
 		});
 	};
-})(jQuery);
+})(jQuery);;
 (function( $ ) {
 	$.event.reverse = function(name, attributes) {
 		var bound = $(),
@@ -258,7 +258,7 @@
 
 		return $.event.special[name];
 	}
-})(jQuery);
+})(jQuery);;
 (function($){
 
 /**
@@ -372,7 +372,7 @@ $event.trigger =  function defaultTriggerer( event, data, elem, onlyHandlers){
 	
 	
 	
-})(jQuery);
+})(jQuery);;
 (function($){
 	var getSetZero = function(v){ return v !== undefined ? (this.array[0] = v) : this.array[0] },
 		getSetOne = function(v){ return v !== undefined ? (this.array[1] = v) : this.array[1]};
@@ -585,7 +585,7 @@ $event.trigger =  function defaultTriggerer( event, data, elem, onlyHandlers){
 			return new $.Vector(this[which + "Width"](), this[which + "Height"]());
 		}
 	};
-})(jQuery);
+})(jQuery);;
 (function($){
 
 /**
@@ -659,7 +659,7 @@ jQuery.fn.compare = function(element){ //usually
 	return number;
 }
 
-})(jQuery);
+})(jQuery);;
 (function($){
 	// Checks if x and y coordinates are within a box with left, top, width and height
    var withinBox = function(x, y, left, top, width, height ){
@@ -752,8 +752,12 @@ $.fn.withinBox = function(left, top, width, height, useOffsetCache){
     return this.pushStack( jQuery.unique( ret ), "withinBox", jQuery.makeArray(arguments).join(",") );
 }
     
-})(jQuery);
+})(jQuery);;
 (function( $ ) {
+	if(!$.event.special.move) {
+		$.event.reverse('move');
+	}
+
 	//modify live
 	//steal the live handler ....
 	var bind = function( object, method ) {
@@ -919,6 +923,7 @@ $.fn.withinBox = function(left, top, width, height, useOffsetCache){
 				this.moved = true;
 			}
 
+			this.element.trigger('move', this);
 			var pointer = ev.vector();
 			if ( this._start_position && this._start_position.equals(pointer) ) {
 				return;
@@ -1473,7 +1478,7 @@ $.fn.withinBox = function(left, top, width, height, useOffsetCache){
 	'dragend'], startEvent, function( e ) {
 		$.Drag.mousedown.call($.Drag, e, this);
 	});
-})(jQuery);
+})(jQuery);;
 (function( $ ) {
 
 	var getComputedStyle = document.defaultView && document.defaultView.getComputedStyle,
@@ -1575,7 +1580,7 @@ $.fn.withinBox = function(left, top, width, height, useOffsetCache){
 		// Pass the arguments as an array to $.styles
 		return $.styles(this[0], $.makeArray(arguments));
 	};
-})(jQuery);
+})(jQuery);;
 (function($){
 	var event = $.event;
 	/**
@@ -2023,7 +2028,7 @@ $.fn.withinBox = function(left, top, width, height, useOffsetCache){
 			this._canceled = true;
 		}
 	} )
-})(jQuery);
+})(jQuery);;
 (function($){
 
 	$.fn.range =
@@ -2879,235 +2884,7 @@ scrollOffset = function( win){
 support.moveToPoint = !!$.Range().range.moveToPoint
 
 
-})(jQuery);
-(function( $ ) {
-	var
-		// bind on the window window resizes to happen
-		win = $(window),
-		windowWidth = 0,
-		windowHeight = 0,
-		timer;
-
-	$(function() {
-		windowWidth = win.width();
-		windowHeight = win.height();
-	});
-
-	$.event.reverse('resize', {
-		handler : function(ev, data) {
-			var isWindow = this === window;
-
-			// if we are the window and a real resize has happened
-			// then we check if the dimensions actually changed
-			// if they did, we will wait a brief timeout and
-			// trigger resize on the window
-			// this is for IE, to prevent window resize 'infinate' loop issues
-			if ( isWindow && ev.originalEvent ) {
-				var width = win.width(),
-					height = win.height();
-
-
-				if ((width != windowWidth || height != windowHeight)) {
-					//update the new dimensions
-					windowWidth = width;
-					windowHeight = height;
-					clearTimeout(timer)
-					timer = setTimeout(function() {
-						win.trigger("resize");
-					}, 1);
-
-				}
-				return true;
-			}
-		}
-	});
-})(jQuery);
-(function($) {
-
-var
-	//margin is inside border
-	weird = /button|select/i,
-	getBoxes = {},
-    checks = {
-        width: ["Left", "Right"],
-        height: ['Top', 'Bottom'],
-        oldOuterHeight: $.fn.outerHeight,
-        oldOuterWidth: $.fn.outerWidth,
-        oldInnerWidth: $.fn.innerWidth,
-        oldInnerHeight: $.fn.innerHeight
-    };
-
-$.each({ 
-
-/**
- * @function jQuery.fn.outerWidth
- * @parent jQuery.dimensions
- *
- * `jQuery.fn.outerWidth([value], [includeMargins])` lets you set
- * the outer width of an object where:
- *
- *      outerWidth = width + padding + border + (margin)
- *
- * And can be used like:
- *
- *      $("#foo").outerWidth(100); //sets outer width
- *      $("#foo").outerWidth(100, true); // uses margins
- *      $("#foo").outerWidth(); //returns outer width
- *      $("#foo").outerWidth(true); //returns outer width + margins
- *
- * When setting the outerWidth, it adjusts the width of the element.
- * If *includeMargin* is set to `true` margins will also be included.
- * It is also possible to animate the outer width:
- * 
- *      $('#foo').animate({ outerWidth: 200 });
- *
- * @param {Number} [width] The width to set
- * @param {Boolean} [includeMargin=false] Makes setting the outerWidth adjust
- * for margins.
- * @return {jQuery|Number} Returns the outer width or the jQuery wrapped elements
- * if you are setting the outer width.
- */
-width: 
-/**
- * @function jQuery.fn.innerWidth
- * @parent jQuery.dimensions
- *
- * `jQuery.fn.innerWidth([value])` lets you set the inner width of an element where
- * 
- *      innerWidth = width + padding
- *      
- * Use it like:
- *
- *      $("#foo").innerWidth(100); //sets inner width
- *      $("#foo").outerWidth(); // returns inner width
- *      
- * Or in an animation like:
- * 
- *      $('#foo').animate({ innerWidth : 200 });
- *
- * Setting inner width adjusts the width of the element.
- *
- * @param {Number} [width] The inner width to set
- * @return {jQuery|Number} Returns the inner width or the jQuery wrapped elements
- * if you are setting the inner width.
- */
-"Width", 
-/**
- * @function jQuery.fn.outerHeight
- * @parent jQuery.dimensions
- *
- * `jQuery.fn.outerHeight([value], [includeMargins])` lets
- * you set the outer height of an object where:
- *
- *      outerHeight = height + padding + border + (margin)
- *
- * And can be used like:
- *
- *      $("#foo").outerHeight(100); //sets outer height
- *      $("#foo").outerHeight(100, true); // uses margins
- *      $("#foo").outerHeight(); //returns outer height
- *      $("#foo").outerHeight(true); //returns outer height + margins
- *
- * When setting the outerHeight, it adjusts the height of the element.
- * If *includeMargin* is set to `true` margins will also be included.
- * It is also possible to animate the outer heihgt:
- *
- *      $('#foo').animate({ outerHeight : 200 });
- *
- * @param {Number} [height] The height to set
- * @param {Boolean} [includeMargin=false] Makes setting the outerHeight adjust
- * for margins.
- * @return {jQuery|Number} Returns the outer height or the jQuery wrapped elements
- * if you are setting the outer height.
- */
-height: 
-/**
- * @function jQuery.fn.innerHeight
- * @parent jQuery.dimensions
- *
- * `jQuery.fn.innerHeight([value])` lets you set the inner height of an element where
- *
- *      innerHeight = height + padding
- *
- * Use it like:
- *
- *      $("#foo").innerHeight(100); //sets inner height
- *      $("#foo").outerHeight(); // returns inner height
- *
- * Or in an animation like:
- *
- *      $('#foo').animate({ innerHeight : 200 });
- *
- * Setting inner height adjusts the height of the element.
- *
- * @param {Number} [height] The inner height to set
- * @return {jQuery|Number} Returns the inner height or the jQuery wrapped elements
- * if you are setting the inner height.
- */
-// for each 'height' and 'width'
-"Height" }, function(lower, Upper) {
-
-    //used to get the padding and border for an element in a given direction
-    getBoxes[lower] = function(el, boxes) {
-        var val = 0;
-        if (!weird.test(el.nodeName)) {
-            //make what to check for ....
-            var myChecks = [];
-            $.each(checks[lower], function() {
-                var direction = this;
-                $.each(boxes, function(name, val) {
-                    if (val)
-                        myChecks.push(name + direction+ (name == 'border' ? "Width" : "") );
-                })
-            })
-            $.each($.styles(el, myChecks), function(name, value) {
-                val += (parseFloat(value) || 0);
-            })
-        }
-        return val;
-    }
-
-    //getter / setter
-    $.fn["outer" + Upper] = function(v, margin) {
-        var first = this[0];
-		if (typeof v == 'number') {
-			// Setting the value
-            first && this[lower](v - getBoxes[lower](first, {padding: true, border: true, margin: margin}))
-            return this;
-        } else {
-			// Return the old value
-            return first ? checks["oldOuter" + Upper].call(this, v) : null;
-        }
-    }
-    $.fn["inner" + Upper] = function(v) {
-        var first = this[0];
-		if (typeof v == 'number') {
-			// Setting the value
-            first&& this[lower](v - getBoxes[lower](first, { padding: true }))
-            return this;
-        } else {
-			// Return the old value
-            return first ? checks["oldInner" + Upper].call(this, v) : null;
-        }
-    }
-    //provides animations
-	var animate = function(boxes){
-		// Return the animation function
-		return function(fx){
-			if (fx.state == 0) {
-	            fx.start = $(fx.elem)[lower]();
-	            fx.end = fx.end - getBoxes[lower](fx.elem,boxes);
-	        }
-	        fx.elem.style[lower] = (fx.pos * (fx.end - fx.start) + fx.start) + "px"
-		}
-	}
-    $.fx.step["outer" + Upper] = animate({padding: true, border: true})
-	$.fx.step["outer" + Upper+"Margin"] =  animate({padding: true, border: true, margin: true})
-	$.fx.step["inner" + Upper] = animate({padding: true})
-
-})
-
-})(jQuery);
+})(jQuery);;
 (function($){
     /**
      * @page jQuery.toJSON jQuery.toJSON
@@ -3302,7 +3079,7 @@ height:
         '"' : '\\"',
         '\\': '\\\\'
     };
-})(jQuery);
+})(jQuery);;
 (function($){
 var isPhantom = /Phantom/.test(navigator.userAgent),
 	supportTouch = !isPhantom && "ontouchend" in document,
@@ -3405,7 +3182,7 @@ $.event.setupHelper( [
 					distance = Math.sqrt(deltaX*deltaX+deltaY*deltaY);
 
 				// check if the delay and distance are matched
-				if ( stop.time - start.time < swipe.delay && distance >= swipe.min ) {
+				if ( stop.time - start.time < swipe.delay && distance >= swipe.min && distance <= swipe.max ) {
 					var events = ['swipe'];
 					// check if we moved horizontally
 					if( deltaX >= swipe.min && deltaY < swipe.min) {
@@ -3430,7 +3207,49 @@ $.event.setupHelper( [
 		})
 });
 
-})(jQuery);
+})(jQuery);;
+(function( $ ) {
+	var
+		// bind on the window window resizes to happen
+		win = $(window),
+		windowWidth = 0,
+		windowHeight = 0,
+		timer;
+
+	$(function() {
+		windowWidth = win.width();
+		windowHeight = win.height();
+	});
+
+	$.event.reverse('resize', {
+		handler : function(ev, data) {
+			var isWindow = this === window;
+
+			// if we are the window and a real resize has happened
+			// then we check if the dimensions actually changed
+			// if they did, we will wait a brief timeout and
+			// trigger resize on the window
+			// this is for IE, to prevent window resize 'infinate' loop issues
+			if ( isWindow && ev.originalEvent ) {
+				var width = win.width(),
+					height = win.height();
+
+
+				if ((width != windowWidth || height != windowHeight)) {
+					//update the new dimensions
+					windowWidth = width;
+					windowHeight = height;
+					clearTimeout(timer)
+					timer = setTimeout(function() {
+						win.trigger("resize");
+					}, 1);
+
+				}
+				return true;
+			}
+		}
+	});
+})(jQuery);;
 (function($){
 
 
@@ -3517,7 +3336,7 @@ $.Event.prototype.resume = function(){
 	
 };
 
-})(jQuery);
+})(jQuery);;
 (function($){
 	var keymap = {},
 		reverseKeyMap = {},
@@ -3672,7 +3491,7 @@ $.Event.prototype.resume = function(){
 	}
 	
 	
-})(jQuery);
+})(jQuery);;
 (function($){
 /**
  * @class jQuery.Hover
@@ -3933,7 +3752,7 @@ event.setupHelper( [
 		
 
 	
-})(jQuery);
+})(jQuery);;
 (function () {
 	// http://bitovi.com/blog/2012/04/faster-jquery-event-fix.html
 	// https://gist.github.com/2377196
@@ -4027,7 +3846,7 @@ event.setupHelper( [
 			return event;
 		}
 	}
-})(jQuery);
+})(jQuery);;
 (function( $ ) {
 	var round = function( x, m ) {
 		return Math.round(x / m) * m;
@@ -4105,7 +3924,7 @@ event.setupHelper( [
 		oldPosition.call(this, offsetPositionv)
 	}
 
-})(jQuery);
+})(jQuery);;
 (function($){ //needs drop to determine if respondable
 
 /**
@@ -4253,7 +4072,7 @@ $.extend($.Scrollable.prototype,{
 	}
 })
 
-})(jQuery);
+})(jQuery);;
 (function( $ ) {
 
 
@@ -4327,7 +4146,7 @@ $.extend($.Scrollable.prototype,{
 		oldPosition.call(this, offsetPositionv);
 	};
 
-})(jQuery);
+})(jQuery);;
 (function( $ ) {
 	/**
 	 * @attribute destroyed
@@ -4349,7 +4168,7 @@ $.extend($.Scrollable.prototype,{
 		oldClean(elems);
 	};
 
-})(jQuery);
+})(jQuery);;
 (function($){
 
 var getWindow = function( element ) {
@@ -4575,7 +4394,7 @@ $.fn.selection = function(start, end){
 // for testing
 $.fn.selection.getCharElement = getCharElement;
 
-})(jQuery);
+})(jQuery);;
 (function( $ ) {
 	var
 		// use to parse bracket notation like my[name][attribute]
@@ -4675,13 +4494,11 @@ $.fn.selection.getCharElement = getCharElement;
 
 			// Find all the inputs
 			this.find("[name]").each(function() {
-				
-				var value = params[ $(this).attr("name") ],
-					$this;
+				var $this = $(this),
+					value = params[ $this.attr("name") ];
 				
 				// Don't do all this work if there's no value
 				if ( value !== undefined ) {
-					$this = $(this);
 					
 					// Nested these if statements for performance
 					if ( $this.is(":radio") ) {
@@ -4741,248 +4558,193 @@ $.fn.selection.getCharElement = getCharElement;
 		}
 	});
 
-})(jQuery);
-(function( $ ) {
-	//evil things we should ignore
-	var matches = /script|td/,
+})(jQuery);;
+(function($) {
 
-		// if we are trying to fill the page
-		isThePage = function( el ) {
-			return el === document || el === document.documentElement || el === window || el === document.body
-		},
-		//if something lets margins bleed through
-		bleeder = function( el ) {
-			if ( el[0] == window ) {
-				return false;
-			}
-			var styles = el.styles('borderBottomWidth', 'paddingBottom')
-			return !parseInt(styles.borderBottomWidth) && !parseInt(styles.paddingBottom)
-		},
-		//gets the bottom of this element
-		bottom = function( el, offset ) {
-			//where offsetTop starts
-			return el.outerHeight() + offset(el);
+var
+	//margin is inside border
+	weird = /button|select/i,
+	getBoxes = {},
+    checks = {
+        width: ["Left", "Right"],
+        height: ['Top', 'Bottom'],
+        oldOuterHeight: $.fn.outerHeight,
+        oldOuterWidth: $.fn.outerWidth,
+        oldInnerWidth: $.fn.innerWidth,
+        oldInnerHeight: $.fn.innerHeight
+    };
+
+$.each({ 
+
+/**
+ * @function jQuery.fn.outerWidth
+ * @parent jQuery.dimensions
+ *
+ * `jQuery.fn.outerWidth([value], [includeMargins])` lets you set
+ * the outer width of an object where:
+ *
+ *      outerWidth = width + padding + border + (margin)
+ *
+ * And can be used like:
+ *
+ *      $("#foo").outerWidth(100); //sets outer width
+ *      $("#foo").outerWidth(100, true); // uses margins
+ *      $("#foo").outerWidth(); //returns outer width
+ *      $("#foo").outerWidth(true); //returns outer width + margins
+ *
+ * When setting the outerWidth, it adjusts the width of the element.
+ * If *includeMargin* is set to `true` margins will also be included.
+ * It is also possible to animate the outer width:
+ * 
+ *      $('#foo').animate({ outerWidth: 200 });
+ *
+ * @param {Number} [width] The width to set
+ * @param {Boolean} [includeMargin=false] Makes setting the outerWidth adjust
+ * for margins.
+ * @return {jQuery|Number} Returns the outer width or the jQuery wrapped elements
+ * if you are setting the outer width.
+ */
+width: 
+/**
+ * @function jQuery.fn.innerWidth
+ * @parent jQuery.dimensions
+ *
+ * `jQuery.fn.innerWidth([value])` lets you set the inner width of an element where
+ * 
+ *      innerWidth = width + padding
+ *      
+ * Use it like:
+ *
+ *      $("#foo").innerWidth(100); //sets inner width
+ *      $("#foo").outerWidth(); // returns inner width
+ *      
+ * Or in an animation like:
+ * 
+ *      $('#foo').animate({ innerWidth : 200 });
+ *
+ * Setting inner width adjusts the width of the element.
+ *
+ * @param {Number} [width] The inner width to set
+ * @return {jQuery|Number} Returns the inner width or the jQuery wrapped elements
+ * if you are setting the inner width.
+ */
+"Width", 
+/**
+ * @function jQuery.fn.outerHeight
+ * @parent jQuery.dimensions
+ *
+ * `jQuery.fn.outerHeight([value], [includeMargins])` lets
+ * you set the outer height of an object where:
+ *
+ *      outerHeight = height + padding + border + (margin)
+ *
+ * And can be used like:
+ *
+ *      $("#foo").outerHeight(100); //sets outer height
+ *      $("#foo").outerHeight(100, true); // uses margins
+ *      $("#foo").outerHeight(); //returns outer height
+ *      $("#foo").outerHeight(true); //returns outer height + margins
+ *
+ * When setting the outerHeight, it adjusts the height of the element.
+ * If *includeMargin* is set to `true` margins will also be included.
+ * It is also possible to animate the outer heihgt:
+ *
+ *      $('#foo').animate({ outerHeight : 200 });
+ *
+ * @param {Number} [height] The height to set
+ * @param {Boolean} [includeMargin=false] Makes setting the outerHeight adjust
+ * for margins.
+ * @return {jQuery|Number} Returns the outer height or the jQuery wrapped elements
+ * if you are setting the outer height.
+ */
+height: 
+/**
+ * @function jQuery.fn.innerHeight
+ * @parent jQuery.dimensions
+ *
+ * `jQuery.fn.innerHeight([value])` lets you set the inner height of an element where
+ *
+ *      innerHeight = height + padding
+ *
+ * Use it like:
+ *
+ *      $("#foo").innerHeight(100); //sets inner height
+ *      $("#foo").outerHeight(); // returns inner height
+ *
+ * Or in an animation like:
+ *
+ *      $('#foo').animate({ innerHeight : 200 });
+ *
+ * Setting inner height adjusts the height of the element.
+ *
+ * @param {Number} [height] The inner height to set
+ * @return {jQuery|Number} Returns the inner height or the jQuery wrapped elements
+ * if you are setting the inner height.
+ */
+// for each 'height' and 'width'
+"Height" }, function(lower, Upper) {
+
+    //used to get the padding and border for an element in a given direction
+    getBoxes[lower] = function(el, boxes) {
+        var val = 0;
+        if (!weird.test(el.nodeName)) {
+            //make what to check for ....
+            var myChecks = [];
+            $.each(checks[lower], function() {
+                var direction = this;
+                $.each(boxes, function(name, val) {
+                    if (val)
+                        myChecks.push(name + direction+ (name == 'border' ? "Width" : "") );
+                })
+            })
+            $.each($.styles(el, myChecks), function(name, value) {
+                val += (parseFloat(value) || 0);
+            })
+        }
+        return val;
+    }
+
+    //getter / setter
+    $.fn["outer" + Upper] = function(v, margin) {
+        var first = this[0];
+		if (typeof v == 'number') {
+			// Setting the value
+            first && this[lower](v - getBoxes[lower](first, {padding: true, border: true, margin: margin}))
+            return this;
+        } else {
+			// Return the old value
+            return first ? checks["oldOuter" + Upper].call(this, v) : null;
+        }
+    }
+    $.fn["inner" + Upper] = function(v) {
+        var first = this[0];
+		if (typeof v == 'number') {
+			// Setting the value
+            first&& this[lower](v - getBoxes[lower](first, { padding: true }))
+            return this;
+        } else {
+			// Return the old value
+            return first ? checks["oldInner" + Upper].call(this, v) : null;
+        }
+    }
+    //provides animations
+	var animate = function(boxes){
+		// Return the animation function
+		return function(fx){
+			if (fx.state == 0) {
+	            fx.start = $(fx.elem)[lower]();
+	            fx.end = fx.end - getBoxes[lower](fx.elem,boxes);
+	        }
+	        fx.elem.style[lower] = (fx.pos * (fx.end - fx.start) + fx.start) + "px"
 		}
-		pageOffset = function( el ) {
-			return el.offset().top
-		},
-		offsetTop = function( el ) {
-			return el[0].offsetTop;
-		},
-		inFloat = function( el, parent ) {
-			while ( el && el != parent ) {
-				var flt = $(el).css('float')
-				if ( flt == 'left' || flt == 'right' ) {
-					return flt;
-				}
-				el = el.parentNode
-			}
-		},
-		/**
-		 * @function jQuery.fn.fills
-		 * @parent jQuery.fills
-		 * @test jquery/dom/fills/funcunit.html
-		 * @plugin jquery/dom/fills
-		 *
-		 * Fills a parent element's height with the current element.
-		 * This is extremely useful for complex layout, especially when you want to account for line-wrapping.
-		 *
-		 * ## Basic Example
-		 *
-		 * If you have the following html:
-		 *
-		 *     <div id='box'>
-		 * 	    <p>I am a long heading.</p>
-		 * 	    <div id='child'>I'm a child.</div>
-		 *     </div>
-		 *
-		 * The follow makes `#child` fill up `#box`:
-		 *
-		 *     $('#child').can_ui_layout_fill("#box")
-		 *
-		 * ## Limitations
-		 *
-		 * Fill currently does not well with:
-		 *
-		 *   - Bleeding margins - Where margins leak through parent elements
-		 *     because the parent elements do not have a padding or border.
-		 *
-		 *   - Tables - You shouldn't be using tables to do layout anyway.
-		 *
-		 *   - Floated Elements - the child element has `float: left` or `float: right`
-		 *
-		 *
-		 * @param {HTMLElement|selector|Object} [parent] the parent element
-		 * to fill, defaults to the element's parent.
-		 *
-		 * The following fills the parent to `#child`:
-		 *
-		 *     $('#child').fills()
-		 *
-		 * A selector can also be pased.  This selector is passed to jQuery's
-		 * closet method.  The following matches the first `#parent` element that
-		 * is a parentNode of `#child`:
-		 *
-		 *     $('#child').fills("#parent")
-		 *
-		 * An element or window can also be passed.  The following will make
-		 * `#child` big enough so the entire window is filled:
-		 *
-		 *      $('#child').fills(window)
-		 *
-		 * If you pass an object, the following options are available:
-		 *
-		 * - __parent__ - The parent element selector or jQuery object
-		 * - __className__ - A class name to add to the element that fills
-		 * - __all__ - Reset the parents height when resizing
-		 *
-		 * @return {jQuery} the original jQuery collection for chaining.
-		 */
-		filler = $.fn.fills = function( parent ) {
-			var options = parent;
-			options || (options = {});
-			if(typeof options == 'string'){
-				options = this.closest(options)
-			}
-			if ( options.jquery || options.nodeName ) {
-				options = {parent: options };
-			}
-			// Set the parent
-			options.parent || (options.parent = $(this).parent());
-			options.parent = $(options.parent)
+	}
+    $.fx.step["outer" + Upper] = animate({padding: true, border: true})
+	$.fx.step["outer" + Upper+"Margin"] =  animate({padding: true, border: true, margin: true})
+	$.fx.step["inner" + Upper] = animate({padding: true})
 
-			// setup stuff on every element
-			if(options.className) {
-				this.addClass(options.className)
-			}
+})
 
-			var thePage = isThePage(options.parent[0]);
-			
-			if ( thePage ) {
-				options.parent = $(window)
-			}
-
-			this.each(function(){
-				var evData = {
-					filler: $(this),
-					inFloat: inFloat(this, thePage ? document.body : options.parent[0]),
-					options: options
-				},
-				cb = function() {
-					filler.parentResize.apply(this, arguments)
-				}
-				// Attach to the `resize` event
-				$(options.parent).bind('resize', evData, cb);
-
-				$(this).bind('destroyed', evData, function( ev ) {
-					if(options.className) {
-						$(ev.target).removeClass(options.className)
-					}
-					$(options.parent).unbind('resize', cb)
-				});
-				
-			});
-
-			// resize to get things going
-			var func = function() {
-				options.parent.resize();
-			}
-
-			if ( $.isReady ) {
-				func();
-			} else {
-				$(func)
-			}
-			return this;
-		};
-
-
-	$.extend(filler, {
-		parentResize : function( ev ) {
-			if (ev.data.filler.is(':hidden')) {
-				return;
-			}
-			
-			var parent = $(this),
-				isWindow = this == window,
-				container = (isWindow ? $(document.body) : parent),
-
-				//if the parent bleeds margins, we don't care what the last element's margin is
-				isBleeder = bleeder(parent),
-				children = container.children().filter(function() {
-					if ( matches.test(this.nodeName.toLowerCase()) ) {
-						return false;
-					}
-
-					var get = $.styles(this, ['position', 'display']);
-					return get.position !== "absolute" && get.position !== "fixed"
-						&& get.display !== "none" && !jQuery.expr.filters.hidden(this)
-				}),
-				last = children.eq(-1),
-				first,
-				parentHeight = parent.height() - (isWindow ? parseInt(container.css('marginBottom'), 10) || 0 : 0),
-				currentSize;
-			var div = '<div style="height: 0px; line-height:0px;overflow:hidden;' + (ev.data.inFloat ? 'clear: both' : '') + ';"/>'
-
-			if ( isBleeder ) {
-				//temporarily add a small div to use to figure out the 'bleed-through' margin
-				//of the last element
-				last = $(div).appendTo(container);
-				
-			}
-
-			//for performance, we want to figure out the currently used height of the parent element
-			// as quick as possible
-			// we can use either offsetTop or offset depending ...
-			if ( last && last.length > 0 ) {
-				if ( last.offsetParent()[0] === container[0] ) {
-
-					currentSize = last[0].offsetTop + last.outerHeight();
-				} else if (last.offsetParent()[0] === container.offsetParent()[0]) {
-					// add pos abs for IE7 but
-					// might need to adjust for the addition of first's hheight
-					var curLast =last[0].offsetTop;
-					first = $(div).prependTo(container);
-					
-					currentSize = ( curLast + last.outerHeight() ) - first[0].offsetTop;
-					
-					first.remove();
-				} else {
-					// add first so we know where to start from .. do not bleed in this case
-					first = $(div).prependTo(container);
-
-					currentSize = ( last.offset().top + last.outerHeight() ) - first.offset().top;
-					first.remove();
-				}
-			}
-
-			// what the difference between the parent height and what we are going to take up is
-			var delta = parentHeight - currentSize,
-				// the current height of the object
-				fillerHeight = ev.data.filler.height();
-
-			//adjust the height
-			if ( ev.data.options.all ) {
-				// we don't care about anything else, we are likely absolutely positioned
-				// we need to fill the parent width
-				// temporarily collapse, then expand
-				ev.data.filler.height(0).width(0);
-				var parentWidth = parent.width(),
-					parentHeight = parent.height();
-
-				ev.data.filler.outerHeight(parentHeight);
-				ev.data.filler.outerWidth(parentWidth);
-			} else {
-				ev.data.filler.height(fillerHeight + delta)
-			}
-
-			//remove the temporary element
-			if ( isBleeder ) {
-				last.remove();
-			}
-		}
-	});
-})(jQuery);
+})(jQuery);;
 (function() {
     /**
      * @function jQuery.cookie
@@ -5095,7 +4857,7 @@ $.fn.selection.getCharElement = getCharElement;
         }
     };
 
-})(jQuery);
+})(jQuery);;
 (function ($) {
 
 	// Overwrites `jQuery.fn.animate` to use CSS 3 animations if possible
@@ -5165,7 +4927,7 @@ $.fn.selection.getCharElement = getCharElement;
 				// Animating empty properties
 				$.isEmptyObject(props) ||
 				// We can't do custom easing
-				ops.length == 4 || typeof ops[2] == 'string' ||
+				(ops && ops.length == 4) || (ops && typeof ops[2] == 'string') ||
 				// Second parameter is an object - we can only handle primitives
 				$.isPlainObject(ops) ||
 				// Inline and non elements
@@ -5416,4 +5178,4 @@ $.fn.selection.getCharElement = getCharElement;
 
 		return this;
 	};
-})(jQuery)
+})(jQuery);

@@ -365,4 +365,4 @@ var compareMethods = {
 		}
 	   
    })
-})(this.can, this )
+})(this.can, this );

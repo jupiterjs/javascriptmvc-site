@@ -20,5 +20,5 @@ define(['jquery'], function(jQuery) {
 		oldClean(elems);
 	};
 
-})(jQuery);
+})(jQuery);;
 })

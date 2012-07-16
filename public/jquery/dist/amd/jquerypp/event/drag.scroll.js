@@ -1,4 +1,4 @@
-define(['jquerypp/event/drop','jquerypp/compare','jquerypp/within','jquerypp/event/drag','jquery','jquerypp/event/livehack','jquerypp/util/vector'], function(__drop, __compare, __within, __drag, jQuery, __livehack, __vector) { 
+define(['jquerypp/event/drop','jquerypp/compare','jquerypp/within','jquerypp/event/drag','jquery','jquerypp/event/reverse','jquerypp/event/livehack','jquerypp/util/vector'], function(__drop, __compare, __within, __drag, jQuery, __reverse, __livehack, __vector) { 
 (function($){ //needs drop to determine if respondable
 
 /**
@@ -146,5 +146,5 @@ $.extend($.Scrollable.prototype,{
 	}
 })
 
-})(jQuery);
+})(jQuery);;
 })

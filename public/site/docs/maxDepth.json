@@ -1,1 +1,0 @@
-c({"name": "maxDepth", "params": {"shares": {"description": "", "type": "", "optional": false, "order": 0, "name": "shares"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Goes through and figures out which package has the greatest depth</p>", "src": "steal/build/packages/packages.js", "line": 294, "children": []})

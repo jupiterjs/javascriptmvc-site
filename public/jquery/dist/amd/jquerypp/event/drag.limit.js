@@ -1,4 +1,4 @@
-define(['jquerypp/styles','jquerypp/event/drag','jquery','jquerypp/event/livehack','jquerypp/util/vector'], function(__styles, __drag, jQuery, __livehack, __vector) { 
+define(['jquerypp/styles','jquerypp/event/drag','jquery','jquerypp/event/reverse','jquerypp/event/livehack','jquerypp/util/vector'], function(__styles, __drag, jQuery, __reverse, __livehack, __vector) { 
 (function( $ ) {
 
 
@@ -72,5 +72,5 @@ define(['jquerypp/styles','jquerypp/event/drag','jquery','jquerypp/event/livehac
 		oldPosition.call(this, offsetPositionv);
 	};
 
-})(jQuery);
+})(jQuery);;
 })

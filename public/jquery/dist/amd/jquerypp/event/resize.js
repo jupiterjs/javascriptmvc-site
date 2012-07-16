@@ -1,4 +1,4 @@
-define(['jquery/event/reverse/reverse.js','jquery'], function(__reverse, jQuery) { 
+define(['jquerypp/event/reverse','jquery'], function(__reverse, jQuery) { 
 (function( $ ) {
 	var
 		// bind on the window window resizes to happen
@@ -40,5 +40,5 @@ define(['jquery/event/reverse/reverse.js','jquery'], function(__reverse, jQuery)
 			}
 		}
 	});
-})(jQuery);
+})(jQuery);;
 })

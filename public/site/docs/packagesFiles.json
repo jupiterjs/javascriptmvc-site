@@ -1,1 +1,0 @@
-c({"name": "packagesFiles", "type": "attribute", "comment": "<p>Files a package has\n{\n  'packages/0.js' : ['jquery/jquery.js']\n}\nthis is used to mark all of these\nthings as loading, so steal doesn't try to load them\nb/c the package is loading</p>", "src": "steal/build/apps/apps.js", "line": 396, "children": []})

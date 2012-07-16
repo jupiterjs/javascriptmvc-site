@@ -111,5 +111,5 @@ define(['jquerypp/util/json','jquery'], function(__json, jQuery) {
         }
     };
 
-})(jQuery);
+})(jQuery);;
 })

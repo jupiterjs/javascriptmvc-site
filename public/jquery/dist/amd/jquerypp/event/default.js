@@ -112,5 +112,5 @@ $event.trigger =  function defaultTriggerer( event, data, elem, onlyHandlers){
 	
 	
 	
-})(jQuery);
+})(jQuery);;
 })

@@ -100,5 +100,5 @@ define(['jquery'], function(jQuery) {
 		// Pass the arguments as an array to $.styles
 		return $.styles(this[0], $.makeArray(arguments));
 	};
-})(jQuery);
+})(jQuery);;
 })

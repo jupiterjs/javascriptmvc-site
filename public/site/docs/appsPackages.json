@@ -1,1 +1,0 @@
-c({"name": "appsPackages", "type": "attribute", "comment": "<p>Packages that an app should have\n{\n  'cookbook' : ['packages/0.js']\n} </p>", "src": "steal/build/apps/apps.js", "line": 389, "children": []})

@@ -184,5 +184,5 @@ height:
 
 })
 
-})(jQuery);
+})(jQuery);;
 })

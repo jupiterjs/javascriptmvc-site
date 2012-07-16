@@ -68,7 +68,7 @@ define(['jquerypp/styles','jquery'], function(__styles, jQuery) {
 				// Animating empty properties
 				$.isEmptyObject(props) ||
 				// We can't do custom easing
-				ops.length == 4 || typeof ops[2] == 'string' ||
+				(ops && ops.length == 4) || (ops && typeof ops[2] == 'string') ||
 				// Second parameter is an object - we can only handle primitives
 				$.isPlainObject(ops) ||
 				// Inline and non elements
@@ -319,5 +319,5 @@ define(['jquerypp/styles','jquery'], function(__styles, jQuery) {
 
 		return this;
 	};
-})(jQuery);
+})(jQuery);;
 })
