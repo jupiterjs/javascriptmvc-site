@@ -137,41 +137,38 @@ Feed.extend('BlogFeed',
 /* @Static */
 {
 	loadData : function(data){
-		$('#blog').data("controllers")['blog_feed'].insertBlogFeed(data.news);
+		$('#blog').data("controllers")['blog_feed'].insertBlogFeed(data.responseData.feed.entries);
 	}
 },
 /* @Prototype */
 {
 	init : function(){
-		var forumUrl = 'http://jupiterjs.com/news/feed/javascriptmvc.json?callback=BlogFeed.loadData';
+		var forumUrl = 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=http://bitovi.com/blog/tag/javascriptmvc.rss&v=1.0&callback=BlogFeed.loadData&num=10'
 		$.ajax({
 			url: forumUrl,
 			dataType: 'script'
 		});
 	},
 	formatDate : function(date_string){
-		var parts = date_string.split("-"),
-			date = parts[2].split("T")[0];
+		var parts = date_string.match(/\/blog\/(\d+)\/(\d+)/);
 		return {
-			date: parseInt(date, 10),
-			month: this.months[parseInt(parts[1], 10)-1],
-			year: parseInt(parts[0], 10)
+			// TODO the date doesn't come back in this feed, add it
+			date: parseInt(parts[2], 10)+1,
+			month: parseInt(parts[2], 10),
+			year: parseInt(parts[1], 10)
 		};
 	},
 	insertBlogFeed : function(data){
 		var html = [], d, date, li, url;
-		for(var i = 0, ii = data.length; i < 6 && i < data.length; i++){
-			date = this.formatDate(data[i].publish_date);
-			url = "http://jupiterjs.com"
-					+ data[i].url
+		for(var i = 0, ii = data.length; i < 10 && i < data.length; i++){
+			date = this.formatDate(data[i].link);
 			d = {
 				title  : data[i].title,
 				month  : date.month,
 				date   : date.date,
 				year   : date.year,
-				body   : data[i].body,
-				id	   : data[i].id,
-				url	   : url
+				body   : data[i].contentSnippet,
+				url	   : data[i].link
 			}
 			li = $.View("//jmvc/site/views/blog.ejs", d);
 			html.push(li);
