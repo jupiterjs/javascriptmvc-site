@@ -41,6 +41,7 @@
       <div id='content-wrapper'>
         <div id='content'>
           <h2>What's Inside?</h2>
+          <p>JavaScriptMVC is built from the independent sub projects. If you need only the MVC parts you can use them on their own as they are released as a <a href="http://canjs.us">CanJS</a> library. jQuery helpers are released under <a href="http://jquerypp.com">jQuery++</a> project.
           <p>Everything you should be doing, as easy as possible:</p>
           <table class="inside">
           <tbody>
@@ -86,10 +87,10 @@
           </tr>
           <tr>
           	<td>
-          		<a href="docs.html#!jQuery.Controller">jQuery Widget Factory</a>
+          		<a href="docs.html#!jQuery.Controller">Widget Factory</a>
           	</td>
           	<td>
-          		<pre><code class="javascript">$.Controller(<span class="string">"Tabs"</span>,{ <span class="string">"li click"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span> ... } });</code></pre>
+          		<pre><code class="javascript">can.Control(<span class="string">"Tabs"</span>,{ <span class="string">"li click"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span> ... } });</code></pre>
           	</td>
           </tr>
           <tr class="odd">
@@ -97,7 +98,7 @@
           		<a href="docs.html#!jQuery.Model">Service/Data Modeling</a>
           	</td>
           	<td>
-          		<pre><code class="javascript">$.Model(<span class="string">"Todo"</span>,{ findAll : <span class="string">"/recipes"</span> }, {});<br />Todo.findAll(<span class="function"><span class="keyword">function</span><span class="params">(todos)</span>{</span> ... });</code></pre>
+          		<pre><code class="javascript">can.Model(<span class="string">"Todo"</span>,{ findAll : <span class="string">"/recipes"</span> }, {});<br />Todo.findAll(<span class="function"><span class="keyword">function</span><span class="params">(todos)</span>{</span> ... });</code></pre>
           	</td>
           </tr>
           <tr>
