@@ -117,8 +117,10 @@ $.Controller.extend('Mxui.Nav.Selectable',{
 		multiActivate: true,
 		// caches 
 		cache : false,
-		outsideDeactivate: true,
-		deactivateParent: document
+		
+		outsideDeactivate: true
+		
+
     }
 },
 {
@@ -131,7 +133,7 @@ $.Controller.extend('Mxui.Nav.Selectable',{
 		this.lastMouse ={};
     },
 	
-	"{deactivateParent} click":function(el,ev)
+	"{document} click":function(el,ev)
 	{
 		if(this.options.outsideDeactivate && 
 			!$.contains(this.element[0],ev.target)  ){
@@ -340,7 +342,7 @@ $.Controller.extend('Mxui.Nav.Selectable',{
 
 		// set keying for a brief time.
 		// this is to support when keying scrolls.
-		var key = ev.keyName()
+		var key = ev.key()
 		if(/down|up|right|left/.test(key)){
 			var nextEl = this.moveTo(el, key);
 			

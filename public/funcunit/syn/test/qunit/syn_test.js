@@ -87,30 +87,35 @@ test("scrollTop triggers scroll events", function(){
 	
 })
 
-test("focus triggers focus events", function(){
-	st.g("qunit-test-area").innerHTML = "<input type='text' id='focusme'/>";
-	
-	st.binder("focusme","focus",function(ev){
-		ok(true,"focus creates event");
-		st.g("qunit-test-area").innerHTML ="";
-		start();
-	} );
-	stop();
-	setTimeout(function(){
-		st.g("focusme").focus();
-	
-	},10)
-	
-});
-
+if(!Syn.skipFocusTests){
+	test("focus triggers focus events", function(){
+		st.g("qunit-test-area").innerHTML = "<input type='text' id='focusme'/>";
+		
+		st.binder("focusme","focus",function(ev){
+			ok(true,"focus creates event");
+			st.g("qunit-test-area").innerHTML ="";
+			start();
+		} );
+		stop();
+		setTimeout(function(){
+			st.g("focusme").focus();
+		
+		},10)
+		
+	});
+}
 
 test("focus on an element then another in another page", function(){
 	stop();
-	var rootJoin  = st.rootJoin;
 	
-	var page1 = rootJoin("funcunit/syn/test/qunit/page1.html"),
-		page2 = rootJoin("funcunit/syn/test/qunit/page2.html"),
-		iframe = document.createElement('iframe'),
+	var page1 = "test/qunit/page1.html",
+		page2 = "test/qunit/page2.html"
+	if(typeof steal !== 'undefined'){
+		page1 = st.rootJoin("funcunit/syn/test/qunit/page1.html");
+		page2 = st.rootJoin("funcunit/syn/test/qunit/page2.html");
+	}
+	
+	var iframe = document.createElement('iframe'),
 		calls = 0;
 	
 	st.bind(iframe,"load",function(){

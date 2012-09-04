@@ -86,7 +86,7 @@ namespace :deploy do
 		end
 	end
 
-	task :commit_site do
+	task :commit do
 		announce 'Committing site changes...'
 		sh 'git add .'
 		sh 'git commit -m "Updating from source."'

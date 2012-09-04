@@ -1,1 +1,1 @@
-c({"name": "Mxui.Nav.Selectable.prototype", "type": "prototype", "parents": ["Mxui.Nav.Selectable"], "comment": "", "src": "mxui/nav/selectable/selectable.js", "line": 124, "children": ["Mxui.Nav.Selectable.prototype.selected", "Mxui.Nav.Selectable.prototype.activated"]})
+c({"name": "Mxui.Nav.Selectable.prototype", "type": "prototype", "parents": ["Mxui.Nav.Selectable"], "comment": "", "src": "mxui/nav/selectable/selectable.js", "line": 126, "children": ["Mxui.Nav.Selectable.prototype.selected", "Mxui.Nav.Selectable.prototype.activated"]})
