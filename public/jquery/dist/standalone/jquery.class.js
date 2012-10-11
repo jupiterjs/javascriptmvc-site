@@ -56,7 +56,7 @@
 	 * @test jquery/class/qunit.html
 	 * @description Easy inheritance in JavaScript.
 	 * 
-	 * Class provides simulated inheritance in JavaScript. Use clss to bridge the gap between
+	 * Class provides simulated inheritance in JavaScript. Use Class to bridge the gap between
 	 * jQuery's functional programming style and Object Oriented Programming. It 
 	 * is based off John Resig's [http://ejohn.org/blog/simple-javascript-inheritance/|Simple Class]
 	 * Inheritance library.  Besides prototypal inheritance, it includes a few important features:
@@ -344,7 +344,7 @@
 
 	clss = $.Class = function() {
 		if (arguments.length) {
-			clss.extend.apply(clss, arguments);
+			return clss.extend.apply(clss, arguments);
 		}
 	};
 

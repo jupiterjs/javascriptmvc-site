@@ -33,7 +33,10 @@
 			var url = settings.fixture;
 			
 			if (/^\/\//.test(url) ) {
-				url = steal.root.mapJoin(settings.fixture.substr(2))+'';
+				var sub = settings.fixture.substr(2) + '';
+				url = typeof steal === "undefined" ? 
+					url = "/" + sub : 
+					steal.root.mapJoin(sub) +'';
 			}
 			
 			settings.url = url;
