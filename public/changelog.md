@@ -1,3 +1,10 @@
+## 3.2.4 (10/11/12)
+
+### jQueryMX
+
+- Merged most outstanding pull requests
+- Fixed bug with EJS views in IE
+
 ## 3.2.3 (9/04/12)
 
 ### FuncUnit
