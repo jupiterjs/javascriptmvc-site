@@ -59,11 +59,8 @@ namespace :deploy do
 		announce 'Building docs and compressing site...'
 
 		Dir.chdir('donejs') do
-			sh './js can/util/make.js'
-			sh './js jquery/build/make.js'
 			sh './js site/scripts/doc.js'
-			sh 'cd can/util/docco && npm install && node generate.js'
-			sh 'cd jquery/build/docco && npm install && node generate.js'
+			sh 'cd can && npm install && grunt latest'
 		end
 	end
 
