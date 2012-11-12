@@ -16,7 +16,7 @@ end
 
 def copy_resources(path)
 	ignored_extensions = []
-	ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules']
+	ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules', 'node_modules']
 
 	Find.find(path) do |file|
 		basename = File.basename file
