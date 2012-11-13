@@ -1,1 +1,0 @@
-c({"name": "can.ui.form.Combobox.static.displayHTML", "type": "attribute", "parents": ["can.ui.form.Combobox.static"], "comment": "<p>Values to select aren't text but html.  This changes from an input to a \n'viewbox' element.</p>", "hide": true, "src": "canui/form/combobox/combobox.js", "line": 94, "children": []})

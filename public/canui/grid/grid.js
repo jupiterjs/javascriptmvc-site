@@ -1,222 +1,162 @@
-steal('can/control', 'can/view/ejs', 'can/observe', 'can/control/plugin').then(
-'//canui/grid/views/init.ejs', '//canui/grid/views/row.ejs',
-'//canui/grid/views/single.ejs', '//canui/grid/views/head.ejs',
-function() {
-	// A list of properties that should be turned into can.computes and be directly accessible
-	var computes = [ 'columns', 'list', 'emptyText', 'loadingText' ];
+steal('jquery', 'can/control', 'canui/list', 'can/view/ejs', 'canui/table_scroll', function($) {
+	var appendIf = function(el, tag) {
+		if(el.is(tag) || !tag) {
+			return el;
+		}
+		var res = el.find(tag);
+		if(res && res.length) {
+			return res;
+		}
+		return el.append(can.$('<' + tag + '>')).find(tag);
+	};
+
+	can.view.ejs('canui_grid_header', '<tr>' +
+		'<% can.each(this, function(col) { %>' +
+			'<th <%= (el) -> can.data(el, \'column\', col) %>>' +
+			'<%= col.attr(\'header\') %>' +
+			'</th>' +
+		'<% }) %>' +
+	'</tr>');
+
+	can.view.ejs('canui_grid_row', '<% can.each(this, function(current) { %>' +
+		'<td><%== current() %></td>' +
+	'<% }); %>');
 
 	can.Control('can.ui.Grid', {
 		pluginName : 'grid',
 		defaults : {
-			select : {
-				heading : 'thead',
-				body : 'tbody',
-				header : 'th',
-				row : 'tbody tr[data-cid]',
-				column : 'td'
+			view : function(observe) {
+				var row = [], self = this;
+				can.each(this.options.columns, function(col) {
+					var content = can.isFunction(col.content) ?
+						can.compute(function() {
+							return col.content.call(self, observe, col);
+						}) :
+						can.compute(function() {
+							return observe.attr(col.content);
+						});
+					row.push(content);
+				});
+				return this._rowView('row', false, row)();
 			},
-			view : {
-				init : '//canui/grid/views/init.ejs',
-				row : '//canui/grid/views/row.ejs',
-				single : '//canui/grid/views/single.ejs',
-				head : '//canui/grid/views/head.ejs'
-			},
-			emptyText : 'No data',
-			loadingText : 'Loading...'
+			row : can.view('canui_grid_row'),
+			header : can.view('canui_grid_header'),
+			empty : 'No data',
+			loading : 'Loading...',
+			scrollable : false,
+			tag : 'tr'
 		}
 	}, {
+		/**
+		 * Set the grid up.
+		 *
+		 * @param {HTMLElement|jQuery|String} el The original element passed
+		 * @param {Object} ops The original options
+		 * @return {Array} Arguments to pass to `init`
+		 */
 		setup : function(el, ops) {
-			var options = can.extend({}, ops),
-				defaults = this.constructor.defaults;
-			// Convert computed properties (if they aren't a can.compute already)
-			can.each(computes, function(name) {
-				var isComputed = ops[name] && ops[name].isComputed;
-				options[name] = isComputed ? ops[name] : can.compute(ops[name] || defaults[name] || false);
-			});
-			can.Control.prototype.setup.call(this, el, options);
-		},
+			var table = appendIf(can.$(el), 'table');
 
-		init : function() {
-			this._cidMap = {};
-			this.element.html(this.render('init'));
-			this.heading = this.find('heading').html(this.render('head', {
-				options : this.options,
-				columns : this.options.columns()
-			}));
-			this.body = this.find('body');
-			this.element.trigger('init', this);
-			this._update(this.options.list());
-		},
-
-		find : function(selector) {
-			return this.element.find(this.options.select[selector] || selector);
-		},
-
-		render : function(name, options) {
-			return can.view(this.options.view[name] || name, options || this);
-		},
-
-		/**
-		 * Updates the data list and sets this.options.data. Converts Arrays
-		 * and waits for can.Deferreds.
-		 *
-		 * @param {can.Deferred|can.Observe.List|Array} data The data to set
-		 * @private
-		 */
-		_update : function(data) {
-			data = data || [];
-			if(can.isDeferred(data)) {
-				var self = this;
-				this.body.empty();
-				this.singleColumn(this.options.loadingText());
-				data.done(can.proxy(this._update, this));
-			} else {
-				var cidMap = {};
-				this.options.data = data instanceof can.Observe.List ? data : new can.Observe.List(data);
-
-				// Update the mapping from can.Observe unique id to Observe instance
-				this.options.data.forEach(function(observe) {
-					cidMap[observe._namespace] = observe;
-				});
-
-				this._cidMap = cidMap;
-				this.on();
-				this.draw();
-			}
-		},
-
-		/**
-		 * Redraw the currently displayed list.
-		 *
-		 * @return {can.ui.Grid} The Grid control instance
-		 */
-		draw : function() {
-			var data = this.options.data;
-			this.body.empty();
-
-			if(!data.length) {
-				this.singleColumn(this.emptyText());
-			} else {
-				can.each(data, can.proxy(this.appendRow, this));
+			this.el = {
+				header : appendIf(table, 'thead'),
+				body : appendIf(table, 'tbody'),
+				footer : appendIf(table, 'tfoot')
 			}
 
-			this.element.trigger('redraw', this);
+			if(!(ops.columns instanceof can.Observe.List)) {
+				ops.columns = new can.Observe.List(ops.columns);
+			}
+
+			can.Control.prototype.setup.call(this, table, ops);
+			return [table, ops];
 		},
 
-		appendRow : function(item, index) {
-			var columnData = [],
-				self = this;
+		init : function(el, ops) {
+			this.el.header.append(this._rowView('header', false, this.options.columns));
+			if(this.options.footer) {
+				this.el.header.append(this._rowView('footer', false));
+			}
+			this.control = {};
+			this.update();
+		},
 
-			can.each(self.options.columns(), function(column, i) {
-				if(!column.content) {
-					throw "Column " + i + " needs an 'content' property!";
+		_rowView : function(name, wrap, param) {
+			var self = this;
+			return function() {
+				var current = self.options[name];
+				if(!current) {
+					return '';
+				}
+				current = can.isFunction(current) ?
+					current.call(this, param) :
+					can.EJS({ text : current })(param);
+
+				current = can.view.frag(current);
+
+				// TODO maybe make an option, what if it is not a TD?
+				if(wrap && !can.$(current).is('td')) {
+					current = can.$('<td colspan="' + self.options.columns.length
+						+ '"></td>').html(current);
 				}
 
-				var content = can.compute(function() {
-					return item.attr(column.content);
-				});
-
-				if(can.isFunction(column.content)) {
-					content = column.content(item, index);
-				}
-
-				columnData.push(content);
-			});
-
-			self.body.append(self.render('row', {
-				options : self.options,
-				columns : columnData,
-				item : item
-			}));
-		},
-
-		singleColumn : function(text) {
-			this.body.append(this.render('single', {
-				text : text,
-				options : this.options
-			}));
+				return current;
+			}
 		},
 
 		/**
-		 * Returns all rows for a list of observables.
+		 * Update the options and rerender
 		 *
-		 * @param arg
-		 * @return {*}
+		 * @param {Object} options The options to update
 		 */
-		rows : function(arg) {
-			if(!arg) {
-				return this.element.find('row');
-			}
-
-			var element = this.element,
-				elements = [],
-				observes = can.isArray(arg) ? arg : can.makeArray(arguments);
-
-			can.each(observes, function(current) {
-				var row = element.find('[data-cid="' + current._namespace + '"]')[0];
-				elements.push(row || null);
+		update : function(options) {
+			can.Control.prototype.update.apply(this, arguments);
+			var self = this;
+			this.el.body.list({
+				loading : this._rowView('loading', true),
+				empty : this._rowView('empty', true),
+				view : can.proxy(self.options.view, this),
+				tag : this.options.tag,
+				list : this.options.list
 			});
 
-			return can.$(elements);
+			this.control.list = this.el.body.control(can.ui.List)
 		},
 
-		/**
-		 * Returns all
-		 *
-		 * @param {Collection} rows An array or DOM element collection
-		 * @return {can.Observe.List|can.Observe}
-		 */
-		items : function(rows) {
-			if(!rows) {
-				return this.options.data || new can.Observe.List();
+		columns : function(cols) {
+			if(!cols) {
+				return this.options.columns;
 			}
-
-			var result = new can.Observe.List(),
-				map = this._cidMap;
-
-			can.each(can.makeArray(rows), function(row) {
-				row = row[0] || row;
-				// Either use getAttribute or the name itself as the index
-				// that way you can pass a list of Observe._namespace IDs as well
-				var id = row.getAttribute('data-cid');
-				if(map[id]) {
-					result.push(map[id]);
-				}
-			});
-
-			return rows.length == 1 ? result.pop() : result;
+			this.update({ columns : cols });
 		},
 
-		// Update if someone updates the list
-		'{list} change' : function(compute, ev, newVal) {
-			this._update(newVal);
+		'{columns} change' : function() {
+			if(this.options.scrollable) {
+				this.element.tableScroll();
+			}
 		},
 
-		// We will redraw everything as removing and adding items
-		// might trigger other things as well
-		'{data} remove' : 'draw',
-		'{data} add' : 'draw',
+		' rendered' : function() {
+			if(this.options.scrollable) {
+				this.element.tableScroll();
+				this.control.tableScroll = this.element.control(can.ui.TableScroll);
+			}
+		},
 
-		// When the columns change we can reinitialize everything
-		'{columns} change' : 'init'
+		' changed' : function() {
+			// Trigger resize to adjust the TableScroll
+			if(this.options.scrollable) {
+				this.element.trigger('resize');
+			}
+		},
+
+		tableScroll : function() {
+			return this.control.tableScroll;
+		}
 	});
 
-	// Create direct accessors for computed properties
-	can.each(computes, function(name) {
-		if(!can.ui.Grid.prototype[name]) {
-			can.ui.Grid.prototype[name] = function(data) {
-				// Computes need to be directly assigned
-				if(data && data.isComputed) {
-					this.options[name] = data;
-					// Rebind listeners (for {name} change)
-					this.on();
-					// Call the compute and update the data
-					this._update(data());
-					return data;
-				}
-
-				return this.options[name](data);
-			}
+	can.each(['items', 'list', 'rowElements'], function(name) {
+		can.ui.Grid.prototype[name] = function() {
+			return this.control.list[name].apply(this.control.list, arguments);
 		}
 	});
 });

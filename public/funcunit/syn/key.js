@@ -1,4 +1,4 @@
-(function(){
+steal('./synthetic','./browsers.js',function(Syn) {
 	var h = Syn.helpers,
 		S = Syn,
 
@@ -82,7 +82,6 @@
 
 
 		};
-
 	/**
 	 * @add Syn static
 	 */
@@ -614,6 +613,9 @@
 			},
 			'shift': function() {
 				return null;
+			},
+			'ctrl': function() {
+				return null;
 			}
 		}
 	});
@@ -922,4 +924,5 @@
 
 		S.support.ready++;
 	})();
-})()
+	
+});

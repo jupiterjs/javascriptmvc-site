@@ -1,7 +1,4 @@
-steal('can/construct', function( $ ) {
-	(function() {
-	
-
+steal('can/util','can/construct', function( can ) {
 	// ## control.js
 	// `can.Control`  
 	// _Controller_
@@ -9,12 +6,12 @@ steal('can/construct', function( $ ) {
 	// Binds an element, returns a function that unbinds.
 	var bind = function( el, ev, callback ) {
 
-		can.bind.call( el, ev, callback )
+			can.bind.call( el, ev, callback );
 
-		return function() {
-			can.unbind.call(el, ev, callback);
-		};
-	},
+			return function() {
+				can.unbind.call(el, ev, callback);
+			};
+		},
 		isFunction = can.isFunction,
 		extend = can.extend,
 		each = can.each,
@@ -24,7 +21,7 @@ steal('can/construct', function( $ ) {
 
 		// Binds an element, returns a function that unbinds.
 		delegate = function( el, selector, ev, callback ) {
-			can.delegate.call(el, selector, ev, callback)
+			can.delegate.call(el, selector, ev, callback);
 			return function() {
 				can.undelegate.call(el, selector, ev, callback);
 			};
@@ -42,7 +39,7 @@ steal('can/construct', function( $ ) {
 	/**
 	 * @add can.Control
 	 */
-	can.Construct("can.Control",
+	var Control = can.Control = can.Construct(
 	/** 
 	 * @Static
 	 */
@@ -61,7 +58,7 @@ steal('can/construct', function( $ ) {
 			can.Construct.setup.apply( this, arguments );
 
 			// If you didn't provide a name, or are `control`, don't do anything.
-			if ( this !== can.Control ) {
+			if ( can.Control ) {
 
 				// Cache the underscored names.
 				var control = this,
@@ -88,7 +85,7 @@ steal('can/construct', function( $ ) {
 			
 			return function() {
 				context.called = name;
-    			return method.apply(context, [this.nodeName ? can.$(this) : this].concat( slice.call(arguments, 0)));
+				return method.apply(context, [this.nodeName ? can.$(this) : this].concat( slice.call(arguments, 0)));
 			};
 		},
 
@@ -107,7 +104,7 @@ steal('can/construct', function( $ ) {
 				// and is a function or links to a function
 				( type == "function" || (type == "string" &&  isFunction(this.prototype[val] ) ) ) &&
 				// and is in special, a processor, or has a funny character
-			    !! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
+				!! ( special[methodName] || processors[methodName] || /[^\w]/.test(methodName) );
 		},
 		// Takes a method name and the options passed to a control
 		// and tries to return the data necessary to pass to a processor
@@ -137,26 +134,26 @@ steal('can/construct', function( $ ) {
 			
 			// If we don't have options (a `control` instance), we'll run this 
 			// later.  
-      		paramReplacer.lastIndex = 0;
+			paramReplacer.lastIndex = 0;
 			if ( options || ! paramReplacer.test( methodName )) {
 				// If we have options, run sub to replace templates `{}` with a
 				// value from the options or the window
 				var convertedName = options ? can.sub(methodName, [options, window]) : methodName,
 					
-					// If a `{}` resolves to an object, `convertedName` will be
+					// If a `{}` template resolves to an object, `convertedName` will be
 					// an array
 					arr = can.isArray(convertedName),
-					
-					// Get the parts of the function  
-					// `[convertedName, delegatePart, eventPart]`  
-					// `/^(?:(.*?)\s)?([\w\.\:>]+)$/` - Breaker `RegExp`.
-					parts = (arr ? convertedName[1] : convertedName).match(/^(?:(.*?)\s)?([\w\.\:>]+)$/);
 
-					var event = parts[2],
-					processor = processors[event] || basicProcessor;
+					// Get the name
+					name = arr ? convertedName[1] : convertedName,
+
+					// Grab the event off the end
+					parts = name.split(/\s+/g),
+					event = parts.pop();
+
 				return {
-					processor: processor,
-					parts: parts,
+					processor: processors[event] || basicProcessor,
+					parts: [name, parts.join(" "), event],
 					delegate : arr ? convertedName[0] : undefined
 				};
 			}
@@ -725,10 +722,8 @@ steal('can/construct', function( $ ) {
 		}
 	});
 
-
 	var processors = can.Control.processors,
-
-	// Processors do the binding.  
+	// Processors do the binding.
 	// They return a function that unbinds when called.  
 	//
 	// The basic processor that binds events.
@@ -740,13 +735,16 @@ steal('can/construct', function( $ ) {
 
 
 	// Set common events to be processed as a `basicProcessor`
-	each(["change", "click", "contextmenu", "dblclick", "keydown", "keyup", 
-		 "keypress", "mousedown", "mousemove", "mouseout", "mouseover", 
-		 "mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
-		 "focusout", "mouseenter", "mouseleave"], function( v ) {
+	each(["change", "click", "contextmenu", "dblclick", "keydown", "keyup",
+		"keypress", "mousedown", "mousemove", "mouseout", "mouseover",
+		"mouseup", "reset", "resize", "scroll", "select", "submit", "focusin",
+		"focusout", "mouseenter", "mouseleave",
+		// #104 - Add touch events as default processors
+		// TOOD feature detect?
+		"touchstart", "touchmove", "touchcancel", "touchend", "touchleave"
+	], function( v ) {
 		processors[v] = basicProcessor;
 	});
 
-	}());
-	
+	return Control;
 });

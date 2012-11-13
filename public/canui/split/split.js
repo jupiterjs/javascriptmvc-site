@@ -1,10 +1,6 @@
-steal('./split.css',
-	'can/control',
-	'jquery/event/drag/limit', 
-	'jquery/dom/dimensions', 
-	'jquery/event/key', 
-	'jquery/event/resize',
-function( $ ) {
+steal('jquery', 'can/control', 'can/control/plugin',
+	'jquery/event/drag/limit', 'jquery/dom/dimensions',  'jquery/event/key',
+	'jquery/event/resize', function($) {
 
 	/**
 	 * @class can.ui.Split
@@ -104,19 +100,19 @@ function( $ ) {
 	 * @static
 	 */
 	{
+		pluginName : 'split',
 		defaults: {
 			active: "active",
 			hover: "split-hover",
 			splitter: "splitter",
 			direction: null,
 			dragDistance: 5,
-			panelClass: null,
+			panelSelector: '',
 			locale:{
 				collaspe: "Click to collapse",
 				expand: "Click to expand"
 			}
 		},
-		listensTo: ['resize'],
 		directionMap: {
 			vertical: {
 				dim: "width",
@@ -222,9 +218,6 @@ function( $ ) {
 				$c.addClass("split");
 			}
 
-			//- Keep track of panels so that resize event is aware of panels that have been added/removed
-			this._cachedPanels = this.panels().get();
-
 			this.size();
 		},
 
@@ -258,7 +251,7 @@ function( $ ) {
 		 * @return {jQuery} Returns a jQuery-wrapped nodelist of elements that are panels of this container.
 		 */
 		panels: function() {
-			return this.element.children((this.options.panelClass ? "." + this.options.panelClass : "") + ":not(.splitter)")
+			return this.element.children(this.options.panelSelector + ":not(.splitter)")
 		},
 
 		".splitter mouseenter": function( el, ev ) {
@@ -455,7 +448,6 @@ function( $ ) {
 				inserted: this.insert(),
 				removed: this.remove()
 			};
-			this._cachedPanels = this.panels().get();
 			return changed;
 		},
 
@@ -466,7 +458,6 @@ function( $ ) {
 		 */
 		insert: function(){
 			var self = this,
-				//cached = this._cachedPanels,
 				panels = this.panels().get(),
 				inserted = [];
 			

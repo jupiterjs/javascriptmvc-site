@@ -7,6 +7,7 @@
     body {font-family: verdana}
     .error {border: solid 1px red;}
     .error_text { color: red; font-size: 10px;}
+    th { border: 1px solid #505050; }
     td {padding: 3px;}
     tbody tr:nth-child(2n+1) {
       background-color: #ddeeff
@@ -26,7 +27,7 @@
 
     }
   </style>
-  <link type="text/css" href="../resize/resize.css" rel="stylesheet" />
+  <link type="text/css" href="../resizable/resizable.css" rel="stylesheet" />
 </head>
 <body>
 <a href="javascript://" id='scrollable'>Make Scrollable</a>
@@ -36,13 +37,12 @@
   <p>I can't see the columns when I scroll down :(.</p>
   <table id='table'>
     <thead>
-    <tr></tr>
+      <tr></tr>
     </thead>
     <tbody>
     </tbody>
     <tfoot>
-    <tr>
-    </tr>
+      <tr></tr>
     </tfoot>
   </table>
 </div>
@@ -73,6 +73,7 @@
 			head.push("<th>col ", c, "</th>")
 		}
 		$("thead tr").html(head.join(''))
+    $("tfoot tr").html($('<td>').attr('colspan', cols).html("Footer"));
 
 		for (var r = 0; r < 100; r++) {
 			html.push("<tr>")

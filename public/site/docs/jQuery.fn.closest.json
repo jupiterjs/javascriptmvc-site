@@ -1,1 +1,0 @@
-c({"name": "jQuery.fn.closest", "type": "function", "parents": ["dom", "jQuery.fn"], "comment": "<p>Overwrites closest to allow open > selectors.  This allows controller \nactions such as:</p>\n\n<pre><code>\"&gt;li click\" : function( el, ev ) { ... }\n</code></pre>", "plugin": "jquery/dom/closest", "src": "jquery/dom/closest/closest.js", "line": 4, "children": []})

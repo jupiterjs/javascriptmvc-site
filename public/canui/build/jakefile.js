@@ -11,6 +11,11 @@ var path = require("path"),
 		spawned.on('exit', function () {
 			callback();
 		});
+	},
+	// Additional files to deploy to a release directory
+	deployFiles = {
+		'split/split.css' : 'split.css',
+		'resizable/resizable.css' : 'resizable.css'
 	};
 
 desc('Runs make.js to build the application');

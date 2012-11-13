@@ -6,6 +6,7 @@ steal('steal/build/pluginify', function() {
 		excludes = [ 'steal/dev',
 			'can/',
 			'jquery/',
+			'jquery',
 			'steal/less' ];
 
 	steal.File(out).mkdirs();
@@ -14,7 +15,8 @@ steal('steal/build/pluginify', function() {
 	steal.build.pluginify('canui/canui.js', {
 		out: out + "canui.js",
 		skipCallbacks: true,
-		exclude : excludes
+		exclude : excludes,
+		shim : { 'jquery' : 'jQuery', 'can/util' : 'can' }
 	});
 
 });

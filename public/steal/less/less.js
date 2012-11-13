@@ -1,6 +1,6 @@
-steal({src: "./less_engine.js",ignore: true}, function(){
-
-	if(steal.isRhino) {
+steal({id: "./less_engine.js",ignore: true}, function(){
+	// only if rhino and we have less
+	if(steal.isRhino && window.less) {
 		// Some monkey patching of the LESS AST
 		// For production builds we NEVER want the parser to add paths to a url(),
 		// the CSS postprocessor is doing that already.

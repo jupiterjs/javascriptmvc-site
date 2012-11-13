@@ -1,13 +1,10 @@
-steal({
-	src: './zepto.0.8.js',
-	_skip: true
-}).then('./data').then('../event','../fragment.js',function(){
+steal('can/util/can.js', 'can/util/zepto/data.js', 'can/util/event.js', 'can/util/fragment.js', function(can) {
 	// zepto.js
 	// ---------
 	// _Zepto node list._
 
 // Extend what you can out of Zepto.
-$.extend(can,Zepto);
+$.extend(can, Zepto);
 
 var arrHas = function(obj, name){
 	return obj[0] && obj[0][name] || obj[name]
@@ -23,7 +20,7 @@ can.trigger = function(obj, event, args, bubble){
 		} else {
 			$([obj]).trigger(event, args)
 		}
-		
+
 	} else {
 		if(typeof event == "string"){
 			event = {type: event}
@@ -32,7 +29,7 @@ can.trigger = function(obj, event, args, bubble){
 		event.data = args;
 		can.dispatch.call(obj, event)
 	}
-	
+
 }
 
 can.$ = Zepto
@@ -88,16 +85,13 @@ can.$ = Zepto
 		})
 		return ret;
 	};
-	can.inArray =function(item, arr){
-		return arr.indexOf(item)
-	}
-	
+
 	can.proxy = function(f, ctx){
 		return function(){
 			return f.apply(ctx, arguments)
 		}
 	}
-	
+
 	// Make ajax.
 	var XHR = $.ajaxSettings.xhr;
 	$.ajaxSettings.xhr = function(){
@@ -122,15 +116,15 @@ can.$ = Zepto
 		}
 	}
 	can.ajax = function(options){
-		
+
 		var success = options.success,
 			error = options.error;
 		var d = can.Deferred();
-		
-		options.success = function(){
-			
+
+		options.success = function(data) {
+
 			updateDeferred(xhr, d);
-			d.resolve.apply(d, arguments);
+			d.resolve.call(d, data);
 			success && success.apply(this,arguments);
 		}
 		options.error = function(){
@@ -146,20 +140,20 @@ can.$ = Zepto
 		updateDeferred(xhr, d);
 		return d;
 	};
-	
 
-	
 
-	
-	
+
+
+
+
 	// Make destroyed and empty work.
 	$.fn.empty = function(){
-		return this.each(function(){ 
+		return this.each(function(){
 			$.cleanData(this.getElementsByTagName('*'))
-			this.innerHTML = '' 
-		}) 
+			this.innerHTML = ''
+		})
 	}
-	
+
 	$.fn.remove= function () {
 		$.cleanData(this);
 		this.each(function () {
@@ -171,8 +165,8 @@ can.$ = Zepto
 		});
 		return this;
     }
-    
-    
+
+
     can.trim = function(str){
     	return str.trim();
     }
@@ -197,5 +191,5 @@ can.$ = Zepto
 	}
 
 
-	
-}).then('../deferred.js','can/util/array/each.js')
+	return can;
+}).then('can/util/deferred.js','can/util/array/each.js')

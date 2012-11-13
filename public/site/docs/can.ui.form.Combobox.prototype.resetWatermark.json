@@ -1,1 +1,0 @@
-c({"name": "can.ui.form.Combobox.prototype.resetWatermark", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.form.Combobox.prototype"], "comment": "<p>Set the watermark if there is no text.</p>", "hide": true, "src": "canui/form/combobox/combobox.js", "line": 196, "children": []})

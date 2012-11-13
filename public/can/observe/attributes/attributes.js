@@ -1,4 +1,4 @@
-steal('can/observe', function(){
+steal('can/util', 'can/observe', function(can, Observe) {
 
 can.each([ can.Observe, can.Model ], function(clss){
 	// in some cases model might not be defined quite yet.
@@ -187,7 +187,7 @@ can.each([ can.Observe, can.Model ], function(clss){
 		var self = this;
 		oldSetup.call(self, superClass, stat, proto);
 
-		can.each(["attributes", "validations"], function( name ) {
+		can.each(["attributes"], function( name ) {
 			if (!self[name] || superClass[name] === self[name] ) {
 				self[name] = {};
 			}
@@ -200,6 +200,25 @@ can.each([ can.Observe, can.Model ], function(clss){
 		});
 	};
 });
+
+var oldSetup = can.Observe.prototype.setup;
+
+can.Observe.prototype.setup = function(obj) {
+
+	var diff = {};
+
+	oldSetup.call(this, obj);
+
+	can.each( this.constructor.defaults, function( value, key ) {
+		if ( ! this.hasOwnProperty( key )) {
+			diff[key] = value;
+		}
+	}, this);
+
+	this._init = 1;
+	this.attr( diff );
+	delete this._init;
+};
 
 /**
  * @hide
@@ -272,8 +291,10 @@ can.Observe.prototype.serialize = function(attrName){
 	}
 		
 	can.each(attrs, function( val, name ) {
-		var type = Class.attributes[name],
-			converter= Class.serialize[type];
+		var type, converter;
+		
+		type = Class.attributes ? Class.attributes[name] : 0;
+		converter = Class.serialize ? Class.serialize[type] : 0;
 			
 		// if the value is an object, and has a attrs or serialize function
 		where[name] = val && typeof val.serialize == 'function' ?
@@ -289,5 +310,5 @@ can.Observe.prototype.serialize = function(attrName){
 	
 	return attrName != undefined ? where[attrName] : where;
 };
-
+return can.Observe;
 });

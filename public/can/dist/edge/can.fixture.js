@@ -1,313 +1,342 @@
-(function(can, window, undefined){
-	
-var isArray = can.isArray,
-	// essentially returns an object that has all the must have comparisons ...
-	// must haves, do not return true when provided undefined
-	cleanSet = function(obj, compares){
-		var copy = can.extend({}, obj);
-		for(var prop in copy) {
-			var compare = compares[prop] === undefined ? compares["*"] : compares[prop];
-			if( same(copy[prop], undefined, compare ) ) {
-				delete copy[prop]
+var module = {
+	_orig: window.module,
+	_define: window.define
+};
+module['can/util'] = can;
+var define = function (id, deps, value) {
+	module[id] = value();
+};
+define.amd = {
+	jQuery: true
+};
+
+module['can/util/can.js'] = (function () {
+	window.can = window.can || {};
+	window.can.isDeferred = function (obj) {
+		var isFunction = this.isFunction;
+		// Returns `true` if something looks like a deferred.
+		return obj && isFunction(obj.then) && isFunction(obj.pipe)
+	}
+	return window.can;
+})();
+module['can/util/object/object.js'] = (function (can) {
+
+	var isArray = can.isArray,
+		// essentially returns an object that has all the must have comparisons ...
+		// must haves, do not return true when provided undefined
+		cleanSet = function (obj, compares) {
+			var copy = can.extend({}, obj);
+			for (var prop in copy) {
+				var compare = compares[prop] === undefined ? compares["*"] : compares[prop];
+				if (same(copy[prop], undefined, compare)) {
+					delete copy[prop]
+				}
 			}
+			return copy;
+		},
+		propCount = function (obj) {
+			var count = 0;
+			for (var prop in obj) count++;
+			return count;
+		};
+
+	/**
+	 * @class can.Object
+	 * @parent can.util
+	 * 
+	 * Object contains several helper methods that 
+	 * help compare objects.
+	 * 
+	 * ## same
+	 * 
+	 * Returns true if two objects are similar.
+	 * 
+	 *     can.Object.same({foo: "bar"} , {bar: "foo"}) //-> false
+	 *   
+	 * ## subset
+	 * 
+	 * Returns true if an object is a set of another set.
+	 * 
+	 *     can.Object.subset({}, {foo: "bar"} ) //-> true
+	 * 
+	 * ## subsets
+	 * 
+	 * Returns the subsets of an object
+	 * 
+	 *     can.Object.subsets({userId: 20},
+	 *                      [
+	 *                       {userId: 20, limit: 30},
+	 *                       {userId: 5},
+	 *                       {}
+	 *                      ]) 
+	 *              //->    [{userId: 20, limit: 30}]
+	 */
+	can.Object = {};
+
+	/**
+	 * @function same
+	 * Returns if two objects are the same.  It takes an optional compares object that
+	 * can be used to make comparisons.
+	 * 
+	 * This function does not work with objects that create circular references.
+	 * 
+	 * ## Examples
+	 * 
+	 *     can.Object.same({name: "Justin"},
+	 *                   {name: "JUSTIN"}) //-> false
+	 *     
+	 *     // ignore the name property
+	 *     can.Object.same({name: "Brian"},
+	 *                   {name: "JUSTIN"},
+	 *                   {name: null})      //-> true
+	 *     
+	 *     // ignore case
+	 *     can.Object.same({name: "Justin"},
+	 *                   {name: "JUSTIN"},
+	 *                   {name: "i"})      //-> true
+	 *     
+	 *     // deep rule
+	 *     can.Object.same({ person : { name: "Justin" } },
+	 *                   { person : { name: "JUSTIN" } },
+	 *                   { person : { name: "i"      } }) //-> true
+	 *                   
+	 *     // supplied compare function
+	 *     can.Object.same({age: "Thirty"},
+	 *                   {age: 30},
+	 *                   {age: function( a, b ){
+	 *                           if( a == "Thirty" ) { 
+	 *                             a = 30
+	 *                           }
+	 *                           if( b == "Thirty" ) {
+	 *                             b = 30
+	 *                           }
+	 *                           return a === b;
+	 *                         }})      //-> true
+	 * 
+	 * @param {Object} a an object to compare
+	 * @param {Object} b an object to compare
+	 * @param {Object} [compares] an object that indicates how to 
+	 * compare specific properties. 
+	 * Typically this is a name / value pair
+	 * 
+	 *     can.Object.same({name: "Justin"},{name: "JUSTIN"},{name: "i"})
+	 *     
+	 * There are two compare functions that you can specify with a string:
+	 * 
+	 *   - 'i' - ignores case
+	 *   - null - ignores this property
+	 * 
+	 * @param {Object} [deep] used internally
+	 */
+	var same = can.Object.same = function (a, b, compares, aParent, bParent, deep) {
+		var aType = typeof a,
+			aArray = isArray(a),
+			comparesType = typeof compares,
+			compare;
+
+		if (comparesType == 'string' || compares === null) {
+			compares = compareMethods[compares];
+			comparesType = 'function'
 		}
-		return copy;
-	},
-	propCount = function(obj){
-		var count = 0;
-		for(var prop in obj) count++;
-		return count;
+		if (comparesType == 'function') {
+			return compares(a, b, aParent, bParent)
+		}
+		compares = compares || {};
+
+		if (a instanceof Date) {
+			return a === b;
+		}
+		if (deep === -1) {
+			return aType === 'object' || a === b;
+		}
+		if (aType !== typeof b || aArray !== isArray(b)) {
+			return false;
+		}
+		if (a === b) {
+			return true;
+		}
+		if (aArray) {
+			if (a.length !== b.length) {
+				return false;
+			}
+			for (var i = 0; i < a.length; i++) {
+				compare = compares[i] === undefined ? compares["*"] : compares[i]
+				if (!same(a[i], b[i], a, b, compare)) {
+					return false;
+				}
+			};
+			return true;
+		} else if (aType === "object" || aType === 'function') {
+			var bCopy = can.extend({}, b);
+			for (var prop in a) {
+				compare = compares[prop] === undefined ? compares["*"] : compares[prop];
+				if (!same(a[prop], b[prop], compare, a, b, deep === false ? -1 : undefined)) {
+					return false;
+				}
+				delete bCopy[prop];
+			}
+			// go through bCopy props ... if there is no compare .. return false
+			for (prop in bCopy) {
+				if (compares[prop] === undefined || !same(undefined, b[prop], compares[prop], a, b, deep === false ? -1 : undefined)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	};
 
-/**
- * @class can.Object
- * @parent can.util
- * 
- * Object contains several helper methods that 
- * help compare objects.
- * 
- * ## same
- * 
- * Returns true if two objects are similar.
- * 
- *     can.Object.same({foo: "bar"} , {bar: "foo"}) //-> false
- *   
- * ## subset
- * 
- * Returns true if an object is a set of another set.
- * 
- *     can.Object.subset({}, {foo: "bar"} ) //-> true
- * 
- * ## subsets
- * 
- * Returns the subsets of an object
- * 
- *     can.Object.subsets({userId: 20},
- *                      [
- *                       {userId: 20, limit: 30},
- *                       {userId: 5},
- *                       {}
- *                      ]) 
- *              //->    [{userId: 20, limit: 30}]
- */
-can.Object = {};
+	/**
+	 * @function subsets
+	 * Returns the sets in 'sets' that are a subset of checkSet
+	 * @param {Object} checkSet
+	 * @param {Object} sets
+	 */
+	can.Object.subsets = function (checkSet, sets, compares) {
+		var len = sets.length,
+			subsets = [],
+			checkPropCount = propCount(checkSet),
+			setLength;
 
-/**
- * @function same
- * Returns if two objects are the same.  It takes an optional compares object that
- * can be used to make comparisons.
- * 
- * This function does not work with objects that create circular references.
- * 
- * ## Examples
- * 
- *     can.Object.same({name: "Justin"},
- *                   {name: "JUSTIN"}) //-> false
- *     
- *     // ignore the name property
- *     can.Object.same({name: "Brian"},
- *                   {name: "JUSTIN"},
- *                   {name: null})      //-> true
- *     
- *     // ignore case
- *     can.Object.same({name: "Justin"},
- *                   {name: "JUSTIN"},
- *                   {name: "i"})      //-> true
- *     
- *     // deep rule
- *     can.Object.same({ person : { name: "Justin" } },
- *                   { person : { name: "JUSTIN" } },
- *                   { person : { name: "i"      } }) //-> true
- *                   
- *     // supplied compare function
- *     can.Object.same({age: "Thirty"},
- *                   {age: 30},
- *                   {age: function( a, b ){
- *                           if( a == "Thirty" ) { 
- *                             a = 30
- *                           }
- *                           if( b == "Thirty" ) {
- *                             b = 30
- *                           }
- *                           return a === b;
- *                         }})      //-> true
- * 
- * @param {Object} a an object to compare
- * @param {Object} b an object to compare
- * @param {Object} [compares] an object that indicates how to 
- * compare specific properties. 
- * Typically this is a name / value pair
- * 
- *     can.Object.same({name: "Justin"},{name: "JUSTIN"},{name: "i"})
- *     
- * There are two compare functions that you can specify with a string:
- * 
- *   - 'i' - ignores case
- *   - null - ignores this property
- * 
- * @param {Object} [deep] used internally
- */
-var same = can.Object.same = function(a, b, compares, aParent, bParent, deep){
-	var aType = typeof a,
-		aArray = isArray(a),
-		comparesType = typeof compares,
-		compare;
-	
-	if(comparesType == 'string' || compares === null ){
-		compares = compareMethods[compares];
-		comparesType = 'function'
-	}
-	if(comparesType == 'function'){
-		return compares(a, b, aParent, bParent)
-	} 
-	compares = compares || {};
-	
-	if(a instanceof Date){
-		return a === b;
-	}
-	if(deep === -1){
-		return aType === 'object' || a === b;
-	}
-	if(aType !== typeof  b || aArray !== isArray(b)){
-		return false;
-	}
-	if(a === b){
-		return true;
-	}
-	if(aArray){
-		if(a.length !== b.length){
-			return false;
-		}
-		for(var i =0; i < a.length; i ++){
-			compare = compares[i] === undefined ? compares["*"] : compares[i]
-			if(!same(a[i],b[i], a, b, compare )){
-				return false;
+		for (var i = 0; i < len; i++) {
+			//check this subset
+			var set = sets[i];
+			if (can.Object.subset(checkSet, set, compares)) {
+				subsets.push(set)
 			}
-		};
-		return true;
-	} else if(aType === "object" || aType === 'function'){
-		var bCopy = can.extend({}, b);
-		for(var prop in a){
-			compare = compares[prop] === undefined ? compares["*"] : compares[prop];
-			if(! same( a[prop], b[prop], compare , a, b, deep === false ? -1 : undefined )){
-				return false;
-			}
-			delete bCopy[prop];
 		}
-		// go through bCopy props ... if there is no compare .. return false
-		for(prop in bCopy){
-			if( compares[prop] === undefined || 
-			    ! same( undefined, b[prop], compares[prop] , a, b, deep === false ? -1 : undefined )){
+		return subsets;
+	};
+	/**
+	 * @function subset
+	 * Compares if checkSet is a subset of set
+	 * @param {Object} checkSet
+	 * @param {Object} set
+	 * @param {Object} [compares]
+	 * @param {Object} [checkPropCount]
+	 */
+	can.Object.subset = function (subset, set, compares) {
+		// go through set {type: 'folder'} and make sure every property
+		// is in subset {type: 'folder', parentId :5}
+		// then make sure that set has fewer properties
+		// make sure we are only checking 'important' properties
+		// in subset (ones that have to have a value)
+		var setPropCount = 0,
+			compares = compares || {};
+
+		for (var prop in set) {
+
+			if (!same(subset[prop], set[prop], compares[prop], subset, set)) {
 				return false;
 			}
 		}
 		return true;
-	} 
-	return false;
-};
+	}
 
-/**
- * @function subsets
- * Returns the sets in 'sets' that are a subset of checkSet
- * @param {Object} checkSet
- * @param {Object} sets
- */
-can.Object.subsets = function(checkSet, sets, compares){
-	var len = sets.length,
-		subsets = [],
-		checkPropCount = propCount(checkSet),
-		setLength;
-		
-	for(var i =0; i < len; i++){
-		//check this subset
-		var set = sets[i];
-		if( can.Object.subset(checkSet, set, compares) ){
-			subsets.push(set)
+
+	var compareMethods = {
+		"null": function () {
+			return true;
+		},
+		i: function (a, b) {
+			return ("" + a).toLowerCase() == ("" + b).toLowerCase()
 		}
 	}
-	return subsets;
-};
-/**
- * @function subset
- * Compares if checkSet is a subset of set
- * @param {Object} checkSet
- * @param {Object} set
- * @param {Object} [compares]
- * @param {Object} [checkPropCount]
- */
-can.Object.subset = function(subset, set, compares){
-	// go through set {type: 'folder'} and make sure every property
-	// is in subset {type: 'folder', parentId :5}
-	// then make sure that set has fewer properties
-	// make sure we are only checking 'important' properties
-	// in subset (ones that have to have a value)
-	
-	var setPropCount =0,
-		compares = compares || {};
-			
-	for(var prop in set){
 
-		if(! same(subset[prop], set[prop], compares[prop], subset, set )  ){
-			return false;
-		} 
-	}
-	return true;
-}
+	return can;
 
-
-var compareMethods = {
-	"null" : function(){
-		return true;
-	},
-	i : function(a, b){
-		return (""+a).toLowerCase() == (""+b).toLowerCase()
-	}
-}
-	
-	
-;
-
+})(module["can/util/jquery/jquery.js"]);
+module['can/util/fixture/fixture.js'] = (function (can) {
 
 	var updateSettings = function (settings, originalOptions) {
-			if (!can.fixture.on) {
-				return;
-			}
+		if (!can.fixture.on) {
+			return;
+		}
 
-			//simple wrapper for logging
-			var log = function () {
+		//simple wrapper for logging
+		var _logger = function (type, arr) {
+			if (console.log.apply) {
+				console[type].apply(console, arr)
+			} else {
+				console[type](arr)
+			}
+		},
+			log = function () {
 				if (window.console && console.log) {
-					console.log.apply(console, Array.prototype.slice.call(arguments));
+					Array.prototype.unshift.call(arguments, 'fixture INFO:');
+					_logger("log", Array.prototype.slice.call(arguments));
+				}
+				else if (window.opera && window.opera.postError) {
+					opera.postError("fixture INFO: " + out);
 				}
 			}
 
 			// We always need the type which can also be called method, default to GET
 			settings.type = settings.type || settings.method || 'GET';
 
-			// add the fixture option if programmed in
-			var data = overwrite(settings);
+		// add the fixture option if programmed in
+		var data = overwrite(settings);
 
-			// if we don't have a fixture, do nothing
-			if (!settings.fixture) {
-				if (window.location.protocol === "file:") {
-					log("ajax request to " + settings.url + ", no fixture found");
-				}
-				return;
+		// if we don't have a fixture, do nothing
+		if (!settings.fixture) {
+			if (window.location.protocol === "file:") {
+				log("ajax request to " + settings.url + ", no fixture found");
+			}
+			return;
+		}
+
+		//if referencing something else, update the fixture option
+		if (typeof settings.fixture === "string" && can.fixture[settings.fixture]) {
+			settings.fixture = can.fixture[settings.fixture];
+		}
+
+		// if a string, we just point to the right url
+		if (typeof settings.fixture == "string") {
+			var url = settings.fixture;
+
+			if (/^\/\//.test(url)) {
+				// this lets us use rootUrl w/o having steal...
+				url = can.fixture.rootUrl === steal.config().root ? steal.config().root.mapJoin(settings.fixture.substr(2)) + '' : can.fixture.rootUrl + settings.fixture.substr(2);
 			}
 
-			//if referencing something else, update the fixture option
-			if (typeof settings.fixture === "string" && can.fixture[settings.fixture]) {
-				settings.fixture = can.fixture[settings.fixture];
+			delete settings.fixture;
+
+
+
+			settings.url = url;
+			settings.data = null;
+			settings.type = "GET";
+			if (!settings.error) {
+				settings.error = function (xhr, error, message) {
+					throw "fixtures.js Error " + error + " " + message;
+				};
 			}
+		}
+		else {
 
-			// if a string, we just point to the right url
-			if (typeof settings.fixture == "string") {
-				var url = settings.fixture;
 
-				if (/^\/\//.test(url)) {
-					// this lets us use rootUrl w/o having steal...
-					url = can.fixture.rootUrl === steal.root ?
-						steal.root.mapJoin(settings.fixture.substr(2)) + '' :
-						can.fixture.rootUrl + settings.fixture.substr(2);
-				}
+			//it's a function ... add the fixture datatype so our fixture transport handles it
+			// TODO: make everything go here for timing and other fun stuff
+			// add to settings data from fixture ...
+			settings.dataTypes && settings.dataTypes.splice(0, 0, "fixture");
 
-				delete settings.fixture;
-
-				
-
-				settings.url = url;
-				settings.data = null;
-				settings.type = "GET";
-				if (!settings.error) {
-					settings.error = function (xhr, error, message) {
-						throw "fixtures.js Error " + error + " " + message;
-					};
-				}
+			if (data && originalOptions) {
+				can.extend(originalOptions.data, data)
 			}
-			else {
-				
-
-				//it's a function ... add the fixture datatype so our fixture transport handles it
-				// TODO: make everything go here for timing and other fun stuff
-				// add to settings data from fixture ...
-				settings.dataTypes && settings.dataTypes.splice(0, 0, "fixture");
-
-				if (data && originalOptions) {
-					can.extend(originalOptions.data, data)
-				}
-			}
-		},
+		}
+	},
 		// A helper function that takes what's called with response
 		// and moves some common args around to make it easier to call
-		extractResponse = function(status, statusText, responses, headers) {
+		extractResponse = function (status, statusText, responses, headers) {
 			// if we get response(RESPONSES, HEADERS)
-			if(typeof status != "number"){
+			if (typeof status != "number") {
 				headers = statusText;
 				responses = status;
 				statusText = "success"
 				status = 200;
 			}
 			// if we get response(200, RESPONSES, HEADERS)
-			if(typeof statusText != "string"){
+			if (typeof statusText != "string") {
 				headers = responses;
 				responses = statusText;
 				statusText = "success";
@@ -316,7 +345,7 @@ var compareMethods = {
 		},
 		// If we get data instead of responses,
 		// make sure we provide a response type that matches the first datatype (typically json)
-		extractResponses = function(settings, responses){
+		extractResponses = function (settings, responses) {
 			var next = settings.dataTypes ? settings.dataTypes[0] : (settings.dataType || 'json');
 			if (!responses || !responses[next]) {
 				var tmp = {}
@@ -345,14 +374,14 @@ var compareMethods = {
 					// we'll immediately wait the delay time for all fixtures
 					timeout = setTimeout(function () {
 						// if the user wants to call success on their own, we allow it ...
-						var success = function() {
-							if(stopped === false) {
-								callback.apply(null, extractResponse.apply(s, arguments) );
+						var success = function () {
+							if (stopped === false) {
+								callback.apply(null, extractResponse.apply(s, arguments));
 							}
 						},
-						// get the result form the fixture
-						result = s.fixture(original, success, headers, s);
-						if(result !== undefined) {
+							// get the result form the fixture
+							result = s.fixture(original, success, headers, s);
+						if (result !== undefined) {
 							// make sure the result has the right dataType
 							callback(200, "success", extractResponses(s, result), {});
 						}
@@ -373,8 +402,7 @@ var compareMethods = {
 					stopped = false;
 
 				//TODO this should work with response
-				d.getResponseHeader = function () {
-				}
+				d.getResponseHeader = function () {}
 
 				// call success and fail
 				d.then(settings.success, settings.fail);
@@ -388,24 +416,24 @@ var compareMethods = {
 				// set a timeout that simulates making a request ....
 				timeout = setTimeout(function () {
 					// if the user wants to call success on their own, we allow it ...
-					var success = function() {
+					var success = function () {
 						var response = extractResponse.apply(settings, arguments),
 							status = response[0];
 
-						if ( (status >= 200 && status < 300 || status === 304) && stopped === false) {
+						if ((status >= 200 && status < 300 || status === 304) && stopped === false) {
 							d.resolve(response[2][settings.dataType], "success", d)
 						} else {
 							// TODO probably resolve better
 							d.reject(d, 'error', response[1]);
 						}
 					},
-					// get the result form the fixture
-					result = settings.fixture(settings, success, settings.headers, settings);
-					if(result !== undefined) {
+						// get the result form the fixture
+						result = settings.fixture(settings, success, settings.headers, settings);
+					if (result !== undefined) {
 						d.resolve(result, "success", d)
 					}
 				}, can.fixture.delay);
-				
+
 				return d;
 			} else {
 				return AJAX(settings);
@@ -414,9 +442,9 @@ var compareMethods = {
 	}
 
 	var typeTest = /^(script|json|test|jsonp)$/,
-	// a list of 'overwrite' settings object
+		// a list of 'overwrite' settings object
 		overwrites = [],
-	// returns the index of an overwrite function
+		// returns the index of an overwrite function
 		find = function (settings, exact) {
 			for (var i = 0; i < overwrites.length; i++) {
 				if ($fixture._similar(settings, overwrites[i], exact)) {
@@ -425,7 +453,7 @@ var compareMethods = {
 			}
 			return -1;
 		},
-	// overwrites the settings fixture if an overwrite matches
+		// overwrites the settings fixture if an overwrite matches
 		overwrite = function (settings) {
 			var index = find(settings);
 			if (index > -1) {
@@ -438,14 +466,14 @@ var compareMethods = {
 		 * Makes an attempt to guess where the id is at in the url and returns it.
 		 * @param {Object} settings
 		 */
-			getId = function (settings) {
+		getId = function (settings) {
 			var id = settings.data.id;
 
 			if (id === undefined && typeof settings.data === "number") {
 				id = settings.data;
 			}
 
-			/*
+/*
 			 Check for id in params(if query string)
 			 If this is just a string representation of an id, parse
 			 if(id === undefined && typeof settings.data === "string") {
@@ -512,19 +540,19 @@ var compareMethods = {
 				var matches = settings.match(/(GET|POST|PUT|DELETE) (.+)/i);
 				if (!matches) {
 					settings = {
-						url : settings
+						url: settings
 					};
 				} else {
 					settings = {
-						url : matches[2],
-						type : matches[1]
+						url: matches[2],
+						type: matches[1]
 					};
 				}
 
 			}
 
 			//handle removing.  An exact match if fixture was provided, otherwise, anything similar
-			var index = find(settings, !!fixture);
+			var index = find(settings, !! fixture);
 			if (index > -1) {
 				overwrites.splice(index, 1)
 			}
@@ -534,7 +562,7 @@ var compareMethods = {
 			settings.fixture = fixture;
 			overwrites.push(settings)
 		} else {
-			can.each(settings, function(fixture, url){
+			can.each(settings, function (fixture, url) {
 				$fixture(url, fixture);
 			})
 		}
@@ -543,22 +571,24 @@ var compareMethods = {
 
 	can.extend(can.fixture, {
 		// given ajax settings, find an overwrite
-		_similar : function (settings, overwrite, exact) {
+		_similar: function (settings, overwrite, exact) {
 			if (exact) {
-				return can.Object.same(settings, overwrite, {fixture : null})
+				return can.Object.same(settings, overwrite, {
+					fixture: null
+				})
 			} else {
 				return can.Object.subset(settings, overwrite, can.fixture._compare)
 			}
 		},
-		_compare : {
-			url : function (a, b) {
+		_compare: {
+			url: function (a, b) {
 				return !!$fixture._getData(b, a)
 			},
-			fixture : null,
-			type : "i"
+			fixture: null,
+			type: "i"
 		},
 		// gets data from a url like "/todo/{id}" given "todo/5"
-		_getData : function (fixtureUrl, url) {
+		_getData: function (fixtureUrl, url) {
 			var order = [],
 				fixtureUrlAdjusted = fixtureUrl.replace('.', '\\.').replace('?', '\\?'),
 				res = new RegExp(fixtureUrlAdjusted.replace(replacer, function (whole, part) {
@@ -577,7 +607,7 @@ var compareMethods = {
 			return data;
 		},
 
-		make : function (types, count, make, filter) {
+		make: function (types, count, make, filter) {
 			/**
 			 * @function can.fixture.make
 			 * @parent can.fixture
@@ -665,7 +695,8 @@ var compareMethods = {
 			 * @return {Object} A generator object providing fixture functions for *findAll*, *findOne*, *create*,
 			 * *update* and *destroy*.
 			 */
-			var items = [], // TODO: change this to a hash
+			var items = [],
+				// TODO: change this to a hash
 				findOne = function (id) {
 					for (var i = 0; i < items.length; i++) {
 						if (id == items[i].id) {
@@ -676,7 +707,7 @@ var compareMethods = {
 				methods = {};
 
 			if (typeof types === "string") {
-				types = [types + "s", types ]
+				types = [types + "s", types]
 			} else if (!can.isArray(types)) {
 				filter = make;
 				make = count;
@@ -685,7 +716,7 @@ var compareMethods = {
 
 			// make all items
 			can.extend(methods, {
-				findAll : function (settings) {
+				findAll: function (settings) {
 					//copy array of items
 					var retArr = items.slice(0);
 					settings.data = settings.data || {};
@@ -732,7 +763,7 @@ var compareMethods = {
 					for (var param in settings.data) {
 						i = 0;
 						if (settings.data[param] !== undefined && // don't do this if the value of the param is null (ignore it)
-							(param.indexOf("Id") != -1 || param.indexOf("_id") != -1)) {
+						(param.indexOf("Id") != -1 || param.indexOf("_id") != -1)) {
 							while (i < retArr.length) {
 								if (settings.data[param] != retArr[i][param]) {
 									retArr.splice(i, 1);
@@ -756,28 +787,28 @@ var compareMethods = {
 
 					//return data spliced with limit and offset
 					return {
-						"count" : retArr.length,
-						"limit" : settings.data.limit,
-						"offset" : settings.data.offset,
-						"data" : retArr.slice(offset, offset + limit)
+						"count": retArr.length,
+						"limit": settings.data.limit,
+						"offset": settings.data.offset,
+						"data": retArr.slice(offset, offset + limit)
 					};
 				},
-				findOne : function (orig, response) {
+				findOne: function (orig, response) {
 					var item = findOne(getId(orig));
 					response(item ? item : undefined);
 				},
-				update : function (orig,response) {
+				update: function (orig, response) {
 					var id = getId(orig);
 
 					// TODO: make it work with non-linear ids ..
 					can.extend(findOne(id), orig.data);
 					response({
-						id : getId(orig)
+						id: getId(orig)
 					}, {
-						location : orig.url + "/" + getId(orig)
+						location: orig.url + "/" + getId(orig)
 					});
 				},
-				destroy : function (settings) {
+				destroy: function (settings) {
 					var id = getId(settings);
 					for (var i = 0; i < items.length; i++) {
 						if (items[i].id == id) {
@@ -790,7 +821,7 @@ var compareMethods = {
 					can.extend(findOne(id) || {}, settings.data);
 					return {};
 				},
-				create : function (settings, response) {
+				create: function (settings, response) {
 					var item = make(items.length, items);
 
 					can.extend(item, settings.data);
@@ -802,9 +833,9 @@ var compareMethods = {
 					items.push(item);
 					var id = item.id || parseInt(Math.random() * 100000, 10);
 					response({
-						id : id
+						id: id
 					}, {
-						location : settings.url + "/" + id
+						location: settings.url + "/" + id
 					})
 				}
 			});
@@ -820,19 +851,19 @@ var compareMethods = {
 			}
 
 			// if we have types given add them to can.fixture
-			if(can.isArray(types)) {
+			if (can.isArray(types)) {
 				can.fixture["~" + types[0]] = items;
 				can.fixture["-" + types[0]] = methods.findAll;
 				can.fixture["-" + types[1]] = methods.findOne;
-				can.fixture["-" + types[1]+"Update"] = methods.update;
-				can.fixture["-" + types[1]+"Destroy"] = methods.destroy;
-				can.fixture["-" + types[1]+"Create"] = methods.create;
+				can.fixture["-" + types[1] + "Update"] = methods.update;
+				can.fixture["-" + types[1] + "Destroy"] = methods.destroy;
+				can.fixture["-" + types[1] + "Create"] = methods.create;
 			}
 
 			return can.extend({
 				getId: getId,
-				find : function(settings){
-					return findOne( getId(settings) );
+				find: function (settings) {
+					return findOne(getId(settings));
 				}
 			}, methods);
 		},
@@ -875,7 +906,7 @@ var compareMethods = {
 		 * @param {Number} [max] If min and max are provided, a random number of
 		 * items between min and max (inclusive) is selected.
 		 */
-		rand : function (arr, min, max) {
+		rand: function (arr, min, max) {
 			if (typeof arr == 'number') {
 				if (typeof min == 'number') {
 					return arr + Math.floor(Math.random() * (min - arr));
@@ -934,24 +965,24 @@ var compareMethods = {
 		 * @param {Object} [xhr] properties that you want to overwrite
 		 * @return {Object} an object that looks like a successful XHR object.
 		 */
-		xhr : function (xhr) {
+		xhr: function (xhr) {
 			return can.extend({}, {
-				abort : can.noop,
-				getAllResponseHeaders : function () {
+				abort: can.noop,
+				getAllResponseHeaders: function () {
 					return "";
 				},
-				getResponseHeader : function () {
+				getResponseHeader: function () {
 					return "";
 				},
-				open : can.noop,
-				overrideMimeType : can.noop,
-				readyState : 4,
-				responseText : "",
-				responseXML : null,
-				send : can.noop,
-				setRequestHeader : can.noop,
-				status : 200,
-				statusText : "OK"
+				open: can.noop,
+				overrideMimeType: can.noop,
+				readyState: 4,
+				responseText: "",
+				responseXML: null,
+				send: can.noop,
+				setRequestHeader: can.noop,
+				status: 200,
+				statusText: "OK"
 			}, xhr);
 		},
 		/**
@@ -965,7 +996,7 @@ var compareMethods = {
 		 *       can.fixture.on = true;
 		 *     })
 		 */
-		on : true
+		on: true
 	});
 	/**
 	 * @attribute can.fixture.delay
@@ -991,7 +1022,7 @@ var compareMethods = {
 	 * If you are using StealJS it will use the Steal root
 	 * URL by default.
 	 */
-	can.fixture.rootUrl = window.steal ? steal.root : undefined;
+	can.fixture.rootUrl = window.steal ? steal.config().root : undefined;
 
 	can.fixture["-handleFunction"] = function (settings) {
 		if (typeof settings.fixture === "string" && can.fixture[settings.fixture]) {
@@ -1013,4 +1044,9 @@ var compareMethods = {
 
 	//Expose this for fixture debugging
 	can.fixture.overwrites = overwrites;
-})(this.can, this );
+	return can.fixture;
+})(module["can/util/jquery/jquery.js"], module["can/util/string/string.js"], module["can/util/object/object.js"]);
+
+window.define = module._define;
+
+window.module = module._orig;

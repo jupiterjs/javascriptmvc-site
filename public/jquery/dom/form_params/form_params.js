@@ -1,4 +1,4 @@
-steal("jquery/dom").then(function( $ ) {
+steal("jquery", function( $ ) {
 	var
 		// use to parse bracket notation like my[name][attribute]
 		keyBreaker = /[^\[\]]+/g,
@@ -10,7 +10,7 @@ steal("jquery/dom").then(function( $ ) {
 				return true;
 			} else if ( value === 'false' ) {
 				return false;
-			} else if ( value === '' ) {
+			} else if ( value === '' || value === null ) {
 				return undefined;
 			}
 			return value;
@@ -161,4 +161,5 @@ steal("jquery/dom").then(function( $ ) {
 		}
 	});
 
+	return $;
 });

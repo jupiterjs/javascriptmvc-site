@@ -1,7 +1,6 @@
-steal({
-	src: './mootools-core-1.4.3.js',
-	_skip: true
-}, '../event.js','../fragment', 'can/util/array/each.js',function(){
+steal('can/util/can.js', 'can/util/mootools/mootools-core-1.4.3.js', 'can/util/event.js','can/util/fragment.js',
+'can/util/array/each.js', 'can/util/object/isplain', 'can/util/object/extend',
+function(can) {
 	// mootools.js
 	// ---------
 	// _MooTools node list._
@@ -12,26 +11,38 @@ steal({
 	}
 	
 	// Map array helpers.
-	can.makeArray = Array.from;
-	can.isArray = function(arr){
+	can.makeArray = function(item) {
+		// All other libraries return a copy if item is an array.
+		// The original Mootools Array.from returned the same item so we need to slightly modify it
+		if (item == null) return [];
+		try {
+			return (Type.isEnumerable(item) && typeof item != 'string') ? Array.prototype.slice.call(item) : [item];
+		} catch(ex) {
+			// some things like DOMNodeChildCollections don't slice so good.
+			// This pains me, but it has to be done.
+			var arr = [],
+				i;
+			for( i = 0; i < item.length; ++i) {
+				arr.push(item[i]);
+			}
+			return arr;
+		}
+	}
+
+	can.isArray = function(arr) {
 		return typeOf(arr) === 'array'
 	};
-	can.inArray = function(item,arr){
-		return arr.indexOf(item)
+	can.inArray = function(item,arr) {
+		if(!arr) {
+			return -1;
+		}
+		return Array.prototype.indexOf.call(arr, item);
 	}
 	can.map = function(arr, fn){
 		return Array.from(arr||[]).map(fn);
 	}
 
 	// Map object helpers.
-	can.extend = function(first){
-		if(first === true){
-			var args = can.makeArray(arguments);
-			args.shift();
-			return Object.merge.apply(Object, args)
-		}
-		return Object.append.apply(Object, arguments)
-	}
 	can.param = function(object){
 		return Object.toQueryString(object)
 	}
@@ -269,4 +280,6 @@ steal({
 			
 		
 	}
-},'../deferred.js')
+
+	return can;
+},'can/util/deferred.js');

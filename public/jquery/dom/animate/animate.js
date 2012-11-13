@@ -1,4 +1,4 @@
-steal('jquery', 'jquery/dom/styles').then(function ($) {
+steal('jquery', 'jquery/dom/styles', function () {
 
 	// Overwrites `jQuery.fn.animate` to use CSS 3 animations if possible
 
@@ -57,7 +57,7 @@ steal('jquery', 'jquery/dom/styles').then(function ($) {
 					// Negative values not handled the same
 					|| props[name] < 0
 					// unit-less value
-					|| name == 'zIndex' || name == 'z-index'
+					|| name == 'zIndex' || name == 'z-index' || name == 'scrollTop' || name == 'scrollLeft'
 					) {
 					return true;
 				}
@@ -244,13 +244,18 @@ steal('jquery', 'jquery/dom/styles').then(function ($) {
 					}));
 
 					// Call the original callback
-					if (optall.old && exec) {
+					if ($.isFunction(optall.old) && exec) {
 						// Call success, pass the DOM element as the this reference
 						optall.old.call(self[0], true)
 					}
 
 					$.removeData(self, dataKey, true);
-				}
+				},
+				finishAnimation = function() {
+					// Call animationEnd using the passed properties
+					animationEnd(props, true);
+					done();
+				};
 
 			for(prop in props) {
 				properties.push(prop);
@@ -288,7 +293,7 @@ steal('jquery', 'jquery/dom/styles').then(function ($) {
 						'animation-play-state' : 'paused'
 					}));
 					// Unbind the animation end handler
-					self.off(getBrowser().transitionEnd, animationEnd);
+					self.off(getBrowser().transitionEnd, finishAnimation);
 					if(!gotoEnd) {
 						// We were told not to finish the animation
 						// Call animationEnd but set the CSS to the current computed style
@@ -308,14 +313,12 @@ steal('jquery', 'jquery/dom/styles').then(function ($) {
 			}));
 
 			// Attach the transition end event handler to run only once
-			self.one(getBrowser().transitionEnd, function() {
-				// Call animationEnd using the passed properties
-				animationEnd(props, true);
-				done();
-			});
+			self.one(getBrowser().transitionEnd, finishAnimation);
 
 		});
 
 		return this;
 	};
+
+	return $;
 });

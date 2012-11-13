@@ -1,11 +1,13 @@
-steal('can/control',
+steal('jquery', 
+	'can/control',
 	'can/construct/proxy',
 	'can/construct/super',
-	'jquery',
 	'jquery/event/reverse',
 	'can/control/plugin',
-	'canui/util/scrollbar_width.js')
-.then('./position.js').then(function($){
+	'canui/util/scrollbar_width.js', 
+	'./position.js',
+	function($){
+
 	if(!$.event.special.move) {
 		$.event.reverse('move');
 	}
@@ -31,7 +33,7 @@ steal('can/control',
 	 * following code:
 	 *
 	 *		// Initialize the positionable plugin
-	 *		 new can.ui.layout.Positionable($("#tooltip"), {
+	 *		 new can.ui.Positionable($("#tooltip"), {
 	 *			my: "bottom",
 	 *			at: "top",
 	 *			of: $("#target")
@@ -61,9 +63,9 @@ steal('can/control',
 	 * following code:
 	 *
 	 *		// Position the autocomplete list below the search input
-	 *		new can.ui.layout.Positionable($("#autocomplete"), {
-	 *			my: "top left",
-	 *			at: "bottom left",
+	 *		new can.ui.Positionable($("#autocomplete"), {
+	 *			my: "left top",
+	 * 			at: "left bottom",
 	 *			of: $("#search")
 	 *		});
 	 *		
@@ -74,7 +76,7 @@ steal('can/control',
 	 *				$.ajax({
 	 *					url : "/search.php",
 	 *					data : el.val(),
-	 *					success : this.callback("updateResults")
+	 *					success : this.proxy("updateResults")
 	 *				});
 	 *			},
 	 *			"blur" : function() {
@@ -96,7 +98,7 @@ steal('can/control',
 	 *
 	 *
 	 * ## Demo
-	 * @demo canui/layout/positionable/positionable.html
+	 * @demo canui/positionable/positionable.html
 	 *
 	 * @param {Object} options Object literal describing how to position the
 	 * current element against another.
@@ -124,12 +126,11 @@ steal('can/control',
 	 *	in the format of `{ top: x, left: y }` to handle the positioning. If a
 	 *	`using` parameter is passed, the element won't be positioned
 	 *	automatically, but must be positioned by hand in the `using` callback.
-	 * - `hideWhenOfInvisible` - `{Boolean}` - hide element when `of` element is
+	 * - `hideWhenInvisible` - `{Boolean}` - hide element when `of` element is
 	 * not visible because of scrolling. If you set this to `true` make sure that
 	 * `of` element's parent that is scrollable has `position` set to `relative` or
 	 *`absolute`
 	 *
-	 * 
 	 * This plugin is built on top of the [jQuery UI Position Plugin](http://docs.jquery.com/UI/Position),
 	 * so you may refer to their documentation for more advanced usage.
 	 */
@@ -144,7 +145,7 @@ steal('can/control',
 			iframe: false,
 			of: window,
 			keep : false, //keeps it where it belongs,
-			hideWhenOfInvisible : false
+			hideWhenInvisible : false
 	 	},
 		
 		getScrollInfo: function(within) {
@@ -167,6 +168,7 @@ steal('can/control',
 	 	setup : function(element, options){
 	 		var controls = $(element).data('controls'),
 	 			pluginName = this.constructor._shortName;
+
 	 		if(controls && controls.length > 0){
 	 			for(var i = 0; i < controls.length; i++){
 	 				if(controls[i].constructor._shortName === pluginName){
@@ -174,11 +176,11 @@ steal('can/control',
 	 				}
 	 			}
 	 		}
+
 	 		this._super(element, options);
 	 	},
 
 		init : function(element, options) {
-			//if(this.element.length === 0) return;
 			this.element.css("position","absolute");
 			if(!this.options.keep){
 				// Remove element from it's parent only if this element _has_ parent.
@@ -186,17 +188,23 @@ steal('can/control',
 				if(this.element[0].parentNode){
 					this.element[0].parentNode.removeChild(this.element[0])
 				}
-				document.body.appendChild(this.element[0]);
-				
+
+				document.body.appendChild(this.element[0]);				
 			}
 		},
 
 		show : function(el, ev, position){
 			this.move.apply(this, arguments)
-			//clicks elsewhere should hide
 		},
 
 		move : function( el, ev, positionFrom ) {
+			// When combined with 'drag', this can fire
+			// causing errors when its goes to try to call
+			// methods on the Drag class rather than what its expecting
+			if($.Drag && positionFrom instanceof $.Drag) {
+				return false;
+			}
+			
 			var position = this.position.apply(this, arguments),
 				elem     = this.element,
 				options  = this.options;
@@ -212,7 +220,8 @@ steal('can/control',
 			if ( ! visible ) {
 				elem.css("opacity", 1).hide();
 			}
-			if(this.options.hideWhenOfInvisible){
+
+			if(this.options.hideWhenInvisible){
 				this.element.toggle(this.isOfVisible());
 			}
 		},
@@ -227,6 +236,7 @@ steal('can/control',
 				pos.left + of.width() > of.offsetParent().width()) {
 					return false;
 			} 
+
 			return true;
 		},
 
@@ -236,13 +246,16 @@ steal('can/control',
 		position : function(el, ev, positionFrom){
 			var options  = $.extend({},this.options);
 				 options.of= positionFrom || options.of;
+
 			if(!options.of)	return;
+
 			var target = $( options.of ),
 				collision = ( options.collision || "flip" ).split( " " ),
 				offset = options.offset ? options.offset.split( " " ) : [ 0, 0 ],
 				targetWidth,
 				targetHeight,
 				basePosition;
+
 			if ( options.of.nodeType === 9 ) {
 				targetWidth = target.width();
 				targetHeight = target.height();
@@ -259,15 +272,19 @@ steal('can/control',
 			} else if (options.of.top){
 				options.at = "left top";
 				targetWidth = targetHeight = 0;
-				basePosition = { top: options.of.top, left: options.of.left };
-				
+				basePosition = { top: options.of.top, left: options.of.left };	
+			} else if(target.is('path') || target.is('rect')) { 
+				//SVG elements have .width() and .height() of 0, so we have to use getBBox()
+				targetWidth = target[0].getBBox().width;
+				targetHeight = target[0].getBBox().height;
+				basePosition = target.offset();	
 			} else {
 				targetWidth = target.outerWidth();
 				targetHeight = target.outerHeight();
+
 				if(false){
-					var to = target.offset();
-					
-					var eo =this.element.parent().children(":first").offset();
+					var to = target.offset(),
+						eo =this.element.parent().children(":first").offset();
 					
 					basePosition = {
 						left: to.left - eo.left,
@@ -275,14 +292,14 @@ steal('can/control',
 					}
 				}else{
 					basePosition = target.offset();
-				}
-				
+				}			
 			}
 		
 			// force my and at to have valid horizontal and veritcal positions
 			// if a value is missing or invalid, it will be converted to center 
 			$.each( [ "my", "at" ], this.proxy( function( i, val ) {
 				var pos = ( options[val] || "" ).split( " " );
+
 				if ( pos.length === 1) {
 					pos = this.constructor.rhorizontal.test( pos[0] ) ?
 						pos.concat( [this.constructor.vdefault] ) :
@@ -290,6 +307,7 @@ steal('can/control',
 							[ this.constructor.hdefault ].concat( pos ) :
 							[ this.constructor.hdefault, this.constructor.vdefault ];
 				}
+
 				pos[ 0 ] = this.constructor.rhorizontal.test( pos[0] ) ? pos[ 0 ] : this.constructor.hdefault;
 				pos[ 1 ] = this.constructor.rvertical.test( pos[1] ) ? pos[ 1 ] : this.constructor.vdefault;
 				options[ val ] = pos;
@@ -305,6 +323,7 @@ steal('can/control',
 			if ( offset.length === 1 ) {
 				offset[ 1 ] = offset[ 0 ];
 			}
+
 			offset[ 1 ] = parseInt( offset[1], 10 ) || 0;
 		
 			if ( options.at[0] === "right" ) {
@@ -321,7 +340,6 @@ steal('can/control',
 		
 			basePosition.left += offset[ 0 ];
 			basePosition.top += offset[ 1 ];
-			
 			
 			var elem = this.element,
 				elemWidth = elem.outerWidth(),
@@ -345,8 +363,8 @@ steal('can/control',
 				if ( $.ui.position[ collision[i] ] ) {
 					var isEvent = ((options.of && options.of.preventDefault) != null),
 						within = $(isEvent || !options.of ? window : options.of),
-						marginLeft = parseInt( $.curCSS( elem[0], "marginLeft", true ) ) || 0,
-						marginTop = parseInt( $.curCSS( elem[0], "marginTop", true ) ) || 0;
+						marginLeft = parseInt( $.css( elem[0], "marginLeft", true ) ) || 0,
+						marginTop = parseInt( $.css( elem[0], "marginTop", true ) ) || 0;
 						
 					var scrollInfo = getScrollInfo(within);
 					$.ui.position[ collision[i] ][ dir ]( position, {
@@ -355,13 +373,13 @@ steal('can/control',
 						elem: elem,
 						within : within,
 						collisionPosition : {
-							marginLeft: parseInt( $.curCSS( elem[0], "marginLeft", true ) ) || 0,
-							marginTop: parseInt( $.curCSS( elem[0], "marginTop", true ) ) || 0
+							marginLeft: parseInt( $.css( elem[0], "marginLeft", true ) ) || 0,
+							marginTop: parseInt( $.css( elem[0], "marginTop", true ) ) || 0
 						},
 						collisionWidth: elemWidth + marginLeft +
-							( parseInt( $.curCSS( elem[0], "marginRight", true ) ) || 0 ) + scrollInfo.width,
+							( parseInt( $.css( elem[0], "marginRight", true ) ) || 0 ) + scrollInfo.width,
 						collisionHeight: elemHeight + marginTop +
-						( parseInt( $.curCSS( elem[0], "marginBottom", true ) ) || 0 ) + scrollInfo.height,
+						( parseInt( $.css( elem[0], "marginBottom", true ) ) || 0 ) + scrollInfo.height,
 						elemWidth: elemWidth,
 						elemHeight: elemHeight,
 						offset: offset,
@@ -370,6 +388,7 @@ steal('can/control',
 					});
 				}
 			});
+
 			return position;
 		},
 
@@ -377,7 +396,7 @@ steal('can/control',
 		 * Move element when the `of` element is moving
 		 */
 		"{of} move" : function(el, ev){
-			clearTimeout(this._finalMove)
+			clearTimeout(this._finalMove);
 			this.move(this.element, ev, el);
 			this._finalMove = setTimeout(this.proxy(function(){
 				this.move(this.element, ev, el);

@@ -1,4 +1,4 @@
-steal('can/control', 'can/view').then(function( $ ) {
+steal('can/util', 'can/control', 'can/view',function(can) {
 	var URI = steal.URI || steal.File;
 	
 	can.Control.getFolder = function() {
@@ -85,4 +85,5 @@ steal('can/control', 'can/view').then(function( $ ) {
 		return can.view(view, data, helpers); //what about controllers in other folders?
 	};
 
+	return can;
 });

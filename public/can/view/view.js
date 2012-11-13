@@ -1,6 +1,4 @@
-steal("can/util")
-.then(function( $ ) {
-
+steal("can/util", function( can ) {
 	// ## view.js
 	// `can.view`  
 	// _Templating abstraction._
@@ -15,10 +13,13 @@ steal("can/util")
 	$view = can.view = function(view, data, helpers, callback){
 		// Get the result.
 		var result = $view.render(view, data, helpers, callback);
+		if(isFunction(result))  {
+			return result;
+		}
 		if(can.isDeferred(result)){
 			return result.pipe(function(result){
 				return $view.frag(result);
-			})
+			});
 		}
 		
 		// Convert it into a dom frag.
@@ -30,6 +31,7 @@ steal("can/util")
 		frag: function(result, parentNode ){
 			return $view.hookup( $view.fragment(result), parentNode );
 		},
+
 		// simply creates a frag
 		// this is used internally to create a frag
 		// insert it
@@ -38,50 +40,53 @@ steal("can/util")
 			var frag = can.buildFragment(result,document.body);
 			// If we have an empty frag...
 			if(!frag.childNodes.length) { 
-				frag.appendChild(document.createTextNode(''))
+				frag.appendChild(document.createTextNode(''));
 			}
 			return frag;
 		},
-    // Convert a path like string into something that's ok for an `element` ID.
-    toId : function( src ) {
-      return can.map(src.toString().split(/\/|\./g), function( part ) {
-        // Dont include empty strings in toId functions
-        if ( part ) {
-          return part;
-        }
-      }).join("_");
-    },
+
+		// Convert a path like string into something that's ok for an `element` ID.
+		toId : function( src ) {
+			return can.map(src.toString().split(/\/|\./g), function( part ) {
+				// Dont include empty strings in toId functions
+				if ( part ) {
+					return part;
+				}
+			}).join("_");
+		},
+		
 		hookup: function(fragment, parentNode ){
 			var hookupEls = [],
 				id, 
-				func, 
-				el,
-				i=0;
+				func;
 			
 			// Get all `childNodes`.
 			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, function(node){
 				if(node.nodeType === 1){
-					hookupEls.push(node)
-					hookupEls.push.apply(hookupEls, can.makeArray( node.getElementsByTagName('*')))
+					hookupEls.push(node);
+					hookupEls.push.apply(hookupEls, can.makeArray( node.getElementsByTagName('*')));
 				}
 			});
-			// Filter by `data-view-id` attribute.
-			for (; el = hookupEls[i++]; ) {
 
+			// Filter by `data-view-id` attribute.
+			can.each( hookupEls, function( el ) {
 				if ( el.getAttribute && (id = el.getAttribute('data-view-id')) && (func = $view.hookups[id]) ) {
 					func(el, parentNode, id);
 					delete $view.hookups[id];
 					el.removeAttribute('data-view-id');
 				}
-			}
+			});
+
 			return fragment;
 		},
+		
 		/**
 		 * @attribute hookups
 		 * @hide
 		 * A list of pending 'hookups'
 		 */
 		hookups: {},
+
 		/**
 		 * @function hook
 		 * Registers a hookup function that can be called back after the html is 
@@ -102,13 +107,16 @@ steal("can/util")
 			$view.hookups[++hookupId] = cb;
 			return " data-view-id='"+hookupId+"'";
 		},
+
 		/**
 		 * @attribute cached
 		 * @hide
 		 * Cached are put in this object
 		 */
 		cached: {},
+
 		cachedRenderers: {},
+
 		/**
 		 * @attribute cache
 		 * By default, views are cached on the client.  If you'd like the
@@ -119,6 +127,7 @@ steal("can/util")
 		 *
 		 */
 		cache: true,
+
 		/**
 		 * @function register
 		 * Registers a template engine to be used with 
@@ -165,7 +174,9 @@ steal("can/util")
 		register: function( info ) {
 			this.types["." + info.suffix] = info;
 		},
+
 		types: {},
+
 		/**
 		 * @attribute ext
 		 * The default suffix to use if none is provided in the view's url.  
@@ -176,6 +187,7 @@ steal("can/util")
 		 *
 		 */
 		ext: ".ejs",
+
 		/**
 		 * Returns the text that 
 		 * @hide 
@@ -184,6 +196,7 @@ steal("can/util")
 		 * @param {Object} src
 		 */
 		registerScript: function() {},
+
 		/**
 		 * @hide
 		 * Called by a production script to pre-load a renderer function
@@ -192,6 +205,7 @@ steal("can/util")
 		 * @param {Function} renderer
 		 */
 		preload: function( ) {},
+
 		/**
 		 * @function render
 		 * `can.view.render(view, data, [helpers], callback)` returns the rendered markup produced by the corresponding template
@@ -234,11 +248,10 @@ steal("can/util")
 				callback = helpers;
 				helpers = undefined;
 			}
-	
+
 			// See if we got passed any deferreds.
 			var deferreds = getDeferreds(data);
-	
-	
+
 			if ( deferreds.length ) { // Does data contain any deferreds?
 				// The deferred that resolves into the rendered content...
 				var deferred = new can.Deferred();
@@ -268,11 +281,13 @@ steal("can/util")
 							}
 						}
 					}
+
 					// Get the rendered result.
 					result = renderer(data, helpers);
 	
 					// Resolve with the rendered view.
 					deferred.resolve(result); 
+
 					// If there's a `callback`, call it back with the result.
 					callback && callback(result);
 				});
@@ -293,7 +308,7 @@ steal("can/util")
 					response = deferred;
 					// And fire callback with the rendered result.
 					deferred.then(function( renderer ) {
-						callback(renderer(data, helpers))
+						callback(data ? renderer(data, helpers) : renderer);
 					})
 				} else {
 					// if the deferred is resolved, call the cached renderer instead
@@ -305,13 +320,14 @@ steal("can/util")
 					// we use the cached renderer.
 					// We also add __view_id on the deferred so we can look up it's cached renderer.
 					// In the future, we might simply store either a deferred or the cached result.
-					if(deferred.isResolved() && deferred.__view_id  ){
-						return $view.cachedRenderers[ deferred.__view_id ](data, helpers)
+					if(deferred.state() === "resolved" && deferred.__view_id  ){
+						var currentRenderer = $view.cachedRenderers[ deferred.__view_id ];
+						return data ? currentRenderer(data, helpers) : currentRenderer;
 					} else {
 						// Otherwise, the deferred is complete, so
 						// set response to the result of the rendering.
 						deferred.then(function( renderer ) {
-							response = renderer(data, helpers);
+							response = data ? renderer(data, helpers) : renderer;
 						});
 					}
 					
@@ -319,15 +335,32 @@ steal("can/util")
 	
 				return response;
 			}
+		},
+
+		registerView: function( id, text, type, def ) {
+			// Get the renderer function.
+			var func = (type || $view.types[$view.ext]).renderer(id, text);
+			def = def || new can.Deferred();
+			
+			// Cache if we are caching.
+			if ( $view.cache ) {
+				$view.cached[id] = def;
+				def.__view_id = id;
+				$view.cachedRenderers[id] = func;
+			}
+
+			// Return the objects for the response's `dataTypes`
+			// (in this case view).
+			return def.resolve(func);
 		}
 	});
 
 	// Makes sure there's a template, if not, have `steal` provide a warning.
 	var	checkText = function( text, url ) {
 			if ( ! text.length ) {
-				//@steal-remove-start
+				//!steal-remove-start
 				steal.dev.log("There is no template or an empty template at " + url);
-				//@steal-remove-end
+				//!steal-remove-end
 				throw "can.view: No template or empty template:" + url;
 			}
 		},
@@ -336,8 +369,6 @@ steal("can/util")
 		// `async` - If the ajax request should be asynchronous.  
 		// Returns a deferred.
 		get = function( url, async ) {
-			
-			
 			var suffix = url.match(/\.[\w\d]+$/),
 			type, 
 			// If we are reading a script element for the content of the template,
@@ -348,24 +379,7 @@ steal("can/util")
 			// the url for the template.
 			id, 
 			// The ajax request used to retrieve the template content.
-			jqXHR, 
-			// Used to generate the response.
-			response = function( text, d ) {
-				// Get the renderer function.
-				var func = type.renderer(id, text);
-				d = d || new can.Deferred();
-				
-				// Cache if we are caching.
-				if ( $view.cache ) {
-					$view.cached[id] = d;
-					d.__view_id = id;
-					$view.cachedRenderers[id] = func;
-				}
-				d.resolve(func);
-				// Return the objects for the response's `dataTypes`
-				// (in this case view).
-				return d;
-			};
+			jqXHR;
 
 			//If the url has a #, we assume we want to use an inline template
 			//from a script element and not current page's HTML
@@ -388,15 +402,15 @@ steal("can/util")
 			}
 	
 			// Convert to a unique and valid id.
-			id = can.view.toId(url);
+			id = $view.toId(url);
 	
 			// If an absolute path, use `steal` to get it.
 			// You should only be using `//` if you are using `steal`.
 			if ( url.match(/^\/\//) ) {
 				var sub = url.substr(2);
 				url = ! window.steal ? 
-					"/" + sub : 
-					steal.root.mapJoin(sub);
+					sub :
+					steal.config().root.mapJoin(sub);
 			}
 	
 			// Set the template engine type.
@@ -410,7 +424,7 @@ steal("can/util")
 			// Otherwise if we are getting this from a `<script>` element.
 			} else if ( el ) {
 				// Resolve immediately with the element's `innerHTML`.
-				return response(el.innerHTML);
+				return $view.registerView(id, el.innerHTML, type);
 			} else {
 				// Make an ajax request for text.
 				var d = new can.Deferred();
@@ -425,7 +439,7 @@ steal("can/util")
 					success: function( text ) {
 						// Make sure we got some text back.
 						checkText(text, url);
-						response(text, d)
+						$view.registerView(id, text, type, d)
 					}
 				});
 				return d;
@@ -457,29 +471,33 @@ steal("can/util")
 	
 	if ( window.steal ) {
 		steal.type("view js", function( options, success, error ) {
-			var type = can.view.types["." + options.type],
-				id = can.view.toId(options.rootSrc);
-
-			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "').then(function($){" + "can.view.preload('" + id + "'," + options.text + ");\n})";
+			var type = $view.types["." + options.type],
+				id = $view.toId(options.id);
+			/**
+			 * should return something like steal("dependencies",function(EJS){
+			 * 	 return can.view.preload("ID", options.text)
+			 * })
+			 */
+			options.text = "steal('" + (type.plugin || "can/view/" + options.type) + "',function(can){return " + "can.view.preload('" + id + "'," + options.text + ");\n})";
 			success();
 		})
 	}
 
 	//!steal-pluginify-remove-start
-	can.extend(can.view, {
+	can.extend($view, {
 		register: function( info ) {
 			this.types["." + info.suffix] = info;
 
 			if ( window.steal ) {
 				steal.type(info.suffix + " view js", function( options, success, error ) {
-					var type = can.view.types["." + options.type],
-						id = can.view.toId(options.rootSrc+'');
+					var type = $view.types["." + options.type],
+						id = $view.toId(options.id+'');
 
 					options.text = type.script(id, options.text)
 					success();
 				})
 			}
-			can.view[info.suffix] = function(id, text){
+			$view[info.suffix] = function(id, text){
 				$view.preload(id, info.renderer(id, text) )
 			}
 		},
@@ -487,12 +505,16 @@ steal("can/util")
 			return "can.view.preload('" + id + "'," + $view.types["." + type].script(id, src) + ");";
 		},
 		preload: function( id, renderer ) {
-			can.view.cached[id] = new can.Deferred().resolve(function( data, helpers ) {
+			$view.cached[id] = new can.Deferred().resolve(function( data, helpers ) {
 				return renderer.call(data, data, helpers);
 			});
+			return function(){
+				return $view.frag(renderer.apply(this,arguments))
+			};
 		}
 
 	});
 	//!steal-pluginify-remove-end
-	
+
+	return can;
 });

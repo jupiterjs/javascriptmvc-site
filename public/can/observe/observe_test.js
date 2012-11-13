@@ -1,3 +1,4 @@
+(function() {
 module('can/observe')
 
 test("Basic Observe",9,function(){
@@ -361,3 +362,125 @@ test("Array accessor methods", 11, function() {
 		}
 	});
 });
+
+test("instantiating can.Observe.List of correct type", function() {
+	var Ob = can.Observe({
+		getName : function() {
+			return this.attr('name');
+		}
+	});
+
+	var list = new Ob.List([{
+		name : 'Tester'
+	}]);
+
+	equal(list.length, 1, 'List length is correct');
+	ok(list[0] instanceof can.Observe, 'Initialized list item converted to can.Observe');
+	ok(list[0] instanceof Ob, 'Initialized list item converted to Ob');
+	equal(list[0].getName(), 'Tester', 'Converted to extended Observe instance, could call getName()');
+	list.push({
+		name : 'Another test'
+	});
+	equal(list[1].getName(), 'Another test', 'Pushed item gets converted as well');
+});
+
+
+test("removing an already missing attribute does not cause an event", function(){
+	var ob = new can.Observe();
+	ob.bind("change", function(){
+		ok(false)
+	})
+	ob.removeAttr("foo")
+});
+
+test("Only plain objects should be converted to Observes", function() {
+	var ob = new can.Observe();
+	ob.attr('date', new Date());
+	ok(ob.attr('date') instanceof Date, 'Date should not be converted');
+
+	var selected = can.$('body');
+	ob.attr('sel', selected);
+	if(can.isArray(selected)) {
+		ok(ob.attr('sel')  instanceof can.Observe.List, 'can.$() as array converted into Observe.List');
+	} else {
+		equal(ob.attr('sel'), selected, 'can.$() should not be converted');
+	}
+
+	ob.attr('element', document.getElementsByTagName('body')[0]);
+	equal(ob.attr('element'), document.getElementsByTagName('body')[0], 'HTMLElement should not be converted');
+
+	ob.attr('window', window);
+	equal(ob.attr('window'), window, 'Window object should not be converted');
+});
+
+test("bind on deep properties",function(){
+	expect(2)
+	var ob = new can.Observe({name: {first: "Brian"}});
+	ob.bind("name.first",function(ev, newVal, oldVal){
+		equal(newVal,"Justin");
+		equal(oldVal,"Brian")
+	});
+	
+	ob.attr('name.first',"Justin")
+	
+});
+
+test("startBatch and stopBatch and changed event", function(){
+	
+	var ob = new can.Observe({name: {first: "Brian"}, age: 29}),
+		bothSet = false,
+		changeCallCount = 0,
+		changedCalled = false;
+	
+	
+	ob.bind("change", function(){
+		ok(bothSet, "both properties are set before the changed event was called")
+		ok(!changedCalled, "changed not called yet")
+		changeCallCount++;
+	})
+	// The following tests how changed events should fire
+	/*ob.bind("changed", function(ev, attrs){
+		equal(changeCallCount, 2, "two change events")
+		
+		equal(attrs.length, 2, "changed events include bubbling change events");
+		changedCalled = true;
+	})*/
+	stop();
+	can.Observe.startBatch(function(){
+		ok(true, "batch callback called")
+	});
+	
+	ob.attr('name.first','Justin')
+	setTimeout(function(){
+		ob.attr('age',30);
+		bothSet = true;
+		can.Observe.stopBatch();
+		start();
+	},1)
+	
+	
+	
+});
+
+test("nested observe attr", function() {
+	var person1 = new can.Observe( { name: {first: 'Josh' } } ),
+		person2 = new can.Observe( { name: {first: 'Justin', last: 'Meyer' } } ),
+		count = 0;
+
+	person1.bind("change", function(ev, attr, how, val, old){
+		equals(count, 0, 'change called once')
+		count++;
+		equals(attr, 'name');
+		equals(val.attr('first'), 'Justin');
+		equals(val.attr('last'), 'Meyer');
+	})
+
+	person1.attr('name', person2.attr('name'));
+
+	// Attempt to set the name attribute again, should not
+	// cause any triggers.
+	person1.attr('name', person2.attr('name'));
+})
+
+
+})();

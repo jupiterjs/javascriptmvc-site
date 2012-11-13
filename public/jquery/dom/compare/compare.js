@@ -1,4 +1,4 @@
-steal('jquery/dom').then(function($){
+steal('jquery', function($) {
 
 /**
  * @function jQuery.fn.compare
@@ -71,4 +71,5 @@ jQuery.fn.compare = function(element){ //usually
 	return number;
 }
 
+return $;
 });

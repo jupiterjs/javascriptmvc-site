@@ -1,6 +1,6 @@
-(function($){
+steal('jquery', './core.js', function($, FuncUnit) {
 	
-	if(steal.options.browser === "phantomjs"){
+	if(steal.config().browser === "phantomjs"){
 		FuncUnit.frameMode = true;
 	}
 	
@@ -20,10 +20,6 @@ var confirms = [],
 	lookingForNewDocument = false,
 	urlWithoutHash = function(url){
 		return url.replace(/\#.*$/, "");
-	},
-	absolutize = function(url){
-		var f = steal.File(url);
-		return f.isCrossDomain() ? f.path : f.join(steal.root, true);
 	},
 	// returns true if url matches current window's url
 	isCurrentPage = function(url){
@@ -217,10 +213,9 @@ $.extend(FuncUnit,{
 	 */
 	getAbsolutePath: function( path ) {
 		if ( /^\/\//.test(path) ){
-			return steal.File(absolutize(steal.root.path)).join(path.substr(2)) + '';
-		} else {
-			return absolutize(path);
+			path = path.substr(2);
 		}
+		return steal.config().root.join(path)+''
 	},
 	/**
 	 * @attribute win
@@ -353,5 +348,6 @@ $.extend(FuncUnit,{
 	$(window).unload(function(){
 		FuncUnit.win && FuncUnit.win.close();
 	});
-	
-})(window.jQuery || window.FuncUnit.jQuery)
+
+	return FuncUnit;
+});

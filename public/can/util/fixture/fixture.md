@@ -20,7 +20,7 @@ a function.  The following intercepts updating tasks at
 `/tasks/ID.json` and responds with updated data:
 
     can.fixture("PUT /tasks/{id}.json",
-      function(original, settings, respondWith){
+      function(original, respondWith, settings){
          respondWith({ updatedAt : new Date().getTime() });
       })
 
@@ -36,11 +36,19 @@ There are different ways to lookup static and dynamic fixtures.
 Static fixtures use an alternate url as the response of the Ajax request.
 
     // looks in fixtures/tasks1.json relative to page
-    can.fixture("tasks/1", "fixtures/task1.json");
+    can.fixture("tasks", "fixtures/tasks.json");
 
     // looks absolute to the page
-    can.fixture("tasks/1", "//fixtures/task1.json");
-    
+    can.fixture("tasks", "//fixtures/tasks.json");
+
+Static fixtures can also be templated, which means that parameters will be
+used in the fixture filename:
+
+    // looks in fixtures/tasks1.json relative to page
+    can.fixture("tasks/{id}", "fixtures/tasks.{id}.json");
+
+A request to `tasks/42` will look for a `fixtures/tasks.42.json` file.
+
 ## Dynamic Fixtures
 
 Dynamic Fixtures are functions that get the details of the Ajax request and return the result of the mocked service
@@ -49,13 +57,13 @@ request from your server.
 For example, the following returns a successful response with JSON data from the server:
 
     can.fixture("/foobar.json",
-      function(original, settings, respondWith){
+      function(original, respondWith, settings){
         respondWith(200, "success", { json: {foo: "bar" } }, {})
       })
 
 The fixture function has the following signature:
 
-    function( originalOptions, options, respondWith) {
+    function( originalOptions, respondWith, options) {
       respond(status, statusText, responses, responseHeaders);
     }
 
@@ -63,26 +71,26 @@ where the fixture function is called with:
 
   - `originalOptions` - are the options provided to the ajax method, unmodified,
     and thus, without defaults from ajaxSettings
-  - `options` - are the request options
   - `respondWith` - the response callback. It can be called with:
       - `status` - the HTTP status code of the response.
       - `statusText` - the status text of the response
       - `responses` - a map of dataType/value that contains the responses for each data format supported
       - `responseHeaders` - response headers
+  - `options` - are the request options
   - `headers` - a map of key/value request headers
 
 However, can.fixture handles the common case where you want a successful response with JSON data.
 The previous can be written like:
 
     can.fixture("/foobar.json",
-      function(original, settings, respondWith){
+      function(original, respondWith, settings){
         respondWith({ foo: "bar" });
       })
 
 Since `respondWith` is called asynchronously you can also set a custom fixture timeout like this:
 
     can.fixture("/foobar.json",
-    function(original, settings, respondWith){
+    function(original, respondWith, settings){
         setTimeout(function() {
           respondWith({ foo: "bar" });
         }, 1000);
@@ -91,13 +99,13 @@ Since `respondWith` is called asynchronously you can also set a custom fixture t
 If you want to return an array of data respond like this:
 
     can.fixture("/tasks.json",
-      function(original, settings, respondWith){
+      function(original, respondWith, settings){
         respondWith([ "first", "second", "third"]);
       })
 
 __Note:__ A fixture function can also return its response directly like this:
 
-    can.fixture("/foobar.json", function(original, settings){
+    can.fixture("/foobar.json", function() {
       return { foo: "bar" };
     })
 
@@ -121,14 +129,14 @@ The following example simulates services that get and update 100 todos.
       }
     }
     can.fixture("GET /todos/{id}",
-      function(original, settings, respondWith){
+      function(original, respondWith, settings){
         // return the JSON data
         // notice that id is pulled from the url and added to data
         respondWith(todos[orig.data.id]);
       })
 
     can.fixture("PUT /todos/{id}",
-      function(original, settings, respondWith){
+      function(original, respondWith, settings){
         // update the todo's data
         can.extend(todos[orig.data.id], orig.data );
         respondWith({});
@@ -142,7 +150,7 @@ The following simulates an unauthorized request
 to `/foo`.
 
     can.fixture("/foo",
-      function(original, settings, respondWith) {
+      function(original, respondWith, settings) {
         respondWith(401,"{type: 'unauthorized'}");
       });
 
@@ -227,7 +235,7 @@ have <code>todo/fixtures/fixtures.js</code> look like:
           type: 'post',
           url: '/services/todos.json'
         },
-        function(original, settings, respondWith){
+        function(original, respondWith, settings){
             respondWith({
                 id: Math.random(),
                 name: settings.data.name

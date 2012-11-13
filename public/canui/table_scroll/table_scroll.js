@@ -1,9 +1,8 @@
-steal('can/control',
+steal('jquery', 'can/control',
 	'can/control/plugin',
 	'canui/fills',
 	'canui/util/scrollbar_width.js',
-	'jquery/event/resize')
-.then(function ($) {
+	'jquery/event/resize', function ($) {
 
 	// helpers
 	var setWidths = function (cells, firstWidths) {
@@ -31,19 +30,13 @@ steal('can/control',
 
 			},
 			init : function () {
-				// add a filler ...
-				var options = {};
-				if (this.options.parent) {
-					options.parent = this.options.parent;
-					options.fill = this.options.fill;
-				}
-				this.element.fills(options).css('overflow', 'auto');
+				this.element.fills(this.options.parent).css('overflow', 'auto');
 
 			},
 			// listen on resize b/c we want to do this right away
 			// in case anyone else cares about the table's
 			// dimensions (like table scroll)
-			resize : function (ev) {
+			resize : function (el, ev) {
 				var table = this.$.table,
 					el = this.element[0];
 				//let the table flow naturally
@@ -54,7 +47,6 @@ steal('can/control',
 				} else {
 					table.outerWidth(this.element.width())
 				}
-
 			}
 		});
 
@@ -81,6 +73,7 @@ steal('can/control',
 			this.$.body = this.$.scrollBody.parent();
 
 			can.Control.prototype.setup.call(this, this.$.body.parent()[0], options);
+			// this.$.container = this.$.table.parents('.' + this.constructor.pluginName);
 			// We have to add the control to the original table element as well
 			(arr = can.data(this.$.table,"controls")) || can.data(this.$.table,"controls",arr = []);
 			arr.push(this);
@@ -119,9 +112,6 @@ steal('can/control',
 				this._addSpacer('tfoot');
 			}
 
-
-			// add representations of the header cells to the bottom of the table
-
 			// fill up the parent
 			// make the scroll body fill up all other space
 			if (this.options.fill) {
@@ -130,29 +120,45 @@ steal('can/control',
 				});
 			}
 
-			var thead = this.$.head;
+			// add representations of the header cells to the bottom of the table
+			var scrolls = $(this.$.head).add(this.$.foot);
 			this.on(this.$.scrollBody, 'scroll', function (ev) {
-				thead.scrollLeft($(ev.target).scrollLeft());
+				scrolls.scrollLeft($(ev.target).scrollLeft());
 			});
 			this.on(this.$.table, 'resize', 'resize');
 
-			this.updateCols();
+			this.update();
+		},
+
+		update : function(options) {
+			if (this.$.foot) {
+				this._addSpacer('tfoot');
+			}
+			if (this.$.head) {
+				this._addSpacer('thead');
+			}
+
+			// Triggering the resize event needs a slight delay
+			// TODO figure how this would work without
+			setTimeout(can.proxy(function() {
+				this.element.trigger('resize');
+			}, this), 10);
 		},
 
 		_wrapWithTable : function (i, tag) {
 			// save it
-			this.$[tag] = this.$.table.children(tag);
-			if (this.$[tag].length && this.$[tag].find('td, th').length) {
-				var table = $('<table>'), parent = this.$[tag].parent();
+			var el = this.$[tag] = this.$.table.children(tag);
+			if (el.length && el.find('td, th').length) {
+				var table = $('<table>'), parent = el.parent();
 				// We want to keep classes and styles
 				table.attr('class', parent.attr('class'));
 				table.attr('style', parent.attr('style'));
 
 				// remove it (w/o removing any widgets on it)
-				this.$[tag][0].parentNode.removeChild(this.$[tag][0]);
+				// el[0].parentNode.removeChild(el);
 
 				//wrap it with a table and save the table
-				this.$[tag + "Table"] = this.$.thead.wrap(table).parent()
+				this.$[tag + "Table"] = el.wrap(table).parent();
 			}
 		},
 
@@ -165,7 +171,7 @@ steal('can/control',
 		 *
 		 * If you need to change the content of the table, you can
 		 * use elements for access.  If you change the content, make sure
-		 * you call `updateColumns()`.
+		 * you call `update()`.
 		 *
 		 * @return {Object} an object like:
 		 *
@@ -181,7 +187,8 @@ steal('can/control',
 				header : this.$.thead,
 				footer : this.$.tfoot,
 				body : this.$.body,
-				scrollBody : this.$.scrollBody
+				scrollBody : this.$.scrollBody,
+				container : this.element
 			};
 		},
 
@@ -191,9 +198,14 @@ steal('can/control',
 		 *
 		 * Returns all actual rows (excluding any spacers).
 		 *
+		 * @param {Collection} [replaceRows] If passed, all rows will be replaced with the given rows.
 		 * @return {can.$) The content elements of the table body without any spacers.
 		 */
-		rows : function() {
+		rows : function(replaceRows) {
+			if(replaceRows) {
+				this.rows().remove();
+				this.$.tbody.prepend(replaceRows);
+			}
 			return this.$.tbody.children(":not([data-spacer])");
 		},
 
@@ -234,40 +246,29 @@ steal('can/control',
 				$td.css({
 					"padding-top" : 0,
 					"padding-bottom" : 0,
+					"border-top" : 'none',
+					"border-bottom" : 'none',
 					margin : 0,
-					width : ""
+					width : ''
 				}) // If padding is removed from the cell sides, layout might break!
 				$spacer.outerWidth(width + 2).css({
 					"float" : "none",
 					"visibility" : "hidden",
 					height : "1px"
-				}).html("")
+				}).html("");
 			})
 			this.$.spacer = spacer;
-		},
-
-		updateCols : function(resize) {
-			if (this.$.foot) {
-				this._addSpacer('tfoot');
-			}
-			if (this.$.head) {
-				this._addSpacer('thead');
-			}
-
-			if(resize) {
-				this.resize();
-			}
 		},
 
 		/**
 		 * This is either triggered by the `resize` event or should be called manually when
 		 * the table content or dimensions change.
 		 */
-		resize : function () {
+		resize : function (el, ev) {
 			var body = this.$.body,
-
-			// getting the outer widths is the most expensive thing
-				firstWidths = this.$.tbody.find("tr:first:not([data-spacer])").children().map(function () {
+				children = body.find("tr:first:not([data-spacer])").children(),
+				// getting the outer widths is the most expensive thing
+				firstWidths = children.map(function () {
 					return $(this).outerWidth()
 				}),
 
@@ -296,7 +297,7 @@ steal('can/control',
 		},
 
 		destroy : function () {
-			var controls = can.data(this.element,"controls");
+			var controls = can.data(this.$.table,"controls");
 			controls.splice(can.inArray(this, controls),1);
 			delete this.$;
 			can.Control.prototype.destroy.call(this);

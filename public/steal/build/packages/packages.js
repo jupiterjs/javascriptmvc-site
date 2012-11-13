@@ -2,7 +2,7 @@
 // go through and mark everything in 'core' as packaged
 
 // indicate which sub-packages each other app needs
-// steal({ src: 'packagea', needs: 'abc.js'})
+// steal({ id: 'packagea', needs: 'abc.js'})
 
 // TODO
 //  - make it able to work with specific files
@@ -10,7 +10,7 @@
 if(!steal.build){
 	steal.build = {};	
 }
-steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
+steal('steal','steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 
 	var apps = steal.build.apps,
 		build = steal.build, 
@@ -35,8 +35,9 @@ steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 		buildOptions.depth = buildOptions.depth || Infinity;
 		// open the core app
 		apps._open(app, options, function(options, opener){
+			
 			// the folder are build files will go in
-			var to = buildOptions.to || ""+s.URI(opener.firstSteal.options.rootSrc).dir(),
+			var to = buildOptions.to || ""+s.URI(opener.firstSteal.options.id).dir(),
 				appNamesToName = {},
 				usedNames = {},
 				// a helper function that translates between an 
@@ -104,7 +105,7 @@ steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 					// the object that we will pass to steal.p.make
 					// like:
 					//  {
-					//    package1 : {src: package1, needs: [shared1]}
+					//    package1 : {id: package1, needs: [shared1]}
 					//  }
 					// this is used so when the package is stolen,
 					// it will load anything it needs before it
@@ -149,9 +150,9 @@ steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 					}
 					
 					sharing.files.forEach(function(f){
-						s.print("  + "+f.stealOpts.rootSrc)
+						s.print("  + "+f.stealOpts.id)
 						if(f.stealOpts.buildType == 'js'){
-							has.push(f.stealOpts.rootSrc+'')
+							has.push(f.stealOpts.id+'')
 						}
 					})
 					s.print(" ")
@@ -160,7 +161,7 @@ steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 					
 					// make this steal instance
 					makes[packageName+".js"] = {
-						src: packageName+".js",
+						id: packageName+".js",
 						needs :[],
 						has : has
 					}
@@ -171,7 +172,7 @@ steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 						makes[packageName+".js"].needs.push(packageName+".css")
 						// make the css
 						makes[packageName+".css"] = {
-							src: packageName+".css",
+							id: packageName+".css",
 							has: pack.css.srcs
 						};
 						s.URI(packageName+".css").save( filterCode(pack.css.code, 'css') );
@@ -227,7 +228,7 @@ steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 				var makeCode = [],
 					mapCode;
 				for(name in makes) {
-					makeCode.push("Resource.make(",
+					makeCode.push("steal.make(",
 						s.toJSON(makes[name]),
 						");")
 				}
@@ -239,8 +240,9 @@ steal('steal/build/open','steal/build/apps','steal/get/json.js',function(s){
 				}
 			});
 		});
-	}
-	s.extend(packages,{
+	};
+
+	steal.extend(packages,{
 		/**
 		 * Flattens the list of shares until each script has a minimal depth
 		 * @param {Object} shares

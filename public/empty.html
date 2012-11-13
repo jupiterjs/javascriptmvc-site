@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+
+<div>Test</div>
+
+<script type="text/javascript" src="steal/steal.js"></script>
+<script type="text/javascript">
+  steal('can/control', 'can/view/ejs').then(function() {
+    console.log(steal.rootSrc);
+  })
+</script>
+</body>
+</html>

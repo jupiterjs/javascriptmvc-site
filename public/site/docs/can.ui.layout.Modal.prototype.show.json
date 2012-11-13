@@ -1,1 +1,0 @@
-c({"name": "can.ui.layout.Modal.prototype.show", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.layout.Modal.prototype"], "comment": "<p>Show modal element and overlay if overlay exists</p>", "src": "canui/layout/modal/modal.js", "line": 192, "children": []})

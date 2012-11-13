@@ -1,1 +1,0 @@
-c({"name": "can.ui.data.Tree.prototype", "type": "prototype", "parents": ["can.ui.data.Tree"], "comment": "", "src": "canui/data/tree/tree.js", "line": 45, "children": ["can.ui.data.Tree.prototype.elFor", "can.ui.data.Tree.prototype.toggleFor", "can.ui.data.Tree.prototype.iconFor", "can.ui.data.Tree.prototype.containerFor"]})

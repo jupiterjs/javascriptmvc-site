@@ -1,1 +1,0 @@
-c({"name": "jQuery.fn.can_ui_layout_fit", "params": {"options": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "options"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "", "parents": ["canui"], "src": "canui/layout/fit/fit.js", "line": 203, "children": []})

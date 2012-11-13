@@ -1,1 +1,0 @@
-c({"name": "win", "type": "attribute", "comment": "<p>Use this to refer to the window of the application page.</p>\n\n<pre><code class='javascript'>S(S.window).innerWidth(function(w){\n  ok(w > 1000, \"window is more than 1000 px wide\")\n})</code></pre> ", "src": "funcunit/browser/open.js", "line": 224, "children": []})

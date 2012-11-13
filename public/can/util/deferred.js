@@ -1,4 +1,4 @@
-steal(function(){
+steal('can/util/can.js',function(can){
 
 	// deferred.js
 	// ---------
@@ -121,6 +121,17 @@ steal(function(){
 			return this;
 		},
 
+		state : function() {
+			switch(this._status) {
+				case 'rs':
+					return 'resolved';
+				case 'rj':
+					return 'rejected';
+				default:
+					return 'pending';
+			}
+		},
+
 		isResolved : function() {
 			return this._status === "rs";
 		},
@@ -150,4 +161,6 @@ steal(function(){
 			return this;
 		}
 	});
+
+	return can;
 })

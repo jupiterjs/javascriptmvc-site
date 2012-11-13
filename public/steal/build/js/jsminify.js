@@ -1,4 +1,4 @@
-steal('steal/parse',function(steal){
+steal('steal','steal/parse',function(steal, parse){
 	
 	var js = steal.build.js;
 	
@@ -6,7 +6,7 @@ steal('steal/parse',function(steal){
 	// removes  dev comments from text
 	js.clean = function( text, file ) {
 		var parsedTxt = String(java.lang.String(text)
-			.replaceAll("(?s)\/\/@steal-remove-start(.*?)\/\/@steal-remove-end", ""));
+			.replaceAll("(?s)\/\/!steal-remove-start(.*?)\/\/!steal-remove-end", ""));
 		
 		// the next part is slow, try to skip if possible
 		// if theres not a standalone steal.dev, skip
@@ -22,7 +22,7 @@ steal('steal/parse',function(steal){
 			position;
 
 		try{
-			p = steal.parse(parsedTxt);
+			p = parse(parsedTxt);
 		} catch(e){
 			print("Parsing problem");
 			print(e);
@@ -51,15 +51,19 @@ steal('steal/parse',function(steal){
 	 *   - quiet - should the compression happen w/o errors
 	 *   - compressor - which minification engine, defaults to localClosure
 	 *   - currentLineMap - a map of lines to JS files, used for error reporting when minifying
-	 *     several files at once.
+	 *     several files at once. EX:
+	 * 
+	 *         {0: "foo.js", 100: "bar.js"}
 	 */
 	js.minify = function(source, options){		
+		// return source;
 		// get the compressor
 		options = options || {};
 		var compressor = js.minifiers[options.compressor || "localClosure"]()
 		
 		if(source){
-			 return ""+compressor( source, true, options.currentLineMap )
+			// return source; //""+compressor( source, true, options.currentLineMap )
+			return ""+compressor( source, true, options.currentLineMap )
 		} else {
 			return  compressor
 		}
@@ -159,31 +163,37 @@ steal('steal/parse',function(steal){
 				// if there's an error, go through the lines and find the right location
 				if( /ERROR/.test(options.err) ){
 					if (!currentLineMap) {
-						print(options.err)
+						throw options
 					}
 					else {
-					
+						print("HOLLER")
 						var errMatch;
 						while (errMatch = /\:(\d+)\:\s(.*)/g.exec(options.err)) {
+							
 							var lineNbr = parseInt(errMatch[1], 10), 
-								found = false, 
-								item, 
-								lineCount = 0, 
-								i = 0, 
 								realLine,
 								error = errMatch[2];
-							while (!found) {
-								item = currentLineMap[i];
-								lineCount += item.lines;
-								if (lineCount >= lineNbr) {
-									found = true;
-									realLine = lineNbr - (lineCount - item.lines);
+								
+							var lastNum, lastId; 
+							print(lineNbr);
+							for( var lineNum in currentLineMap ) {
+								if( lineNbr < parseInt( lineNum) ){
+									break;
 								}
-								i++;
+								// print("checked "+lineNum+" "+currentLineMap[lineNum])
+								lastNum = parseInt(lineNum);
+								lastId = currentLineMap[lineNum];
 							}
 							
-							steal.print('ERROR in ' + item.src + ' at line ' + realLine + ': ' + error + '\n');
-							var text = readFile(item.src), split = text.split(/\n/), start = realLine - 2, end = realLine + 2;
+							realLine = lineNbr - lastNum;
+							
+							steal.print('ERROR in ' + lastId + ' at line ' + realLine + ': ' + error + '\n');
+							
+							
+							var text = readFile(lastId), 
+								split = text.split(/\n/), 
+								start = realLine - 2, 
+								end = realLine + 2;
 							if (start < 0) 
 								start = 0;
 							if (end > split.length - 1) 

@@ -1,1 +1,0 @@
-c({"name": "can.ui.layout.Split.prototype.refresh", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.layout.Split.prototype"], "comment": "<p>Refresh the state of the container by handling any panels that have been added or removed.</p>", "hide": true, "src": "canui/layout/split/split.js", "line": 448, "children": []})

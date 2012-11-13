@@ -1,7 +1,7 @@
 if(!steal.build){
 	steal.build = {};	
 }
-steal('steal/build/css').then(function( steal ) {
+steal('steal','steal/build/css',function( steal ) {
 	
 	var js = steal.build.js = {};
 	/**
@@ -41,7 +41,13 @@ steal('steal/build/css').then(function( steal ) {
 		// seperate out css and js
 		exclude = exclude || [];
 		var jses = [],
-			csses = [];
+			csses = [],
+			lineMap = {},
+			lineNum = 0,
+			numLines = function(text){
+				var matches = text.match(/\n/g);
+				return matches? matches.length + 1 : 1
+			};
 				
 		// if even one file has compress: false, we can't compress the whole package at once
 		var canCompressPackage = true;
@@ -55,7 +61,12 @@ steal('steal/build/css').then(function( steal ) {
 				if(file.buildType == 'js'){
 					var source = steal.build.js.clean(file.text);
 					if(file.minify !== false){
-						source = steal.build.js.minify(source);
+						try{
+							source = steal.build.js.minify(source);
+						} catch(error){
+							print("ERROR minifying "+file.id+"\n"+error.err)
+						}
+						
 					}
 					file.text = source;
 				}
@@ -65,14 +76,14 @@ steal('steal/build/css').then(function( steal ) {
 		files.forEach(function(file){
 			if ( file.packaged === false ) {
 
-				steal.print('   not packaging ' + file.rootSrc);
+				steal.print('   not packaging ' + file.id);
 				
 				return;
 			}
 			
 			// ignore
-			if ( file.ignore || (exclude.indexOf(''+file.rootSrc) != -1)) {
-				steal.print('   ignoring ' + file.rootSrc);
+			if ( file.ignore || (exclude.indexOf(''+file.id) != -1)) {
+				steal.print('   ignoring ' + file.id);
 				return;
 			}
 			
@@ -81,42 +92,49 @@ steal('steal/build/css').then(function( steal ) {
 				jses.push(file)
 			} else if(file.buildType == 'css'){
 				csses.push(file)
+			} else {
+				//steal.print('no buildType!!')
 			}
 		})
 		// add to dependencies
 		if(csses.length && dependencies){
 			dependencies[cssPackage] = csses.map(function(css){
-				return css.rootSrc;
+				return css.id;
 			})
 		}
 		
 		// this now needs to handle css and such
 		var loadingCalls = jses.map(function(file){
-			return file.rootSrc;
+			return file.id;
 		});
-		
 		//create the dependencies ...
 		var dependencyCalls = [];
 		for (var key in dependencies){
 			dependencyCalls.push( 
-				"steal({src: '"+key+"', waits: true, has: ['"+dependencies[key].join("','")+"']})"
+				"steal({id: '"+key+"', waits: true, has: ['"+dependencies[key].join("','")+"']})"
 			)
 		}
 		// make 'loading'
 		var code = ["steal.has('"+loadingCalls.join("','")+"')"];
 		// add dependencies
-		code.push.apply(code, dependencyCalls);
+		code.push.apply(code,dependencyCalls);
+		code.push("steal.pushPending()")
 		
+		lineNum += code.length
 		// add js code
 		jses.forEach(function(file){
-			code.push( file.text, "steal.executed('"+file.rootSrc+"')" );
+			
+			code.push( file.text, "steal.executed('"+file.id+"')" );
+			lineMap[lineNum] = file.id+"";
+			var linesCount = numLines(file.text)+1;
+			lineNum += linesCount;
 		});
 		
-		var jsCode = code.join(";\n") + "\n";
+		var jsCode = code.join(";\n") + ";\nsteal.popPending();\n";
 		
 		if(canCompressPackage){
 			jsCode = steal.build.js.clean(jsCode);
-			jsCode = steal.build.js.minify(jsCode);
+			jsCode = steal.build.js.minify(jsCode,{currentLineMap: lineMap});
 		}
 		
 		var csspackage = steal.build.css.makePackage(csses, cssPackage);

@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drop.prototype", "type": "prototype", "parents": ["jQuery.Drop"], "comment": "", "src": "jquery/event/drop/drop.js", "line": 375, "children": ["jQuery.Drop.prototype.cache", "jQuery.Drop.prototype.cancel"]})

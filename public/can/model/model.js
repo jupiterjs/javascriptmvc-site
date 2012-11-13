@@ -1,5 +1,5 @@
 // this file should not be stolen directly
-steal('can/observe', function() {
+steal('can/util','can/observe', function( can ) {
 	
 	// ## model.js  
 	// `can.Model`  
@@ -12,51 +12,62 @@ steal('can/observe', function() {
 	var	pipe = function( def, model, func ) {
 		var d = new can.Deferred();
 		def.then(function(){
-			arguments[0] = model[func](arguments[0])
-			d.resolveWith(d, arguments)
+			var args = can.makeArray( arguments );
+			args[0] = model[func](args[0]);
+			d.resolveWith(d, args);
 		},function(){
-			d.rejectWith(this, arguments)
-		})
+			d.rejectWith(this, arguments);
+		});
+
+		if(typeof def.abort === 'function') {
+			d.abort = function() {
+				return def.abort();
+			}
+		}
+
 		return d;
 	},
 		modelNum = 0,
 		ignoreHookup = /change.observe\d+/,
 		getId = function( inst ) {
-			return inst[inst.constructor.id]
+			// Instead of using attr, use __get for performance.
+			// Need to set reading
+			can.Observe.__reading && can.Observe.__reading(inst, inst.constructor.id)
+			return inst.__get(inst.constructor.id);
 		},
 		// Ajax `options` generator function
 		ajax = function( ajaxOb, data, type, dataType, success, error ) {
 
+			var params = {};
 			
 			// If we get a string, handle it.
 			if ( typeof ajaxOb == "string" ) {
 				// If there's a space, it's probably the type.
-				var parts = ajaxOb.split(" ")
-				ajaxOb = {
-					url : parts.pop()
-				};
-				if(parts.length){
-					ajaxOb.type = parts.pop();
+				var parts = ajaxOb.split(/\s/);
+				params.url = parts.pop();
+				if ( parts.length ) {
+					params.type = parts.pop();
 				}
+			} else {
+				can.extend( params, ajaxOb );
 			}
 
 			// If we are a non-array object, copy to a new attrs.
-			ajaxOb.data = typeof data == "object" && !can.isArray(data) ?
-				can.extend(ajaxOb.data || {}, data) : data;
+			params.data = typeof data == "object" && ! can.isArray( data ) ?
+				can.extend(params.data || {}, data) : data;
 	
-
 			// Get the url with any templated values filled out.
-			ajaxOb.url = can.sub(ajaxOb.url, ajaxOb.data, true);
+			params.url = can.sub(params.url, params.data, true);
 
-			return can.ajax(can.extend({
+			return can.ajax( can.extend({
 				type: type || "post",
 				dataType: dataType ||"json",
 				success : success,
 				error: error
-			}, ajaxOb ));
+			}, params ));
 		},
 		makeRequest = function( self, type, success, error, method ) {
-			var deferred ,
+			var deferred,
 				args = [self.serialize()],
 				// The model.
 				model = self.constructor,
@@ -68,24 +79,26 @@ steal('can/observe', function() {
 			}
 			// `update` and `destroy` need the `id`.
 			if ( type !== 'create' ) {
-				args.unshift(getId(self))
+				args.unshift(getId(self));
 			}
+
 			
 			jqXHR = model[type].apply(model, args);
 			
 			deferred = jqXHR.pipe(function(data){
 				self[method || type + "d"](data, jqXHR);
-				return self
-			})
+				return self;
+			});
 
 			// Hook up `abort`
 			if(jqXHR.abort){
 				deferred.abort = function(){
 					jqXHR.abort();
-				}
+				};
 			}
-			
-			return deferred.then(success,error);
+
+			deferred.then(success,error);
+			return deferred;
 		},
 	
 	// This object describes how to make an ajax request for each ajax method.  
@@ -339,7 +352,7 @@ steal('can/observe', function() {
 			type : "delete",
 			data : function(id){
 				var args = {};
-				args[this.id] = id;
+				args.id = args[this.id] = id;
 				return args;
 			}
 		},
@@ -496,7 +509,7 @@ steal('can/observe', function() {
 		 * @param {Object} params data to specify the instance. 
 		 * 
 		 *     Recipe.findAll({id: 20})
-		 * 
+		 *
 		 * @param {Function} [success(item)] called with a model 
 		 * instance.  The model isntance is created from the Deferred's resolved data.
 		 * 
@@ -538,35 +551,55 @@ steal('can/observe', function() {
 
 	
 	
-	can.Observe("can.Model",{
+	can.Model = can.Observe({
+		fullName: "can.Model",
 		setup : function(base){
-			can.Observe.apply(this, arguments);
-			if(this === can.Model){
+			// create store here if someone wants to use model without inheriting from it
+			this.store = {};
+			can.Observe.setup.apply(this, arguments);
+			// Set default list as model list
+			if(!can.Model){
 				return;
 			}
+			this.List = ML({Observe: this},{});
 			var self = this,
 				clean = can.proxy(this._clean, self);
-				
+			
+			
+			// go through ajax methods and set them up
 			can.each(ajaxMethods, function(method, name){
+				// if an ajax method is not a function, it's either
+				// a string url like findAll: "/recipes" or an
+				// ajax options object like {url: "/recipes"}
 				if ( ! can.isFunction( self[name] )) {
+					// use ajaxMaker to convert that into a function
+					// that returns a deferred with the data
 					self[name] = ajaxMaker(method, self[name]);
 				}
+				// check if there's a make function like makeFindAll
+				// these take deferred function and can do special
+				// behavior with it (like look up data in a store)
 				if (self["make"+can.capitalize(name)]){
+					// pass the deferred method to the make method to get back
+					// the "findAll" method.
 					var newMethod = self["make"+can.capitalize(name)](self[name]);
 					can.Construct._overwrite(self, base, name,function(){
-						this._super;
+						// increment the numer of requests
 						this._reqs++;
-						return newMethod.apply(this, arguments).then(clean, clean);
+						var def = newMethod.apply(this, arguments);
+						var then = def.then(clean, clean);
+						then.abort = def.abort;
+
+						// attach abort to our then and return it
+						return then;
 					})
 				}
 			});
 
-
-			if(!self.fullName || self.fullName == base.fullName){
-				self.fullName = self._shortName = "Model"+(++modelNum);
+			if(self.fullName == "can.Model" || !self.fullName){
+				self.fullName = "Model"+(++modelNum);
 			}
-			// Ddd ajax converters.
-			this.store = {};
+			// Add ajax converters.
 			this._reqs = 0;
 			this._url = this._shortName+"/{"+this.id+"}"
 		},
@@ -580,6 +613,7 @@ steal('can/observe', function() {
 					}
 				}
 			}
+			return arguments[0];
 		},
 		/**
 		 * `can.Model.models(data, xhr)` is used to 
@@ -699,7 +733,7 @@ steal('can/observe', function() {
 
 			//!steal-remove-start
 			if ( ! raw.length ) {
-				steal.dev && steal.dev.warn("model.js models has no data.")
+				steal.dev.warn("model.js models has no data.")
 			}
 			//!steal-remove-end
 
@@ -710,7 +744,7 @@ steal('can/observe', function() {
 			if ( ! arr ) { // Push other stuff onto `array`.
 				can.each(instancesRawData, function(val, prop){
 					if ( prop !== 'data' ) {
-						res[prop] = val;
+						res.attr(prop, val);
 					}
 				})
 			}
@@ -780,13 +814,14 @@ steal('can/observe', function() {
 		 * @return {model} a model instance.
 		 */
 		model: function( attributes ) {
-			if (!attributes ) {
+			if ( ! attributes ) {
 				return;
 			}
 			if ( attributes instanceof this ) {
 				attributes = attributes.serialize();
 			}
-			var model = this.store[attributes[this.id]] ? this.store[attributes[this.id]].attr(attributes) : new this( attributes );
+			var id = attributes[ this.id ],
+			    model = id && this.store[id] ? this.store[id].attr(attributes) : new this( attributes );
 			if(this._reqs){
 				this.store[attributes[this.id]] = model;
 			}
@@ -1017,16 +1052,17 @@ steal('can/observe', function() {
 		}
 	});
 	
-
-	
-				
-	can.each({makeFindAll : "models", makeFindOne: "model"}, function(method, name){
-		can.Model[name] = function(oldFind){
-			return function(params, success, error){
-				return pipe( oldFind.call( this, params ),
-							this, 
-							method ).then(success,error)
-			}
+	can.each({
+		makeFindAll : "models",
+		makeFindOne: "model"
+	}, function( method, name ) {
+		can.Model[name] = function( oldFind ) {
+			return function( params, success, error ) {
+				var def = pipe( oldFind.call( this, params ), this, method );
+				def.then( success, error );
+				// return the original promise
+				return def;
+			};
 		};
 	});
 				
@@ -1066,7 +1102,7 @@ steal('can/observe', function() {
 			can.trigger(this,funcName);
 			can.trigger(this,"change",funcName)
 			//!steal-remove-start
-			steal.dev && steal.dev.log("Model.js - "+ constructor.shortName+" "+ funcName);
+			steal.dev.log("Model.js - "+ constructor.shortName+" "+ funcName);
 			//!steal-remove-end
 
 			// Call event on the instance's Class
@@ -1151,17 +1187,21 @@ steal('can/observe', function() {
    *
    *
    */
-	var ML = can.Observe.List('can.Model.List',{
+	var ML = can.Model.List = can.Observe.List({
 		setup : function(){
 			can.Observe.List.prototype.setup.apply(this, arguments );
 			// Send destroy events.
 			var self = this;
 			this.bind('change', function(ev, how){
 				if(/\w+\.destroyed/.test(how)){
-					self.splice(self.indexOf(ev.target),1);
+					var index = self.indexOf(ev.target);
+					if (index != -1) {
+						self.splice(index, 1);
+					}
 				}
 			})
 		}
 	})
-	
+
+	return can.Model;
 })

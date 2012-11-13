@@ -1,7 +1,7 @@
-steal('steal/coffee','steal/less', function(){
+steal('steal/less', function(){
 	window.basic = true;
 	if(!window.appFiles){
 		window.appFiles = [];
 	}
-	window.appFiles.push("one")
+	window.appFiles.push("one");
 });

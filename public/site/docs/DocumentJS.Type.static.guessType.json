@@ -1,1 +1,0 @@
-c({"name": "DocumentJS.Type.static.guessType", "params": {"code": {"description": "", "type": "String", "optional": false, "order": 0, "name": "code"}}, "ret": {"description": "<p>type</p>", "type": "Object"}, "type": "function", "parents": ["DocumentJS.Type.static"], "comment": "<p>Guess type from code</p>", "src": "documentjs/types/type.js", "line": 149, "children": []})

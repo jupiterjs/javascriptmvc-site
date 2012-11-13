@@ -1,5 +1,4 @@
-steal('can/util',function() {
-
+steal('can/util',function(can) {
 	// ##string.js
 	// _Miscellaneous string utility functions._  
 	
@@ -40,7 +39,9 @@ steal('can/util',function() {
 			 *     can.esc( "<foo>&<bar>" ) //-> "&lt;foo&lt;&amp;&lt;bar&lt;"
 			 */
 			esc : function( content ) {
-				return ( "" + content )
+				// Convert bad values into empty strings
+				var isInvalid = content === null || content === undefined || (isNaN(content) && ("" + content === 'NaN'));
+				return ( "" + ( isInvalid ? '' : content ) )
 					.replace(/&/g, '&amp;')
 					.replace(/</g, '&lt;')
 					.replace(/>/g, '&gt;')
@@ -69,11 +70,11 @@ steal('can/util',function() {
 			
 				// The parts of the name we are looking up  
 				// `['App','Models','Recipe']`
-				var parts = name ? name.split('.') : [],
-				    length =  parts.length,
-				    current,
-				    r = 0,
-				    ret, i;
+				var	parts = name ? name.split('.') : [],
+					length =  parts.length,
+					current,
+					r = 0,
+					ret, i;
 
 				// Make sure roots is an `array`.
 				roots = can.isArray(roots) ? roots : [roots || window];
@@ -83,7 +84,8 @@ steal('can/util',function() {
 				}
 
 				// For each root, mark it as current.
-				while ( current = roots[r++] ) {
+				while ( roots[r] ) {
+					current = roots[r];
 
 					// Walk current to the 2nd to last object or until there 
 					// is not a container.
@@ -107,6 +109,7 @@ steal('can/util',function() {
 							
 						}
 					}
+					r++;
 				}
 			},
 			// Capitalizes a string.
@@ -186,4 +189,5 @@ steal('can/util',function() {
 			replacer : replacer,
 			undHash : undHash
 		});
+	return can;
 });

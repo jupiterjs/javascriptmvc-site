@@ -1,10 +1,33 @@
-module("can/model", { 
+(function() {
+module("can/model", {
 	setup: function() {
 
 	}
 })
 
 var isDojo = (typeof dojo !== "undefined");
+var getPath = function(path) {
+	if(typeof steal !== 'undefined') {
+		return steal.config().root.join(path) + '';
+	}
+	return path;
+}
+
+test("shadowed id", function(){
+	var MyModel = can.Model({
+		id: 'foo'
+	},{
+		foo: function() {
+			return this.attr('foo');
+		}
+	});
+
+	var newModel = new MyModel({});
+	ok(newModel.isNew(),'new model is isNew');
+	var oldModel = new MyModel({foo:'bar'});
+	ok(!oldModel.isNew(),'old model is not new');
+	equals(oldModel.foo(),'bar','method can coexist with attribute');
+});
 
 test("CRUD", function(){
     
@@ -91,6 +114,45 @@ asyncTest("findAll deferred reject", function() {
     }, 200);
 });
 
+if(window.jQuery) {
+
+asyncTest("findAll abort", function() {
+	expect(4);
+	var df;
+	can.Model("Person", {
+		findAll : function(params, success, error) {
+			df = can.Deferred();
+			df.then(function() {
+				ok(!params.abort,'not aborted');
+			},function() {
+				ok(params.abort,'aborted');
+			});
+			return df.promise({
+				abort: function() {
+					df.reject();
+				}
+			});
+		}
+	},{});
+	var resolvePromise = Person.findAll({ abort : false}).done(function() {
+		ok(true,'resolved');
+	});
+	var resolveDf = df;
+	var abortPromise = Person.findAll({ abort : true}).fail(function() {
+		ok(true,'failed');
+	});
+
+	setTimeout(function() {
+		resolveDf.resolve();
+        abortPromise.abort();
+
+        // continue the test
+        start();
+    }, 200);
+});
+
+}
+
 test("findOne deferred", function(){
 	if(window.jQuery){
 		can.Model("Person",{
@@ -108,7 +170,7 @@ test("findOne deferred", function(){
 		},{});
 	} else {
 		can.Model("Person",{
-			findOne : steal.root.join("can/model/test/person.json")+''
+			findOne : getPath("can/model/test/person.json")
 		},{});
 	}
 	stop();
@@ -222,7 +284,7 @@ test("models", function(){
 
 test(".models with custom id", function() {
 	can.Model("CustomId", {
-		findAll : steal.root.join("can/model/test") + "/customids.json",
+		findAll : getPath("can/model/test") + "/customids.json",
 		id : '_id'
 	}, {
 		getName : function() {
@@ -293,10 +355,10 @@ test("auto methods",function(){
 	//turn off fixtures
 	can.fixture.on = false;
 	var School = can.Model.extend("Jquery.Model.Models.School",{
-	   findAll : steal.root.join("can/model/test")+"/{type}.json",
-	   findOne : steal.root.join("can/model/test")+"/{id}.json",
-	   create : steal.root.join("can/model/test")+"/create.json",
-	   update : "POST "+steal.root.join("can/model/test")+"/update{id}.json"
+	   findAll : getPath("can/model/test")+"/{type}.json",
+	   findOne : getPath("can/model/test")+"/{id}.json",
+	   create : "GET " + getPath("can/model/test")+"/create.json",
+	   update : "GET "+ getPath("can/model/test")+"/update{id}.json"
 	},{})
 	stop();
 	School.findAll({type:"schools"}, function(schools){
@@ -336,7 +398,7 @@ test("isNew", function(){
 test("findAll string", function(){
 	can.fixture.on = false;
 	can.Model("Test.Thing",{
-		findAll : steal.root.join("can/model/test/findAll.json")+''
+		findAll : getPath("can/model/test/findAll.json")+''
 	},{});
 	stop();
 	Test.Thing.findAll({},function(things){
@@ -459,7 +521,8 @@ test("object definitions", function(){
 	
 	can.Model('ObjectDef',{
 		findAll : {
-			url : "/test/place"
+			url : "/test/place",
+			dataType: "json"
 		},
 		findOne : {
 			url : "/objectdef/{id}",
@@ -480,10 +543,32 @@ test("object definitions", function(){
 		equals(original.timeout,1000,"timeout set");
 		return {yes: true}
 	});
+
+
+	can.fixture("GET /test/place", function(original){
+		return [original.data];
+	});
+
 	stop();
 	ObjectDef.findOne({id: 5}, function(){
 		start();
 	})
+
+	stop();
+	// Do find all, pass some attrs
+	ObjectDef.findAll({ start: 0, count: 10, myflag: 1}, function(data){
+		start();
+		equals(data[0].myflag, 1, 'my flag set')
+	});
+
+	stop();
+	// Do find all with slightly different attrs than before,
+	// and notice when leaving one out the other is still there
+	ObjectDef.findAll({ start: 0, count: 10 }, function(data){
+		start();
+		console.log("DATA IS", data)
+		equals(data[0].myflag, undefined, 'my flag is undefined')
+	}); 
 })
 
 
@@ -587,11 +672,11 @@ test("store ajax binding", function(){
 	});
 	stop();
 	can.when( Guy.findOne({id: 1}),
-		Guy.findAll()).then(function(guyRes, guysRes){
+		Guy.findAll()).then(function(guyRes, guysRes2){
 		
-		equals(guyRes[0].id,1, "got a guy id 1 back");
-		equals(guysRes[0][0].id, 1, "got guys w/ id 1 back")
-		ok(guyRes[0] === guysRes[0][0], "guys are the same");
+		equals(guyRes.id,1, "got a guy id 1 back");
+		equals(guysRes2[0].id, 1, "got guys w/ id 1 back")
+		ok(guyRes === guysRes2[0], "guys are the same");
 		// check the store is empty
 		setTimeout(function(){
 			start();
@@ -631,6 +716,43 @@ test("store instance updates", function(){
 	
 })
 
+/** /
+test("store instance update removed fields", function(){
+	var Guy, updateCount, remove;
+
+    Guy = can.Model({
+        findAll : 'GET /guys'
+    },{});
+    remove = false;
+    
+    can.fixture("GET /guys", function(){
+    	var guys = [{id: 1, name: 'mikey', age: 35, likes: ['soccer', 'fantasy baseball', 'js', 'zelda'], dislikes: ['backbone', 'errors']}];
+    	if(remove) {
+    		delete guys[0].name;
+    		guys[0].likes = [];
+    		delete guys[0].dislikes;
+    	}
+    	remove = true;
+        return guys;
+    });
+    stop();
+    Guy.findAll({}, function(guys){
+    	start();
+        guys[0].bind('updated', function(){});
+        ok(Guy.store[1], 'instance stored');
+    	equals(Guy.store[1].name, 'mikey', 'name is mikey')
+    	equals(Guy.store[1].likes.length, 4, 'mikey has 4 likes')
+    	equals(Guy.store[1].dislikes.length, 2, 'mikey has 2 dislikes')
+    })
+    Guy.findAll({}, function(guys){
+    	equals(Guy.store[1].name, undefined, 'name is undefined')
+    	equals(Guy.store[1].likes.length, 0, 'no likes')
+    	equals(Guy.store[1].dislikes, undefined, 'dislikes removed')
+    })
+	
+})
+/**/
+
 test("templated destroy", function(){
 	var MyModel = can.Model({
 		destroy : "/destroyplace/{id}"
@@ -645,6 +767,31 @@ test("templated destroy", function(){
 	new MyModel({id: 5}).destroy(function(){
 		start();
 	})
+
+
+
+	can.fixture("/product/{id}", function( original ) {
+		equals(original.data.id, 9001, "Changed ID is correctly set.");
+		start();
+		return {};
+	});
+
+	Base = can.Model({
+		id:'_id'
+	}, {
+	});
+
+	Product = Base({
+		destroy:'DELETE /product/{id}'
+	},{
+	});
+
+	var prod = new Product({
+		_id: 9001
+	}).destroy();
+
+	stop();
+
 });
 
 test("overwrite makeFindAll", function(){
@@ -726,3 +873,83 @@ test("inheriting unique model names", function(){
 	var Bar = can.Model({});
 	ok(Foo.fullName != Bar.fullName, "fullNames not the same")
 })
+
+
+test("model list attr", function() {
+
+	can.Model("Person",{},{});
+
+	var list1 = new Person.List(),
+		list2 = new Person.List([ new Person({ id : 1 }), new Person({ id : 2 }) ]);
+
+	equal( list1.length, 0, "Initial empty list has length of 0")
+	list1.attr( list2 );
+	equal( list1.length, 2, "Merging using attr yields length of 2")
+	console.log( list1 )
+
+});
+
+test("destroying a model impact the right list", function() {
+
+	can.Model("Person",{
+		destroy : function(id, success){
+			var def = isDojo ? new dojo.Deferred() : new can.Deferred();
+			def.resolve({})
+			return def;
+		}
+	},{});
+	can.Model("Organisation",{
+		destroy : function(id, success){
+			var def = isDojo ? new dojo.Deferred() : new can.Deferred();
+			def.resolve({})
+			return def;
+		}
+	},{});
+	var list1 = new Person.List([ new Person({ id : 1 }), new Person({ id : 2 }) ]),
+		list2 = new Organisation.List([ new Organisation({ id : 1 }), new Organisation({ id : 2 }) ]);
+
+	// set each person to have an organization
+	list1[0].attr('organisation', list2[0]);
+	list1[1].attr('organisation', list2[1]);
+
+	equal( list1.length, 2, "Initial Person.List has length of 2")
+	equal( list2.length, 2, "Initial Organisation.List has length of 2")
+	list2[0].destroy();
+	equal( list1.length, 2, "After destroying list2[0] Person.List has length of 2")
+	equal( list2.length, 1, "After destroying list2[0] Organisation.List has length of 1")
+	console.log( list1 )
+	console.log( list2 )
+
+});
+
+
+test("uses attr with isNew", function(){
+	expect(1)
+	var old = can.Observe.__reading;
+	can.Observe.__reading = function(object, attribute){
+		if(attribute == "id") {
+			ok(true, "used attr")
+		}
+	}
+	
+	var m = new can.Model({id: 4});
+	
+	m.isNew();
+	
+	can.Observe.__reading = old;
+});
+
+test("extends defaults by calling base method", function(){
+	
+	var M1 = can.Model({
+		defaults: {foo: "bar"}
+	},{});
+	
+	var M2 = M1({});
+	
+	equal(M2.defaults.foo,"bar")
+	
+	
+})
+
+})();

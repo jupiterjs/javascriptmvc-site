@@ -1,4 +1,4 @@
-steal('jquery/event').then(function( $ ) {
+steal('jquery', function() {
 	$.event.reverse = function(name, attributes) {
 		var bound = $(),
 			count = 0;
@@ -40,7 +40,7 @@ steal('jquery/event').then(function( $ ) {
 						var where = data === false ? ev.target : this
 
 						// trigger all this element's handlers
-						$.event.handle.call(where, ev);
+						$.event.handle.call(where, ev, data);
 						if ( ev.isPropagationStopped() ) {
 							count--;
 							return;
@@ -56,7 +56,7 @@ steal('jquery/event').then(function( $ ) {
 						while (++index < length && (child = bound[index]) && (isWindow || $.contains(where, child)) ) {
 
 							// call the event
-							$.event.handle.call(child, ev);
+							$.event.handle.call(child, ev, data);
 
 							if ( ev.isPropagationStopped() ) {
 								// move index until the item is not in the current child
@@ -85,4 +85,6 @@ steal('jquery/event').then(function( $ ) {
 
 		return $.event.special[name];
 	}
+
+	return $;
 })

@@ -1,42 +1,52 @@
-(function(can, window, undefined){
-	
-	
-	
+var module = {
+	_orig: window.module,
+	_define: window.define
+};
+var define = function (id, deps, value) {
+	module[id] = value();
+};
+define.amd = {
+	jQuery: true
+};
+
+module['can/observe/delegate/delegate.js'] = (function (can) {
+
+
+
 	// ** - 'this' will be the deepest item changed
 	// * - 'this' will be any changes within *, but * will be the 
 	//     this returned
-	
 	// tells if the parts part of a delegate matches the broken up props of the event
 	// gives the prop to use as 'this'
 	// - parts - the attribute name of the delegate split in parts ['foo','*']
 	// - props - the split props of the event that happened ['foo','bar','0']
 	// - returns - the attribute to delegate too ('foo.bar'), or null if not a match 
-	var matches = function(parts, props){
+	var matches = function (parts, props) {
 		//check props parts are the same or 
 		var len = parts.length,
-			i =0,
+			i = 0,
 			// keeps the matched props we will use
 			matchedProps = [],
 			prop;
-		
+
 		// if the event matches
-		for(i; i< len; i++){
-			prop =  props[i]
+		for (i; i < len; i++) {
+			prop = props[i]
 			// if no more props (but we should be matching them)
 			// return null
-			if( typeof prop !== 'string' ) {
+			if (typeof prop !== 'string') {
 				return null;
 			} else
 			// if we have a "**", match everything
-			if( parts[i] == "**" ) {
+			if (parts[i] == "**") {
 				return props.join(".");
-			} else 
+			} else
 			// a match, but we want to delegate to "*"
-			if (parts[i] == "*"){
+			if (parts[i] == "*") {
 				// only do this if there is nothing after ...
 				matchedProps.push(prop);
 			}
-			else if(  prop === parts[i]  ) {
+			else if (prop === parts[i]) {
 				matchedProps.push(prop);
 			} else {
 				return null;
@@ -46,88 +56,82 @@
 	},
 		// gets a change event and tries to figure out which
 		// delegates to call
-		delegate = function(event, prop, how, newVal, oldVal){
+		delegate = function (event, prop, how, newVal, oldVal) {
 			// pre-split properties to save some regexp time
 			var props = prop.split("."),
 				delegates = (this._observe_delegates || []).slice(0),
-				delegate,
-				attr,
-				matchedAttr,
-				hasMatch,
-				valuesEqual;
+				delegate, attr, matchedAttr, hasMatch, valuesEqual;
 			event.attr = prop;
-			event.lastAttr = props[props.length -1 ];
-			
+			event.lastAttr = props[props.length - 1];
+
 			// for each delegate
-			for(var i =0; delegate = delegates[i++];){
-				
+			for (var i = 0; delegate = delegates[i++];) {
+
 				// if there is a batchNum, this means that this
 				// event is part of a series of events caused by a single 
 				// attrs call.  We don't want to issue the same event
 				// multiple times
 				// setting the batchNum happens later
-				if((event.batchNum && delegate.batchNum === event.batchNum) || delegate.undelegated ){
+				if ((event.batchNum && delegate.batchNum === event.batchNum) || delegate.undelegated) {
 					continue;
 				}
-				
+
 				// reset match and values tests
 				hasMatch = undefined;
 				valuesEqual = true;
-				
+
 				// for each attr in a delegate
-				for(var a =0 ; a < delegate.attrs.length; a++){
-					
+				for (var a = 0; a < delegate.attrs.length; a++) {
+
 					attr = delegate.attrs[a];
-					
+
 					// check if it is a match
-					if(matchedAttr = matches(attr.parts, props)){
+					if (matchedAttr = matches(attr.parts, props)) {
 						hasMatch = matchedAttr;
 					}
 					// if it has a value, make sure it's the right value
 					// if it's set, we should probably check that it has a 
 					// value no matter what
-					if(attr.value && valuesEqual /* || delegate.hasValues */){
-						valuesEqual = attr.value === ""+this.attr(attr.attr)
-					} else if (valuesEqual && delegate.attrs.length > 1){
+					if (attr.value && valuesEqual /* || delegate.hasValues */ ) {
+						valuesEqual = attr.value === "" + this.attr(attr.attr)
+					} else if (valuesEqual && delegate.attrs.length > 1) {
 						// if there are multiple attributes, each has to at
 						// least have some value
 						valuesEqual = this.attr(attr.attr) !== undefined
 					}
 				}
-				
-				// if there is a match and valuesEqual ... call back
 
-				if(hasMatch && valuesEqual) {
+				// if there is a match and valuesEqual ... call back
+				if (hasMatch && valuesEqual) {
 					// how to get to the changed property from the delegate
-					var from = prop.replace(hasMatch+".","");
-					
+					var from = prop.replace(hasMatch + ".", "");
+
 					// if this event is part of a batch, set it on the delegate
 					// to only send one event
-					if(event.batchNum ){
+					if (event.batchNum) {
 						delegate.batchNum = event.batchNum
 					}
-					
+
 					// if we listen to change, fire those with the same attrs
 					// TODO: the attrs should probably be using from
-					if(  delegate.event === 'change' ){
+					if (delegate.event === 'change') {
 						arguments[1] = from;
 						event.curAttr = hasMatch;
-						delegate.callback.apply(this.attr(hasMatch), can.makeArray( arguments));
-					} else if(delegate.event === how ){
-						
+						delegate.callback.apply(this.attr(hasMatch), can.makeArray(arguments));
+					} else if (delegate.event === how) {
+
 						// if it's a match, callback with the location of the match
-						delegate.callback.apply(this.attr(hasMatch), [event,newVal, oldVal, from]);
-					} else if(delegate.event === 'set' && 
-							 how == 'add' ) {
+						delegate.callback.apply(this.attr(hasMatch), [event, newVal, oldVal, from]);
+					} else if (delegate.event === 'set' && how == 'add') {
 						// if we are listening to set, we should also listen to add
-						delegate.callback.apply(this.attr(hasMatch), [event,newVal, oldVal, from]);
+						delegate.callback.apply(this.attr(hasMatch), [event, newVal, oldVal, from]);
 					}
 				}
-				
+
 			}
 		};
-		
-	can.extend(can.Observe.prototype,{
+
+	can.extend(can.Observe.prototype, {
 		/**
 		 * @function can.Observe.prototype.delegate
 		 * @parent can.Observe.delegate
@@ -281,35 +285,35 @@
 		 * 
 		 * @return {jQuery.Delegate} the delegate for chaining
 		 */
-		delegate :  function(selector, event, handler){
+		delegate: function (selector, event, handler) {
 			selector = can.trim(selector);
 			var delegates = this._observe_delegates || (this._observe_delegates = []),
 				attrs = [];
-			
+
 			// split selector by spaces
-			selector.replace(/([^\s=]+)=?([^\s]+)?/g, function(whole, attr, value){
-			  attrs.push({
-			  	// the attribute name
-				attr: attr,
-				// the attribute's pre-split names (for speed)
-				parts: attr.split('.'),
-				// the value associated with this prop
-				value: value
-			  })
-			}); 
-			
+			selector.replace(/([^\s=]+)=?([^\s]+)?/g, function (whole, attr, value) {
+				attrs.push({
+					// the attribute name
+					attr: attr,
+					// the attribute's pre-split names (for speed)
+					parts: attr.split('.'),
+					// the value associated with this prop
+					value: value
+				})
+			});
+
 			// delegates has pre-processed info about the event
 			delegates.push({
 				// the attrs name for unbinding
-				selector : selector,
+				selector: selector,
 				// an object of attribute names and values {type: 'recipe',id: undefined}
 				// undefined means a value was not defined
-				attrs : attrs,
-				callback : handler,
+				attrs: attrs,
+				callback: handler,
 				event: event
 			});
-			if(delegates.length === 1){
-				this.bind("change",delegate)
+			if (delegates.length === 1) {
+				this.bind("change", delegate)
 			}
 			return this;
 		},
@@ -326,19 +330,18 @@
 		 * @param {Function} handler the callback handler
 		 * @return {jQuery.Delegate} the delegate for chaining
 		 */
-		undelegate : function(selector, event, handler){
+		undelegate: function (selector, event, handler) {
 			selector = can.trim(selector);
-			
-			var i =0,
+
+			var i = 0,
 				delegates = this._observe_delegates || [],
 				delegateOb;
-			if(selector){
-				while(i < delegates.length){
+			if (selector) {
+				while (i < delegates.length) {
 					delegateOb = delegates[i];
-					if( delegateOb.callback === handler ||
-						(!handler && delegateOb.selector === selector) ){
+					if (delegateOb.callback === handler || (!handler && delegateOb.selector === selector)) {
 						delegateOb.undelegated = true;
-						delegates.splice(i,1)
+						delegates.splice(i, 1)
 					} else {
 						i++;
 					}
@@ -347,13 +350,18 @@
 				// remove all delegates
 				delegates = [];
 			}
-			if(!delegates.length){
+			if (!delegates.length) {
 				//can.removeData(this, "_observe_delegates");
-				this.unbind("change",delegate)
+				this.unbind("change", delegate)
 			}
 			return this;
 		}
 	});
 	// add helpers for testing .. 
 	can.Observe.prototype.delegate.matches = matches;
-})(this.can, this );
+	return can.Observe;
+})(module["can/util/jquery/jquery.js"], module["can/observe/observe.js"]);
+
+window.define = module._define;
+
+window.module = module._orig;

@@ -1,1 +1,0 @@
-c({"name": "can.ui.layout.Modal.prototype", "type": "prototype", "parents": ["can.ui.layout.Modal"], "comment": "", "src": "canui/layout/modal/modal.js", "line": 119, "children": ["can.ui.layout.Modal.prototype.hide", "can.ui.layout.Modal.prototype.show"]})

@@ -1,1 +1,0 @@
-c({"name": "can.ui.nav.Selectable.prototype", "type": "prototype", "parents": ["can.ui.nav.Selectable"], "comment": "", "src": "canui/nav/selectable/selectable.js", "line": 125, "children": ["can.ui.nav.Selectable.prototype.selected", "can.ui.nav.Selectable.prototype.activated"]})

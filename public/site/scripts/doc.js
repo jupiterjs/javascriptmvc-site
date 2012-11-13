@@ -1,9 +1,8 @@
 load('steal/rhino/rhino.js');
-steal.overwrite = true;
-load('documentjs/documentjs.js');
 
-
-DocumentJS('site/scripts/doc.html',{
-	markdown : ['steal', 'can', 'site', 'jquery', 'funcunit', 'tutorials', 'canui'],
-	out : 'site/docs'
+steal("documentjs", function(DocumentJS){
+	DocumentJS('site/scripts/doc.html',{
+		markdown : [ 'jquery', 'can', 'site' ],
+		out : 'site/docs'
+	});
 });

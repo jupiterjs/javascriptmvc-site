@@ -1,5 +1,4 @@
-steal('can/view', function(){
-	
+steal('jquery', 'can/view', function($, can) {
 	//---- ADD jQUERY HELPERS -----
 	//converts jquery functions to use views	
 	var convert, modify, isTemplate, isHTML, isDOM, getCallback,
@@ -76,7 +75,7 @@ steal('can/view', function(){
 		// by using a frag, the element can be recursively hooked up
 		// before insterion
 		if ( hasHookups && args[0] && isHTML(args[0]) ) {
-			args[0] = can.view.frag(args[0])
+			args[0] = can.view.frag(args[0]).childNodes;
 		}
 	
 		//then insert into DOM
@@ -289,4 +288,6 @@ steal('can/view', function(){
 	"replaceWith", "val"],function(func){
 		convert(func);
 	});
-})
+
+	return can;
+});

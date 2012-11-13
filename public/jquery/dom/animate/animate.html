@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Animate Demo</title>
-    </head>
-    <body>
-    <style type="text/css">
-      #block {
-        background-color:#bca;
-        width:100px;
-        border:1px solid green;
-      }
-    </style>
+<head>
+  <title>Animate Demo</title>
+</head>
+<body>
+<style type="text/css">
+  #block {
+    background-color: #bca;
+    width: 100px;
+    border: 1px solid green;
+  }
+</style>
 <div id="demo-html">
   <button id="go">&raquo; Run</button>
 
@@ -21,22 +21,11 @@
         src='../../../steal/steal.js'>
 </script>
 <script type='text/javascript' id="demo-source">
-steal('jquery/dom/animate').then(function(){
-  var old = jQuery.fx.prototype.custom;
-  jQuery.fx.prototype.custom = function( from, to, unit ) {
-    console.log(arguments, this);
-    old.apply(this, arguments);
-  }
-  $("#go").click(function() {
-    $('#block').animate({
-      width: "70%",
-      opacity: 0.4,
-      marginLeft: "0.6in",
-      fontSize: "3em",
-      borderWidth: "10px"
-    }, 1500);
+  steal('jquery/dom/animate').then(function () {
+    $("#go").click(function () {
+      $('#block').animate({"width" : '1px'}, 1000, "ease-in").animate({"width" : '200px'}, 100, "ease-in")
+    });
   });
-});
 </script>
 </body>
 </html>

@@ -1,1 +1,0 @@
-c({"name": "Jaml.Node.children", "type": "attribute", "parents": ["Jaml.Node"], "comment": "<p>Array of rendered child nodes that will be steald as this node's innerHTML</p>", "attribute_type": "@type Array", "src": "jquery/view/jaml/jaml.js", "line": 93, "children": []})

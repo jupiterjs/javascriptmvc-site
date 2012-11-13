@@ -1,1 +1,0 @@
-c({"name": "can.ui.form.Combobox.static.noSelectionMsg", "type": "attribute", "parents": ["can.ui.form.Combobox.static"], "comment": "<p>When 'showNoSelectionOption' is enabled, you need to give the item a name.</p>", "hide": true, "src": "canui/form/combobox/combobox.js", "line": 123, "children": []})

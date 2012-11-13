@@ -1,1 +1,0 @@
-c({"name": "jQuery.Hover.static.delay", "type": "attribute", "parents": ["jQuery.Hover.static"], "comment": "<p><code>$.Hover.delay</code> is the delay (in milliseconds) after which the hover is\nactivated by default.</p>\n\n<p>Set this value as a global default. The default is 100ms.</p>", "src": "jquery/event/hover/hover.js", "line": 26, "children": []})

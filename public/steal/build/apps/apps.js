@@ -2,7 +2,7 @@
 if(!steal.build){
 	steal.build = {};	
 }
-steal('steal/build/js','steal/build/css',function( steal ) {
+steal('steal','steal/build/js','steal/build/css',function( steal ) {
 
 /**
  * 
@@ -112,7 +112,8 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 				// listen to when this is done
 				window.steal.one("end", function(rootSteal){
 					steal.print("  adding dependencies");
-					options.appFiles.push(  apps.addDependencies(rootSteal.dependencies[0], options.files, appName )  );
+					
+					options.appFiles.push(  apps.addDependencies(rootSteal, options.files, appName )  );
 					
 					// set back steal
 					window.steal = curSteal;
@@ -122,12 +123,14 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 						firstSteal: steal.build.open.firstSteal(rootSteal)
 					});
 				})
+				
 				// steal file
 				window.steal(data.startFile);
 			} else {
 				steal.build.open(html, data, function(opener){
 					steal.print("  adding dependencies");
-					options.appFiles.push(  apps.addDependencies(opener.rootSteal.dependencies[0], options, appName )  );
+					var appFile = apps.addDependencies(opener.rootSteal, options, appName );
+					options.appFiles.push(  appFile  );
 					steal.print(" ")
 					callback(options, opener);
 				})
@@ -162,26 +165,24 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 		 * @param {String} appName the appName
 		 * @return {file} the root dependency file for this application
 		 */
-		addDependencies: function( steel, options, appName ) {
-			// check if a fn ...
-			//steal.print('addD '+steel.options.rootSrc)
-			var rootSrc = steel.options.rootSrc,
-				buildType = steel.options.buildType,
-				
-				file = maker(options.files, rootSrc, function(){
+		addDependencies: function( resource, options, appName ) {
+			var id = resource.options.id,
+				buildType = resource.options.buildType, 
+				file = maker(options.files, id || appName, function(){
 					//clean and minifify everything right away ...
-					if( steel.options.buildType != 'fn' ) {
+					var source = '';
+					if( id && resource.options.buildType != 'fn' ) {
 						// some might not have source yet
-						steal.print("  + "+rootSrc)
-						var source = steel.options.text ||  readFile( rootSrc );
-						steel.options.text = source //
+						steal.print("  + "+id );
+						var source = resource.options.text ||  readFile( steal.idToUri( resource.options.id , true ) );
 					}
+					resource.options.text = resource.options.text || source
 					
 					// this becomes data
 					return {
 						// todo, might need to merge options
 						// what if we should not 'steal' it?
-						stealOpts: steel.options,
+						stealOpts: resource.options,
 						appNames: [],
 						dependencyFileNames: [],
 						packaged: false
@@ -193,13 +194,26 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 			if(file.appNames.indexOf(appName) == -1){
 				file.appNames.push(appName);
 			}
-			steel.dependencies.reverse().forEach(function(dependency){
-				if ( dependency.dependencies && 
+			
+			resource.needsDependencies.forEach(function(dependency){
+				// TODO: check status
+				if (dependency && dependency.dependencies && 
 					// don't follow functions
 				     dependency.options.buildType != 'fn' && 
 					 !dependency.options.ignore) {
+					file.dependencyFileNames.push(dependency.options.id)
 					 
-					file.dependencyFileNames.push(dependency.options.rootSrc)
+					apps.addDependencies(dependency, options, appName);
+				}
+			});
+				
+			resource.dependencies.forEach(function(dependency){
+				// TODO: check status
+				if (dependency && dependency.dependencies && 
+					// don't follow functions
+				     dependency.options.buildType != 'fn' && 
+					 !dependency.options.ignore) {
+					file.dependencyFileNames.push(dependency.options.id)
 					 
 					apps.addDependencies(dependency, options, appName);
 				}
@@ -365,7 +379,7 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 		 * 
 		 * this is where 'has' comes into place
 		 * 
-		 * steal({src: 'packageA', has: 'jquery'})
+		 * steal({id: 'packageA', has: 'jquery'})
 		 * 
 		 * This wires up steal to wait until package A is finished for jQuery.
 		 * 
@@ -405,11 +419,15 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 			// it needs to load
 			options.appFiles.forEach(function(file){
 				appsPackages[file.appNames[0]] = [];
-			})
+			});
+			
+			// remove stealconfig.js temporarily.  It will be added to every production.js
+			var stealconfig = options.files['stealconfig.js'];
+			
+			delete options.files['stealconfig.js'];
 
 			//while there are files left to be packaged, get the most shared and largest package
 			while ((sharing = apps.getMostShared(options.files))) {
-				
 				steal.print('\npackaging shared by ' + sharing.appNames.join(", "))
 
 				
@@ -441,21 +459,27 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 				
 				sharing.files.forEach(function(file){
 					// add the files to the packagesFiles
-					packagesFiles[packageName+".js"].push(file.stealOpts.rootSrc);
+					packagesFiles[packageName+".js"].push(file.stealOpts.id);
 					
 					filesForPackaging.push(file.stealOpts)
-					steal.print("  " + file.order + ":" + file.stealOpts.rootSrc);
+					steal.print("  " + file.order + ":" + file.stealOpts.id);
 				});
 				
 				// create dependencies object
 				var dependencies = {};
 				// only add dependencies for the 'root' objects
 				if( sharing.appNames.length == 1) {
+					
+					packagesFiles[packageName+".js"].unshift("stealconfig.js")
+					filesForPackaging.unshift(stealconfig.stealOpts);
+					
 					// for the packages for this app
 					appsPackages[appsName].forEach(function(packageName){
 						// add this as a dependency
 						dependencies[packageName] = packagesFiles[packageName].slice(0)
-					})
+					});
+					
+					
 				}
 				
 				//the source of the package
@@ -479,7 +503,11 @@ steal('steal/build/js','steal/build/css',function( steal ) {
 		}
 	})
 	
-		
+	// sets prop on root if it doesn't exist
+	// root - the object
+	// prop - the property to set some other object as
+	// raw - the data you want to set or a function that returns the object
+	// cb - a callback that gets called with the object
 	var maker = function(root, prop, raw, cb){
 		if(!root[prop]){
 			root[prop] = ( typeof raw === 'object' ?

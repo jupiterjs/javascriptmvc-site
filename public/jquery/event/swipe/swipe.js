@@ -1,4 +1,4 @@
-steal('jquery/event/livehack').then(function($){
+steal('jquery', 'jquery/event/livehack', function($) {
 var isPhantom = /Phantom/.test(navigator.userAgent),
 	supportTouch = !isPhantom && "ontouchend" in document,
 	scrollEvent = "touchmove scroll",
@@ -32,7 +32,7 @@ var swipe = $.event.swipe = {
 	 * @attribute max
 	 * The maximum distance the pointer must travel in pixels.  The default is 75 pixels.
 	 */
-	max : 75,
+	max : 320,
 	/**
 	 * @attribute min
 	 * The minimum distance the pointer must travel in pixels.  The default is 30 pixels.
@@ -125,4 +125,5 @@ $.event.setupHelper( [
 		})
 });
 
+return $;
 });

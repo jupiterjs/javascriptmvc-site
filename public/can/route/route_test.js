@@ -1,10 +1,11 @@
+(function() {
 module("can/route")
 
 test("deparam", function(){
 	can.route.routes = {};
 	can.route(":page",{
 		page: "index"
-	})
+	});
 
 	var obj = can.route.deparam("can.Control");
 	same(obj, {
@@ -297,7 +298,7 @@ test("updating the hash", function(){
 		},30);
 	}
 	var iframe = document.createElement('iframe');
-	iframe.src = steal.root.join("can/route/testing.html");
+	iframe.src = steal.config().root.join("can/route/testing.html");
 	can.$("#qunit-test-area")[0].appendChild(iframe);
 });
 
@@ -318,7 +319,7 @@ test("sticky enough routes", function(){
 		},30);
 	}
 	var iframe = document.createElement('iframe');
-	iframe.src = steal.root.join("can/route/testing.html?2");
+	iframe.src = steal.config().root.join("can/route/testing.html?2");
 	can.$("#qunit-test-area")[0].appendChild(iframe);
 });
 
@@ -330,6 +331,7 @@ test("unsticky routes", function(){
 		iCanRoute.attr({type: "bar"});
 
 		setTimeout(function(){
+			console.log('HREF', loc.href)
 			var after = loc.href.substr(loc.href.indexOf("#"));
 			equal(after,"#!bar");
 			iCanRoute.attr({type: "bar", id: "\/"});
@@ -349,14 +351,14 @@ test("unsticky routes", function(){
 					setTimeout(arguments.callee, 30)
 				}
 				
-			},1)
+			},100)
 			
-		},1)
+		},100)
 
 
 	}
 	var iframe = document.createElement('iframe');
-	iframe.src = steal.root.join("can/route/testing.html?1");
+	iframe.src = steal.config().root.join("can/route/testing.html?1");
 	can.$("#qunit-test-area")[0].appendChild(iframe);
 });
 
@@ -429,4 +431,5 @@ test("dashes in routes", function(){
 
 	window.location.hash = "qunit-header";
 	window.location.hash = "";
-})
+});
+})();

@@ -1,1 +1,0 @@
-c({"name": "scrollbarWidth", "type": "attribute", "comment": "<p>Stores the width of the browsers scrollbars in can.ui.scrollbarWidth.</p>\n\n<pre><code> $('#element').width($('#element').width()\n     - can.ui.scrollbarWidth);\n</code></pre>", "parents": ["canui"], "attribute_type": "@type ", "src": "canui/util/scrollbar_width/scrollbar_width.js", "line": 23, "children": []})

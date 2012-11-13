@@ -1,13 +1,12 @@
-steal('./jquery.1.7.1.js', "./../preamble.js", function( $ ) {
-
-	// jquery.js
-	// ---------
+steal('jquery', 'can/util/can.js', 'can/util/array/each.js', function($, can) {
 	// _jQuery node list._
 	$.extend( can, jQuery, {
 		trigger: function( obj, event, args ) {
-			obj.trigger ?
-				obj.trigger( event, args ) :
+			if ( obj.trigger ) {
+				obj.trigger( event, args );
+			} else {
 				$.event.trigger( event, args, obj, true );
+			}
 		},
 		addEvent: function(ev, cb){
 			$([this]).bind(ev, cb);
@@ -19,10 +18,11 @@ steal('./jquery.1.7.1.js', "./../preamble.js", function( $ ) {
 		},
 		// jquery caches fragments, we always needs a new one
 		buildFragment : function(result, element){
-			var ret = $.buildFragment([result],[element]);
+			var ret = $.buildFragment([result],$(element));
 			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment;
 		},
-		$: jQuery
+		$: jQuery,
+		each: can.each
 	});
 
 	// Wrap binding functions.
@@ -46,8 +46,12 @@ steal('./jquery.1.7.1.js', "./../preamble.js", function( $ ) {
 
 	$.cleanData = function( elems ) {
 		$.each( elems, function( i, elem ) {
-			can.trigger(elem,"destroyed",[],false);
+			if ( elem ) {
+				can.trigger(elem,"destroyed",[],false);
+			}
 		});
 		oldClean(elems);
 	};
-}).then('can/util/array/each.js');
+
+	return can;
+});

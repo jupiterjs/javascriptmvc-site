@@ -1,9 +1,9 @@
-// load('steal/build/styles/test/styles_test.js')
+// load('steal/build/styles/test/styles_s.test.js')
 /**
  * Tests compressing a very basic page and one that is using steal
  */
 load('steal/rhino/rhino.js')
-steal('steal/test', function( s ) {
+steal('steal', 'steal/test', function(s) {
 	//STEALPRINT = false;
 	s.test.module("steal/build/js")
 	
@@ -17,17 +17,17 @@ steal('steal/test', function( s ) {
 				[
 					{
 						buildType : "js",
-						rootSrc : "a.js",
+						id : "a.js",
 						text: "a"
 					},
 					{
 						buildType : "js",
-						rootSrc : "b.js",
+						id : "b.js",
 						text: "b"
 					},
 					{
 						buildType : "css",
-						rootSrc : "c.css",
+						id : "c.css",
 						text: "c"
 					}
 				],
@@ -38,7 +38,18 @@ steal('steal/test', function( s ) {
 				
 				s.test.equals(
 					res.js,
-					'steal.has("a.js","b.js");steal({src:"package/1.js",waits:!0,has:["jquery/jquery.js"]});steal({src:"package/css.css",waits:!0,has:["c.css"]});a;steal.executed("a.js");b;steal.executed("b.js");\n',
+					// tell what this file has
+					'steal.has("a.js","b.js");'+
+					// steal any packages this package depends on
+					'steal({id:"package/1.js",waits:!0,has:["jquery/jquery.js"]});'+
+					'steal({id:"package/css.css",waits:!0,has:["c.css"]});'+
+					// clear pending for future steals
+					'steal.pushPending();'+
+					// the files and executed contexts
+					'a;steal.executed("a.js");b;steal.executed("b.js");'+
+					// pop the previous pending state into being so when this file completes, it's depeendencies will be executed
+					'steal.popPending();'+
+					'\n',
 					"js works");
 					
 				s.test.equals(res.css.code,"c")

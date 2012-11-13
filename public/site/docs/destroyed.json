@@ -1,1 +1,0 @@
-c({"name": "destroyed", "type": "attribute", "comment": "", "download": "http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/dom/destroyed/destroyed.js", "test": "jquery/event/destroyed/qunit.html", "src": "jquery/event/destroyed/destroyed.js", "line": 1, "children": []})

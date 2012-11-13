@@ -1,1 +1,0 @@
-c({"name": "can.ui.form.Combobox.static.emptyItemsText", "type": "attribute", "parents": ["can.ui.form.Combobox.static"], "comment": "<p>Text that displays when no items are in a combo box's drop down.</p>", "hide": true, "src": "canui/form/combobox/combobox.js", "line": 105, "children": []})

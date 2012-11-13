@@ -1,4 +1,4 @@
-steal(function(){
+steal('./can.js',function(can){
 
 	// event.js
 	// ---------
@@ -51,6 +51,6 @@ can.dispatch = function(event){
 	});
 }
 
-
+return can;
 
 })

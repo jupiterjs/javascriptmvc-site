@@ -1,4 +1,4 @@
-(function(){
+steal('can/util', 'can/view/modifiers', function(can) {
 
 // this only applied to jQuery libs
 if(!window.jQuery){
@@ -51,6 +51,15 @@ test("jQuery.fn.hookup", function(){
 	can.$("#qunit-test-area").html("");
 	var els = $(can.view.render("//can/view/test/qunit/hookup.ejs",{})).hookup();
 	can.$("#qunit-test-area").html(els); //makes sure no error happens
+});
+
+test("hookups don't break script execution (issue #130)", function(){
+	// this simulates a pending hookup (hasn't been run yet)
+	can.view.hook(function() {});
+	// this simulates HTML with script tags being loaded (probably legacy code)
+	can.$("#qunit-test-area").html("<script>can.$('#qunit-test-area').html('OK')</script>");
+	equal(can.$("#qunit-test-area").html(),'OK');
+	can.$("#qunit-test-area").html("");
 });
 
 })();

@@ -1,7 +1,7 @@
 /**
  *  @add jQuery.fn
  */
-steal('jquery/dom').then(function(){
+steal('jquery', function($) {
 	/**
 	 * @function closest
 	 * @parent dom
@@ -45,4 +45,6 @@ steal('jquery/dom').then(function(){
 		}
 		return res;
 	}
+
+	return $;
 })

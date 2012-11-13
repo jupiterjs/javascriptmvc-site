@@ -1,1 +1,0 @@
-c({"name": "FuncUnit._haveAsyncQueries", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Return true if there are already async methods queued.  If true, getters need throw errors.</p>", "hide": true, "src": "funcunit/browser/queue.js", "line": 52, "children": []})

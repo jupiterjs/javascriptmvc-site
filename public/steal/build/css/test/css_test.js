@@ -1,9 +1,9 @@
-// load('steal/build/css/test/css_test.js')
+// load('steal/build/css/test/css_s.test.js')
 /**
  * Tests compressing a very basic page and one that is using steal
  */
 load('steal/rhino/rhino.js')
-steal('steal/test', function( s ) {
+steal('steal', 'steal/test', function( s ) {
 	STEALPRINT = false;
 	s.test.module("steal/build/css")
 
@@ -21,7 +21,8 @@ steal('steal/test', function( s ) {
 					"css out right");
 					
 				s.test.clear();
-				s.test.remove('steal/build/css/test/production.css')
+				s.test.remove('steal/build/css/test/production.css');
+				s.test.remove('steal/build/css/test/production.js')
 			});
 	});
 // 

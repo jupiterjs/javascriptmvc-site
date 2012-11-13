@@ -1,9 +1,0 @@
-<tr data-cid="<%= item._namespace %>">
-<% can.each(columns, function(current) { %>
-  <% if(current.isComputed) { %>
-    <td><%= current() %></td>
-  <% } else { %>
-    <td <%== (el) -> can.append(el, current) %>></td>
-  <% } %>
-<% }); %>
-</tr>

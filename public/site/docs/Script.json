@@ -1,1 +1,0 @@
-c({"name": "Script", "type": "attribute", "comment": "<p>!\n jQuery hashchange event - v1.2 - 2/11/2010\n http://benalman.com/projects/jquery-hashchange-plugin/</p>\n\n<p>Copyright (c) 2010 \"Cowboy\" Ben Alman\n Dual licensed under the MIT and GPL licenses.\n http://benalman.com/about/license/</p>", "src": "jquery/event/hashchange/hashchange.js", "line": 0, "children": []})

@@ -1,4 +1,4 @@
-steal('funcunit/qunit','can/util/fixture',function(){
+(function(undefined) {
 
 module("mvc");
 
@@ -35,9 +35,14 @@ test("Model basics",function(){
 			name : "foo"
 		}]]
 	})*/
-	
+
+	var url = "can/test/fixtures/foo.json";
+	if(typeof steal !== 'undefined') {
+		url = steal.config().root.join(url) + '';
+	}
+
 	var Task = can.Model({
-		findAll : steal.root.join("can/test/foo.json")+''
+		findAll : url
 	},{
 		print : function(){
 			return this.name;
@@ -45,19 +50,18 @@ test("Model basics",function(){
 	});
 	stop();
 	Task.findAll({}, function(tasks){
-		
+
 		equals(tasks.length, 1,"we have an array")
 		equals(tasks[0].id, 1, "we have the objects")
 		ok(tasks[0] instanceof Task, "we have an instance of task")
-		
+
 		// add a task
-		
 		tasks.bind('add', function(ev, items, where){
 			ok(items.length, "add called with an array");
-			
+
 			ok(newtask === items[0], "add called with new task")
 			start();
-			
+
 		})
 		var newtask = new Task({name: "hello"})
 		tasks.push( newtask )
@@ -99,4 +103,4 @@ test("Control Basics",3,function(){
 	
 })
 
-});
+})();

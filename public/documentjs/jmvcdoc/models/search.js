@@ -1,4 +1,5 @@
 steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
+
 	var data,
 		// a map of names to deferreds
 		findOneDeferreds = {};
@@ -11,8 +12,6 @@ steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
 			}
 		}
 	});
-	
-	
 	
 	can.Construct("Doc",{
 		location : null,
@@ -85,12 +84,10 @@ steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
 				},1000)
 				
 			}
-			
 			return arguments;
 		},
 		findOne: function(params, success, error){
 			if(success){
-
 				if(window.localStorage && window.JMVCDOC_TIMESTAMP){
 					var json = window.localStorage["jmvcDoc"+params.name]
 					if(json){
@@ -100,7 +97,6 @@ steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
 							return;
 						}
 					}
-
 				}
 				var def = findOneDeferreds[params.name]
 				// check if we are already requesting
@@ -110,7 +106,6 @@ steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
 					return def;
 				} else {
 					def = findOneDeferreds[params.name] = can.Deferred();
-					def.done(success);
 					def.fail(error);
 					def.done(function(data){
 						if(window.localStorage && window.JMVCDOC_TIMESTAMP){
@@ -119,8 +114,8 @@ steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
 								window.localStorage["jmvcDoc"+params.name] = can.toJSON(data)
 								delete findOneDeferreds[params.name];
 							},10)
-							
 						}
+						success(data)
 					});
 					can.ajax({
 						url: ( this.location || DOCS_LOCATION) + params.name.replace(/ /g, "_")
@@ -198,7 +193,7 @@ steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
 			}
 			
 			if(window.localStorage && window.JMVCDOC_TIMESTAMP){
-				var json = window.localStorage["jmvcDocSearch"+window.JMVCDOC_TIMESTAMP]
+				var json = window.localStorage["jmvcDoc"+window.JMVCDOC_TIMESTAMP]
 				if(json){
 					return this._searchData = can.parseJSON(json);
 				}
@@ -218,7 +213,7 @@ steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
 							current[letter] = {};
 							current[letter].list = [];
 						}
-						if ( can.inArray(current[letter].list, data) == -1 ) {
+						if ( can.inArray(data, current[letter].list) == -1 ) {
 							current[letter].list.push(data);
 						}
 						current = current[letter];

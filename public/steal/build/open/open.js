@@ -1,4 +1,4 @@
-steal(function(s){
+steal('steal',function(s){
 	// Methods for walking through steal and its dependencies
 	
 	// which steals have been touched in this cycle
@@ -16,28 +16,42 @@ steal(function(s){
 
 			// this goes through the scripts until it finds one that waits for 
 			// everything before it to complete
-			// console.log('OPEN', name(stl), stl.id, "depends on", depends.length)
+			//console.log('OPEN', stl.options.id, "depends on", depends.map(function(stl){
+			//	return stl.options.id+":"+stl.options.type
+			//}).join(","))
+			
 			// if(includeFns){
 				// if(!depends.length){
 					// touch([stl], CB)
 				// }
 			// }
 			while(i < depends.length){
-				if(depends[i].waits){
+				if(depends[i] === null || depends[i].waits){
 					// once we found something like this ...
 					// if(includeFns){
 						// var steals = depends.splice(0,i+1),
 							// curStl = steals[steals.length-1];
 					// } else {
+						// removes all steals before the wait
 						var steals = depends.splice(0,i),
+							// cur steal is the waiting dependency
 							curStl = depends.shift();
 					// }
 					
 					// load all these steals, and their dependencies
 					loadset(steals, CB, depth, includeFns);
-					
-					// load any dependencies 
-					loadset(curStl.dependencies, CB, null, includeFns);
+
+					if(curStl) { // curStl can be null
+						if(depth){
+							// load any dependencies
+							loadset(curStl.dependencies, CB, depth, includeFns);
+							// probably needs to change if depth
+							touch([curStl], CB)
+						} else {
+							touch([curStl], CB);
+							loadset(curStl.dependencies, CB, depth, includeFns);
+						}
+					}
 					i=0;
 				}else{
 					i++;
@@ -67,23 +81,26 @@ steal(function(s){
 		},
 		touch = function(steals, CB){
 			for(var i =0; i < steals.length; i++){
-				var uniqueId = steals[i].id;
-				// print("  Touching "+uniqueId, name(steals[i]))
-				if(!touched[uniqueId]){
-					CB( steals[i] );
-					touched[uniqueId] = true;
+				if(steals[i]){
+					var uniqueId = steals[i].options.id;
+					//print("  Touching "+uniqueId )
+					if(!touched[uniqueId]){
+						CB( steals[i] );
+						touched[uniqueId] = true;
+					}
 				}
+				
 				
 			}
 		},
 		eachSteal = function(steals, CB, depth, includeFns){
 			for(var i =0; i < steals.length; i++){
-				// print("  eachsteal ",name(steals[i]))
+				//print("  eachsteal ",name(steals[i]))
 				iterate(steals[i], CB, depth, includeFns)
 			}
 		},
 		name = function(s){
-			return s.options.src;
+			return s.options.id;
 		},
 		window = (function() {
 			return this;
@@ -128,9 +145,9 @@ steal(function(s){
 	 * @return {Object} an object with properties that makes extracting 
 	 * the content for a certain tag slightly easier.
 	 */
-	steal.build.open = function( url, stealData, cb, depth, includeFns ) {
+	s.build.open = function( url, stealData, cb, depth, includeFns ) {
 		// save and remove the old steal
-		var oldSteal = window.steal || steal,
+		var oldSteal = s,
 			// new steal is the steal opened
 			newSteal;
 			
@@ -207,13 +224,12 @@ steal(function(s){
 					}
 					var items = [];
 					// iterate 
-					
-					iterate(rootSteal, function(stealer){
+					iterate(rootSteal, function(resource){
 						
-						if( filter(stealer) ) {
-							stealer.options.text = stealer.options.text || loadScriptText(stealer.options);
-							func(stealer.options, stealer );
-							items.push(stealer.options);
+						if( filter(resource) ) {
+							resource.options.text = resource.options.text || loadScriptText(resource);
+							func(resource.options, resource );
+							items.push(resource.options);
 						}
 					}, depth, includeFns );
 				},
@@ -235,10 +251,40 @@ steal(function(s){
 			logLevel: 2,
 			afterScriptLoad: {
 				// prevent $(document).ready from being called even though load is fired
-				"jquery.js": function( script ) {
-					window.jQuery && jQuery.readyWait++;
+				"jquery.1.7.1.js": function( script ) {
+					window.jQuery && jQuery.holdReady(true);
+				},
+				"jquery.1.8.1.js": function( script ) {
+					window.jQuery && jQuery.holdReady(true);
 				},
 				"steal.js": function(script){
+					if(stealData.skipAll){
+						window.steal.config({
+							types: {
+								"js" : function(options, success){
+									var text;
+									if(options.text){
+										text = options.text;
+									}else{
+										text = readFile(options.id);
+									}
+									// check if steal is in this file
+									var stealInFile = /steal\(/.test(text);
+									if(stealInFile){
+										// if so, load it
+										eval(text)
+									} else {
+										// skip this file
+									}
+									success()
+								},
+								"fn": function (options, success) {
+									// skip all functions
+									success();
+								}
+							}
+						})
+					}
 					// a flag to tell steal we're in "build" mode
 					// this is used to completely ignore files with the "ignore" flag set
 					window.steal.isBuilding = true;
@@ -262,16 +308,18 @@ steal(function(s){
 	steal.build.open.firstSteal =function(rootSteal){
 		var stel;
 		for(var i =0; i < rootSteal.dependencies.length; i++){
-			stel = rootSteal.dependencies[i]
-			if(stel.options.buildType != 'fn' && stel.options.rootSrc != 'steal/dev/dev.js'){
+			stel = rootSteal.dependencies[i];
+			
+			if(stel && stel.options.buildType != 'fn' && stel.options.id != 'steal/dev/dev.js' && stel.options.id != 'stealconfig.js'){
 				return stel;
 			}	
 		}
 	};
 	
-	var loadScriptText = function( options ) {
+	var loadScriptText = function( stl ) {
+		var options = stl.options;
 		if(options.fn){
-			return options.orig.toString();
+			return stl.orig.toString();
 		}
 		if(options._skip){ // if we skip this script, we don't care about its contents
 			return "";

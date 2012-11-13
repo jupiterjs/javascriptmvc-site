@@ -1,4 +1,4 @@
-steal('can/util', function(){
+steal('can/util', function(can) {
 	
 	// returns the
     // - observes and attr methods are called by func
@@ -21,7 +21,7 @@ steal('can/util', function(){
 					obj: obj,
 					attr: attr
 				});
-			}
+			};
 		}
 		
 		var observed = [],
@@ -36,7 +36,7 @@ steal('can/util', function(){
 		return {
 			value : value,
 			observed : observed
-		}
+		};
 	},
 		// Calls `callback(newVal, oldVal)` everytime an observed property
 		// called within `getterSetter` is changed and creates a new result of `getterSetter`.
@@ -58,20 +58,26 @@ steal('can/util', function(){
 							delete observing[name];
 						}
 					}
-				};
+				},
+				batchNum;
 			
-			// when a property value is cahnged
-			var onchanged = function(){
-				// store the old value
-				var oldValue = data.value,
-					// get the new value
-					newvalue = getValueAndBind();
-				// update the value reference (in case someone reads)
-				data.value = newvalue
-				// if a change happened
-				if(newvalue !== oldValue){
-					callback(newvalue, oldValue);
-				};
+			// when a property value is changed
+			var onchanged = function(ev){
+				if(ev.batchNum === undefined || ev.batchNum !== batchNum) {
+					// store the old value
+					var oldValue = data.value,
+						// get the new value
+						newvalue = getValueAndBind();
+					// update the value reference (in case someone reads)
+					data.value = newvalue;
+					// if a change happened
+					if ( newvalue !== oldValue ) {
+						callback(newvalue, oldValue);
+					}
+					batchNum = batchNum = ev.batchNum;
+				}
+				
+				
 			};
 			
 			// gets the value returned by `getterSetter` and also binds to any attributes
@@ -86,16 +92,16 @@ steal('can/util', function(){
 				// go through every attribute read by this observe
 				can.each(newObserveSet, function(ob){
 					// if the observe/attribute pair is being observed
-					if(observing[ob.obj._namespace+"|"+ob.attr]){
+					if(observing[ob.obj._cid+"|"+ob.attr]){
 						// mark at as observed
-						observing[ob.obj._namespace+"|"+ob.attr].matched = matched;
+						observing[ob.obj._cid+"|"+ob.attr].matched = matched;
 					} else {
 						// otherwise, set the observe/attribute on oldObserved, marking it as being observed
-						observing[ob.obj._namespace+"|"+ob.attr] = {
+						observing[ob.obj._cid+"|"+ob.attr] = {
 							matched: matched,
 							observe: ob
 						};
-						ob.obj.bind(ob.attr, onchanged)
+						ob.obj.bind(ob.attr, onchanged);
 					}
 				});
 				
@@ -109,7 +115,7 @@ steal('can/util', function(){
 					}
 				}
 				return value;
-			}
+			};
 			// set the initial value
 			data.value = getValueAndBind();
 			data.isListening = ! can.isEmptyObject(observing);
@@ -252,7 +258,7 @@ steal('can/util', function(){
 	 * 
 	 */
 	can.compute = function(getterSetter, context){
-		if(getterSetter.isComputed){
+		if(getterSetter && getterSetter.isComputed){
 			return getterSetter;
 		}
 		// get the value right away
@@ -266,6 +272,12 @@ steal('can/util', function(){
 				if(value === undefined){
 					// we are reading
 					if(computedData){
+						// If another compute is calling this compute for the value,
+						// it needs to bind to this compute's change so it will re-compute
+						// and re-bind when this compute changes.
+						if(bindings && can.Observe.__reading) {
+							can.Observe.__reading(computed,'change');
+						}
 						return computedData.value;
 					} else {
 						return getterSetter.call(context || this)
@@ -279,12 +291,16 @@ steal('can/util', function(){
 			// we just gave it a value
 			computed = function(val){
 				if(val === undefined){
+					// If observing, record that the value is being read.
+					if(can.Observe.__reading) {
+						can.Observe.__reading(computed,'change');
+					}
 					return getterSetter;
 				} else {
 					var old = getterSetter;
 					getterSetter = val;
 					if( old !== val){
-						can.trigger(computed, "change",[val, old]);
+						can.Observe.triggerBatch(computed, "change",[val, old]);
 					}
 					
 					return val;
@@ -309,7 +325,7 @@ steal('can/util', function(){
 			if( bindings === 0 && canbind){
 				// setup live-binding
 				computedData = computeBinder(getterSetter, context || this, function(newValue, oldValue){
-					can.trigger(computed, "change",[newValue, oldValue])
+					can.Observe.triggerBatch(computed, "change",[newValue, oldValue])
 				});
 			}
 			bindings++;
@@ -329,4 +345,5 @@ steal('can/util', function(){
 		return computed;
 	};
 	can.compute.binder = computeBinder;
+	return can.compute;
 })

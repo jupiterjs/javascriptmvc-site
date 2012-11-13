@@ -1,4 +1,5 @@
-module("jquery/model", { 
+steal('can/util', 'jquery', 'jquery/model', function(can, $) {
+module("jquery/model", {
 	setup: function() {
         var ids = 0;
 	    $.Model("Person",{
@@ -98,7 +99,7 @@ test("save deferred", function(){
 				type : 'post',
 				dataType : "json",
 				fixture: function(){
-					return [{id: 5}]
+					return {id: 5}
 				},
 				success : success
 			})
@@ -111,8 +112,8 @@ test("save deferred", function(){
 	stop();
 	personD.then(function(person){
 		start()
+		console.log(person)
 		equals(person.id, 5, "we got an id")
-		
 	});
 	
 });
@@ -127,7 +128,7 @@ test("update deferred", function(){
 				type : 'post',
 				dataType : "json",
 				fixture: function(){
-					return [{thing: "er"}]
+					return {thing: "er"}
 				},
 				success : success
 			})
@@ -155,7 +156,7 @@ test("destroy deferred", function(){
 				type : 'post',
 				dataType : "json",
 				fixture: function(){
-					return [{thing: "er"}]
+					return {thing: "er"}
 				},
 				success : success
 			})
@@ -276,10 +277,10 @@ test("auto methods",function(){
 	//turn off fixtures
 	$.fixture.on = false;
 	var School = $.Model.extend("Jquery.Model.Models.School",{
-	   findAll : steal.root.join("jquery/model/test")+"/{type}.json",
-	   findOne : steal.root.join("jquery/model/test")+"/{id}.json",
-	   create : steal.root.join("jquery/model/test")+"/create.json",
-	   update : "POST "+steal.root.join("jquery/model/test")+"/update{id}.json"
+	   findAll : steal.config().root.join("jquery/model/test")+"/{type}.json",
+	   findOne : steal.config().root.join("jquery/model/test")+"/{id}.json",
+		create : "GET " + steal.config().root.join("can/model/test")+"/create.json",
+		update : "GET "+steal.config().root.join("can/model/test")+"/update{id}.json"
 	},{})
 	stop();
 	School.findAll({type:"schools"}, function(schools){
@@ -317,7 +318,7 @@ test("isNew", function(){
 test("findAll string", function(){
 	$.fixture.on = false;
 	$.Model("Test.Thing",{
-		findAll : steal.root.join("jquery/model/test/qunit/findAll.json")+''
+		findAll : steal.config().root.join("jquery/model/test/qunit/findAll.json")+''
 	},{});
 	stop();
 	Test.Thing.findAll({},function(things){
@@ -408,7 +409,8 @@ test("converters and serializes", function(){
 		}
 	},{});
 	var d = new Date();
-	d.setMonth(1)
+	d.setDate(1);
+	d.setMonth(1);
 	var task1=new Task1({
 		createdAt: d,
 		name:"Task1"
@@ -457,13 +459,13 @@ test("save error args", function(){
 	})
 	var st = '{type: "unauthorized"}';
 	
-	$.fixture("/testinmodelsfoos.json", function(){
-		return [401,st]
+	$.fixture("/testinmodelsfoos.json", function(headers, respond) {
+		respond(401,st);
 	});
 	stop();
-	var inst = new Foo({}).save(function(){
+	var inst = new Foo({}).save().done(function(){
 		ok(false, "success should not be called")
-	}, function(jQXHR){
+	}).fail(function(jQXHR){
 		ok(true, "error called")
 		ok(jQXHR.getResponseHeader,"jQXHR object")
 		start()
@@ -571,6 +573,4 @@ test("object definitions", function(){
 		start();
 	})
 })
-
-
-
+})

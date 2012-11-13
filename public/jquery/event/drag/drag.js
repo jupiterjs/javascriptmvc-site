@@ -1,4 +1,5 @@
-steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack', 'jquery/event/reverse', function( $ ) {
+steal('jquery', 'jquery/lang/vector', 'jquery/event/livehack', 'jquery/event/reverse', function( $ ) {
+
 	if(!$.event.special.move) {
 		$.event.reverse('move');
 	}
@@ -83,7 +84,8 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack', 'jquery/eve
 					dragover: event.find(delegate, ["dragover"], selector),
 					dragmove: event.find(delegate, ["dragmove"], selector),
 					dragout: event.find(delegate, ["dragout"], selector),
-					dragend: event.find(delegate, ["dragend"], selector)
+					dragend: event.find(delegate, ["dragend"], selector),
+					dragcleanup: event.find(delegate, ["dragcleanup"], selector)
 				},
 				destroyed: function() {
 					self.current = null;
@@ -403,7 +405,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack', 'jquery/eve
 				});
 			}
 			else {
-				this.cleanup();
+				this.cleanup(event);
 			}
 			this.event = null;
 		},
@@ -411,7 +413,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack', 'jquery/eve
 		 * Cleans up drag element after drag drop.
 		 * @hide
 		 */
-		cleanup: function() {
+		cleanup: function(event) {
 			this.movingElement.css({
 				zIndex: this.oldZIndex
 			});
@@ -425,6 +427,10 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack', 'jquery/eve
 			if ( this._removeMovingElement ) {
 				// Remove the element when using drag.ghost()
 				this.movingElement.remove();
+			}
+
+			if(event) {
+				this.callEvents('cleanup', this.element, event);
 			}
 
 			this.movingElement = this.element = this.event = null;
@@ -712,15 +718,30 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack', 'jquery/eve
 	 * @attribute dragend
 	 * @parent jQuery.event.drag
 	 *
-	 * `dragend` is called when the drag motion is done.
+	 * `dragend` is called when the drag operation is completed.
 	 * The event handler gets an instance of [jQuery.Drag] passed as the second
 	 * parameter.
 	 *
 	 *     $('.draggable').on('dragend', function(ev, drag)
-	 *       // Clean up when the drag motion is done
+	 *       // Calculation on whether revert should be invoked, alterations based on position of the end event
 	 *     });
 	 */
-	'dragend'], startEvent, function( e ) {
+	'dragend',
+        /**
+	 * @attribute dragcleanup
+	 * @parent jQuery.event.drag
+	 *
+	 * `dragcleanup` is called after dragend and revert (if applied)
+         * The event handler gets an instance of [jQuery.Drag] passed as the second
+	 * parameter.
+	 *
+	 *     $('.draggable').on('dragcleanup', function(ev, drag)
+	 *         // cleanup 
+	 *     });
+	 */
+	'dragcleanup'], startEvent, function( e ) {
 		$.Drag.mousedown.call($.Drag, e, this);
 	});
+
+	return $;
 });

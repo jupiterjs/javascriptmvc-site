@@ -1,4 +1,4 @@
-steal('can/util/string', function($){
+steal('can/util','can/util/string', function( can ){
 	
 	// ## deparam.js  
 	// `can.deparam`  
@@ -8,7 +8,7 @@ steal('can/util/string', function($){
 		paramTest = /([^?#]*)(#.*)?$/,
 		prep = function( str ) {
 			return decodeURIComponent( str.replace(/\+/g, " ") );
-		}
+		};
 	
 
 	can.extend(can, { 
@@ -48,13 +48,13 @@ steal('can/util/string', function($){
 					for ( var j = 0, l = parts.length - 1; j < l; j++ ) {
 						if (!current[parts[j]] ) {
 							// If what we are pointing to looks like an `array`
-							current[parts[j]] = digitTest.test(parts[j+1]) || parts[j+1] == "[]" ? [] : {}
+							current[parts[j]] = digitTest.test(parts[j+1]) || parts[j+1] == "[]" ? [] : {};
 						}
 						current = current[parts[j]];
 					}
-					lastPart = parts.pop()
+					lastPart = parts.pop();
 					if ( lastPart == "[]" ) {
-						current.push(value)
+						current.push(value);
 					} else {
 						current[lastPart] = value;
 					}
@@ -63,5 +63,5 @@ steal('can/util/string', function($){
 			return data;
 		}
 	});
-	
-})
+	return can;
+});

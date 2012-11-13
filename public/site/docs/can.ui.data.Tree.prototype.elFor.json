@@ -1,1 +1,0 @@
-c({"name": "can.ui.data.Tree.prototype.elFor", "params": {"parentId": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "parentId"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["can.ui.data.Tree.prototype"], "comment": "<p>Finds the name element</p>", "src": "canui/data/tree/tree.js", "line": 113, "children": []})
