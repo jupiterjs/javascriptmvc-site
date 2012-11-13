@@ -1,6 +1,6 @@
 [submodule "donejs"]
 	path = donejs
-	url = git@github.com:jupiterjs/donejs.git
+	url = https://github.com/jupiterjs/donejs.git
 [submodule "examples/todo"]
 	path = examples/todo
 	url = git@github.com:jupiterjs/cantodo.git
