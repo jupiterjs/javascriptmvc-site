@@ -14,28 +14,33 @@ def echo(message)
 	puts
 end
 
+def is_ignored(path, ignored)
+	ignored.each do |ignore|
+		if(path.include? ignore)
+			return true
+		end
+	end
+
+	return false
+end
+
 def copy_resources(path)
-	ignored_extensions = []
-	ignored_files = ['.git', '.gitignore', '.DS_Store', '.gitmodules', 'node_modules']
+	ignored = ['.git', 'node_modules', '.DS_Store', '.gitignore', '.gitmodules']
 
 	Find.find(path) do |file|
 		basename = File.basename file
 		dirname = File.dirname file
-		extname = File.extname file
 
-		#TODO: Simplify the below logic.
-		if (File.directory?(file) && (/\.git/ =~ file).nil? || (/\.git/ =~ dirname).nil?) &&
-			(!ignored_extensions.include?(extname) && !ignored_files.include?(basename))
-				new_path = 'public/' + dirname.gsub(/donejs(\/)?/, '') + '/' + basename
-				new_path = new_path.gsub(/\/\//, '/')
+		new_path = 'public/' + dirname.gsub(/donejs(\/)?/, '') + '/' + basename
+		new_path = new_path.gsub(/\/\//, '/')
 
-				puts new_path
-				if File.directory? file
-					FileUtils.rm_rf new_path
-					FileUtils.mkdir new_path
-				elsif
-					FileUtils.cp file, new_path
-				end
+		if(File.directory?(file) && !is_ignored(file, ignored))
+			puts 'Copying: ' + new_path
+			FileUtils.rm_rf new_path
+			FileUtils.mkdir new_path
+		elsif(!is_ignored(file, ignored))
+			puts 'Copying: ' + new_path
+			FileUtils.cp file, new_path
 		end
 	end
 end
