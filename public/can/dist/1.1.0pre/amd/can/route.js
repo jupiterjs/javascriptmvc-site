@@ -133,7 +133,6 @@ define(['can/util', 'can/observe', 'can/util/string/deparam'], function (can) {
 			// Otherwise find route.
 			each(can.route.routes, function (temp, name) {
 				// best route is the first with all defaults matching
-
 				matchCount = matchesData(temp, data);
 				if (matchCount > matches) {
 					route = temp;

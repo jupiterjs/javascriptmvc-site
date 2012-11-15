@@ -205,7 +205,6 @@ define(['can/util/string'], function (can) {
 
 			// The dummy class constructor.
 
-
 			function Constructor() {
 				// All construction is actually done in the init method.
 				if (!initializing) {

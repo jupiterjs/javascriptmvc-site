@@ -1,6 +1,5 @@
 (function (can, window, undefined) {
 	// ## can/util/object/object.js
-
 	var isArray = can.isArray,
 		// essentially returns an object that has all the must have comparisons ...
 		// must haves, do not return true when provided undefined

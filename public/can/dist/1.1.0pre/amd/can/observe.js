@@ -1218,7 +1218,6 @@ define(['can/util', 'can/construct'], function (can) {
 	// `name` - The method name.
 	// `where` - Where items in the `array` should be added.
 
-
 	function (where, name) {
 		list.prototype[name] = function () {
 			// Get the items being added.
@@ -1287,7 +1286,6 @@ define(['can/util', 'can/construct'], function (can) {
 		shift: 0
 	},
 	// Creates a `remove` type method
-
 
 	function (where, name) {
 		list.prototype[name] = function () {

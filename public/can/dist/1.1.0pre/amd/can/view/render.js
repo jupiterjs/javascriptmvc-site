@@ -78,7 +78,6 @@ define(['can/view'], function (can) {
 
 			// Make a function call the hookup method.
 
-
 			function (el, id) {
 				input.hookup.call(input, el, id);
 			}) ||
@@ -254,7 +253,6 @@ define(['can/view'], function (can) {
 				// If we are escaping, replace the parentNode with 
 				// a text node who's value is `func`'s return value.
 
-
 				function (el, parentNode) {
 					// updates the text of the text node
 					update = function (newVal) {
@@ -271,7 +269,6 @@ define(['can/view'], function (can) {
 				} :
 				// If we are not escaping, replace the parentNode with a
 				// documentFragment created as with `func`'s return value.
-
 
 				function (span, parentNode) {
 					// updates the elements with the new content

@@ -183,7 +183,11 @@ steal('can/util','can/construct', function(can) {
 			}
 		},
 		/**
-			* Iterates over an onbservable object to get an array of its keys.
+			* Iterates over an observable object to get an array of its keys.
+			*
+			*     o =  new can.Observe({ foo: 'bar', baz: 'qux' });
+			*     can.Observe.keys(o); //-> ['foo', 'baz']
+			*
 			* @param {can.Observe} observe The observe to iterate over
 			* @return {Array} array An array of the keys on the object.
 		 */
@@ -716,7 +720,7 @@ steal('can/util','can/construct', function(can) {
 				self = this,
 				newVal;
 			Observe.startBatch();
-			this.each(function(curVal, prop){
+			this.each(function(curVal, prop, toRemove){
 				newVal = props[prop];
 
 				// If we are merging...
@@ -737,7 +741,7 @@ steal('can/util','can/construct', function(can) {
 						self._set(prop, newVal)
 					}
 					else if ( canMakeObserve(curVal) && canMakeObserve(newVal) ) {
-						curVal.attr(newVal, remove)
+						curVal.attr(newVal, toRemove)
 					} else if ( curVal != newVal ) {
 						self._set(prop, newVal)
 					}
