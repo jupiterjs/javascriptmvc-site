@@ -1,0 +1,599 @@
+<!DOCTYPE html>  <html> <head>   <title>dojo.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="amd.html">                 amd.js               </a>                                           <a class="source" href="construct.html">                 construct.js               </a>                                           <a class="source" href="proxy.html">                 proxy.js               </a>                                           <a class="source" href="super.html">                 super.js               </a>                                           <a class="source" href="control.html">                 control.js               </a>                                           <a class="source" href="plugin.html">                 plugin.js               </a>                                           <a class="source" href="view.html">                 view.js               </a>                                           <a class="source" href="model.html">                 model.js               </a>                                           <a class="source" href="observe.html">                 observe.js               </a>                                           <a class="source" href="attributes.html">                 attributes.js               </a>                                           <a class="source" href="backup.html">                 backup.js               </a>                                           <a class="source" href="compute.html">                 compute.js               </a>                                           <a class="source" href="delegate.html">                 delegate.js               </a>                                           <a class="source" href="setter.html">                 setter.js               </a>                                           <a class="source" href="validations.html">                 validations.js               </a>                                           <a class="source" href="route.html">                 route.js               </a>                                           <a class="source" href="each.html">                 each.js               </a>                                           <a class="source" href="can.html">                 can.js               </a>                                           <a class="source" href="deferred.html">                 deferred.js               </a>                                           <a class="source" href="dojo.html">                 dojo.js               </a>                                           <a class="source" href="event.html">                 event.js               </a>                                           <a class="source" href="fragment.html">                 fragment.js               </a>                                           <a class="source" href="jquery.html">                 jquery.js               </a>                                           <a class="source" href="mootools.html">                 mootools.js               </a>                                           <a class="source" href="object.html">                 object.js               </a>                                           <a class="source" href="extend.html">                 extend.js               </a>                                           <a class="source" href="isplain.html">                 isplain.js               </a>                                           <a class="source" href="string.html">                 string.js               </a>                                           <a class="source" href="deparam.html">                 deparam.js               </a>                                           <a class="source" href="yui.html">                 yui.js               </a>                                           <a class="source" href="zepto.html">                 zepto.js               </a>                                           <a class="source" href="data.html">                 data.js               </a>                                           <a class="source" href="view.html">                 view.js               </a>                                           <a class="source" href="ejs.html">                 ejs.js               </a>                                           <a class="source" href="modifiers.html">                 modifiers.js               </a>                                           <a class="source" href="render.html">                 render.js               </a>                                           <a class="source" href="scanner.html">                 scanner.js               </a>                                           <a class="source" href="can.dojo-1.1.0pre.html">                 can.dojo-1.1.0pre.js               </a>                                           <a class="source" href="can.dojo-1.1.0pre.min.html">                 can.dojo-1.1.0pre.min.js               </a>                                           <a class="source" href="can.jquery-1.1.0pre.html">                 can.jquery-1.1.0pre.js               </a>                                           <a class="source" href="can.jquery-1.1.0pre.min.html">                 can.jquery-1.1.0pre.min.js               </a>                                           <a class="source" href="can.mootools-1.1.0pre.html">                 can.mootools-1.1.0pre.js               </a>                                           <a class="source" href="can.mootools-1.1.0pre.min.html">                 can.mootools-1.1.0pre.min.js               </a>                                           <a class="source" href="can.yui-1.1.0pre.html">                 can.yui-1.1.0pre.js               </a>                                           <a class="source" href="can.yui-1.1.0pre.min.html">                 can.yui-1.1.0pre.min.js               </a>                                           <a class="source" href="can.zepto-1.1.0pre.html">                 can.zepto-1.1.0pre.js               </a>                                           <a class="source" href="can.zepto-1.1.0pre.min.html">                 can.zepto-1.1.0pre.min.js               </a>                                           <a class="source" href="can.construct.proxy-1.1.0pre.html">                 can.construct.proxy-1.1.0pre.js               </a>                                           <a class="source" href="can.construct.super-1.1.0pre.html">                 can.construct.super-1.1.0pre.js               </a>                                           <a class="source" href="can.control.plugin-1.1.0pre.html">                 can.control.plugin-1.1.0pre.js               </a>                                           <a class="source" href="can.control.view-1.1.0pre.html">                 can.control.view-1.1.0pre.js               </a>                                           <a class="source" href="can.fixture-1.1.0pre.html">                 can.fixture-1.1.0pre.js               </a>                                           <a class="source" href="can.observe.attributes-1.1.0pre.html">                 can.observe.attributes-1.1.0pre.js               </a>                                           <a class="source" href="can.observe.backup-1.1.0pre.html">                 can.observe.backup-1.1.0pre.js               </a>                                           <a class="source" href="can.observe.delegate-1.1.0pre.html">                 can.observe.delegate-1.1.0pre.js               </a>                                           <a class="source" href="can.observe.setter-1.1.0pre.html">                 can.observe.setter-1.1.0pre.js               </a>                                           <a class="source" href="can.observe.validations-1.1.0pre.html">                 can.observe.validations-1.1.0pre.js               </a>                                           <a class="source" href="can.view.modifiers-1.1.0pre.html">                 can.view.modifiers-1.1.0pre.js               </a>                                           <a class="source" href="can.view.mustache-1.1.0pre.html">                 can.view.mustache-1.1.0pre.js               </a>                                           <a class="source" href="qunit.html">                 qunit.js               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               dojo.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;can/util/dojo/dojo-1.8.1&#39;</span><span class="p">,</span> <span class="s1">&#39;can/util/event&#39;</span><span class="p">,</span> <span class="s1">&#39;can/util/fragment&#39;</span><span class="p">,</span> <span class="s1">&#39;can/util/array/each&#39;</span><span class="p">,</span> <span class="s1">&#39;can/util/object/isplain&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">define</span><span class="p">(</span><span class="s2">&quot;plugd/trigger&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;dojo&quot;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dojo</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">dojo</span><span class="p">,</span>
+      <span class="nx">isfn</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">,</span>
+      <span class="nx">leaveRe</span> <span class="o">=</span> <span class="sr">/mouse(enter|leave)/</span><span class="p">,</span>
+      <span class="nx">_fix</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">&quot;mouse&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">p</span> <span class="o">==</span> <span class="s2">&quot;enter&quot;</span> <span class="o">?</span> <span class="s2">&quot;over&quot;</span> <span class="o">:</span> <span class="s2">&quot;out&quot;</span><span class="p">);</span>
+      <span class="p">},</span>
+      <span class="nx">mix</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">_mixin</span><span class="p">,</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>the guts of the node triggering logic:
+the function accepts node (not string|node), "on"-less event name,
+and an object of args to mix into the event. </p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">realTrigger</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">doc</span><span class="p">.</span><span class="nx">createEvent</span> <span class="o">?</span>
+      <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>the sane branch</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">ev</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">doc</span><span class="p">.</span><span class="nx">createEvent</span><span class="p">(</span><span class="s2">&quot;HTMLEvents&quot;</span><span class="p">);</span>
+        <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">leaveRe</span><span class="p">,</span> <span class="nx">_fix</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>destroyed events should not bubble</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">ev</span><span class="p">.</span><span class="nx">initEvent</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">e</span> <span class="o">===</span> <span class="s2">&quot;destroyed&quot;</span> <span class="o">?</span> <span class="kc">false</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        <span class="nx">a</span> <span class="o">&amp;&amp;</span> <span class="nx">mix</span><span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">a</span><span class="p">);</span>
+        <span class="nx">n</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="nx">ev</span><span class="p">);</span>
+      <span class="p">}</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>the janktastic branch</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">ev</span> <span class="o">=</span> <span class="s2">&quot;on&quot;</span> <span class="o">+</span> <span class="nx">e</span><span class="p">,</span>
+          <span class="nx">stop</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+          <span class="nx">lc</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">(),</span>
+          <span class="nx">node</span> <span class="o">=</span> <span class="nx">n</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>FIXME: is this worth it? for mixed-case native event support:? Opera ends up in the
+createEvent path above, and also fails on <em>some</em> native-named events. 
+                if(lc !== e &amp;&amp; d.indexOf(d.NodeList.events, lc) >= 0){
+                    // if the event is one of those listed in our NodeList list
+                    // in lowercase form but is mixed case, throw to avoid
+                    // fireEvent. /me sighs. http://gist.github.com/315318
+                    throw("janktastic");
+                }</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nx">n</span><span class="p">.</span><span class="nx">fireEvent</span><span class="p">(</span><span class="nx">ev</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">er</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>a lame duck to work with. we're probably a 'custom event'</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="kd">var</span> <span class="nx">evdata</span> <span class="o">=</span> <span class="nx">mix</span><span class="p">({</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="nx">e</span><span class="p">,</span>
+            <span class="nx">target</span><span class="o">:</span> <span class="nx">n</span><span class="p">,</span>
+            <span class="nx">faux</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>HACK: [needs] added support for customStopper to <em>base/event.js
+some tests will fail until del.</em>stopPropagation has support.</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">_stopper</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+              <span class="nx">stop</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cancelBubble</span><span class="p">;</span>
+            <span class="p">}</span>
+          <span class="p">},</span> <span class="nx">a</span><span class="p">);</span>
+
+          <span class="nx">isfn</span><span class="p">(</span><span class="nx">n</span><span class="p">[</span><span class="nx">ev</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span><span class="p">[</span><span class="nx">ev</span><span class="p">](</span><span class="nx">evdata</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>handle bubbling of custom events, unless the event was stopped.</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">stop</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span> <span class="o">!==</span> <span class="nx">d</span><span class="p">.</span><span class="nx">doc</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">n</span> <span class="o">=</span> <span class="nx">n</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+            <span class="nx">isfn</span><span class="p">(</span><span class="nx">n</span><span class="p">[</span><span class="nx">ev</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span><span class="p">[</span><span class="nx">ev</span><span class="p">](</span><span class="nx">evdata</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+
+    <span class="nx">d</span><span class="p">.</span><span class="nx">_trigger</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">extraArgs</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>summary:
+    Helper for <code>dojo.trigger</code>, which handles the DOM cases. We should never
+    be here without a domNode reference and a string eventname.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">byId</span><span class="p">(</span><span class="nx">node</span><span class="p">),</span>
+        <span class="nx">ev</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;on&quot;</span> <span class="o">?</span> <span class="nx">event</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">:</span> <span class="nx">event</span><span class="p">;</span>
+      <span class="nx">realTrigger</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">extraArgs</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="nx">d</span><span class="p">.</span><span class="nx">trigger</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">extraArgs</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>summary: 
+    Trigger some event. It can be either a Dom Event, Custom Event, 
+    or direct function call. </p>
+
+<p>description:
+    Trigger some event. It can be either a Dom Event, Custom Event, 
+    or direct function call. NOTE: This function does not trigger
+    default behavior, only triggers bound event listeneres. eg:
+    one cannot trigger("anchorNode", "onclick") and expect the browser
+    to follow the href="" attribute naturally.</p>
+
+<p>obj: String|DomNode|Object|Function
+    An ID, or DomNode reference, from which to trigger the event.
+    If an Object, fire the <code>event</code> in the scope of this object,
+    similar to calling dojo.hitch(obj, event)(). The return value
+    in this case is returned from <code>dojo.trigger</code></p>
+
+<p>event: String|Function
+    The name of the event to trigger. can be any DOM level 2 event
+    and can be in either form: "onclick" or "click" for instance.
+    In the object-firing case, this method can be a function or
+    a string version of a member function, just like <code>dojo.hitch</code>.</p>
+
+<p>extraArgs: Object?
+    An object to mix into the <code>event</code> object passed to any bound 
+    listeners. Be careful not to override important members, like
+    <code>type</code>, or <code>preventDefault</code>. It will likely error.</p>
+
+<pre><code>Additionally, extraArgs is moot in the object-triggering case,
+as all arguments beyond the `event` are curried onto the triggered
+function.
+</code></pre>
+
+<p>example: 
+|    dojo.connect(node, "onclick", function(e){  });
+|    // later:
+|    dojo.trigger(node, "onclick");</p>
+
+<p>example:
+|    // or from within dojo.query: (requires dojo.NodeList)
+|    dojo.query("a").onclick(function(){}).trigger("onclick");</p>
+
+<p>example:
+|    // fire obj.method() in scope of obj
+|    dojo.trigger(obj, "method");</p>
+
+<p>example:
+|    // fire an anonymous function:
+|    dojo.trigger(d.global, function(){  });</p>
+
+<p>example: 
+|    // fire and anonymous function in the scope of obj
+|    dojo.trigger(obj, function(){ this == obj; });</p>
+
+<p>example:
+|    // with a connected function like:
+|    dojo.connect(dojo.doc, "onclick", function(e){
+|        if(e &amp;&amp; e.manuallydone){
+|            console.log("this was a triggered onclick, not natural");
+|        }
+|    });
+|    // fire onclick, passing in a custom bit of info
+|    dojo.trigger("someId", "onclick", { manuallydone:true });</p>
+
+<p>returns: Anything
+    Will not return anything in the Dom event case, but will return whatever
+    return value is received from the triggered event. </p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">return</span> <span class="p">(</span><span class="nx">isfn</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">||</span> <span class="nx">isfn</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">||</span> <span class="nx">isfn</span><span class="p">(</span><span class="nx">obj</span><span class="p">[</span><span class="nx">event</span><span class="p">]))</span> <span class="o">?</span> <span class="nx">d</span><span class="p">.</span><span class="nx">hitch</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)()</span> <span class="o">:</span> <span class="nx">d</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">d</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">trigger</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">.</span><span class="nx">_adaptAsForEach</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>if the node.js module is available, extend trigger into that.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">_Node</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">d</span><span class="p">.</span><span class="nx">_Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">trigger</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">d</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">_Node</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>summary:
+    Fire some some event originating from this node.
+    Only available if both the <code>dojo.trigger</code> and <code>dojo.node</code> plugin 
+    are enabled. Allows chaining as all <code>dojo._Node</code> methods do.</p>
+
+<p>ev: String
+    Some string event name to fire. eg: "onclick", "submit"</p>
+
+<p>data: Object
+    Just like <code>extraArgs</code> for <code>dojo.trigger</code>, additional data
+    to mix into the event object.</p>
+
+<p>example:
+|    // fire onlick orginiating from a node with id="someAnchorId"
+|    dojo.node("someAnchorId").trigger("click");</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nx">d</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">;</span> <span class="c1">// dojo._Node</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">trigger</span><span class="p">;</span>
+
+  <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h2>dojo.js</h2>
+
+<p><em>dojo node list.</em></p>
+
+<p>These are pre-loaded by <code>steal</code> -> no callback.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">require</span><span class="p">([</span><span class="s2">&quot;dojo&quot;</span><span class="p">,</span> <span class="s2">&quot;dojo/query&quot;</span><span class="p">,</span> <span class="s2">&quot;plugd/trigger&quot;</span><span class="p">,</span> <span class="s2">&quot;dojo/NodeList-dom&quot;</span><span class="p">]);</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>Map string helpers.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">trim</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">s</span> <span class="o">&amp;&amp;</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Map array helpers.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">makeArray</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">dojo</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
+  <span class="p">};</span>
+  <span class="nx">can</span><span class="p">.</span><span class="nx">isArray</span> <span class="o">=</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">isArray</span><span class="p">;</span>
+  <span class="nx">can</span><span class="p">.</span><span class="nx">inArray</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">item</span><span class="p">);</span>
+  <span class="p">};</span>
+  <span class="nx">can</span><span class="p">.</span><span class="nx">map</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">can</span><span class="p">.</span><span class="nx">makeArray</span><span class="p">(</span><span class="nx">arr</span> <span class="o">||</span> <span class="p">[]),</span> <span class="nx">fn</span><span class="p">);</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Map object helpers.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">first</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">first</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">makeArray</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+      <span class="nx">args</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+      <span class="k">return</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">mixin</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">dojo</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">mixin</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">dojo</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">can</span><span class="p">.</span><span class="nx">isEmptyObject</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">prop</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">prop</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Use a version of param similar to jQuery's param that
+handles nested data instead of dojo.objectToQuery which doesn't</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">param</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">pairs</span> <span class="o">=</span> <span class="p">[],</span>
+      <span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">pairs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span>
+      <span class="p">};</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">can</span><span class="p">.</span><span class="nx">buildParam</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">],</span> <span class="nx">add</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">pairs</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%20/g</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">can</span><span class="p">.</span><span class="nx">buildParam</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">prefix</span><span class="p">,</span> <span class="nx">obj</span><span class="p">,</span> <span class="nx">add</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">can</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">obj</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">add</span><span class="p">(</span><span class="nx">prefix</span> <span class="o">+</span> <span class="s2">&quot;[]&quot;</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+      <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">dojo</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">obj</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">can</span><span class="p">.</span><span class="nx">buildParam</span><span class="p">(</span><span class="nx">prefix</span> <span class="o">+</span> <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">name</span><span class="p">],</span> <span class="nx">add</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">add</span><span class="p">(</span><span class="nx">prefix</span><span class="p">,</span> <span class="nx">obj</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Map function helpers.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">proxy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">hitch</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">func</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">can</span><span class="p">.</span><span class="nx">isFunction</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p>The id of the <code>function</code> to be bound, used as an expando on the <code>function</code>
+so we can lookup it's <code>remove</code> object.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">dojoId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>Takes a node list, goes through each node
+and adds events data that has a map of events to 
+callbackId to <code>remove</code> object.  It looks like
+<code>{click: {5: {remove: fn}}}</code>. </p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">dojoAddBinding</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">nodelist</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">nodelist</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>Converting a raw select node to a node list
+returns a node list of its options due to a
+bug in Dojo 1.7.1, this is sovled by wrapping
+it in an array.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">===</span> <span class="s2">&quot;SELECT&quot;</span> <span class="o">?</span> <span class="p">[</span><span class="nx">node</span><span class="p">]</span> <span class="o">:</span> <span class="nx">node</span><span class="p">)</span>
+        <span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">events</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">can</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="nx">events</span> <span class="o">=</span> <span class="p">{})</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">events</span><span class="p">[</span><span class="nx">ev</span><span class="p">])</span> <span class="p">{</span>
+          <span class="nx">events</span><span class="p">[</span><span class="nx">ev</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">cb</span><span class="p">.</span><span class="nx">__bindingsIds</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">cb</span><span class="p">.</span><span class="nx">__bindingsIds</span> <span class="o">=</span> <span class="nx">dojoId</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">events</span><span class="p">[</span><span class="nx">ev</span><span class="p">][</span><span class="nx">cb</span><span class="p">.</span><span class="nx">__bindingsIds</span><span class="p">]</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="p">});</span>
+    <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p>Removes a binding on a <code>nodelist</code> by finding
+the remove object within the object's data.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">dojoRemoveBinding</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">nodelist</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">nodelist</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="nx">node</span><span class="p">),</span>
+          <span class="nx">events</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">),</span>
+          <span class="nx">handlers</span> <span class="o">=</span> <span class="nx">events</span><span class="p">[</span><span class="nx">ev</span><span class="p">],</span>
+          <span class="nx">handler</span> <span class="o">=</span> <span class="nx">handlers</span><span class="p">[</span><span class="nx">cb</span><span class="p">.</span><span class="nx">__bindingsIds</span><span class="p">];</span>
+
+        <span class="nx">dojo</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">(</span><span class="nx">handler</span><span class="p">);</span>
+        <span class="k">delete</span> <span class="nx">handlers</span><span class="p">[</span><span class="nx">cb</span><span class="p">.</span><span class="nx">__bindingsIds</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">can</span><span class="p">.</span><span class="nx">isEmptyObject</span><span class="p">(</span><span class="nx">handlers</span><span class="p">))</span> <span class="p">{</span>
+          <span class="k">delete</span> <span class="nx">events</span><span class="p">[</span><span class="nx">ev</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="nx">can</span><span class="p">.</span><span class="nx">bind</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>If we can bind to it...</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bind</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">bind</span> <span class="o">!==</span> <span class="nx">can</span><span class="p">.</span><span class="nx">bind</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>Otherwise it's an element or <code>nodeList</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">on</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">nodeType</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>Converting a raw select node to a node list
+returns a node list of its options due to a
+bug in Dojo 1.7.1, this is sovled by wrapping
+it in an array.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">dojoAddBinding</span><span class="p">(</span><span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">===</span> <span class="s2">&quot;SELECT&quot;</span> <span class="o">?</span> <span class="p">[</span><span class="k">this</span><span class="p">]</span> <span class="o">:</span> <span class="k">this</span><span class="p">),</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">addEvent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">addEvent</span><span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <p>Make it bind-able...</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">can</span><span class="p">.</span><span class="nx">addEvent</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">can</span><span class="p">.</span><span class="nx">unbind</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p>If we can bind to it...</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">unbind</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">unbind</span> <span class="o">!==</span> <span class="nx">can</span><span class="p">.</span><span class="nx">unbind</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">unbind</span><span class="p">(</span><span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span>
+
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">on</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">nodeType</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">dojoRemoveBinding</span><span class="p">(</span><span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="k">this</span><span class="p">),</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <p>Make it bind-able...</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">can</span><span class="p">.</span><span class="nx">removeEvent</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">can</span><span class="p">.</span><span class="nx">trigger</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="nx">bubble</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="p">(</span><span class="nx">item</span> <span class="k">instanceof</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">nodeName</span> <span class="o">||</span> <span class="nx">item</span> <span class="o">===</span> <span class="nb">window</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">item</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">$</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">trigger</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">bubble</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="nx">item</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+          <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <p>Force stop propagation by
+listening to <code>on</code> and then immediately disconnecting.</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="kd">var</span> <span class="nx">connect</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ev</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="nx">ev</span><span class="p">.</span><span class="nx">stopPropagation</span> <span class="o">&amp;&amp;</span> <span class="nx">ev</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
+            <span class="nx">ev</span><span class="p">.</span><span class="nx">cancelBubble</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="nx">ev</span><span class="p">.</span><span class="nx">_stopper</span> <span class="o">&amp;&amp;</span> <span class="nx">ev</span><span class="p">.</span><span class="nx">_stopper</span><span class="p">();</span>
+
+            <span class="nx">dojo</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">(</span><span class="nx">connect</span><span class="p">);</span>
+          <span class="p">})</span>
+          <span class="nx">item</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">item</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+        <span class="p">}</span>
+
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">event</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="nx">event</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">args</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span> <span class="o">||</span> <span class="nx">item</span><span class="p">;</span>
+        <span class="nx">can</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">event</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">can</span><span class="p">.</span><span class="nx">delegate</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">on</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">nodeType</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">dojoAddBinding</span><span class="p">(</span><span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="k">this</span><span class="p">),</span> <span class="nx">selector</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">delegate</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">delegate</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">can</span><span class="p">.</span><span class="nx">undelegate</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">on</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">nodeType</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">dojoRemoveBinding</span><span class="p">(</span><span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="k">this</span><span class="p">),</span> <span class="nx">selector</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">undelegate</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">undelegate</span><span class="p">(</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">ev</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span>
+
+      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+    <span class="kd">var</span> <span class="nx">optionsMap</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+    <span class="nx">success</span><span class="o">:</span> <span class="kc">undefined</span><span class="p">,</span>
+    <span class="nx">error</span><span class="o">:</span> <span class="kc">undefined</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">updateDeferred</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">prop</span> <span class="k">in</span> <span class="nx">xhr</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">d</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">d</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nx">xhr</span><span class="p">[</span><span class="nx">prop</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">d</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">prop</span><span class="p">[</span><span class="nx">xhr</span><span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">can</span><span class="p">.</span><span class="nx">ajax</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">capitalize</span><span class="p">((</span><span class="nx">options</span><span class="p">.</span><span class="nx">type</span> <span class="o">||</span> <span class="s2">&quot;get&quot;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()),</span>
+      <span class="nx">method</span> <span class="o">=</span> <span class="nx">dojo</span><span class="p">[</span><span class="s2">&quot;xhr&quot;</span> <span class="o">+</span> <span class="nx">type</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">success</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">success</span><span class="p">,</span>
+      <span class="nx">error</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">error</span><span class="p">,</span>
+      <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">can</span><span class="p">.</span><span class="nx">Deferred</span><span class="p">();</span>
+
+    <span class="kd">var</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">method</span><span class="p">({</span>
+      <span class="nx">url</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+      <span class="nx">handleAs</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">dataType</span><span class="p">,</span>
+      <span class="nx">sync</span><span class="o">:</span> <span class="o">!</span><span class="nx">options</span><span class="p">.</span><span class="nx">async</span><span class="p">,</span>
+      <span class="nx">headers</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">headers</span><span class="p">,</span>
+      <span class="nx">content</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">data</span>
+    <span class="p">})</span>
+    <span class="nx">def</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">ioargs</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">updateDeferred</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">d</span><span class="p">);</span>
+      <span class="nx">d</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">);</span>
+      <span class="nx">success</span> <span class="o">&amp;&amp;</span> <span class="nx">success</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">);</span>
+    <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">ioargs</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">updateDeferred</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">d</span><span class="p">);</span>
+      <span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">);</span>
+      <span class="nx">error</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">);</span>
+    <span class="p">})</span>
+
+    <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="nx">def</span><span class="p">.</span><span class="nx">ioArgs</span><span class="p">.</span><span class="nx">xhr</span><span class="p">;</span>
+
+    <span class="nx">updateDeferred</span><span class="p">(</span><span class="nx">xhr</span><span class="p">,</span> <span class="nx">d</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">d</span><span class="p">;</span>
+
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>Element - get the wrapped helper.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">$</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">selector</span> <span class="o">===</span> <span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nb">window</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">selector</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">can</span><span class="p">.</span><span class="nx">append</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">wrapped</span><span class="p">,</span> <span class="nx">html</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">wrapped</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">dojo</span><span class="p">.</span><span class="nx">place</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">node</span><span class="p">)</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+
+  <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="nx">uuid</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">uuid</span> <span class="o">=</span> <span class="o">+</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span>
+    <span class="nx">exp</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">expando</span> <span class="o">=</span> <span class="s1">&#39;can&#39;</span> <span class="o">+</span> <span class="nx">uuid</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">getData</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">node</span><span class="p">[</span><span class="nx">exp</span><span class="p">],</span>
+      <span class="nx">store</span> <span class="o">=</span> <span class="nx">id</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+    <span class="k">return</span> <span class="nx">name</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">?</span> <span class="nx">store</span> <span class="o">||</span> <span class="nx">setData</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">:</span> <span class="p">(</span><span class="nx">store</span> <span class="o">&amp;&amp;</span> <span class="nx">store</span><span class="p">[</span><span class="nx">name</span><span class="p">]);</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">setData</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">node</span><span class="p">[</span><span class="nx">exp</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="nx">node</span><span class="p">[</span><span class="nx">exp</span><span class="p">]</span> <span class="o">=</span> <span class="o">++</span><span class="nx">uuid</span><span class="p">),</span>
+      <span class="nx">store</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{});</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="nx">store</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">store</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="kd">var</span> <span class="nx">cleanData</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">elems</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">can</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="nx">elems</span><span class="p">),</span> <span class="s2">&quot;destroyed&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">false</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">elem</span><span class="p">;</span>
+    <span class="p">(</span><span class="nx">elem</span> <span class="o">=</span> <span class="nx">elems</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">elem</span><span class="p">[</span><span class="nx">exp</span><span class="p">]</span>
+      <span class="k">delete</span> <span class="nx">data</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="nx">can</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">wrapped</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">value</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">?</span> <span class="nx">wrapped</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="kc">undefined</span> <span class="o">:</span> <span class="nx">getData</span><span class="p">(</span><span class="nx">wrapped</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">name</span><span class="p">)</span> <span class="o">:</span> <span class="nx">wrapped</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">setData</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <p>Overwrite <code>dojo.destroy</code>, <code>dojo.empty</code> and <code>dojo.place</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">empty</span> <span class="o">=</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">empty</span><span class="p">;</span>
+  <span class="nx">dojo</span><span class="p">.</span><span class="nx">empty</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">c</span><span class="p">;</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">lastChild</span><span class="p">;)</span> <span class="p">{</span> <span class="c1">// Intentional assignment.</span>
+      <span class="nx">dojo</span><span class="p">.</span><span class="nx">destroy</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">var</span> <span class="nx">destroy</span> <span class="o">=</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">destroy</span><span class="p">;</span>
+  <span class="nx">dojo</span><span class="p">.</span><span class="nx">destroy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">node</span> <span class="o">=</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">byId</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
+    <span class="nx">cleanData</span><span class="p">([</span><span class="nx">node</span><span class="p">]);</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">getElementsByTagName</span> <span class="o">&amp;&amp;</span> <span class="nx">cleanData</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="nx">destroy</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">dojo</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="nx">can</span><span class="p">.</span><span class="nx">addClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">wrapped</span><span class="p">,</span> <span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">wrapped</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">className</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">can</span><span class="p">.</span><span class="nx">remove</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">wrapped</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <p>We need to remove text nodes ourselves.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">wrapped</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">dojo</span><span class="p">.</span><span class="nx">destroy</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">can</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">wrapped</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">wrapped</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <p>Add pipe to <code>dojo.Deferred</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">dojo</span><span class="p">.</span><span class="nx">Deferred</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">pipe</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">fail</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">dojo</span><span class="p">.</span><span class="nx">Deferred</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">addCallback</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">d</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">done</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">));</span>
+      <span class="p">});</span>
+
+      <span class="k">this</span><span class="p">.</span><span class="nx">addErrback</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">fail</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">fail</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">));</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+      <span class="k">return</span> <span class="nx">d</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="kd">function</span> <span class="p">(</span><span class="nx">can</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <h2>deferred.js</h2>
+
+<p><em>Lightweight, jQuery style deferreds.</em></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">Deferred</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">Deferred</span><span class="p">))</span> <span class="k">return</span> <span class="k">new</span> <span class="nx">Deferred</span><span class="p">();</span>
+
+      <span class="k">this</span><span class="p">.</span><span class="nx">_doneFuncs</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_failFuncs</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_resultArgs</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">_status</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <p>Check for option <code>function</code> -- call it with this as context and as first 
+parameter, as specified in jQuery API.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">func</span> <span class="o">&amp;&amp;</span> <span class="nx">func</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">can</span><span class="p">.</span><span class="nx">Deferred</span> <span class="o">=</span> <span class="nx">Deferred</span><span class="p">;</span>
+    <span class="nx">can</span><span class="p">.</span><span class="nx">when</span> <span class="o">=</span> <span class="nx">Deferred</span><span class="p">.</span><span class="nx">when</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">makeArray</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">can</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">isResolved</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">can</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">isRejected</span><span class="p">)))</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">Deferred</span><span class="p">().</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+        <span class="kd">var</span> <span class="nx">df</span> <span class="o">=</span> <span class="nx">Deferred</span><span class="p">(),</span>
+          <span class="nx">done</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span></pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <p>Resolve params -- params of each resolve, we need to track them down 
+to be able to pass them in the correct order if the master 
+needs to be resolved.</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nx">rp</span> <span class="o">=</span> <span class="p">[];</span>
+
+        <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">args</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">arg</span><span class="p">,</span> <span class="nx">j</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">arg</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">rp</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">?</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">:</span> <span class="nx">arguments</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">++</span><span class="nx">done</span> <span class="o">==</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">df</span><span class="p">.</span><span class="nx">resolve</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">df</span><span class="p">,</span> <span class="nx">rp</span><span class="p">);</span>
+            <span class="p">}</span>
+          <span class="p">}).</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">df</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+          <span class="p">});</span>
+        <span class="p">});</span>
+
+        <span class="k">return</span> <span class="nx">df</span><span class="p">;</span>
+
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">resolveFunc</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">_status</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_resultArgs</span> <span class="o">=</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="p">[];</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="k">this</span><span class="p">[</span><span class="nx">type</span><span class="p">],</span> <span class="nx">args</span><span class="p">,</span> <span class="nx">_status</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+      <span class="nx">doneFunc</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">_status</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <p>In Safari, the properties of the <code>arguments</code> object are not enumerable, 
+so we have to convert arguments to an <code>Array</code> that allows <code>can.each</code> to loop over them.</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">v</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">===</span> <span class="nb">Array</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">args</span><span class="p">.</span><span class="nx">callee</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <p>Immediately call the <code>function</code> if the deferred has been resolved.</p>             </td>             <td class="code">               <div class="highlight"><pre>              <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">_status</span> <span class="o">===</span> <span class="nx">_status</span><span class="p">)</span> <span class="nx">v</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_resultArgs</span> <span class="o">||</span> <span class="p">[]);</span>
+
+              <span class="nx">self</span><span class="p">[</span><span class="nx">type</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+            <span class="p">}</span>
+          <span class="p">});</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+
+    <span class="nx">can</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Deferred</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">pipe</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">fail</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">Deferred</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nx">d</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">done</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">));</span>
+        <span class="p">});</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">fail</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">fail</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">));</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">d</span><span class="p">.</span><span class="nx">reject</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="k">return</span> <span class="nx">d</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="nx">resolveWith</span><span class="o">:</span> <span class="nx">resolveFunc</span><span class="p">(</span><span class="s2">&quot;_doneFuncs&quot;</span><span class="p">,</span> <span class="s2">&quot;rs&quot;</span><span class="p">),</span>
+      <span class="nx">rejectWith</span><span class="o">:</span> <span class="nx">resolveFunc</span><span class="p">(</span><span class="s2">&quot;_failFuncs&quot;</span><span class="p">,</span> <span class="s2">&quot;rj&quot;</span><span class="p">),</span>
+      <span class="nx">done</span><span class="o">:</span> <span class="nx">doneFunc</span><span class="p">(</span><span class="s2">&quot;_doneFuncs&quot;</span><span class="p">,</span> <span class="s2">&quot;rs&quot;</span><span class="p">),</span>
+      <span class="nx">fail</span><span class="o">:</span> <span class="nx">doneFunc</span><span class="p">(</span><span class="s2">&quot;_failFuncs&quot;</span><span class="p">,</span> <span class="s2">&quot;rj&quot;</span><span class="p">),</span>
+      <span class="nx">always</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">makeArray</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">this</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">fail</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+      <span class="p">},</span>
+
+      <span class="nx">then</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">can</span><span class="p">.</span><span class="nx">makeArray</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <p>Fail <code>function</code>(s)</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">this</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span></pre></div>             </td>           </tr>                               <tr id="section-41">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-41">&#182;</a>               </div>               <p>Done <code>function</code>(s)</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">this</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+      <span class="p">},</span>
+
+      <span class="nx">state</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_status</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">&#39;rs&#39;</span><span class="o">:</span>
+          <span class="k">return</span> <span class="s1">&#39;resolved&#39;</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">&#39;rj&#39;</span><span class="o">:</span>
+          <span class="k">return</span> <span class="s1">&#39;rejected&#39;</span><span class="p">;</span>
+        <span class="k">default</span><span class="o">:</span>
+          <span class="k">return</span> <span class="s1">&#39;pending&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+
+      <span class="nx">isResolved</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_status</span> <span class="o">===</span> <span class="s2">&quot;rs&quot;</span><span class="p">;</span>
+      <span class="p">},</span>
+
+      <span class="nx">isRejected</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_status</span> <span class="o">===</span> <span class="s2">&quot;rj&quot;</span><span class="p">;</span>
+      <span class="p">},</span>
+
+      <span class="nx">reject</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">rejectWith</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+      <span class="p">},</span>
+
+      <span class="nx">resolve</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">resolveWith</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+      <span class="p">},</span>
+
+      <span class="nx">exec</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">dst</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="nx">st</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_status</span> <span class="o">!==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">_status</span> <span class="o">=</span> <span class="nx">st</span><span class="p">;</span>
+
+        <span class="nx">can</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">dst</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">d</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="nx">can</span><span class="p">;</span>
+  <span class="p">})</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
