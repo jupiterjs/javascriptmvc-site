@@ -1,7 +1,6 @@
 (function (can, window, undefined) {
 	// ## can/observe/delegate/delegate.js
 
-
 	// ** - 'this' will be the deepest item changed
 	// * - 'this' will be any changes within *, but * will be the 
 	//     this returned

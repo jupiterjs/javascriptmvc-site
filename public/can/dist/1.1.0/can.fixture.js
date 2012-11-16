@@ -128,9 +128,9 @@
 	var getUrl = function (url) {
 		if (typeof steal !== 'undefined') {
 			if (can.isFunction(steal.config)) {
-				return steal.config().root.mapJoin(url);
+				return steal.config().root.mapJoin(url).toString();
 			}
-			return steal.root.join(url)
+			return steal.root.join(url).toString();
 		}
 		return (can.fixture.rootUrl || '') + url;
 	}
