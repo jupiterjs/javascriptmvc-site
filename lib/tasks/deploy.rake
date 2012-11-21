@@ -49,10 +49,10 @@ namespace :deploy do
 	task :update do
 		announce 'Pulling latest DoneJS-Site...'
 
-		sh 'git pull git@github.com:jupiterjs/javascriptmvc-site.git donejs'
+		sh 'git pull git@github.com:bitovi/javascriptmvc-site.git donejs'
 		sh 'git submodule update --init'
 
-		sh 'cd donejs && git pull git@github.com:jupiterjs/donejs.git'
+		sh 'cd donejs && git pull git@github.com:bitovi/donejs.git'
 		sh 'cd donejs && git submodule update --init --recursive'
 
 		sh 'cd examples/todo && git checkout master && git pull git@github.com:jupiterjs/cantodo.git master'
