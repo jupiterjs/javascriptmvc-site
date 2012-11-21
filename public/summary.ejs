@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<title>DoneJS</title>
-	<link rel="stylesheet" type='text/css' href='../documentjs/jmvcdoc/production.css'/>
-	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico"/>
+	<link rel="stylesheet" type='text/css' href='documentjs/jmvcdoc/production.css'/>
+	<link rel="shortcut icon" href="documentjs/jmvcdoc/images/favicon.ico"/>
 	<script type="text/javascript">
 
 		var _gaq = _gaq || [];
@@ -37,7 +37,7 @@
 		</div>
 		<div id='doc_container'>
 			<div id='doc'>
-				
+				<%= this.indexPage ? this.indexPage.real_comment : "Add a page named 'index' to see something here." %>
 			</div>
 			<div id="disqus_thread"></div>
 		</div>
@@ -56,14 +56,14 @@
 		mxui : 'https://github.com/jupiterjs/mxui'
 	};
 	DOCS_LOCATION = "docs/" //adds searchData to this
-	JMVCDOC_TIMESTAMP = 1353534541018;
+	JMVCDOC_TIMESTAMP = <%= new Date().getTime() %>;
 	COMMENTS_LOCATION = 'http://jmvcs3.disqus.com/embed.js';
 	steal = {
 		loaded: ['documentjs/jmvcdoc/production.css']
 	}
 </script>
 <script type='text/javascript'
-        src='../steal/steal.production.js?documentjs/jmvcdoc'>
+        src='steal/steal.production.js?documentjs/jmvcdoc'>
 </script>
 
 <style type="text/css">
