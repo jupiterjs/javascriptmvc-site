@@ -65,7 +65,6 @@ namespace :deploy do
 
 		Dir.chdir('donejs') do
 			sh './js site/scripts/doc.js'
-			sh 'cp site/docs.html docs.html'
 			sh 'npm install && cd can && grunt latest'
 		end
 	end
@@ -84,6 +83,7 @@ namespace :deploy do
 		announce 'Copying files to local directory...'
 
 		copy_resources 'donejs'
+		copy_resources 'donejs/site'
 		copy_resources 'examples/player'
 		copy_resources 'examples/todo'
 		copy_resources 'examples/srchr'

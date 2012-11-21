@@ -3861,10 +3861,15 @@
 			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
 		},
 		setAttr = function (el, attrName, val) {
+			var tagName = el.nodeName.toString().toLowerCase(),
+				prop = attrMap[attrName];
 			// if this is a special property
-			if (attrMap[attrName]) {
+			if (prop) {
 				// set the value as true / false
-				el[attrMap[attrName]] = can.inArray(attrName, bool) > -1 ? true : val;
+				el[prop] = can.inArray(attrName, bool) > -1 ? true : val;
+				if (prop === "value" && tagName === "input") {
+					el.defaultValue = val;
+				}
 			} else {
 				el.setAttribute(attrName, val);
 			}
