@@ -65,7 +65,7 @@ namespace :deploy do
 
 		Dir.chdir('donejs') do
 			sh './js site/scripts/doc.js'
-			sh 'cd can && npm install && grunt latest'
+			sh 'npm install && cd can && grunt latest'
 		end
 	end
 
