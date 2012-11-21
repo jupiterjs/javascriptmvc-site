@@ -1,0 +1,31 @@
+{
+  "name" : "DoneJS",
+  "description" : "Get your work done. Go have fun. The next generation of JavaScriptMVC",
+  "version" : "0.1.0",
+  "author" : {
+    "name" : "Bitovi",
+    "email" : "contact@bitovi.com",
+    "web" : "http://bitovi.com/"
+  },
+  "devDependencies" : {
+    "grunt" : "~0.3.11",
+    "grunt-closure-tools" : "~0.6.2",
+    "http-server" : "0.5.1",
+    "docco" : ">= 0.1.x",
+    "node-beautify" : "*",
+    "github" : ">= 0.1.7",
+    "commander" : "*",
+    "tafa-misc-util" : "*"
+  },
+  "homepage" : "http://donejs.com/",
+  "repository" : {
+    "type" : "git",
+    "url" : "git@github.com:jupiterjs/donejs.git"
+  },
+  "licenses" : [
+    {
+      "type" : "MIT",
+      "url" : "http://opensource.org/licenses/mit-license.php"
+    }
+  ]
+}

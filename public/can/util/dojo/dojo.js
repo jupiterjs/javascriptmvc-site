@@ -1,4 +1,5 @@
-steal('can/util/dojo/dojo-1.8.1.js', 'can/util/event.js', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', function() {
+steal('can/util/can.js', 'dojo', 'can/util/event.js', 'can/util/fragment.js', 'can/util/array/each.js',
+'can/util/object/isplain', 'can/util/deferred.js', function(can) {
 	define("plugd/trigger", ["dojo"], function( dojo ) {
 
 		var d = dojo,
@@ -183,7 +184,7 @@ steal('can/util/dojo/dojo-1.8.1.js', 'can/util/event.js', 'can/util/fragment.js'
 
 	// Map array helpers.
 	can.makeArray = function( arr ) {
-		array = [];
+		var array = [];
 		dojo.forEach(arr, function( item ) {
 			array.push(item)
 		});
@@ -563,4 +564,4 @@ steal('can/util/dojo/dojo-1.8.1.js', 'can/util/event.js', 'can/util/fragment.js'
 	});
 
 	return can;
-}).then('can/util/deferred.js')
+});

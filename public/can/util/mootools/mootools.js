@@ -1,6 +1,5 @@
-steal('can/util/can.js', 'can/util/mootools/mootools-core-1.4.3.js', 'can/util/event.js','can/util/fragment.js',
-'can/util/array/each.js', 'can/util/object/isplain', 'can/util/object/extend',
-function(can) {
+steal('can/util/can.js', 'mootools', 'can/util/event.js','can/util/fragment.js', 'can/util/deferred.js',
+'can/util/array/each.js', 'can/util/object/isplain', 'can/util/object/extend', function(can) {
 	// mootools.js
 	// ---------
 	// _MooTools node list._
@@ -178,6 +177,7 @@ function(can) {
 		}
 		// Mootools defaults to 'post', but Can expects a default of 'get'
 		requestOptions.method = requestOptions.method || 'get';
+		requestOptions.url = requestOptions.url.toString();
 
 		var success = options.success,
 			error = options.error;
@@ -282,4 +282,4 @@ function(can) {
 	}
 
 	return can;
-},'can/util/deferred.js');
+});

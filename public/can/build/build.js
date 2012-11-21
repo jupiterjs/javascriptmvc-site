@@ -1,4 +1,4 @@
-load("can/build/underscore.js");
+load("build/underscore.js");
 var _ = this._;
 
 load("steal/rhino/rhino.js");
@@ -12,7 +12,6 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 	var version = _args[1] || 'edge';
 	var libraries = _args[2] ? _args.slice(2) : _.keys(libs);
 	var outFolder = (_args[0] || 'can/dist/') + version + '/';
-	var testFolder = outFolder + '/test/';
 	var render = function (from, to, data) {
 		var text = readFile(from);
 
@@ -30,7 +29,7 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 	var buildLibrary = function (lib) {
 		var options = libs[lib],
 			outFile = outFolder + '/can.' + lib,
-			testFile = testFolder + lib + '.html',
+			// testFile = testFolder + lib + '.html',
 			buildFile = "can/build/make/" + lib + ".js",
 			defaults = {
 				out : outFile + '.js',
@@ -46,29 +45,15 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 			out : outFile + '.min.js'
 		}));
 
-		console.log('Creating distributable test HTML file ' + testFile);
-		render('can/build/templates/test.html.ejs', testFile, {
-			name : testConfig[lib].name,
-			dist : testConfig[lib].dist,
-			version : version,
-			type : lib
-		});
-		new steal.File('can/build/templates/qunit.js').copyTo(testFolder + '/qunit.js');
-		new steal.File('can/build/templates/qunit.css').copyTo(testFolder + '/qunit.css');
-	};
-	/**
-	 * Build the AMD module distributable
-	 */
-	var buildAmd = function() {
-		var excludes = [ "can/build/make/amd.js", "can/util/util.js" ];
-		_.each(_.values(libs), function(val) {
-			excludes = excludes.concat(val.exclude);
-		});
-		steal.build.amdify('can/build/make/amd.js', {
-			out: outFolder + '/amd',
-			exclude: excludes
-		});
-		new steal.File('can/build/templates/amdutil.js').copyTo(outFolder + '/amd/can/util.js');
+		// console.log('Creating distributable test HTML file ' + testFile);
+		// render('can/build/templates/test.html.ejs', testFile, {
+		//	name : testConfig[lib].name,
+		//	dist : testConfig[lib].dist,
+		//	version : version,
+		//	type : lib
+		// });
+		// new steal.File('can/build/templates/qunit.js').copyTo(testFolder + '/qunit.js');
+		// new steal.File('can/build/templates/qunit.css').copyTo(testFolder + '/qunit.css');
 	};
 	/**
 	 * Build can.jquery-all.js with all plugins.
@@ -91,9 +76,24 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 			out : outFile + '.min.js'
 		}));
 	};
+	/**
+	 * Build the AMD module distributable
+	 */
+	var buildAmd = function() {
+		var excludes = [ "can/build/make/amd.js" ];
+		_.each(_.values(libs), function(val) {
+			excludes = excludes.concat(val.exclude);
+		});
+		steal.build.amdify('can/build/make/amd.js', {
+			out: outFolder + '/amd',
+			exclude: excludes,
+			map : {
+				'can/util' : 'can/util.js'
+			}
+		});
+	};
 
 	steal.File(outFolder).mkdirs();
-	steal.File(testFolder).mkdirs();
 
 	_.each(libraries, buildLibrary);
 	buildAmd();
