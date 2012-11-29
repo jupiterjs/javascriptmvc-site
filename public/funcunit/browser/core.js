@@ -6,7 +6,6 @@
 	var oldFuncUnit = window.FuncUnit;
 
 /**
-@hide
 @class FuncUnit
 @parent index 2
 @test test.html
