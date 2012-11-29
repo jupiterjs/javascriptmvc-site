@@ -1,4 +1,4 @@
-steal('can/util', 'can/observe/elements', function(can) {
+steal('can/util', 'can/model', 'can/observe/elements', function(can) {
 
 	var getArgs = function( args ) {
 		if ( args[0] && (can.isArray(args[0])) ) {
@@ -376,7 +376,7 @@ steal('can/util', 'can/observe/elements', function(can) {
 				underscored = constructor._fullName,
 				test = new RegExp(underscored + "_([^ ]+)"),
 				matches, val;
-			args = getArgs(arguments)
+			args = getArgs(arguments).slice(0)
 
 			//for performance, we will go through each and splice it
 			var i = 0;

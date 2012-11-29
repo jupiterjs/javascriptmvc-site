@@ -316,7 +316,6 @@
 
 			// The dummy class constructor.
 
-
 			function Constructor() {
 				// All construction is actually done in the init method.
 				if (!initializing) {
@@ -897,7 +896,6 @@
 	// `name` - The method name.
 	// `where` - Where items in the `array` should be added.
 
-
 	function (where, name) {
 		list.prototype[name] = function () {
 			// Get the items being added.
@@ -931,7 +929,6 @@
 		shift: 0
 	},
 	// Creates a `remove` type method
-
 
 	function (where, name) {
 		list.prototype[name] = function () {
@@ -997,7 +994,6 @@
 		}, {});
 	}
 	// ## can/model/model.js
-
 	// ## model.js  
 	// `can.Model`  
 	// _A `can.Observe` that connects to a RESTful interface._
@@ -1394,7 +1390,6 @@
 	})
 
 	// ## can/util/string/deparam/deparam.js
-
 	// ## deparam.js  
 	// `can.deparam`  
 	// _Takes a string of name value pairs and returns a Object literal that represents those params._
@@ -1556,7 +1551,6 @@
 			// Otherwise find route.
 			each(can.route.routes, function (temp, name) {
 				// best route is the first with all defaults matching
-
 				matchCount = matchesData(temp, data);
 				if (matchCount > matches) {
 					route = temp;
@@ -2012,7 +2006,6 @@
 	});
 
 	// ## can/control/route/route.js
-
 	// ## control/route.js  
 	// _Controller route integration._
 	can.Control.processors.route = function (el, event, selector, funcName, controller) {
@@ -2423,7 +2416,6 @@
 	});
 	//!steal-pluginify-remove-end
 	// ## can/observe/compute/compute.js
-
 	// returns the
 	// - observes and attr methods are called by func
 	// - the value returned by func
@@ -3133,7 +3125,6 @@
 
 			// Make a function call the hookup method.
 
-
 			function (el, id) {
 				input.hookup.call(input, el, id);
 			}) ||
@@ -3296,7 +3287,6 @@
 				// If we are escaping, replace the parentNode with 
 				// a text node who's value is `func`'s return value.
 
-
 				function (el, parentNode) {
 					// updates the text of the text node
 					update = function (newVal) {
@@ -3313,7 +3303,6 @@
 				} :
 				// If we are not escaping, replace the parentNode with a
 				// documentFragment created as with `func`'s return value.
-
 
 				function (span, parentNode) {
 					// updates the elements with the new content

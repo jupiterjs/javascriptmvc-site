@@ -1,4 +1,4 @@
-steal('jquery')
+steal('jquery/build/lib.js')
 
 steal('can/construct',
 	'can/construct/proxy',

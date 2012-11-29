@@ -6,7 +6,6 @@
 */
 (function (can, window, undefined) {
 	// ## can/view/mustache/mustache.js
-
 	// # mustache.js
 	// `can.Mustache`: The Mustache templating engine.
 	// See the [Transformation](#section-29) section within *Scanning Helpers* for a detailed explanation 
@@ -663,7 +662,6 @@
 	// * `unless` - Renders a falsey section: `{{#unless var}} render {{/unless}}`
 	// * `each` - Renders an array: `{{#each array}} render {{this}} {{/each}}`
 	// * `with` - Opens a context section: `{{#with var}} render {{/with}}`
-
 	Mustache.registerHelper = function (name, fn) {
 		this._helpers.push({
 			name: name,

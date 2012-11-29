@@ -662,7 +662,6 @@ define(['can/util.js', 'can/view', 'can/view/scanner.js', 'can/observe/compute',
 	// * `unless` - Renders a falsey section: `{{#unless var}} render {{/unless}}`
 	// * `each` - Renders an array: `{{#each array}} render {{this}} {{/each}}`
 	// * `with` - Opens a context section: `{{#with var}} render {{/with}}`
-
 	Mustache.registerHelper = function (name, fn) {
 		this._helpers.push({
 			name: name,

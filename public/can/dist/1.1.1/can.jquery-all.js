@@ -316,7 +316,6 @@
 
 			// The dummy class constructor.
 
-
 			function Constructor() {
 				// All construction is actually done in the init method.
 				if (!initializing) {
@@ -1647,7 +1646,6 @@
 	};
 
 	// ## can/observe/compute/compute.js
-
 	// returns the
 	// - observes and attr methods are called by func
 	// - the value returned by func
@@ -1931,7 +1929,6 @@
 
 			// Make a function call the hookup method.
 
-
 			function (el, id) {
 				input.hookup.call(input, el, id);
 			}) ||
@@ -2094,7 +2091,6 @@
 				// If we are escaping, replace the parentNode with 
 				// a text node who's value is `func`'s return value.
 
-
 				function (el, parentNode) {
 					// updates the text of the text node
 					update = function (newVal) {
@@ -2111,7 +2107,6 @@
 				} :
 				// If we are not escaping, replace the parentNode with a
 				// documentFragment created as with `func`'s return value.
-
 
 				function (span, parentNode) {
 					// updates the elements with the new content
@@ -2298,7 +2293,6 @@
 	});
 
 	// ## can/view/mustache/mustache.js
-
 	// # mustache.js
 	// `can.Mustache`: The Mustache templating engine.
 	// See the [Transformation](#section-29) section within *Scanning Helpers* for a detailed explanation 
@@ -2955,7 +2949,6 @@
 	// * `unless` - Renders a falsey section: `{{#unless var}} render {{/unless}}`
 	// * `each` - Renders an array: `{{#each array}} render {{this}} {{/each}}`
 	// * `with` - Opens a context section: `{{#with var}} render {{/with}}`
-
 	Mustache.registerHelper = function (name, fn) {
 		this._helpers.push({
 			name: name,
@@ -3793,7 +3786,6 @@
 	// `name` - The method name.
 	// `where` - Where items in the `array` should be added.
 
-
 	function (where, name) {
 		list.prototype[name] = function () {
 			// Get the items being added.
@@ -3827,7 +3819,6 @@
 		shift: 0
 	},
 	// Creates a `remove` type method
-
 
 	function (where, name) {
 		list.prototype[name] = function () {
@@ -3893,7 +3884,6 @@
 		}, {});
 	}
 	// ## can/model/model.js
-
 	// ## model.js  
 	// `can.Model`  
 	// _A `can.Observe` that connects to a RESTful interface._
@@ -4528,7 +4518,6 @@
 	// ## can/observe/delegate/delegate.js
 
 
-
 	// ** - 'this' will be the deepest item changed
 	// * - 'this' will be any changes within *, but * will be the 
 	//     this returned
@@ -4963,7 +4952,6 @@
 		}
 	});
 	// ## can/util/string/deparam/deparam.js
-
 	// ## deparam.js  
 	// `can.deparam`  
 	// _Takes a string of name value pairs and returns a Object literal that represents those params._
@@ -5125,7 +5113,6 @@
 			// Otherwise find route.
 			each(can.route.routes, function (temp, name) {
 				// best route is the first with all defaults matching
-
 				matchCount = matchesData(temp, data);
 				if (matchCount > matches) {
 					route = temp;
@@ -5320,7 +5307,6 @@
 	can.route.constructor.canMakeObserve = can.Observe.canMakeObserve;
 
 	// ## can/util/object/object.js
-
 	var isArray = can.isArray,
 		// essentially returns an object that has all the must have comparisons ...
 		// must haves, do not return true when provided undefined

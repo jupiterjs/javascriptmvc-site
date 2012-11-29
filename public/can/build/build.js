@@ -12,15 +12,7 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 	var version = _args[1] || 'edge';
 	var libraries = _args[2] ? _args.slice(2) : _.keys(libs);
 	var outFolder = (_args[0] || 'can/dist/') + version + '/';
-	var render = function (from, to, data) {
-		var text = readFile(from);
 
-		var res = new EJS({
-			text : text,
-			name : from
-		}).render(data);
-		steal.File(to).save(res);
-	}
 	/**
 	 * Build CanJS and test files for a given library
 	 *
@@ -80,7 +72,7 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 	 * Build the AMD module distributable
 	 */
 	var buildAmd = function() {
-		var excludes = [ "can/build/make/amd.js" ];
+		var excludes = [ "can/build/make/amd.js", "can/util/util.js" ];
 		_.each(_.values(libs), function(val) {
 			excludes = excludes.concat(val.exclude);
 		});
@@ -88,7 +80,7 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 			out: outFolder + '/amd',
 			exclude: excludes,
 			map : {
-				'can/util' : 'can/util.js'
+				'can/util' : 'can/util/library'
 			}
 		});
 	};
@@ -96,6 +88,6 @@ function (testConfig, pluginify, amdify, EJS, libs) {
 	steal.File(outFolder).mkdirs();
 
 	_.each(libraries, buildLibrary);
-	buildAmd();
 	buildjQueryAll();
+	buildAmd();
 });
