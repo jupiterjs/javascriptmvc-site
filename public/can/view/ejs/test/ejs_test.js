@@ -1170,7 +1170,7 @@ test("live binding with computes", function() {
 
 })
 
-test('testing for clean tables', function() {
+test("testing for clean tables", function() {
 	var games = new can.Observe.List();
   games.push({name: 'The Legend of Zelda', rating: 10});  
   games.push({name: 'The Adventures of Link', rating: 9});  
@@ -1187,5 +1187,34 @@ test('testing for clean tables', function() {
 	ok(!(/@@!!@@/.test(div.innerHTML)), "no placeholders" );
 
 })
+
+test("inserting live-binding partials assume the correct parent tag", function() {
+	can.view.ejs('rowView', '<% can.each(columns, function(col) { %>' +
+			'<th><%= col.attr("name") %></th>' +
+        '<% }) %>');
+
+	can.view.ejs('tableView', '<table><tbody><tr>' +
+			'<%== can.view.render("rowView", this) %>' +
+		'</tr></tbody></table>');
+
+	var data = {
+		columns : new can.Observe.List([{
+			name : 'Test 1'
+		}, {
+			name : 'Test 2'
+		}])
+	}
+
+	var div = document.createElement('div');
+	var dom = can.view('tableView', data);
+	div.appendChild(dom);
+	var ths = div.getElementsByTagName('th');
+
+	equal(ths.length, 2, 'Got two table headings');
+	equal(ths[0].innerHTML, 'Test 1', 'First column heading correct');
+	equal(ths[1].innerHTML, 'Test 2', 'Second column heading correct');
+	equal(can.view.render('tableView', data).indexOf('<table><tbody><tr><td data-view-id='), 0, "Rendered output starts" +
+		"as expected");
+});
 
 })();

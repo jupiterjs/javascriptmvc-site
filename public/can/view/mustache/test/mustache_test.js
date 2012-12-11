@@ -1,4 +1,4 @@
-steal('funcunit/syn', 'can/view/mustache', function(){
+steal('funcunit/syn', 'can/view/mustache', 'can/model', function(){
 	
 module("can/view/mustache, rendering",{
 	setup : function(){
@@ -150,11 +150,11 @@ test("registerNode, unregisterNode, and replace work", function(){
 test("Model hookup", function(){
 	
 	// Single item hookup
-	var template = '<p id="foo" {{data "name"}}>data rocks</p>';
+	var template = '<p id="foo" {{  data "name "   }}>data rocks</p>';
 	var obsvr = new can.Observe({ name: 'Austin' });
 	var frag = new can.Mustache({ text: template }).render(obsvr);
 	can.append( can.$('#qunit-test-area'), can.view.frag(frag));
-	same(can.data(can.$('#foo'), 'name'), obsvr, 'data hooks worked and fetched');
+	same(can.data(can.$('#foo'), 'name '), obsvr, 'data hooks worked and fetched');
 
 	// Multi-item hookup
 	var listTemplate = '<ul id="list">{{#list}}<li class="moo" id="li-{{name}}" {{data "obsvr"}}>{{name}}</li>{{/#list}}</ul>';
@@ -172,6 +172,14 @@ test("Model hookup", function(){
 	obsvrList.pop();
 	same(can.$('.moo').length, 1, 'new item popped off and deleted from ui');
 });
+
+/*test("Variable partials", function(){
+	var template = "{{#items}}<span>{{>partial}}</span>{{/items}}";
+	var data = { items: [{}], partial: "test_template.mustache" }
+
+	var frag = new can.Mustache({ text: template }).render(data);
+	can.append( can.$('#qunit-test-area'), can.view.frag(frag));
+});*/
 
 /*
 // FIX THIS
@@ -346,6 +354,32 @@ test("Passing functions as data, then executing them", function() {
 	
 	var expected = t.expected.replace(/&quot;/g, '&#34;').replace(/\r\n/g, '\n');
 	same(new can.Mustache({ text: t.template }).render(t.data), expected);
+});
+
+test("Absolute partials", function() {
+	var t = {
+		template1: "{{> //can/view/mustache/test/test_template.mustache}}",
+		template2: "{{>//can/view/mustache/test/test_template.mustache}}",
+		expected: "Partials Rock"
+	};
+	
+	same(new can.Mustache({ text: t.template1 }).render({}), t.expected);
+	same(new can.Mustache({ text: t.template2 }).render({}), t.expected);
+});
+
+test("Partials and observes", function() {
+	var div = document.createElement('div');
+	var dom = can.view('//can/view/mustache/test/table.mustache', {
+		data : new can.Observe({
+			list: ["hi","there"]
+		})
+	});
+	div.appendChild(dom);
+	var ths = div.getElementsByTagName('th');
+
+	equal(ths.length, 2, 'Got two table headings');
+	equal(ths[0].innerHTML, 'hi', 'First column heading correct');
+	equal(ths[1].innerHTML, 'there', 'Second column heading correct');
 });
 
 test("Deeply nested partials", function() {
@@ -1179,6 +1213,71 @@ test("live binding textarea", function(){
 	obs.attr("middle","Middle")
 	equal(textarea.value, "BeforeMiddleAfter")
 	
+})
+
+test("reading a property from a parent object when the current context is an observe", function(){
+	can.view.mustache("parent-object","{{#foos}}<span>{{bar}}</span>{{/foos}}")
+	var data = {
+		foos: new can.Observe.List([{name: "hi"},{name: 'bye'}]),
+		bar: "Hello World"
+	}
+	
+	var div = document.createElement('div');
+	var res = can.view("parent-object",data);
+	div.appendChild( res );
+	var spans = div.getElementsByTagName('span');
+
+	equal(spans.length, 2, 'Got two <span> elements');
+	equal(spans[0].innerHTML, 'Hello World', 'First span Hello World');
+	equal(spans[1].innerHTML, 'Hello World', 'Second span Hello World');
+})
+
+test("helper parameters don't convert functions", function() {
+	can.Mustache.registerHelper('helperWithFn', function(fn) {
+		ok(can.isFunction(fn), 'Parameter is a function');
+		equal(fn(), 'Hit me!', 'Got the expected function');
+	});
+
+	var renderer = can.view.mustache('{{helperWithFn test}}');
+	renderer({
+		test : function() {
+			return 'Hit me!';
+		}
+	});
+})
+
+test("computes as helper parameters do get converted", function() {
+	can.Mustache.registerHelper('computeTest', function(no) {
+		equal(no, 5, 'Got computed calue');
+	});
+
+	var renderer = can.view.mustache('{{computeTest test}}');
+	renderer({
+		test : can.compute(5)
+	});
+})
+
+test("Rendering models in tables produces different results than an equivalent observe (#202)", 2, function() {
+	var renderer = can.view.mustache('<table>{{#stuff}}<tbody>{{#rows}}<tr></tr>{{/rows}}</tbody>{{/stuff}}</table>');
+	var div = document.createElement('div');
+	var dom = renderer({
+		stuff : new can.Observe({
+			rows: [{ name : 'first' }]
+		})
+	});
+	div.appendChild(dom);
+	var elements = div.getElementsByTagName('tbody');
+	equal(elements.length, 1, 'Only one <tbody> rendered');
+
+	div = document.createElement('div');
+	dom = renderer({
+		stuff : new can.Model({
+			rows: [{ name : 'first' }]
+		})
+	});
+	div.appendChild(dom);
+	elements = div.getElementsByTagName('tbody');
+	equal(elements.length, 1, 'Only one <tbody> rendered');
 })
 
 });

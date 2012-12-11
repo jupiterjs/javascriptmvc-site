@@ -20,6 +20,7 @@ var newLine = /(\r|\n)+/g,
 		tr:"tbody",
 		option:"select",
 		td:"tr",
+		th:"tr",
 		li: "ul"
 	},
 	// Returns a tagName to use as a temporary placeholder for live content
@@ -368,7 +369,7 @@ Scanner.prototype = {
 						} 
 
 						var escaped = startTag === tmap.escapeLeft ? 1 : 0,
-							commands = { insert: insert_cmd, tagName: tagName, status: status() };
+							commands = { insert: insert_cmd, tagName: getTag(tagName, tokens, i), status: status() };
 
 						for(var ii = 0; ii < this.helpers.length;ii++){
 							// Match the helper based on helper
@@ -378,7 +379,7 @@ Scanner.prototype = {
 								content = helper.fn(content, commands);
 
 								// dont escape partials
-								if(helper.name.source == /^>[\s|\w]\w*/.source){
+								if(helper.name.source == /^>[\s]*\w*/.source){
 									escaped = 0;
 								}	
 								break;

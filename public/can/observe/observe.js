@@ -272,13 +272,20 @@ steal('can/util','can/construct', function(can) {
 			}
 		},
 		/**
-			* Iterates over an observable object to get an array of its keys.
-			*
-			*     o =  new can.Observe({ foo: 'bar', baz: 'qux' });
-			*     can.Observe.keys(o); //-> ['foo', 'baz']
-			*
-			* @param {can.Observe} observe The observe to iterate over
-			* @return {Array} array An array of the keys on the object.
+		 * `can.Observe.keys( observe )` iterates over an 
+		 * observable object to get an array of 
+		 * its keys. It also 
+		 * 
+		 *     var styles = new can.Observe({
+		 *       color: "green",
+		 *       width: "20px",
+		 *       height: "20px"
+		 *     });
+		 *     
+		 *     can.Observe.keys
+		 * 
+		 * @param {can.Observe} observe The observe to iterate over
+		 * @return {Array} array An array of the keys on the object.
 		 */
 		keys: function(observe) {
 			var keys = [];
@@ -311,6 +318,9 @@ steal('can/util','can/construct', function(can) {
 		},
 		_changes: function(ev, attr, how,newVal, oldVal){
 			Observe.triggerBatch(this, {type:attr, batchNum: ev.batchNum}, [newVal,oldVal]);
+		},
+		_triggerChange: function(attr, how,newVal, oldVal){
+			Observe.triggerBatch(this,"change",can.makeArray(arguments))
 		},
 		/**
 		 * Get or set an attribute or attributes on the observe.
@@ -567,9 +577,9 @@ steal('can/util','can/construct', function(can) {
 						delete this[prop]
 					}
 					// Let others know the number of keys have changed
-					Observe.triggerBatch(this, "__keys", undefined);
-					Observe.triggerBatch(this, "change", [prop, "remove", undefined, current]);
-					Observe.triggerBatch(this, prop, [undefined, current]);
+					Observe.triggerBatch(this, "__keys");
+					this._triggerChange(prop, "remove", undefined, current);
+
 				}
 				return current;
 			}
@@ -617,11 +627,7 @@ steal('can/util','can/construct', function(can) {
 				if(this.__convert){
 					value = this.__convert(prop, value)
 				}
-				// If there is no current value, let others know that
-				// the the number of keys have changed
-				if(!current) {
-					Observe.triggerBatch(this, "__keys", undefined);
-				}
+				
 				this.__set(prop, value, current)
 			} else {
 				throw "can.Observe: Object does not exist"
@@ -648,8 +654,16 @@ steal('can/util','can/construct', function(can) {
 				// Value is normal.
 				value);
 
+				if(changeType == "add"){
+					// If there is no current value, let others know that
+					// the the number of keys have changed
+					
+					Observe.triggerBatch(this, "__keys", undefined);
+					
+				}
 				// `batchTrigger` the change event.
-				Observe.triggerBatch(this, "change", [prop, changeType, value, current]);
+				this._triggerChange(prop, changeType, value, current);
+				
 				//Observe.triggerBatch(this, prop, [value, current]);
 				// If we can stop listening to our old value, do it.
 				current && unhookup([current], this._cid);
@@ -803,7 +817,7 @@ steal('can/util','can/construct', function(can) {
 				return serialize(this, 'attr', {})
 			}
 
-			props = can.extend(true, {}, props);
+			props = can.extend({}, props);
 			var prop,
 				self = this,
 				newVal;
@@ -843,6 +857,40 @@ steal('can/util','can/construct', function(can) {
 			}
 			Observe.stopBatch()
 			return this;
+		},
+
+		/**
+		 * `compute(prop)` returns a [can.compute] bound to the given property:
+		 *
+		 *      var obs = new can.Observe({
+		 *          name : 'David'
+		 *      });
+		 *
+		 *      var name = obs.compute('name');
+		 *
+		 *      name.bind('change', function(ev, newName, oldName) {
+		 *          console.log('Name changed from ' + oldName + ' to ' + newName);
+		 *      });
+		 *
+		 *      name() // -> "David"
+		 *
+		 *      obs.attr('name', 'Curtis');
+		 *      name() // -> "Curtis"
+		 *
+		 *      name("Justin");
+		 *      name() // -> "Justin"
+		 *      obs.attr('name') // -> Justin
+		 *
+		 * @param prop The name of the property
+		 * @return {can.compute} A can.compute instance
+		 */
+		compute: function(prop) {
+			var self = this,
+				computer = function(val) {
+					return self.attr(prop, val);
+				};
+
+			return can.compute ? can.compute(computer) : computer;
 		}
 	});
 	// Helpers for `observable` lists.
@@ -988,12 +1036,14 @@ steal('can/util','can/construct', function(can) {
 			this.length = 0;
 			can.cid(this, ".observe")
 			this._init = 1;
-			this.push.apply(this, can.makeArray(instances || []));
+			this.push.apply(this, instances || []);
 			this.bind('change'+this._cid,can.proxy(this._changes,this));
 			can.extend(this, options);
 			delete this._init;
 		},
-		_changes : function(ev, attr, how, newVal, oldVal){
+		_triggerChange: function(attr, how, newVal, oldVal){
+			
+			Observe.prototype._triggerChange.apply(this,arguments)
 			// `batchTrigger` direct add and remove events...
 			if ( !~ attr.indexOf('.')){
 				
@@ -1008,7 +1058,7 @@ steal('can/util','can/construct', function(can) {
 				}
 				
 			}
-			Observe.prototype._changes.apply(this,arguments)
+			
 		},
 		__get : function(attr){
 			return attr ? this[attr] : this;
@@ -1105,13 +1155,15 @@ steal('can/util','can/construct', function(can) {
 				howMany = args[1] = this.length - index;
 			}
 			var removed = splice.apply(this, args);
+			can.Observe.startBatch()
 			if ( howMany > 0 ) {
-				Observe.triggerBatch(this, "change", [""+index, "remove", undefined, removed]);
+				this._triggerChange(""+index, "remove", undefined, removed);
 				unhookup(removed, this._cid);
 			}
 			if ( args.length > 2 ) {
-				Observe.triggerBatch(this, "change", [""+index, "add", args.slice(2), removed]);
+				this._triggerChange(""+index, "add", args.slice(2), removed);
 			}
+			can.Observe.stopBatch();
 			return removed;
 		},
 		/**
@@ -1314,25 +1366,30 @@ steal('can/util','can/construct', function(can) {
 	// `name` - The method name.
 	// `where` - Where items in the `array` should be added.
 	function( where, name ) {
+		var orig = [][name]
 		list.prototype[name] = function() {
 			// Get the items being added.
-			var args = can.makeArray(arguments),
+			var args = [],
 				// Where we are going to add items.
-				len = where ? this.length : 0;
+				len = where ? this.length : 0,
+				i = arguments.length,
+				res,
+				val,
+				constructor = this.constructor;
 
 			// Go through and convert anything to an `observe` that needs to be converted.
-			for ( var i = 0; i < args.length; i++ ) {
-				var val = args[i];
-				if ( canMakeObserve(val) ) {
-					args[i] = hookupBubble(val, "*", this, this.constructor.Observe, this.constructor);
-				}
+			while(i--){
+				val = arguments[i];
+				args[i] =  canMakeObserve(val) ?
+					hookupBubble(val, "*", this, this.constructor.Observe, this.constructor) :
+					val;
 			}
 			
 			// Call the original method.
-			var res = [][name].apply(this, args);
+			res = orig.apply(this, args);
 			
 			if ( !this.comparator || !args.length ) {
-				Observe.triggerBatch(this, "change", [""+len, "add", args, undefined])
+				this._triggerChange(""+len, "add", args, undefined);
 			}
 						
 			return res;
@@ -1396,7 +1453,7 @@ steal('can/util','can/construct', function(can) {
 			// `undefined` - The new values (there are none).
 			// `res` - The old, removed values (should these be unbound).
 			// `len` - Where these items were removed.
-			Observe.triggerBatch(this, "change", [""+len, "remove", undefined, [res]])
+			this._triggerChange(""+len, "remove", undefined, [res])
 
 			if ( res && res.unbind ) {
 				res.unbind("change" + this._cid)
@@ -1408,7 +1465,7 @@ steal('can/util','can/construct', function(can) {
 	can.extend(list.prototype, {
 		/**
 		 * @function indexOf
-		 * Returns the position of the item in the array.  Returns -1 if the
+		 * `indexOf(item)` returns the position of the item in the array.  Returns -1 if the
 		 * item is not in the array.  Examples:
 		 *
 		 *     list = new can.Observe.List(["a","b","c"]);
@@ -1426,7 +1483,7 @@ steal('can/util','can/construct', function(can) {
 		/**
 		 * @function join
 		 *
-		 * Joins the string representation of all elements into a string.
+		 * `join(separator)` joins the string representation of all elements into a string.
 		 *
 		 *      list = new can.Observe.List(["a","b","c"]);
 		 *      list.join(',') // -> "a, b, c"
@@ -1441,7 +1498,7 @@ steal('can/util','can/construct', function(can) {
 		/**
 		 * @function slice
 		 *
-		 * Creates a flat copy of a section of the observable list and returns
+		 * `slice(start [, end])` creates a flat copy of a section of the observable list and returns
 		 * a new observable list.
 		 *
 		 * [MDN reference](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/slice)
@@ -1458,7 +1515,7 @@ steal('can/util','can/construct', function(can) {
 		/**
 		 * @function concat
 		 *
-		 * Returns a new can.Observe.List comprised of this list joined with other
+		 * `concat(args...)` returns a new can.Observe.List comprised of this list joined with other
 		 * array(s), value(s) and can.Observe.Lists.
 		 *
 		 * [MDN reference](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/concat)
@@ -1477,7 +1534,7 @@ steal('can/util','can/construct', function(can) {
 		/**
 		 * @function forEach
 		 *
-		 * Calls a function for each element in the list.
+		 * `forEach(callback [, thisarg])` calls a function for each element in the list.
 		 *
 		 * > Note that [each can.Observe.each] will iterate over the actual properties.
 		 *
@@ -1489,6 +1546,43 @@ steal('can/util','can/construct', function(can) {
 		 */
 		forEach : function( cb, thisarg ) {
 			can.each(this, cb, thisarg || this );
+		},
+
+		/**
+		 * @function replace
+		 *
+		 * `replace([newList]) replaces the current list with another array,
+		 * can.Observe.List or a Deferred that resolves to a list:
+		 *
+		 *      var list = new can.Observe.List('a','b','c');
+		 *      list.replace(['x', 'y']); // -> Fires `remove` and `add` event
+		 *      list.serialize() // -> ['x', 'y']
+		 *
+		 * This allows you to initialize live-binding Controls like this:
+		 *
+		 *      can.Control({
+		 *          init : function () {
+		 *              this.list = new Recipe.List();
+		 *              this.element.html(can.view('list.ejs', this.list));
+		 *              this.list.replace(Recipe.findAll());
+		 *          }
+		 *      });
+		 *
+		 * Meaning that the list will be automatically populated once the Deferred returned by `Recipe.findAll()`
+		 * resolves.
+		 *
+		 * @param {can.Observe.List|Array|can.Deferred} [newList] The new list to use. If not passed, the list
+		 * will be emptied.
+		 * @return {can.Observe.List} The current list
+		 */
+		replace : function(newList) {
+			if(can.isDeferred(newList)) {
+				newList.then(can.proxy(this.replace, this));
+			} else {
+				this.splice.apply(this, [0, this.length].concat(can.makeArray(newList || [])));
+			}
+
+			return this;
 		}
 	});
 
