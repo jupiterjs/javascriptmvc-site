@@ -32,18 +32,17 @@ namespace :deploy do
 		announce 'Building docs and compressing site...'
 
 		Dir.chdir('javascriptmvc') do
-			sh './js jmvc/scripts/doc.js'
-			sh './js jmvc/site/scripts/build.js'
+			sh './js site/scripts/doc.js'
+			sh './js site/scripts/build.js'
 			sh './js documentjs/jmvcdoc/scripts/build.js'
 		end
 	end
 
-	task :jquerymx do
-		announce 'Building jquerymx...'
+	task :jquery do
+		announce 'Building jquery...'
 
 		Dir.chdir('public') do
-			sh './js jquery/build.js'
-			sh './js jquery/buildAll.js'
+			sh './js jquery/build/build.js'
 		end
 	end
 
@@ -98,7 +97,7 @@ namespace :deploy do
 		sh 'git repack'
 	end
 
-	task :prepare => [:build, :jquerymx, :copy, :commit] do
+	task :prepare => [:build, :jquery, :copy, :commit] do
 		puts
 		puts 'Preparing to deploy...'
 		puts
