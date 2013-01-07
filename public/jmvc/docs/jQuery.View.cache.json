@@ -1,1 +1,0 @@
-c({"name": "jQuery.View.cache", "type": "attribute", "parents": ["jQuery.View"], "comment": "<p>Should the views be cached or reloaded from the server. Defaults to true.</p>", "src": "jquery/view/view.js", "line": 487, "children": []})

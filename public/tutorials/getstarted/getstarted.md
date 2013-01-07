@@ -4,40 +4,58 @@
 This guide introduces the most important aspects of JavaScriptMVC (JMVC) by 
 creating a simple cookbook application.
 
-<h2 class='spaced'>Basics</h2>
+## Basics
 
 Before jumping in, there are some things you should know:
 
 ### Purpose
 
-JavaScriptMVC is for client side JavaScript development.  JavaScriptMVC is our way
-of making quality, maintainable applications in the shortest amount of time.
+Use JavaScriptMVC to develop client-side JavaScript apps. JMVC was 
+created by [http://bitovi.com Bitovi], a JavaScript consulting 
+company, to create quality, maintainable apps in the shortest 
+amount of time. Since that time, JMVC has undergone 7 primary production releases
+with over 100 outside contributors.
+
+Unlike most JavaScript projects, JMVC is a 
+true __framework__. It supplies best-of-bread solutions for things like:
+
+ - DOM manipulation
+ - MVC Architecture
+ - Testing
+ - Dependency management
+ - Documentation
+ 
+It tightly integrates these solutions so they
+work together seemlessly. With repeatable development 
+patterns, JMVC provides __direction to development__ making it easy
+for teams to work together more 
+effectively.
+
 
 ### Sub Projects
 
-JavaScriptMVC is comprised of 4 sub projects:
+JavaScriptMVC is comprised of 5 sub projects:
 
-  - [DocumentJS] - A documentation engine
-  - [FuncUnit] - A web testing framework
-  - [jquerymx jQueryMX] - jQuery _M_VC e_X_tensions.
-  - [stealjs StealJS] - A code manager : dependency management, code cleaning, building, etc.
+  - [canjs CanJS] - A client side MVC framework
+  - [jquerypp jQuery++] - A collection of useful DOM helpers and special events for jQuery
+  - [stealjs StealJS] - A code manager: dependency management, code cleaning, building, etc.
+  - [DocumentJS DocumentJS] - A documentation engine
+  - [FuncUnit FuncUnit] - A web testing framework
 
 ### Plugins 
 
-Sub-projects are futher broken down into plugins.  Just [steal] the ones you need.  Plugins load 
+Sub-projects are futher broken down into plugins. Just [steal] the ones you need. Plugins load
 their own dependencies and won't load duplicate files.  It looks like:
 
-    steal('jquery/model',
-          'jquery/view/ejs',
-          'jquery/controller',
-          function($){
-          ...
-          });
+    steal('can/control', function( Control ) {
+      Control // -> the Control API
+      ...
+    });
 
 
 <div class='whisper'>
-  P.S. <code>steal('jquery')</code> adds <code>jquery/jquery.js</code>
- to your project. </div>
+P.S. <code>steal('can/control')</code> adds <code>can/control/control.js</code> to your project.
+</div>
 
 ## License
 
@@ -50,5 +68,5 @@ These exceptions, although permissive licenses themselves, are not linked in you
 
 ## Installing JavaScriptMVC
 
-Before continuing, make sure you have [installing installed JavaScriptMVC].  Once you
-have installed JavaScriptMVC, continue to [creating Creating Cookbook].
+Before continuing, make sure you have [installing installed JavaScriptMVC]. Once you
+have installed JavaScriptMVC, continue to [cookbook.creating Creating Cookbook].

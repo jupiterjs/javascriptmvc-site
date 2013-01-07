@@ -1,8 +1,8 @@
-/**
- *  @add jQuery.fn
- */
-steal("jquery/dom").then(function( $ ) {
-	var keyBreaker = /[^\[\]]+/g,
+steal("jquery", function( $ ) {
+	var
+		// use to parse bracket notation like my[name][attribute]
+		keyBreaker = /[^\[\]]+/g,
+		// converts values that look like numbers and booleans and removes empty strings
 		convertValue = function( value ) {
 			if ( $.isNumeric( value )) {
 				return parseFloat( value );
@@ -10,32 +10,37 @@ steal("jquery/dom").then(function( $ ) {
 				return true;
 			} else if ( value === 'false' ) {
 				return false;
-			} else if ( value === '' ) {
+			} else if ( value === '' || value === null ) {
 				return undefined;
 			}
 			return value;
-		}, 
-		nestData = function( elem, type, data, parts, value, seen ) {
+		},
+		// Access nested data
+		nestData = function( elem, type, data, parts, value, seen, fullName ) {
 			var name = parts.shift();
+			// Keep track of the dot separated fullname. Used to uniquely track seen values
+			// and if they should be converted to an array or not
+			fullName = fullName ? fullName + '.' + name : name;
 
-			if ( parts.length ) {
+			if (parts.length ) {
 				if ( ! data[ name ] ) {
 					data[ name ] = {};
 				}
+
 				// Recursive call
-				nestData( elem, type, data[ name ], parts, value, seen );
+				nestData( elem, type, data[ name ], parts, value, seen, fullName);
 			} else {
 
 				// Handle same name case, as well as "last checkbox checked"
 				// case
-				if ( name in seen && type != "radio" && ! $.isArray( data[ name ] )) {
+				if ( fullName in seen && type != "radio" && ! $.isArray( data[ name ] )) {
 					if ( name in data ) {
 						data[ name ] = [ data[name] ];
 					} else {
 						data[ name ] = [];
 					}
 				} else {
-					seen[ name ] = true;
+					seen[ fullName ] = true;
 				}
 
 				// Finally, assign data
@@ -53,42 +58,25 @@ steal("jquery/dom").then(function( $ ) {
 			}
 
 		};
-		
+
+	/**
+	 * @function jQuery.fn.formParams
+	 * @parent jQuery.formParams
+	 * @plugin jquery/dom/form_params
+	 * @test jquery/dom/form_params/qunit.html
+	 *
+	 * Returns a JavaScript object for values in a form.
+	 * It creates nested objects by using bracket notation in the form element name.
+	 *
+	 * @param {Object} [params] If an object is passed, the form will be repopulated
+	 * with the values of the object based on the name of the inputs within
+	 * the form
+	 * @param {Boolean} [convert=false] True if strings that look like numbers
+	 * and booleans should be converted and if empty string should not be added
+	 * to the result.
+	 * @return {Object} An object of name-value pairs.
+	 */
 	$.fn.extend({
-		/**
-		 * @parent dom
-		 * @download http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/dom/form_params/form_params.js
-		 * @plugin jquery/dom/form_params
-		 * @test jquery/dom/form_params/qunit.html
-		 * 
-		 * Returns an object of name-value pairs that represents values in a form.  
-		 * It is able to nest values whose element's name has square brackets.
-		 * 
-		 * When convert is set to true strings that represent numbers and booleans will
-		 * be converted and empty string will not be added to the object. 
-		 * 
-		 * Example html:
-		 * @codestart html
-		 * &lt;form>
-		 *   &lt;input name="foo[bar]" value='2'/>
-		 *   &lt;input name="foo[ced]" value='4'/>
-		 * &lt;form/>
-		 * @codeend
-		 * Example code:
-		 * 
-		 *     $('form').formParams() //-> { foo:{bar:'2', ced: '4'} }
-		 * 
-		 * 
-		 * @demo jquery/dom/form_params/form_params.html
-		 * 
-		 * @param {Object} [params] If an object is passed, the form will be repopulated
-		 * with the values of the object based on the name of the inputs within
-		 * the form
-		 * @param {Boolean} [convert=false] True if strings that look like numbers 
-		 * and booleans should be converted and if empty string should not be added 
-		 * to the result. Defaults to false.
-		 * @return {Object} An object of name-value pairs.
-		 */
 		formParams: function( params ) {
 
 			var convert;
@@ -109,13 +97,11 @@ steal("jquery/dom").then(function( $ ) {
 
 			// Find all the inputs
 			this.find("[name]").each(function() {
-				
-				var value = params[ $(this).attr("name") ],
-					$this;
+				var $this = $(this),
+					value = params[ $this.attr("name") ];
 				
 				// Don't do all this work if there's no value
 				if ( value !== undefined ) {
-					$this = $(this);
 					
 					// Nested these if statements for performance
 					if ( $this.is(":radio") ) {
@@ -143,8 +129,7 @@ steal("jquery/dom").then(function( $ ) {
 				seen = {},
 				current;
 
-
-			this.find("[name]").each(function() {
+			this.find("[name]:not(:disabled)").each(function() {
 				var $this    = $(this),
 					type     = $this.attr("type"),
 					name     = $this.attr("name"),
@@ -176,4 +161,5 @@ steal("jquery/dom").then(function( $ ) {
 		}
 	});
 
+	return $;
 });

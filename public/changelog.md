@@ -1,82 +1,54 @@
-## 3.2.4 (10/11/12)
+## 3.3
 
-### jQueryMX
+CanJS is now stolen and is the prefered way of doing things.  $.Class, $.Model, $.View, $.Controller, $.route, $.Observe are all
+now can.NAME.  To maintain large amounts of backwards compatability, these things still exist.  However,
+using can is now encouraged.  Also, can has things as plugins that were included by default previously.
 
-- Merged most outstanding pull requests
-- Fixed bug with EJS views in IE
 
-## 3.2.3 (9/04/12)
+### Class
 
-### FuncUnit
+ - Removed .Class access to instance's constructor function, use .constructor instead
+ - Removed callback, use .proxy
 
-- Changed `funcunit/run` to `funcunit/open/<type>` run with
+### Controller
 
-      js funcunit/open/selenium http://localhost/test/qunit.html -browser "googlechrome" -out testresults.xml
+ - `delegate` and `bind` are replaced with `on`
 
-- Added command line options for `browser`, `out`
-- Coverage report template fixes
-- Framemode for PhantomJS tests
+### Observe
 
-### Steal
+ - $.O is removed
+ - attrs is now just attr
+ - sort is removed (temporarily)
 
-- Fixed CSS bug in IE
+### Model
 
-### jQueryMX
+ - model's implemented ajax methods do not take success / error, they produce methods that do
+ - model.update(attrs, success, error) is removed, use model.attr(attrs).save(success, error)
+ - model list does not get updated events, listen for change
+ - error message handlers get `handler(ev, attr, errorName)`
+ - `this` in save's success handler `save(succes, error)` is now the deferred.
+ - There are no default fixtures for models anymore.
+ - there is no error handler on attributes.  Use an event handler.
+ - Abstracted element helper `.models` to be applicable to `can.Observe` and renamed to `.instances`
+ 
+### View
 
-- Minor cleanups and fixes (formParams, Model store)
+ - Returns a documentFragment
+ - All types are moved into can
+ - Helpers are removed
+ - plugin is gone, use <%= (el)-> el.pluginName(args) %>
+ - callback functions execute before the fragment is inserted into the DOM
 
-## 3.2.2 (1/20/12)
+### Fixture
 
-### JavaScriptMVC
+ - fixture.make returns a store
 
-- MXUI library is now officially in beta
+## 3.2.2
 
-### StealJS
+### Model
 
-- added steal.instrument
-- better diagnostics in env.js
-- better diagnostics in build process
-- added isDirectory, move; fixed isFile in steal.File
-- fixed parser to handle hex literals
-- phantom supports https protocol
-- fixed loaded bug
-- added toClass on generators
-- fixed CSS url and data references in production builds
-- improved error handling in steal.request
-- upgrade to LESS v1.1.6
-- fixed cache busting in IE
-- fixed steal.crawl to handle subdirectories
-- changed //@ to //! prefix in steal directives
+- Removed this.publish
 
-### jQueryMX
-
-- updated docs for plugin hookups
-- removed OpenAjax integration from $.Model
-- fixed bug with unique in model
-- EJS now accepts blocks
-- improvements and fixes to $.Observe, $.route and $.Model.List
-- form_params fixes and documentation updates
-- don't hookup val() or text()
-- resize event correctly propagates extra data
-- fixed drop so it handles elements removed from the DOM
-- $.Model.serialize() calls converter with the Class scope
-
-### FuncUnit
-
-- added coverage option to view test coverage via cobertura
-- added noautorun option to run tests individually or on demand
-- fixing bug in S.open of URLs that have a hash
-- supporting timeouts for waits
-- every action has an implicit exists() before it runs
-- added node proxy script
-- updated selenium to support FF8
-- added an optional message parameter which adds an assertion for wait conditions
-- fixed iframe-lookup logic to work in IE
-
-### Syn
-
-- fixed problem with keypress not being changed by a focus in keydown
-- fixed center-of-element calculation for IE
 
 ## 3.2.1 (10/18/11)
 

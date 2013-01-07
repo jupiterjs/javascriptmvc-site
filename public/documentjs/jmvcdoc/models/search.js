@@ -1,4 +1,5 @@
-steal('jquery/class').then('./favorites.js',function(){
+steal('can/construct', 'can/util/json.js').then('./favorites.js',function(){
+
 	var data,
 		// a map of names to deferreds
 		findOneDeferreds = {};
@@ -12,18 +13,22 @@ steal('jquery/class').then('./favorites.js',function(){
 		}
 	});
 	
-	$.Class("Doc",{
+	can.Construct("Doc",{
 		location : null,
+		dataDeferred : can.Deferred(),
 		load: function( success ) {
 			// see if we have latest in localStorage
 			
 			if(window.localStorage && window.JMVCDOC_TIMESTAMP){
 				var json = window.localStorage["jmvcDoc"+JMVCDOC_TIMESTAMP]
 				if(json){
-					var data = $.parseJSON(json);
+					var data = can.parseJSON(json);
 					this._data = data;
-					success(data)
-					return;
+					success(data);
+					var d =can.Deferred();
+					d.resolve(data);
+					Doc.dataDeferred.resolve()
+					return d;
 				} else {
 					//clear everything that starts with jmvcDoc, try to remove the old data ...
 					i = 0;
@@ -39,13 +44,20 @@ steal('jquery/class').then('./favorites.js',function(){
 				}
 				
 			}
-			return $.ajax({
+			var d = can.ajax({
 				url:  ( this.location || DOCS_LOCATION) + "searchData.json" ,
-				success: this.callback(['setData', success]),
+				success: $.proxy(function(data){
+					this.setData(data)
+					success && success.apply(this, arguments)
+				}, this),
 				jsonpCallback: "C",
 				dataType: "jsonp",
 				cache: true
-			});
+			})
+			d.then(function(){
+				Doc.dataDeferred.resolve()
+			})
+			return d;;
 	
 		},
 		setData: function( data ) {
@@ -68,26 +80,23 @@ steal('jquery/class').then('./favorites.js',function(){
 			}
 			if(window.localStorage && window.JMVCDOC_TIMESTAMP){
 				setTimeout(function(){
-					window.localStorage["jmvcDoc"+JMVCDOC_TIMESTAMP] = $.toJSON(data)
+					window.localStorage["jmvcDoc"+JMVCDOC_TIMESTAMP] = can.toJSON(data)
 				},1000)
 				
 			}
-			
 			return arguments;
 		},
 		findOne: function(params, success, error){
 			if(success){
-				
 				if(window.localStorage && window.JMVCDOC_TIMESTAMP){
 					var json = window.localStorage["jmvcDoc"+params.name]
 					if(json){
-						var data = $.parseJSON(json);
+						var data = can.parseJSON(json);
 						if(data.timestamp == JMVCDOC_TIMESTAMP){
 							success(data)
 							return;
 						}
-					} 
-					
+					}
 				}
 				var def = findOneDeferreds[params.name]
 				// check if we are already requesting
@@ -96,22 +105,28 @@ steal('jquery/class').then('./favorites.js',function(){
 					def.fail(error);
 					return def;
 				} else {
-					def = findOneDeferreds[params.name] = $.Deferred();
-					def.done(success);
+					def = findOneDeferreds[params.name] = can.Deferred();
 					def.fail(error);
 					def.done(function(data){
 						if(window.localStorage && window.JMVCDOC_TIMESTAMP){
 							data.timestamp = JMVCDOC_TIMESTAMP;
 							setTimeout(function(){
-								window.localStorage["jmvcDoc"+params.name] = $.toJSON(data)
+								window.localStorage["jmvcDoc"+params.name] = can.toJSON(data)
 								delete findOneDeferreds[params.name];
 							},10)
-							
 						}
+						success(data)
 					});
-					$.ajax({
-						url: ( this.location || DOCS_LOCATION) + params.name.replace(/ /g, "_")
-							.replace(/&#46;/g, ".") + ".json",
+					can.ajax({
+						url: ( this.location || DOCS_LOCATION) + 
+							params.name
+										.replace(/ /g, "_")
+										.replace(/&#46;/g, ".")
+										.replace(/&gt;/g, "_gt_")
+										.replace(/\*/g, "_star_")
+										.replace(/\//g,"|") + 
+									
+									".json",
 						error: function(){
 							def.reject.apply(def, arguments)
 						},
@@ -125,7 +140,8 @@ steal('jquery/class').then('./favorites.js',function(){
 			var res;
 			if(params.name){
 				res = this._data[params.name]
-			} 
+			}
+
 			if( res ) {
 				return new this(res);
 			}
@@ -184,9 +200,9 @@ steal('jquery/class').then('./favorites.js',function(){
 			}
 			
 			if(window.localStorage && window.JMVCDOC_TIMESTAMP){
-				var json = window.localStorage["jmvcDocSearch"+window.JMVCDOC_TIMESTAMP]
+				var json = window.localStorage["jmvcDoc"+window.JMVCDOC_TIMESTAMP]
 				if(json){
-					return this._searchData = $.parseJSON(json);
+					return this._searchData = can.parseJSON(json);
 				}
 			}
 			
@@ -204,7 +220,7 @@ steal('jquery/class').then('./favorites.js',function(){
 							current[letter] = {};
 							current[letter].list = [];
 						}
-						if ( $.inArray(current[letter].list, data) == -1 ) {
+						if ( can.inArray(data, current[letter].list) == -1 ) {
 							current[letter].list.push(data);
 						}
 						current = current[letter];
@@ -250,20 +266,22 @@ steal('jquery/class').then('./favorites.js',function(){
 		}
 	},{
 		init : function(attrs){
-			$.extend(this,attrs);
+			can.extend(this,attrs);
 		},
 		
 		children : function(){
-			var data = this.Class._data;
+			var data = this.constructor._data;
 			//get the child docs and their order ...
 			return $.map(this.childDocs || [], function(docName){
 				return new Doc( data[docName] );
 			}).sort(Search.sortFn)
 		}
 	});
-	
+	if(! steal.isRhino ){
+		Doc.load(function(){});
+	}
 
-$.Class('Search', {
+can.Construct('Search', {
 	sortFn: function( a, b ) {
 		var aHasOrder = a.order !== undefined,
 			bHasOrder = b.order !== undefined

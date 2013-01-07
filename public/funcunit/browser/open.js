@@ -1,6 +1,6 @@
-(function($){
+steal('jquery', './core.js', function($, FuncUnit) {
 	
-	if(steal.options.browser === "phantomjs"){
+	if(steal.config().browser === "phantomjs"){
 		FuncUnit.frameMode = true;
 	}
 	
@@ -20,10 +20,6 @@ var confirms = [],
 	lookingForNewDocument = false,
 	urlWithoutHash = function(url){
 		return url.replace(/\#.*$/, "");
-	},
-	absolutize = function(url){
-		var f = steal.File(url);
-		return f.protocol() ? f.path : f.joinFrom(steal.pageUrl().dir(), true);
 	},
 	// returns true if url matches current window's url
 	isCurrentPage = function(url){
@@ -217,10 +213,9 @@ $.extend(FuncUnit,{
 	 */
 	getAbsolutePath: function( path ) {
 		if ( /^\/\//.test(path) ){
-			return steal.File(absolutize(steal.root.path)).join(path.substr(2)) + '';
-		} else {
-			return absolutize(path);
+			path = path.substr(2);
 		}
+		return steal.config().root.join(path)+''
 	},
 	/**
 	 * @attribute win
@@ -254,11 +249,16 @@ $.extend(FuncUnit,{
 	},
 	// return true if new document found
 	checkForNewDocument: function(){
-		var documentFound = ((FuncUnit.win.document !== currentDocument && // new document 
+		var documentFound = false;
+
+		// right after setting a new hash and reloading, IE barfs on this occassionally (only the first time)
+		try {
+			documentFound = ((FuncUnit.win.document !== currentDocument && // new document 
 							!FuncUnit.win.___FUNCUNIT_OPENED) // hasn't already been marked loaded
 							// covers opera case after you click a link, since document doesn't change in opera
 							|| (currentHref != FuncUnit.win.location.href)) && // url is different 
 							FuncUnit.documentLoaded(); // fully loaded
+		} catch(e){}
 		if(documentFound){
 			// reset flags
 			lookingForNewDocument = false;
@@ -322,15 +322,6 @@ $.extend(FuncUnit,{
 	var newDocument = false, 
 		poller = function(){
 			var ls;
-			// right after setting a new hash and reloading, IE barfs on this occassionally (only the first time)
-			try{
-				if(FuncUnit.win && FuncUnit.win.document == null){
-					return;
-				}
-			}catch(e){
-				setTimeout(arguments.callee, 500);
-				return;
-			}
 			
 			if (lookingForNewDocument && FuncUnit.checkForNewDocument() ) {
 				
@@ -353,5 +344,6 @@ $.extend(FuncUnit,{
 	$(window).unload(function(){
 		FuncUnit.win && FuncUnit.win.close();
 	});
-	
-})(window.jQuery || window.FuncUnit.jQuery)
+
+	return FuncUnit;
+});

@@ -1,3 +1,4 @@
+steal("funcunit/syn/synthetic.js", function(Syn){
 module("funcunit/synthetic/key",{
 	setup: function() {
 		st.g("qunit-test-area").innerHTML = "<form id='outer'>"+
@@ -20,27 +21,20 @@ test("Key Characters", function(){
 	st.g("key").value = "";
 	Syn.key("1","key");
 	equals(st.g("key").value, "1", "1 written");
-})
+});
 
-test("Key Event Order", 1, function(){
-	var order = [],
-		recorder = function(ev){
-			order.push(ev.type)
-		};
-	
-	st.binder("key","keydown", recorder );
-	st.binder("key","keypress", recorder );
-	st.binder("key","keyup", recorder );
-	stop();
-	Syn.key("B","key", function(){
-		same(order,["keydown","keypress","keyup"],"Key order is correct")
-		start();
+
+test("Key \\r Submits Forms", 2, function(){
+	var submit = 0, 
+		change = 0;
+	st.binder("key","change",function(ev){
+		change++;
+		if ( ev.preventDefault ) {
+			ev.preventDefault();
+		}
+		ev.returnValue = false;
+		return false;
 	});
-	
-})
-
-test("Key \\r Submits Forms", 1, function(){
-	var submit = 0;
 	st.binder("outer","submit",function(ev){
 		submit++;
 		if ( ev.preventDefault ) {
@@ -52,6 +46,7 @@ test("Key \\r Submits Forms", 1, function(){
 	stop()
 	Syn.key("\r","key", function(){
 		equals(submit, 1, "submit on keypress");
+		equals(change, 1, "submit on keypress");
 		start();
 	})
 })
@@ -72,6 +67,23 @@ test("Key \\r Clicks Links", 1, function(){
 		start();
 	})
 });
+
+test("Key Event Order", 1, function(){
+	var order = [],
+		recorder = function(ev){
+			order.push(ev.type)
+		};
+	
+	st.binder("key","keydown", recorder );
+	st.binder("key","keypress", recorder );
+	st.binder("key","keyup", recorder );
+	stop();
+	Syn.key("B","key", function(){
+		same(order,["keydown","keypress","keyup"],"Key order is correct")
+		start();
+	});
+	
+})
 
 test("Key \\r Adds Newline in Textarea", function(){
 	st.g('synTextArea').value = "";
@@ -425,4 +437,5 @@ test("focus moves on keydown to another element", function(){
 	});
 	Syn.type("a", 'key' , function(){
 	});
+})
 })

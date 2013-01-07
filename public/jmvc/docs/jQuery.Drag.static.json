@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drag.static", "type": "static", "parents": ["jQuery.Drag"], "comment": "", "src": "jquery/event/drag/drag.js", "line": 86, "children": ["jQuery.Drag.static.mousedown"]})

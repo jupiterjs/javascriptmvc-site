@@ -1,1 +1,0 @@
-c({"name": "jQuery.Model.List.prototype.unshift", "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Adds a new instance to the beginning of an array, and returns the new length.</p>\n\n<pre><code>list.unshift(element1,element2,...) \n</code></pre>", "src": "jquery/model/list/list.js", "line": 746, "children": []})

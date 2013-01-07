@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Menu.select_event", "type": "attribute", "parents": ["Mxui.Nav.Menu"], "comment": "<p>The default event to listen to</p>", "src": "mxui/nav/menu/menu.js", "line": 27, "children": []})

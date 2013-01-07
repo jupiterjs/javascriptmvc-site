@@ -1,1 +1,0 @@
-c({"name": "jQuery.Model.List.prototype.indexOf", "type": "function", "parents": ["jQuery.Model.List.prototype"], "comment": "<p>Finds the index of the item in the list. Returns -1 if not found.</p>\n\n<pre><code>list.indexOf(item)\n</code></pre>", "src": "jquery/model/list/list.js", "line": 762, "children": []})

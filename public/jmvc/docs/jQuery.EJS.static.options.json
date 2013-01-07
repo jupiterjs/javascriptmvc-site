@@ -1,1 +1,0 @@
-c({"name": "jQuery.EJS.static.options", "type": "attribute", "parents": ["jQuery.EJS.static"], "comment": "<p>Sets default options for all views.</p>\n\n<pre><code>$.EJS.options.type = '['\n</code></pre>\n\n<p>Only one option is currently supported: type.</p>\n\n<p>Type is the left hand magic tag.</p>", "src": "jquery/view/ejs/ejs.js", "line": 301, "children": []})

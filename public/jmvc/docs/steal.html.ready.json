@@ -1,1 +1,0 @@
-c({"name": "steal.html.ready", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Lets the page know it's ready to render the html</p>", "parents": ["steal.html"], "src": "steal/html/html.js", "line": 63, "children": []})

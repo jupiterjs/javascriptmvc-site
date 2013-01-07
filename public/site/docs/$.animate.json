@@ -1,0 +1,1 @@
+c({"name": "$.animate", "children": ["$.fn.animate"]})

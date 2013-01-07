@@ -1,1 +1,0 @@
-c({"name": "jQuery.View.hookups", "type": "attribute", "parents": ["jQuery.View"], "comment": "<p>A list of pending 'hookups'</p>", "hide": true, "src": "jquery/view/view.js", "line": 454, "children": []})

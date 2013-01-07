@@ -1,1 +1,0 @@
-c({"name": "jQuery.View.ext", "type": "attribute", "parents": ["jQuery.View"], "comment": "<p>The default suffix to use if none is provided in the view's url. <br />\nThis is set to .ejs by default.</p>", "src": "jquery/view/view.js", "line": 549, "children": []})

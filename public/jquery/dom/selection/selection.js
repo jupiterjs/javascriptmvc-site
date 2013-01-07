@@ -1,83 +1,93 @@
-steal('jquery','jquery/dom/range').then(function($){
-var convertType = function(type){
-	return  type.replace(/([a-z])([a-z]+)/gi, function(all,first,  next){
-			  return first+next.toLowerCase()	
-			}).replace(/_/g,"");
-},
-reverse = function(type){
-	return type.replace(/^([a-z]+)_TO_([a-z]+)/i, function(all, first, last){
-		return last+"_TO_"+first;
-	});
-},
-getWindow = function( element ) {
+steal('jquery','jquery/dom/range',function($){
+
+var getWindow = function( element ) {
 	return element ? element.ownerDocument.defaultView || element.ownerDocument.parentWindow : window
 },
 // A helper that uses range to abstract out getting the current start and endPos.
 getElementsSelection = function(el, win){
+	// get a copy of the current range and a range that spans the element
 	var current = $.Range.current(el).clone(),
 		entireElement = $.Range(el).select(el);
+	// if there is no overlap, there is nothing selected
 	if(!current.overlaps(entireElement)){
 		return null;
 	}
-	// we need to check if it starts before our element ...
+	// if the current range starts before our element
 	if(current.compare("START_TO_START", entireElement) < 1){
+		// the selection within the element begins at 0
 		startPos = 0;
-		// we should move current ...
+		// move the current range to start at our element
 		current.move("START_TO_START",entireElement);
 	}else{
+		// Make a copy of the element's range.
+		// Move it's end to the start of the selected range
+		// The length of the copy is the start of the selected
+		// range.
 		fromElementToCurrent =entireElement.clone();
 		fromElementToCurrent.move("END_TO_START", current);
 		startPos = fromElementToCurrent.toString().length
 	}
 	
-	// now we need to make sure current isn't to the right of us ...
+	// If the current range ends after our element
 	if(current.compare("END_TO_END", entireElement) >= 0){
+		// the end position is the last character
 		endPos = entireElement.toString().length
 	}else{
+		// otherwise, it's the start position plus the current range
+		// TODO: this doesn't seem like it works if current
+		// extends to the left of the element.
 		endPos = startPos+current.toString().length
 	}
 	return {
 		start: startPos,
-		end : endPos
+		end : endPos,
+		width : endPos - startPos
 	};
 },
+// Text selection works differently for selection in an input vs
+// normal html elements like divs, spans, and ps.
+// This function branches between the various methods of getting the selection.
 getSelection = function(el){
-	// use selectionStart if we can.
 	var win = getWindow(el);
 	
+	// `selectionStart` means this is an input element in a standards browser.
 	if (el.selectionStart !== undefined) {
 
 		if(document.activeElement 
 		 	&& document.activeElement != el 
 			&& el.selectionStart == el.selectionEnd 
 			&& el.selectionStart == 0){
-			return {start: el.value.length, end: el.value.length};
+			return {start: el.value.length, end: el.value.length, width: 0};
 		}
-		return  {start: el.selectionStart, end: el.selectionEnd}
-	} else if(win.getSelection){
+		return  {start: el.selectionStart, end: el.selectionEnd, width: el.selectionEnd - el.selectionStart};
+	} 
+	// getSelection means a 'normal' element in a standards browser.
+	else if(win.getSelection){
 		return getElementsSelection(el, win)
 	} else{
-
+		// IE will freak out, where there is no way to detect it, so we provide a callback if it does.
 		try {
-			//try 2 different methods that work differently
-			// one should only work for input elements, but sometimes doesn't
-			// I don't know why this is, or what to detect
+			// The following typically works for input elements in IE:
 			if (el.nodeName.toLowerCase() == 'input') {
-				var real = getWindow(el).document.selection.createRange(), r = el.createTextRange();
+				var real = getWindow(el).document.selection.createRange(), 
+					r = el.createTextRange();
 				r.setEndPoint("EndToStart", real);
 				
 				var start = r.text.length
 				return {
 					start: start,
-					end: start + real.text.length
+					end: start + real.text.length,
+					width: real.text.length
 				}
 			}
+			// This works on textareas and other elements
 			else {
 				var res = getElementsSelection(el,win)
 				if(!res){
 					return res;
 				}
-				// we have to clean up for ie's textareas
+				// we have to clean up for ie's textareas which don't count for 
+				// newlines correctly
 				var current = $.Range.current().clone(),
 					r2 = current.clone().collapse().range,
 					r3 = current.clone().collapse(false).range;
@@ -96,12 +106,16 @@ getSelection = function(el){
 				return res
 			}
 		}catch(e){
-			return {start: el.value.length, end: el.value.length};
+			return {start: el.value.length, end: el.value.length, width: 0};
 		}
 	} 
 },
+// Selects text within an element.  Depending if it's a form element or
+// not, or a standards based browser or not, we do different things.
 select = function( el, start, end ) {
-	var win = getWindow(el)
+	var win = getWindow(el);
+	// IE behaves bad even if it sorta supports
+	// getSelection so we have to try the IE methods first. barf.
 	if(el.setSelectionRange){
 		if(end === undefined){
             el.focus();
@@ -112,7 +126,6 @@ select = function( el, start, end ) {
 			el.selectionEnd = end;
 		}
 	} else if (el.createTextRange) {
-		//el.focus();
 		var r = el.createTextRange();
 		r.moveStart('character', start);
 		end = end || start;
@@ -128,7 +141,7 @@ select = function( el, start, end ) {
 		range.setStart(ranges[0].el, ranges[0].count);
 		range.setEnd(ranges[1].el, ranges[1].count);
 		
-		// removeAllRanges is suprisingly necessary for webkit ... BOOO!
+		// removeAllRanges is necessary for webkit
         sel.removeAllRanges();
         sel.addRange(range);
 		
@@ -142,10 +155,8 @@ select = function( el, start, end ) {
 	}
 
 },
-/*
- * If one of the range values is within start and len, replace the range
- * value with the element and its offset.
- */
+// If one of the range values is within start and len, replace the range
+// value with the element and its offset.
 replaceWithLess = function(start, len, range, el){
 	if(typeof range[0] === 'number' && range[0] < len){
 			range[0] = {
@@ -181,51 +192,24 @@ getCharElement = function( elems , range, len ) {
 	return len;
 };
 /**
- * @parent dom
- * @tag beta
- * 
- * Gets or sets the current text selection.
- * 
- * ## Getting
- * 
- * Gets the current selection in the context of an element.  For example:
- * 
- *     $('textarea').selection() // -> { .... }
- *     
- * returns an object with:
- * 
- *   - __start__ - The number of characters from the start of the element to the start of the selection.
- *   - __end__ - The number of characters from the start of the element to the end of the selection.
- *   - __range__ - A [jQuery.Range $.Range] that represents the current selection.
- * 
- * This lets you get the selected text in a textarea like:
- * 
- *     var textarea = $('textarea')
- *       selection = textarea.selection(),
- *       selected = textarea.val().substr(selection.start, selection.end);
- *       
- *     alert('You selected '+selected+'.');
- *     
- * Selection works with all elements.  If you want to get selection information of the document:
- * 
- *     $(document.body).selection();
- *     
- * ## Setting
- * 
- * By providing a start and end offset, you can select text within a given element.
- * 
- *     $('#rte').selection(30, 40)
- * 
- * ## Demo
- * 
- * This demo shows setting the selection in various elements
- * 
- * @demo jquery/dom/selection/selection.html
- * 
- * @param {Number} [start] Start of the range
- * @param {Number} [end] End of the range
- * @return {Object|jQuery} returns the selection information or the jQuery collection for
- * chaining.
+ * @parent jQuery.selection
+ * @function jQuery.fn.selection
+ *
+ * Set or retrieve the currently selected text range. It works on all elements:
+ *
+ *      $('#text').selection(8, 12)
+ *      $('#text').selection() // -> { start : 8, end : 12, width: 4 }
+ *
+ * @param {Number} [start] Start position of the selection range
+ * @param {Number} [end] End position of the selection range
+ * @return {Object|jQuery} Returns either the jQuery object when setting the selection or
+ * an object containing
+ *
+ * - __start__ - The number of characters from the start of the element to the start of the selection.
+ * - __end__ - The number of characters from the start of the element to the end of the selection.
+ * - __width__ - The width of the selection range.
+ *
+ * when no arguments are passed.
  */
 $.fn.selection = function(start, end){
 	if(start !== undefined){
@@ -239,4 +223,5 @@ $.fn.selection = function(start, end){
 // for testing
 $.fn.selection.getCharElement = getCharElement;
 
+return $;
 });

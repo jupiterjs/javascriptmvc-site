@@ -2,7 +2,7 @@
  * @add jQuery.Drag.prototype
  */
 
-steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
+steal('jquery', 'jquery/event/drag', 'jquery/dom/styles', function( $ ) {
 	var round = function( x, m ) {
 		return Math.round(x / m) * m;
 	}
@@ -20,7 +20,12 @@ steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
 	 * 
 	 * @demo jquery/event/drag/step/step.html
 	 * 
-	 * @param {number|Object} amount make the drag move X amount in pixels from the top-left of container.
+	 * @param {number|Object} amount make the drag move the amount in pixels from the top-left of container.
+	 * 
+	 * If the amount is a `number`, the drag will move step-wise that number pixels in both 
+	 * dimensions.  If it's an object like `{x: 20, y: 10}` the drag will move in steps 20px from
+	 * left to right and 10px up and down.
+	 * 
 	 * @param {jQuery} [container] the container to move in reference to.  If not provided, the document is used.
 	 * @param {String} [center] Indicates how to position the drag element in relationship to the container.
 	 * 
@@ -43,7 +48,7 @@ steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
 		container = container || $(document.body);
 		this._step = amount;
 
-		var styles = container.curStyles("borderTopWidth", "paddingTop", "borderLeftWidth", "paddingLeft");
+		var styles = container.styles("borderTopWidth", "paddingTop", "borderLeftWidth", "paddingLeft");
 		var top = parseInt(styles.borderTopWidth) + parseInt(styles.paddingTop),
 			left = parseInt(styles.borderLeftWidth) + parseInt(styles.paddingLeft);
 
@@ -52,26 +57,28 @@ steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
 		return this;
 	};
 
+	(function() {
+		var oldPosition = $.Drag.prototype.position;
+		$.Drag.prototype.position = function( offsetPositionv ) {
+			//adjust required_css_position accordingly
+			if ( this._step ) {
+				var step = this._step,
+					center = step.center && step.center.toLowerCase(),
+					movingSize = this.movingElement.dimensionsv('outer'),
+					lot = step.offset.top()- (center && center != 'x' ? movingSize.height() / 2 : 0),
+					lof = step.offset.left() - (center && center != 'y' ? movingSize.width() / 2 : 0);
 
-	var oldPosition = $.Drag.prototype.position;
-	$.Drag.prototype.position = function( offsetPositionv ) {
-		//adjust required_css_position accordingly
-		if ( this._step ) {
-			var step = this._step,
-				center = step.center && step.center.toLowerCase(),
-				movingSize = this.movingElement.dimensionsv('outer'),
-				lot = step.offset.top()- (center && center != 'x' ? movingSize.height() / 2 : 0),
-				lof = step.offset.left() - (center && center != 'y' ? movingSize.width() / 2 : 0);
+				if ( this._step.x ) {
+					offsetPositionv.left(Math.round(lof + round(offsetPositionv.left() - lof, this._step.x)))
+				}
+				if ( this._step.y ) {
+					offsetPositionv.top(Math.round(lot + round(offsetPositionv.top() - lot, this._step.y)))
+				}
+			}
 
-			if ( this._step.x ) {
-				offsetPositionv.left(Math.round(lof + round(offsetPositionv.left() - lof, this._step.x)))
-			}
-			if ( this._step.y ) {
-				offsetPositionv.top(Math.round(lot + round(offsetPositionv.top() - lot, this._step.y)))
-			}
+			oldPosition.call(this, offsetPositionv)
 		}
+	})();
 
-		oldPosition.call(this, offsetPositionv)
-	}
-
+	return $;
 })

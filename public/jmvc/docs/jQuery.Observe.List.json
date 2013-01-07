@@ -1,1 +1,0 @@
-c({"name": "jQuery.Observe.List", "type": "class", "comment": "<p>An observable list.  You can listen to when items are push, popped,\nspliced, shifted, and unshifted on this array.</p>", "inherits": "jQuery.Observe", "parents": ["jQuery.Observe"], "src": "jquery/lang/observe/observe.js", "line": 603, "children": ["jQuery.Observe.List.prototype"]})

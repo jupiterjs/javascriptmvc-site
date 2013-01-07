@@ -1,1 +1,0 @@
-c({"name": "Mxui.Form.Combobox.static.filterEnabled", "type": "attribute", "parents": ["Mxui.Form.Combobox.static"], "comment": "<p>maxHeight: 320,</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 86, "children": []})

@@ -8,14 +8,55 @@ var orderedParams = function( params ) {
 
 DocumentationHelpers = {
 	previousIndent: 0,
+	display: function( previous,  current, hasStaticOrPrototype){
+		var title = current.title ? current.title: current.name,
+			splitter = /([\.\/])/g,
+			currentParts = title.split(splitter),
+			previousParts = previous.split(splitter),
+			left = [],
+			right=[],
+			part,
+			prev;
+			
+		for ( var j = 0; j < currentParts.length; j++ ) {
+			part = currentParts[j];
+			if(splitter.test(part)){
+				prev = part;
+			} else if ( currentParts[j] && currentParts[j] == previousParts[j] ) {
+				if(prev){
+					left.push(prev);
+				}
+				prev = undefined
+				left.push(currentParts[j]);
+			} else {
+				//put everything else in right res
+				right = currentParts.slice(j);
+				if(prev && !hasStaticOrPrototype){
+					right.unshift(prev)
+				}
+				break;
+			}
+		}
+		console.log(title, left,right)
+		return {
+			padding: ( hasStaticOrPrototype ? (Math.floor(left.length/2) * 20) : 20 ) + "px",
+			left: left.join(""),
+			right: right.join(""),
+			href: current.type == 'prototype' || current.type == 'static' ? 
+				'javascript://' : can.route.url({who: this.normalizeName( current.name ) }),
+			title: title 
+		}
+	},
 	calculateDisplay: function( previous, current ) {
 
-		var t = current.split(/\./)
-		var p = previous.split(/\./);
-		var left_res = [],
-			right_res = []
+		var t = current.split(/\./),
+			p = previous.split(/\./),
+			left_res = [],
+			right_res = [];
+			
 			for ( var j = 0; j < t.length; j++ ) {
-				if ( p[j] && p[j] == t[j] ) left_res.push(t[j])
+				if ( p[j] && p[j] == t[j] ) 
+					left_res.push(t[j])
 				else {
 					//put everything else in right res
 					right_res = t.slice(j);
@@ -28,6 +69,7 @@ DocumentationHelpers = {
 			}
 
 			if ( this.indentAdjust === undefined ) this.indentAdjust = !! (left_res.length) ? 0 : 1;
+		
 		var newIndent = left_res.length < 2 ? left_res.length + this.indentAdjust : left_res.length;
 
 		return {
@@ -58,7 +100,7 @@ DocumentationHelpers = {
 		if ( stat != -1 ) {
 			name = name.substring(0, stat) + "." + name.substring(stat + 8);
 		} else if ( prto != -1 ) {
-			name = jQuery.String.underscore(name.substring(0, prto).replace("$.", "")) + "." + name.substring(prto + 11);
+			name = can.underscore(name.substring(0, prto).replace("$.", "")) + "." + name.substring(prto + 11);
 		}
 
 		if (this._data.construct) {
@@ -76,37 +118,41 @@ DocumentationHelpers = {
 		return content.replace(/\[\s*((?:['"][^"']*["'])|[^\|\]\s]*)\s*\|?\s*([^\]]*)\s*\]/g, function( match, first, n ) {
 			//need to get last
 			//need to remove trailing whitespace
+			
 			if (/^["']/.test(first) ) {
 				first = first.substr(1, first.length - 2)
 			}
 			if ( /^\/\//.test(first) ) {
-				first = steal.root.join(first.substr(2))
-			}
-			var url = Doc.findOne({name: first}) || null;
-			if(!url){
-				//try again ...
-				// might start w/ jQuery
-				var convert = first;
-				if(first.indexOf('$.') == 0){
-					convert = "jQuery."+convert.substr(2);
-					url = Doc.findOne({name: convert}) || null;
-				}
-				if(!url && first.indexOf('::')){
-					url = Doc.findOne({name: convert.replace('::',".prototype.")}) || null;
-				}
+				var url = steal.config().root.join(first.substr(2)).path
+				return  "<a href='"+url+"'>"+(n || first.substr(2))+"</a>"
+			} else {
+				var url = Doc.findOne({name: first}) || null;
 				if(!url){
-					var parts = convert.split('.')
-					parts.splice(parts.length-1,0,"static");
-					url = Doc.findOne({name: parts.join('.')}) || null;
+					//try again ...
+					// might start w/ jQuery
+					var convert = first;
+					if(first.indexOf('$.') == 0){
+						convert = "jQuery."+convert.substr(2);
+						url = Doc.findOne({name: convert}) || null;
+					}
+					if(!url &&  first.indexOf('::') > 0){
+						url = Doc.findOne({name: convert.replace('::',".prototype.")}) || null;
+					}
+					if(!url){
+						var parts = convert.split('.')
+						parts.splice(parts.length-1,0,"static");
+						url = Doc.findOne({name: parts.join('.')}) || null;
+					}
 				}
 			}
+			
 			
 			
 			if ( url ) {
 				if (!n ) {
 					n = dontReplace ? first : first.replace(/\\.static/, "")
 				}
-				return  "<a href='" +$.route.url({who:  url.name }) + "'>" + n + "</a>"
+				return  "<a href='" +can.route.url({who:  url.name }) + "'>" + n + "</a>"
 			} else if ( typeof first == 'string' && first.match(/^https?|www\.|#/) ) {
 				return "<a href='" + first + "'>" + (n || first) + "</a>"
 			}
@@ -120,7 +166,8 @@ DocumentationHelpers = {
 		return url = parts[2] ? parts[2] : url;
 	},
 	source : function(comment){
-		var matches = comment.src.match(/([^\/]+)\/(.+)/);
+		var path = comment.src.path || comment.src,
+			matches = path.match(/([^\/]+)\/(.+)/);
 		return DOCS_SRC_MAP[matches[1]]+"/blob/master/"+matches[2]+"#L"+comment.line
 	}
 }

@@ -1,1 +1,0 @@
-c({"name": "Mxui.Form.Combobox.static.pos", "type": "attribute", "parents": ["Mxui.Form.Combobox.static"], "comment": "<p>We have to make sure autocomplete hightlight\nis case insensitive and only highligts words\nstarting from the first character.</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 67, "children": []})

@@ -1,4 +1,5 @@
-(function($){
+steal('jquery', './core.js', 'funcunit/syn', function($, FuncUnit, Syn) {
+	window.Syn = Syn;
 	/**
 	 * @add FuncUnit
 	 */
@@ -62,13 +63,12 @@
 					success = options;
 					options = {};
 				}
-				var selector = this.selector, 
-					context = this.context;
+				var selector = this.selector;
 				FuncUnit.add({
 					method: function(success, error){
 						options = options || {}
 						steal.dev.log("Clicking " + selector)
-						this.bind.triggerSyn("_" + name, options, success);
+						Syn("_" + name, options, this.bind[0],success);
 					},
 					success: success,
 					error: "Could not " + name + " '" + this.selector+"'",
@@ -123,16 +123,18 @@
 		 */
 		type: function( text, success ) {
 			this._addExists();
-			var selector = this.selector, 
-				context = this.context;
+			// when you type in something you have to click on it first
+			this.click();
+			var selector = this.selector;
 			// type("") is a shortcut for clearing out a text input
 			if(text === ""){
 				text = "[ctrl]a[ctrl-up]\b"
 			}
 			FuncUnit.add({
 				method : function(success, error){
-					steal.dev.log("Typing "+text+" on "+selector)
-					this.bind.triggerSyn("_type", text, success);
+					steal.dev.log("Typing "+text+" on "+selector);
+					Syn("_type", text, this.bind[0], success);
+					
 				},
 				success : success,
 				error : "Could not type " + text + " into " + this.selector,
@@ -198,12 +200,11 @@
 			}
 			options.from = this.selector;
 	
-			var selector = this.selector, 
-				context = this.context;
+			var selector = this.selector;
 			FuncUnit.add({
 				method: function(success, error){
-					steal.dev.log("dragging " + selector)
-					this.bind.triggerSyn("_drag", options, success);
+					steal.dev.log("dragging " + selector);
+					Syn("_drag", options, this.bind[0],success);
 				},
 				success: success,
 				error: "Could not drag " + this.selector,
@@ -254,12 +255,11 @@
 			}
 			options.from = this.selector;
 	
-			var selector = this.selector, 
-				context = this.context;
+			var selector = this.selector;
 			FuncUnit.add({
 				method: function(success, error){
-					steal.dev.log("moving " + selector)
-					this.bind.triggerSyn("_move", options, success);
+					steal.dev.log("moving " + selector);
+					Syn("_move", options, this.bind[0], success);
 				},
 				success: success,
 				error: "Could not move " + this.selector,
@@ -276,8 +276,7 @@
 		 */
 		scroll: function( direction, amount, success ) {
 			this._addExists();
-			var selector = this.selector, 
-				context = this.context,
+			var selector = this.selector,
 				direction;
 			if (direction == "left" || direction == "right") {
 				direction = "Left";
@@ -300,4 +299,5 @@
 			return this;
 		}
 	})
-})(window.jQuery || window.FuncUnit.jQuery)
+	return FuncUnit;
+});

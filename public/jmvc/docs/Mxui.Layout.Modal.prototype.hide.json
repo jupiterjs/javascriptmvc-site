@@ -1,1 +1,0 @@
-c({"name": "Mxui.Layout.Modal.prototype.hide", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["Mxui.Layout.Modal.prototype"], "comment": "<p>Hide modal element and overlay if overlay exists</p>", "src": "mxui/layout/modal/modal.js", "line": 169, "children": []})

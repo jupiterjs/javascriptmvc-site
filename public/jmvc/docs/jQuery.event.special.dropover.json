@@ -1,1 +1,0 @@
-c({"name": "jQuery.event.special.dropover", "type": "attribute", "parents": ["jQuery.event.special"], "comment": "<p>Called when a drag is first moved over this drop element.</p>\n\n<p>Drop events are covered in more detail in [jQuery.Drop].</p>", "src": "jquery/event/drop/drop.js", "line": 8, "children": []})

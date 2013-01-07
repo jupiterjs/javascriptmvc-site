@@ -1,4 +1,4 @@
-steal("jquery/model/list",'funcunit/qunit', 'jquery/dom/fixture', function(){
+steal("jquery/model/list",'funcunit/qunit', 'can/util/fixture', function(){
 	 
 module("jquery/model/list", {
 	setup: function() {
@@ -28,8 +28,8 @@ test("hookup with list", function(){
 		p.hookup( child[0] );
 		div.append(child)
 	}
-	var models = div.children().models();
-	ok(models.Class === Person.List, "correct type");
+	var models = div.children().instances();
+	ok(models.constructor === Person.List, "correct type");
 	equals(models.length, 20,  "Got 20 people")
 
 
@@ -80,8 +80,8 @@ test("destroy a list", function(){
 	
 	people.destroy(function(deleted){
 		ok(true, "destroy callback called");
-		ok(people.length, 0, "objects removed");
-		ok(deleted.length, 2, "got back deleted items")
+		equals(people.length, 0, "objects removed");
+		equals(deleted.length, 2, "got back deleted items")
 		start()
 		// make sure the list is empty
 		
@@ -133,7 +133,7 @@ test("update a list", function(){
 	people.update(updateWith,function(updated){
 		ok(true, "updated callback called");
 		ok(updated.length, 2, "got back deleted items");
-		same(updated[0].attrs(),$.extend({id : 1},newProps, updateWith ));
+		same(updated[0].attr(),$.extend({id : 1},newProps, updateWith ));
 		start();
 	});
 })
@@ -159,26 +159,28 @@ test("update a list with nothing in it", function(){
 	});
 })
 
-test("events - add", 4, function(){
+test("events - add", 3, function(){
 	var list = new Person.List;
 	list.bind("add", function(ev, items){
 		ok(1, "add called");
 		equals(items.length, 1, "we get an array")
 	});
-	
-	var person = new Person({id: 1, name: "alex"});
-	
-	
+
+	var person = new Person({id: 111, name: "alex"});
 	list.push(person);
-	
+
 	// check that we are listening to updates on person ...
-	
-	ok( $(person).data("events"), "person has events" );
-	
-	list.unbind("add");
-	
-	ok( !$(person).data("events"), "person has no events" );
-	
+
+	// events are hooked internally now
+	// ok( $(person).data("events"), "person has events" );
+	ok(jQuery._data(person, 'events'), "person has events" );
+
+	list.pop()
+
+	// events are hooked internally now
+	// ok( !$(person).data("events"), "person has no events" );
+	// `changed` ok( !jQuery._data(person, 'events'), "person has no events" );
+
 });
 
 test("events - update", function(){

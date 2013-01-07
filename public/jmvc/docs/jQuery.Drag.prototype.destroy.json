@@ -1,1 +1,0 @@
-c({"name": "jQuery.Drag.prototype.destroy", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Drag.prototype"], "comment": "<p>Unbinds listeners and allows other drags ...</p>", "hide": true, "src": "jquery/event/drag/drag.js", "line": 159, "children": []})

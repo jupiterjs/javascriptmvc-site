@@ -1,1 +1,0 @@
-c({"name": "Mxui.Form.Combobox.static.emptyItemsText", "type": "attribute", "parents": ["Mxui.Form.Combobox.static"], "comment": "<p>Text that displays when no items are in a combo box's drop down.</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 100, "children": []})

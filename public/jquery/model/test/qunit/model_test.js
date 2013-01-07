@@ -1,21 +1,22 @@
-module("jquery/model", { 
+steal('can/util', 'jquery', 'jquery/model', function(can, $) {
+module("jquery/model", {
 	setup: function() {
         var ids = 0;
 	    $.Model("Person",{
-			findAll: function( params, success, error ) {
-				success("findAll");
+			findAll: function( params) {
+				return $.Deferred().resolve([{name: "foo"}])
 			},
 			findOne: function( params, success, error ) {
-				success("findOne");
+				return $.Deferred().resolve({name: "foo"});
 			},
-			create: function( params, success, error ) {
-				success({zoo: "zed", id: (++ids)},"create");
+			create: function( params) {
+				return $.Deferred( ).resolve({zoo: "zed", id: (++ids)} );
 			},
 			destroy: function( id, success, error ) {
-				success("destroy");
+				return $.Deferred().resolve();
 			},
 			update: function( id, attrs, success, error ) {
-				success({zoo: "monkeys"},"update");
+				return $.Deferred().resolve({zoo: "monkeys"});
 			}
 		},{
 			prettyName: function() {
@@ -29,20 +30,19 @@ module("jquery/model", {
 test("CRUD", function(){
    
 	Person.findAll({}, function(response){
-		equals("findAll", response)
+		equals("foo", response[0].name)
 	})
 	Person.findOne({}, function(response){
-		equals("findOne", response)
+		equals("foo", response.name)
 	})
     var person;
-	new Person({foo: "bar"}).save(function(inst, attrs, create){
-		equals(create, "create")
+	new Person({foo: "bar"}).save(function(inst, attrs){
 		equals("bar", inst.foo)
 		equals("zed", inst.zoo)
 		ok(inst.save, "has save function");
 		person = inst;
 	});
-    person.update({zoo: "monkey"},function(inst, attrs, update){
+    person.attr({zoo: "monkey"}).save(function(inst, attrs, update){
 		equals(inst, person, "we get back the same instance");
 		equals(person.zoo, "monkeys", "updated to monkeys zoo!  This tests that you callback with the attrs")
 	})
@@ -54,7 +54,7 @@ test("findAll deferred", function(){
 			return $.ajax({
 				url : "/people",
 				data : params,
-				dataType : "json person.models",
+				dataType : "json",
 				fixture: "//jquery/model/test/people.json"
 			})
 		}
@@ -75,7 +75,7 @@ test("findOne deferred", function(){
 			return $.ajax({
 				url : "/people/5",
 				data : params,
-				dataType : "json person.model",
+				dataType : "json",
 				fixture: "//jquery/model/test/person.json"
 			})
 		}
@@ -99,7 +99,7 @@ test("save deferred", function(){
 				type : 'post',
 				dataType : "json",
 				fixture: function(){
-					return [{id: 5}]
+					return {id: 5}
 				},
 				success : success
 			})
@@ -112,8 +112,8 @@ test("save deferred", function(){
 	stop();
 	personD.then(function(person){
 		start()
+		console.log(person)
 		equals(person.id, 5, "we got an id")
-		
 	});
 	
 });
@@ -128,7 +128,7 @@ test("update deferred", function(){
 				type : 'post',
 				dataType : "json",
 				fixture: function(){
-					return [{thing: "er"}]
+					return {thing: "er"}
 				},
 				success : success
 			})
@@ -156,7 +156,7 @@ test("destroy deferred", function(){
 				type : 'post',
 				dataType : "json",
 				fixture: function(){
-					return [{thing: "er"}]
+					return {thing: "er"}
 				},
 				success : success
 			})
@@ -181,7 +181,7 @@ test("hookup and model", function(){
 	p.hookup( div[0] );
 	ok(div.hasClass("person"), "has person");
 	ok(div.hasClass("person_5"), "has person_5");
-	equals(p, div.model(),"gets model" )
+	equals(p, div.instance(),"gets model" )
 })
 // test that models returns an array of unique instances
 test("unique models", function(){
@@ -193,7 +193,7 @@ test("unique models", function(){
 	p.hookup( div1[0] );
 	p.hookup( div2[0] );
 	p2.hookup( div3[0] );
-	var models = div1.add(div2).add(div3).models();
+	var models = div1.add(div2).add(div3).instances();
 	equals(p, models[0], "gets models" )
 	equals(p2, models[1], "gets models" )
 	equals(2, models.length, "gets models" )
@@ -265,7 +265,7 @@ test("error binding", 1, function(){
 	   }
 	})
 	var school = new School();
-	school.bind("error.name", function(ev, error){
+	school.bind("error.name", function(ev, attr, error){
 		equals(error, "no name", "error message provided")
 	})
 	school.attr("name","");
@@ -277,10 +277,10 @@ test("auto methods",function(){
 	//turn off fixtures
 	$.fixture.on = false;
 	var School = $.Model.extend("Jquery.Model.Models.School",{
-	   findAll : steal.root.join("jquery/model/test")+"/{type}.json",
-	   findOne : steal.root.join("jquery/model/test")+"/{id}.json",
-	   create : steal.root.join("jquery/model/test")+"/create.json",
-	   update : "POST "+steal.root.join("jquery/model/test")+"/update{id}.json"
+	   findAll : steal.config().root.join("jquery/model/test")+"/{type}.json",
+	   findOne : steal.config().root.join("jquery/model/test")+"/{id}.json",
+		create : "GET " + steal.config().root.join("can/model/test")+"/create.json",
+		update : "GET "+steal.config().root.join("can/model/test")+"/update{id}.json"
 	},{})
 	stop();
 	School.findAll({type:"schools"}, function(schools){
@@ -292,11 +292,11 @@ test("auto methods",function(){
 			equals(school.constructor.shortName,"School","a single school");
 			
 			
-			new School({name: "Highland"}).save(function(){
-				equals(this.name,"Highland","create gets the right name")
-				this.update({name: "LHS"}, function(){
+			new School({name: "Highland"}).save(function(school){
+				equals(school.name,"Highland","create gets the right name")
+				school.attr({name: "LHS"}).save(function(school){
 					start();
-					equals(this.name,"LHS","create gets the right name")
+					equals(school.name,"LHS","create gets the right name")
 					
 					$.fixture.on = true;
 				})
@@ -318,7 +318,7 @@ test("isNew", function(){
 test("findAll string", function(){
 	$.fixture.on = false;
 	$.Model("Test.Thing",{
-		findAll : steal.root.join("jquery/model/test/qunit/findAll.json")+''
+		findAll : steal.config().root.join("jquery/model/test/qunit/findAll.json")+''
 	},{});
 	stop();
 	Test.Thing.findAll({},function(things){
@@ -327,32 +327,19 @@ test("findAll string", function(){
 		start();
 		$.fixture.on = true;
 	})
-})
-test("Empty uses fixtures", function(){
-	$.Model("Test.Things");
-	$.fixture.make("thing", 10, function(i){
-		return {
-			id: i
-		}
-	});
-	stop();
-	Test.Thing.findAll({}, function(things){
-		start();
-		equals(things.length, 10,"got 10 things")
-	})
 });
 
 test("Model events" , function(){
 	var order = 0;
 	$.Model("Test.Event",{
-		create : function(attrs, success){
-			success({id: 1})
+		create : function(attrs){
+			return $.Deferred().resolve({id: 1})
 		},
 		update : function(id, attrs, success){
-			success(attrs)
+			return $.Deferred().resolve(attrs)
 		},
 		destroy : function(id, success){
-			success()
+			return $.Deferred().resolve()
 		}
 	},{});
 	
@@ -362,7 +349,7 @@ test("Model events" , function(){
 		ok(this === Test.Event, "got model")
 		ok(passedItem === item, "got instance")
 		equals(++order, 1, "order");
-		passedItem.update({});
+		passedItem.attr({}).save();
 		
 	}).bind('updated', function(ev, passedItem){
 		equals(++order, 2, "order");
@@ -452,7 +439,7 @@ test("removeAttr test", function(){
 	person.removeAttr('foo')
 	
 	equals(person.foo, undefined, "property removed");
-	var attrs = person.attrs()
+	var attrs = person.attr()
 	equals(attrs.foo, undefined, "attrs removed");
 });
 
@@ -472,13 +459,13 @@ test("save error args", function(){
 	})
 	var st = '{type: "unauthorized"}';
 	
-	$.fixture("/testinmodelsfoos.json", function(){
-		return [401,st]
+	$.fixture("/testinmodelsfoos.json", function(headers, respond) {
+		respond(401,st);
 	});
 	stop();
-	var inst = new Foo({}).save(function(){
+	var inst = new Foo({}).save().done(function(){
 		ok(false, "success should not be called")
-	}, function(jQXHR){
+	}).fail(function(jQXHR){
 		ok(true, "error called")
 		ok(jQXHR.getResponseHeader,"jQXHR object")
 		start()
@@ -498,7 +485,7 @@ test("hookup and elements", function(){
 	
 	var esc = new Escaper({id: " some crazy #/ %ing stuff"});
 	
-	li.model(esc);
+	li.instance(esc);
 	
 	var res  = esc.elements(ul);
 	
@@ -586,6 +573,4 @@ test("object definitions", function(){
 		start();
 	})
 })
-
-
-
+})

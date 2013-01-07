@@ -1,1 +1,0 @@
-c({"name": "types", "type": "attribute", "comment": "<p>A list of other types we want to mixin to each menu</p>", "src": "mxui/nav/menuable/menuable.js", "line": 26, "children": []})

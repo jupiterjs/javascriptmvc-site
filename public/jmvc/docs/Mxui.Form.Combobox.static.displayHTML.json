@@ -1,1 +1,0 @@
-c({"name": "Mxui.Form.Combobox.static.displayHTML", "type": "attribute", "parents": ["Mxui.Form.Combobox.static"], "comment": "<p>Values to select aren't text but html.  This changes from an input to a \n'viewbox' element.</p>", "hide": true, "src": "mxui/form/combobox/combobox.js", "line": 89, "children": []})

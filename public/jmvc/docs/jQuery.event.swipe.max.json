@@ -1,1 +1,0 @@
-c({"name": "jQuery.event.swipe.max", "type": "attribute", "parents": ["jQuery.event.swipe"], "comment": "<p>The maximum distance the pointer must travel in pixels.  The default is 75 pixels.</p>", "src": "jquery/event/swipe/swipe.js", "line": 37, "children": []})

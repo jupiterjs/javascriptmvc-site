@@ -1,1 +1,0 @@
-c({"name": "Mxui.Nav.Menu.child_class_names", "type": "attribute", "parents": ["Mxui.Nav.Menu"], "comment": "<p>Class names to provide each menu button</p>", "src": "mxui/nav/menu/menu.js", "line": 39, "children": []})

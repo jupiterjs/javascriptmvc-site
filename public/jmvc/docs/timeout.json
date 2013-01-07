@@ -1,1 +1,0 @@
-c({"name": "timeout", "type": "attribute", "comment": "<p>A global timeout value for wait commands.  Defaults to 10 seconds.</p>", "src": "funcunit/browser/queue.js", "line": 13, "children": []})

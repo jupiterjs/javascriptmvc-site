@@ -1,1 +1,0 @@
-c({"name": "jQuery.Vector.prototype.update", "params": {"array": {"description": "", "type": "Object", "optional": false, "order": 0, "name": "array"}}, "ret": {"type": "undefined", "description": ""}, "type": "function", "parents": ["jQuery.Vector.prototype"], "comment": "<p>Replaces the vectors contents</p>", "src": "jquery/lang/vector/vector.js", "line": 116, "children": []})

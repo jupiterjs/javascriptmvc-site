@@ -1,1 +1,0 @@
-c({"name": "sub", "type": "attribute", "comment": "<p>Gets the sub element from the href, or just the order of things.</p>", "params": {"el": {"order": 0, "description": "", "name": "el", "type": "Object", "optional": false}}, "src": "mxui/nav/tabs/tabs.js", "line": 35, "children": []})

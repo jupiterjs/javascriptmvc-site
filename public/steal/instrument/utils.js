@@ -34,17 +34,26 @@ steal.instrument.utils = {
 				} )( data );
 	},
 	// true if the path starts the same as something in the ignores array
-	shouldIgnore: function(file){
+	shouldIgnore: function(options){
 		var ignoreRegex,
-			ignore;
-		for(var i=0; i<steal.instrument.ignores.length; i++){
-			ignore = steal.instrument.ignores[i];
-			ignore = ignore.replace("*", ".*")
-			ignoreRegex = new RegExp("^"+ignore);
-			if(ignoreRegex.test(file)){
-				return true;
+			ignore,
+			file = (typeof options.src === "string"? steal.URI(options.src): options.src),
+			fileName = file.path;
+		if(steal.instrument.ignores){
+			for(var i=0; i<steal.instrument.ignores.length; i++){
+				ignore = steal.instrument.ignores[i];
+				// if a string ends in .js and doesn't have a /, assume its a file name and add the asterisk
+				if(/\.js$/.test(ignore) && !/\//.test(ignore) && !/\*/.test(ignore)){
+					ignore = "*"+ignore;
+				}
+				ignore = ignore.replace("*", ".*");
+				ignoreRegex = new RegExp("^"+ignore);
+				if(ignoreRegex.test(options.id+"")){
+					return true;
+				}
 			}
 		}
+		
 		return false;
 	},
 	cache: {
@@ -80,6 +89,9 @@ steal.instrument.utils = {
 		}
 	},
 	parentWin: function(){
+		if(steal.isRhino){
+			return;
+		}
 		var win = window;
 		if(top !== window){
 			win = top;

@@ -1,1 +1,0 @@
-c({"name": "jQuery.Vector.prototype.left", "type": "attribute", "parents": ["jQuery.Vector.prototype"], "comment": "<p>same as x()</p>", "ret": {"description": "", "type": "Number"}, "src": "jquery/lang/vector/vector.js", "line": 84, "children": []})

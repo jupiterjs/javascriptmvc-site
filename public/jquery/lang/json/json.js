@@ -15,7 +15,7 @@
  */
 //
 
- steal('jquery',function($){
+ steal('jquery', function($) {
     /**
      * @page jQuery.toJSON jQuery.toJSON
      * @parent jquerymx.lang
@@ -209,4 +209,6 @@
         '"' : '\\"',
         '\\': '\\\\'
     };
+
+ return $;
 })

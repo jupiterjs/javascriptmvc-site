@@ -1,5 +1,5 @@
 @page tutorials Tutorials
-@parent index 4
+@parent index 5
 
 @description Tutorials on JavaScriptMVC.
 
@@ -19,10 +19,15 @@ Want to take JMVC for a test-drive?  Start here.
 Build, minify, test, and document a basic recipe application.  This tutorial
 covers the major components of JavaScriptMVC.
 
-### [mvc Get started with jQueryMX]
+### [mvc Get started with CanJS]
 
-A walkthrough of the MVC parts of jQueryMX.  This is a must read if you 
+A walkthrough of the MVC parts of JavaScript MVC.  This is a must read if you 
 want to understand how they work together.
+
+### [tutorials.jquerypp Get started with jQuery++]
+
+jQuery++ is a collection of useful jQuery libraries that provide the missing 
+functionality necessary to implement and organize large-scale jQuery applications.
 
 ### [tutorials.steal Get Started With StealJS] (in-progress)
 
@@ -52,3 +57,7 @@ This guide details suggests a service layer design that minimizes the amount of 
 ### [migrate Migrating from 3.0 and 3.1]
 
 This guide outlines the things you have to look at when upgrading from version 3.0 or 3.1.
+
+### [done Migrating from 3.2 to 3.3]
+
+This guide outlines the API changes for moving a project from version 3.2.

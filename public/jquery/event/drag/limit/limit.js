@@ -2,7 +2,7 @@
  * @add jQuery.Drag.prototype
  */
 
-steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
+steal('jquery', 'jquery/event/drag', 'jquery/dom/styles', function( $ ) {
 
 
 	$.Drag.prototype
@@ -10,15 +10,24 @@ steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
 	 * @function limit
 	 * @plugin jquery/event/drag/limit
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/event/event/drag/limit/limit.js
-	 * limits the drag to a containing element
-	 * @param {jQuery} container
-	 * @param {Object} [center] can set the limit to the center of the object.  Can be 
-	 *   'x', 'y' or 'both'
-	 * @return {$.Drag}
+	 * `drag.limit(container, [center])` limits a drag to a containing element.
+	 * 
+	 *     $("#todos").on(".todo","draginit", function( ev, drag ) {
+	 *       drag.limit($("#todos").parent())
+	 *     })
+	 * 
+	 * @param {jQuery} container the jQuery-wrapped container element you do not want the drag element to escape.
+	 * @param {String} [center] can set the limit to the center of the object.  Can be 
+	 *   'x', 'y' or 'both'.  By default it will keep the outer edges of the moving element within the
+	 * container element.  If you provide x, it will keep the horizontal center of the moving element
+	 * within the container element.  If you provide y, it will keep the vertical center of the moving
+	 * element within the container element.  If you provide both, it will keep the center of the 
+	 * moving element within the containing element.
+	 * @return {drag} returns the drag for chaining.
 	 */
 	.limit = function( container, center ) {
 		//on draws ... make sure this happens
-		var styles = container.curStyles('borderTopWidth', 'paddingTop', 'borderLeftWidth', 'paddingLeft'),
+		var styles = container.styles('borderTopWidth', 'paddingTop', 'borderLeftWidth', 'paddingLeft'),
 			paddingBorder = new $.Vector(
 			parseInt(styles.borderLeftWidth, 10) + parseInt(styles.paddingLeft, 10) || 0, parseInt(styles.borderTopWidth, 10) + parseInt(styles.paddingTop, 10) || 0);
 
@@ -66,4 +75,5 @@ steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
 		oldPosition.call(this, offsetPositionv);
 	};
 
+	return $;
 });

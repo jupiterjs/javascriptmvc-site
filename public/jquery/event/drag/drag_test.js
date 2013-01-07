@@ -1,7 +1,5 @@
-steal("jquery/event/drop",
-	'funcunit/qunit',
-	'funcunit/syn')
-	.then("jquery/event/drop/drop_test.js",function(){
+steal("jquery/event/drop", 'funcunit/qunit', 'funcunit/syn', "jquery/event/drop/drop_test.js",
+function($, QUnit, Syn) {
 
 module("jquery/event/drag",{
 	makePoints : function(){
@@ -62,6 +60,10 @@ test("dragging an element", function(){
 		.live("dragout", function(){
 			drags.dragout = true;
 		})
+		.live("dragcleanup", function() {
+			drags.dragcleanup = true;
+		})
+
 	$('#drop')
 		.live("dropinit", function(){ 
 			drops.dropinit = true;
@@ -89,6 +91,7 @@ test("dragging an element", function(){
 		ok(drags.draginit, "draginit fired correctly")
 		ok(drags.dragmove, "dragmove fired correctly")
 		ok(drags.dragend, 	"dragend fired correctly")
+		ok(drags.dragcleanup, "dragcleanup fired correctly")
 		ok(!drags.dragover,"dragover not fired yet")
 		ok(!drags.dragout, "dragout not fired yet")
 		//console.log(drags, drags.dragout)
@@ -104,16 +107,46 @@ test("dragging an element", function(){
 		ok(drops.dropmove, "dropmove fired correctly")
 		ok(drops.dropon,	"dropon fired correctly")
 	}).drag({to: "#midpoint"}, function(){
-		ok(drags.dragout, 	"dragout fired correctly")
+		ok(drags.dragout, "dragout fired correctly")
+		ok(drags.dragcleanup, "dragcleanup fired correctly")
 	
 		ok(drops.dropout, 	"dropout fired correctly")
 		//div.remove();
 		start();
 	})
-	
+})
 
+test("move event", function(){
+	var div = $("<div>"+
+			"<div id='drag-move'></div>"+
+			"<div id='move-to'></div>"+
+		"</div>"),
+		moved = false,
+		draginit = false;
+	$("#qunit-test-area").html(div);
+	var basicCss = {
+		width: "20px",
+		height: "20px",
+		position: "absolute",
+		border: "solid 1px black"
+	}
+	$("#drag-move").css(basicCss).css({top: "0px", left: "0px", zIndex: 1000, backgroundColor: "red"})
+	$("#move-to").css(basicCss).css({top: "0px", left: "100px"})
 
-	
+	stop();
+	$('#drag-move').on({
+		'draginit' : function() {
+			draginit = true;
+		},
+		'move' : function() {
+			moved = true;
+		}
+	});
+
+	Syn.drag({to: "#move-to"},"drag-move", function(){
+		ok(moved, 'Move event fired');
+		start();
+	});
 })
 
 test("drag position", function(){
@@ -131,8 +164,8 @@ test("drag position", function(){
 	
 	Syn.drag("+20 +20","drag", function(){
 		var offset2 = $('#drag').offset();
-		equals(offset.top+20, offset2.top, "top")
-		equals(offset.left+20, offset2.left, "left")
+		equals(offset.top+20, Math.ceil(offset2.top), "top")
+		equals(offset.left+20, Math.ceil(offset2.left), "left")
 		start();
 	})
 });
@@ -178,13 +211,13 @@ test("dragdown" , function(){
 	stop();
 	Syn.drag("+20 +20","draginp", function(){
 		var offset2 = $('#dragger').offset();
-		equals(offset.top, offset2.top, "top")
-		equals(offset.left, offset2.left, "left")
+		equals(offset.top, Math.ceil(offset2.top), "top")
+		equals(offset.left, Math.ceil(offset2.left), "left")
 		
 	}).drag("+20 +20","dragnoprevent", function(){
 		var offset2 = $('#dragger').offset();
-		equals(offset.top+20, offset2.top, "top")
-		equals(offset.left+20, offset2.left, "left")
+		equals(offset.top+20, Math.ceil(offset2.top), "top")
+		equals(offset.left+20, Math.ceil(offset2.left), "left")
 		// IE doesn't respect preventDefault on text inputs (http://www.quirksmode.org/dom/events/click.html)
 		if(!$.browser.msie)
 			ok(draginpfocused, "First input was allowed to be focused correctly");

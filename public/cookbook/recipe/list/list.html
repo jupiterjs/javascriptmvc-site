@@ -1,26 +1,29 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-            "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 	<head>
-		<title>Cookbook.Recipe.List Demo</title>
+		<title>cookbook/recipe/list Demo</title>
         <style type='text/css'>
             body {font-family: verdana}
         </style>
 	</head>
 	<body>
-	    <h1>Cookbook.Recipe.List Demo</h1>
+	    <h1>cookbook/recipe/list Demo</h1>
 		<ul id='recipes'></ul>
 		<a href='javascript://' id='create'>Create Recipe</a>
 		<script type='text/javascript' 
                 src='../../../steal/steal.js'>
         </script>
 		<script type='text/javascript'>
-			steal('cookbook/recipe/list','cookbook/fixtures',function(){
+			steal(
+				'cookbook/recipe/list', 
+				'cookbook/models/recipe.js',
+          		'cookbook/models/fixtures',
+          		function(RecipeList, Recipe){
 				
-				$('#recipes').cookbook_recipe_list();
+				new RecipeList('#recipes');
 				
 				$('#create').click(function(){
-					new Cookbook.Models.Recipe({
+					new Recipe({
 						name: "Grilled Cheese",
 						description: "Bread and Cheese"
 					}).save();

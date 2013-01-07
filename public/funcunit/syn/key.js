@@ -1,4 +1,4 @@
-(function(){
+steal('./synthetic','./browsers.js',function(Syn) {
 	var h = Syn.helpers,
 		S = Syn,
 
@@ -82,7 +82,6 @@
 
 
 		};
-
 	/**
 	 * @add Syn static
 	 */
@@ -493,6 +492,10 @@
 
 				var nodeName = this.nodeName.toLowerCase()
 				// submit a form
+				if (nodeName == 'input' ) {
+					Syn.trigger("change", {}, this);
+				}
+				
 				if (!S.support.keypressSubmits && nodeName == 'input' ) {
 					var form = Syn.closest(this, "form");
 					if ( form ) {
@@ -613,6 +616,9 @@
 				}
 			},
 			'shift': function() {
+				return null;
+			},
+			'ctrl': function() {
 				return null;
 			}
 		}
@@ -922,4 +928,5 @@
 
 		S.support.ready++;
 	})();
-})()
+	
+});

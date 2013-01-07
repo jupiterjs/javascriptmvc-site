@@ -1,1 +1,0 @@
-c({"name": "jQuery.fn.range", "params": {}, "ret": {"type": "undefined", "description": ""}, "type": "function", "comment": "<p>Returns a jQuery.Range for the element selected.</p>\n\n<pre><code>$('#content').range()\n</code></pre>", "parents": ["$.Range"], "src": "jquery/dom/range/range.js", "line": 4, "children": []})
