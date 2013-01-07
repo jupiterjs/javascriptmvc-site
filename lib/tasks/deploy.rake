@@ -97,7 +97,17 @@ namespace :deploy do
 		sh 'git repack'
 	end
 
-	task :prepare => [:build, :jquery, :copy, :commit] do
+	task :cookbook do
+		announce 'Creating cookbook...'
+
+		Dir.chdir('public') do
+			sh 'rm -rf cookbook'
+			sh './js jmvc/generate/app cookbook'
+			sh './js jmvc/generate/scaffold cookbook/models/recipe'
+		end
+	end
+
+	task :prepare => [:build, :jquery, :copy, :cookbook, :commit] do
 		puts
 		puts 'Preparing to deploy...'
 		puts
