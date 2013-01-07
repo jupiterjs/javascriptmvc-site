@@ -131,7 +131,7 @@ namespace :deploy do
 	task :staging => [:prepare] do
 		announce 'Deploying to staging...'
 
-		sh 'git push git@heroku.com:staging-javascriptmvc.git'
+		sh 'git push git@heroku.com:javascriptmvc33.git'
 	end
 
 	task :production => [:prepare] do
