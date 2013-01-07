@@ -103,6 +103,12 @@ namespace :deploy do
 		Dir.chdir('public') do
 			sh 'rm -rf cookbook'
 			sh './js jmvc/generate/app cookbook'
+
+			index = File.read('cookbook/index.html').gsub(/<h1>Welcome.*<\/ul>/m, '')
+			File.open('cookbook/index.html', 'w') do |out|
+				out << index
+			end
+
 			sh './js jmvc/generate/scaffold cookbook/models/recipe'
 		end
 	end
