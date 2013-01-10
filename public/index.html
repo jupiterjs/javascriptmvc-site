@@ -49,7 +49,7 @@
           		<a href="docs.html#!steal.generate">Code Generators</a>
           	</td>
           	<td>
-          		<pre><code class="javascript">.<span class="regexp">/js jquery/g</span>enerate/app myapp</code></pre>
+          		<pre><code class="javascript">.<span class="regexp">/js jmvc/g</span>enerate/app myapp</code></pre>
           	</td>
           </tr>
           <tr>
@@ -57,7 +57,7 @@
           		<a href="docs.html#!stealjs">Dependency Management</a>
           	</td>
           	<td>
-          		<pre><code class="javascript">steal(<span class="string">'jquery/controller'</span>).then(<span class="function"><span class="keyword">function</span><span class="params">($)</span>{</span> ... });</code></pre>
+          		<pre><code class="javascript">steal(<span class="string">'can'</span>,<span class="function"><span class="keyword">function</span><span class="params">( can )</span>{</span> ... });</code></pre>
           	</td>
           </tr>
           <tr class="odd">
@@ -81,7 +81,7 @@
           		<a href="docs.html#!jQuery.View">Client Side Templates</a>
           	</td>
           	<td>
-          		<pre><code class="javascript">$(<span class="string">"#menu"</span>).html(<span class="string">"menu.tmpl"</span>,items);</code></pre>
+          		<pre><code class="javascript">$(<span class="string">"#menu"</span>).html(<span class="string">"menu.mustache"</span>,items);</code></pre>
           	</td>
           </tr>
           <tr>
@@ -89,7 +89,7 @@
           		<a href="docs.html#!jQuery.Controller">jQuery Widget Factory</a>
           	</td>
           	<td>
-          		<pre><code class="javascript">$.Controller(<span class="string">"Tabs"</span>,{ <span class="string">"li click"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span> ... } });</code></pre>
+          		<pre><code class="javascript">Tabs = can.Control({ <span class="string">"li click"</span> : <span class="function"><span class="keyword">function</span><span class="params">(el, ev)</span>{</span> ... } });</code></pre>
           	</td>
           </tr>
           <tr class="odd">
@@ -97,7 +97,7 @@
           		<a href="docs.html#!jQuery.Model">Service/Data Modeling</a>
           	</td>
           	<td>
-          		<pre><code class="javascript">$.Model(<span class="string">"Todo"</span>,{ findAll : <span class="string">"/recipes"</span> }, {});<br />Todo.findAll(<span class="function"><span class="keyword">function</span><span class="params">(todos)</span>{</span> ... });</code></pre>
+          		<pre><code class="javascript">Todo = can.Model({ findAll : <span class="string">"/recipes"</span> }, {});<br />Todo.findAll(<span class="function"><span class="keyword">function</span><span class="params">(todos)</span>{</span> ... });</code></pre>
           	</td>
           </tr>
           <tr>
