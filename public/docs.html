@@ -1,24 +1,23 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-		"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>JavaScriptMVC</title>
-	<link rel="stylesheet" type='text/css' href='documentjs/jmvcdoc/production.css'/>
-	<link rel="shortcut icon" href="documentjs/jmvcdoc/images/favicon.ico"/>
+	<title>DoneJS</title>
+	<link rel="stylesheet" type='text/css' href='../documentjs/jmvcdoc/production.css'/>
+	<link rel="shortcut icon" href="../documentjs/jmvcdoc/images/favicon.ico"/>
 	<script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-2302003-4'],
-	['_trackPageview'],
-	['_trackPageLoadTime']);
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-2302003-4'],
+				['_trackPageview'],
+				['_trackPageLoadTime']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
 
-</script>
+	</script>
 </head>
 <body>
 <div id='documentation'>
@@ -28,26 +27,21 @@
 				<input id='search' type='input' disabled='true'/>
 			</div>
 			<div id='defaults'>
-				<ul id="menu" class="ui-menu">
-					<!--
-					<li class="ui-menu-item">
-						<a class="menuLink" href="#favorites"><span class="menuSpan">Favorites</span></a>
-					</li>
-					-->
-					<li class="ui-menu-item">
-						<a class="menuLink" href="follow.html" title="Follow"><span
-								class="menuSpan red">Follow</span></a>
-					</li>
-					<li class="ui-menu-item">
-						<a class="menuLink" href="contribute.html" title="Contribute"><span class="menuSpan red">Contribute</span></a>
-					</li>
-					<li class="ui-menu-item">
-						<a class="menuLink" href="code.html" title="Code"><span class="menuSpan red">Code</span></a>
-					</li>
-				</ul>
+        <ul id="menu" class="ui-menu">
+          <li class="ui-menu-item">
+            <a class="menuLink" href="http://javascriptmvc.com/#&amp;who=follow" title="Follow"><span class="menuSpan red">Follow</span></a>
+          </li>
+          <li class="ui-menu-item">
+            <a class="menuLink" href="#&amp;who=contribute" title="Contribute"><span class="menuSpan red">Contribute</span></a>
+          </li>
+          <li class="ui-menu-item">
+            <a class="menuLink" href="#&amp;who=code" title="Code"><span class="menuSpan red">Code</span></a>
+          </li>
+        </ul>
 			</div>
-			<div class="logo-text"><a href='http://javascriptmvc.com'><img
-					src='documentjs/jmvcdoc/images/logo80x30.png' class="logo-image"/></a></div>
+      <div class="logo-text">
+        <a href='http://javascriptmvc.com'><img src='../documentjs/jmvcdoc/images/logo80x30.png' class="logo-image"></a>
+      </div>
 		</div>
 	</div>
 	<div id='bottom'>
@@ -63,31 +57,31 @@
 	</div>
 </div>
 <div id='low'>
-  <a href="http://bitovi.com">&copy; Bitovi - JavaScriptMVC Training and Support</a>
-	<a class="api_links" href="http://javascriptmvc.com/docs/api.html#&who=api"></a>
+	<a href="http://bitovi.com">&copy; Bitovi - JavaScript Training and Support</a>
+	<a class="api_links" href="http://bitovi.com/docs/api.html#&who=api"></a>
 </div>
 <script type='text/javascript'>
-DOCS_SRC_MAP = {
-		'funcunit' : 'https://github.com/bitovi/funcunit',
+	DOCS_SRC_MAP = {
+		'funcunit' : 'https://github.com/jupiterjs/funcunit',
 		'jquery' : 'https://github.com/jupiterjs/jquerymx',
-		'steal' : 'https://github.com/bitovi/steal',
-		'documentjs' : 'https://github.com/bitovi/documentjs'
-};
-
-	DOCS_LOCATION = "site/docs/" //adds searchData to this
-	JMVCDOC_TIMESTAMP = 1354216770634
+		'steal' : 'https://github.com/jupiterjs/steal',
+		'documentjs' : 'https://github.com/jupiterjs/documentjs',
+		mxui : 'https://github.com/jupiterjs/mxui'
+	};
+	DOCS_LOCATION = "docs/" //adds searchData to this
+	JMVCDOC_TIMESTAMP = 1358230390655;
 	COMMENTS_LOCATION = 'http://jmvcs3.disqus.com/embed.js';
 	steal = {
 		loaded: ['documentjs/jmvcdoc/production.css']
 	}
 </script>
 <script type='text/javascript'
-	src='steal/steal.production.js?documentjs/jmvcdoc'>
+        src='../steal/steal.production.js?documentjs/jmvcdoc'>
 </script>
 
 <style type="text/css">
-  body > iframe { width: 0;} 
-  #dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
+	body > iframe { width: 0;}
+	#dsq-content #dsq-form-area .dsq-attach-media-container iframe { height: 13px; padding: 0;}
 </style>
-	</body>
+</body>
 </html>
