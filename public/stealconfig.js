@@ -6,6 +6,7 @@ steal.config({
 		}
 	},
 	paths: {
+		"jquery/": "jquerypp/",
 		"jquery": "can/lib/jquery.1.8.3.js",
 		"mootools/mootools.js" : "can/lib/mootools-core-1.4.3.js",
 		"dojo/dojo.js" : "can/util/dojo/dojo-1.8.1.js",
