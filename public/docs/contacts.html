@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Contacts  </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="examples.html" data-search="Examples">
+				Examples
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="srchr.html" data-search="Srchr">
+						Srchr
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="todo.html" data-search="Todo">
+						Todo
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="contacts.html" data-search="Contacts ">
+						Contacts 
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Contacts 
+
+	
+		<span class="module">contacts</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>In this article we will walk through installing and the ins-and-outs of Contacts. Contacts is a lightweight application that allows users to add and organize their friends' contact information.</p>
+
+<p>This tutorial describes:</p>
+
+<ul>
+<li>Installing and running the application</li>
+<li>The application's structure and organization</li>
+<li>Dividing the application into modular widgets</li>
+<li>Tieing the widgets together</li>
+</ul>
+
+<p><img class='image_tag' src='../tutorials/images/contacts_preview.png' />
+Let's get started!</p>
+
+<h2>Setup</h2>
+
+<p>The application source is hosted by <a href="https://github.com/bitovi/contacts">GitHub</a>. You can download the application on github using the following commands:</p>
+
+<pre><code>$ git clone https://github.com/bitovi/contacts
+$ cd contacts
+$ git submodule update --init
+</code></pre>
+
+<p>To run the application, open <em>contacts.html</em> with your browser.  We will be using <a href="can.fixture.html">fixtures</a> to simulate the AJAX requests so running it from a server isn’t necessary.</p>
+
+<p>This will run the application in development mode.  If you want to build and run the application in production, in the command line run:</p>
+
+<pre><code>$ ./js contacts/scripts/build.js
+</code></pre>
+
+<p>then change the script tag in <code>contacts.html</code> to be in production mode:</p>
+
+<pre><code>&lt;script type='text/javascript' src='steal/steal.production.js?contacts'&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Additionally, the app can be found on <a href="http://bitovi.github.io/contacts/">Github Pages</a> if you do not want to set it up.</p>
+
+<h2>Folder Structure</h2>
+
+<p>The application resides in the <code>contacts</code> folder.  Steal, CanJS, and CanUI folders sit perpendicular to this for reuse in other projects.  The directory structure should mirror below.</p>
+
+<pre><code>[top-level]
+      /can 
+      /steal 
+      /funcunit
+      /contacts
+          /form
+        /scripts 
+        /test 
+        /models 
+        /fixtures 
+        /views 
+        /less
+        funcunit.html 
+        qunit.html 
+        contacts.js
+        ...
+    contacts.html
+    stealconfig.js
+</code></pre>
+
+<p>The contacts folder contains: </p>
+
+<ul>
+<li><code>models</code> AJAX end-point definitions and helpers</li>
+<li><code>views</code> EJS/Mustache can.view templates</li>
+<li><code>fixtures</code> simulated AJAX response</li>
+<li><code>less</code> LESS stylesheet such as <a href="http://twitter.github.io/bootstrap/">Boostrap</a> 3.0 and <code>contacts.less</code></li>
+<li><code>contacts/form</code> child components of contacts</li>
+</ul>
+
+<p>Along with runners and scripts for building and tests.</p>
+
+<h2>Division of Modules</h2>
+
+<p>The secret to building large applications is NEVER build large applications. Understanding how to divide and isolate modules in the application is the first step towards maintainable architecture.</p>
+
+<p>The goal for dividing your application should be to create modules that are isolated.</p>
+
+<p>Isolated modules are:</p>
+
+<ul>
+<li>Limited to one specific purpose, for example showing a list of data</li>
+<li>Rarely reference other modules and never their parents</li>
+<li>Have a simple generic API making them easy to swap out</li>
+</ul>
+
+<p>Isolated modules are easily testable because they have a small, well defined scope.  Each piece can be worked on in parallel because the code is divided.  Reuse is easier because the modules are not coupled to each other.</p>
+
+<h3>Dividing Contacts</h3>
+
+<p>The contacts app has 3 lists that filter the grid of contacts.  You can create additional categories and contacts by clicking the 'new' icon.</p>
+
+<p>This application can be divided up into a few widgets:</p>
+
+<ul>
+<li>List - accepts a generic data source and layout, renders and updates the list.</li>
+<li>Grid - accepts a generic data source, renders a grid.</li>
+<li>Form - create a new instance from a data source.</li>
+</ul>
+
+<p>Heres a visual representation of how this app is broken up into modules.</p>
+
+<p><img class='image_tag' src='../tutorials/images/contacts_design.png' /></p>
+
+<h2>Tying it all together</h2>
+
+<p><code>contacts/contacts.js</code> will be where the application starts: loading each module, initializing them, and gluing them together.</p>
+
+<p>In the <code>init</code> method, we initalize all the base objects and inject the base view.</p>
+
+<pre><code>init: function(){
+    // initalize the lists and objects
+    this.categoryList = new Models.Category.List;
+    this.locationList = new Models.Location.List;
+    this.companyList  = new Models.Company.List;
+    this.contactsList = new Models.Contact.List;
+    this.edited       = new Observe;
+    this.total        = can.compute(0);
+    this.isLoading    = can.compute(function(loading){
+        loading ? loadingCounter++ : loadingCounter--;
+        return loading &gt; 0;
+    });
+
+    // Draw the view, setup helpers and partials
+    this.element.html(initView({ ... });
+
+    // Initalize each Form category
+    can.each(['location', 'category', 
+    'company', 'contact'], function(formType){
+        new Form(this.element.find('#' + formType), {
+            edited : this.edited,
+            model  : Models[can.capitalize(formType)],
+            list   : this[formType + 'List']
+        });
+    }.bind(this));
+
+    this.setupScroll();
+    this.loadFilters();
+    this.loadContacts();
+}
+</code></pre>
+
+<p>From this point on, the application uses live-binding to update the lists/views based on the filter/offset.</p>
+
+<pre><code>{{#contacts}}
+    {{&gt;contact}}
+{{/contacts}}
+</code></pre>
+
+<p>As the <code>contacts</code> list changes, the view automatically updates to reflect the new list.</p>
+
+<h2>Wrapup</h2>
+
+<p>In this article, we explored:</p>
+
+<ul>
+<li>Installing and running the application</li>
+<li>The application's structure and organization</li>
+<li>Dividing the application into modular widgets</li>
+<li>Tieing the widgets together</li>
+</ul>
+
+<p>If you're interested in other examples, check out the other application examples.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

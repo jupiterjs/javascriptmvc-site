@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Testing Cookbook </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="getstarted.html" data-search="Get Started with JMVC">
+				Get Started with JMVC
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.creating.html" data-search="Creating Cookbook">
+						Creating Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="cookbook.testing.html" data-search="Testing Cookbook">
+						Testing Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="building.cookbook.html" data-search="Building Cookbook">
+						Building Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.documenting.html" data-search="Documenting Cookbook">
+						Documenting Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Testing Cookbook
+
+	
+		<span class="module">cookbook.testing</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>JavaScriptMVC puts a tremendous emphasis on 
+testing. It uses <a href="FuncUnit.html">FuncUnit</a> to easily write 
+tests that can be run in the browser or automated. FuncUnit
+integrates:</p>
+
+<ul>
+<li>QUnit - Assertions and testing structure</li>
+<li>Syn - Synthetic user events like clicking and typing</li>
+<li>Selenium / PhantomJS - Browser automation</li>
+</ul>
+
+<p>When you scaffolded recipe, it created tests and test pages for you. This 
+guide will show you how to:</p>
+
+<ul>
+<li>Run tests.</li>
+<li>Understand the unit tests.</li>
+<li>Run functional tests.</li>
+<li>Understand the functional tests.</li>
+<li>Test isTasty functionality.</li>
+</ul>
+
+<h2>Run Tests</h2>
+
+<p>Open <code>cookbook/cookbook_test.js</code>.  You'll notice it steals tests 
+for the model and controls.  There 
+are also tests that verify the 
+original "Welcome to JavaScriptMVC" text that we removed.  <strong>Remove</strong> the 
+extraneous test so <code>cookbook_test.js</code> just looks like this:</p>
+
+<pre><code class="lang-javascript">steal(
+    'funcunit',
+    './models/recipe_test.js',
+    'cookbook/recipe/create/create_test.js',
+    'cookbook/recipe/list/list_test.js',
+    function (S) {
+
+    // this tests the assembly 
+    module("cookbook", {
+        setup : function () {
+            S.open("//cookbook/index.html");
+        }
+    });
+
+    test("creating a recipes adds it to the list ", function () {
+
+        S("[name=name]").type("Ice Water");
+        S("[name=description]")
+          .type("Pour water in a glass. Add ice cubes.");
+
+        S("[type=submit]").click();
+
+        S("h3:contains(Ice Water)").exists();
+        S("p:contains(Pour water in a glass. Add ice cubes.)").exists()
+    });
+});</code></pre>
+
+<p>To run all of <strong>cookbook's</strong> tests, open
+<code>cookbook/test.html</code> in a browser.</p>
+
+<p>To run those same tests with <a href="funcunit.selenium.html">Selenium</a>, first you must set up a 
+local server, like Apache, running at the javascriptmvc root.  Make sure you can 
+open your test page from this server, at a URL like http://localhost/javascriptmvc/cookbook/test.html.</p>
+
+<p>Then run:</p>
+
+<pre><code>&gt; ./js funcunit/open/selenium http://localhost/javascriptmvc/cookbook/test.html
+</code></pre>
+
+<p>You should see something like:</p>
+
+<p><img class='image_tag' src='../tutorials/getstarted/selenium-run.png' /></p>
+
+<div class='whisper'>
+    If Selenium is unable to open your browsers, it's likely you have them in an
+    unusual location.  Read the Other Browsers section in <a href="funcunit.selenium.html">Selenium</a> 
+    docs for information on how to configure browsers so selenium can find them.
+</div>
+
+<p>Continue to <a href="building.cookbook.html">Building Cookbook</a> or continuen reading to learn how
+this code works.</p>
+
+<h2>Tiered testing</h2>
+
+<p>If an application should be built of small, isolated modules that are glued together, its tests should reflect that.</p>
+
+<p>Cookbook's modules are each designed to be built and tested independently. For example, the <code>cookbook/recipe/create</code> module has its own tests and test page. Open <code>cookbook/recipe/create/test.html</code>
+and it will run the tests in  <code>cookbook/recipe/create/create_test.js</code>.</p>
+
+<p>To test the "glue", <code>cookbook_test.js</code> loads all modules' tests 
+and provides an integration test, verifying the application as a whole works as expected.</p>
+
+<p>The following goes through:</p>
+
+<ul>
+<li>cookbook/models/recipe_test.js</li>
+<li>cookbook/recipe/create/create_test.js</li>
+<li>cookbook/recipe/list/list_test.js</li>
+<li>cookbook/cookbook_test.js</li>
+</ul>
+
+<h2>recipe_test.js</h2>
+
+<p><code>cookbook/models/recipe_test.js</code> unit tests the 
+<code>cookbook/models/recipe</code>, module which is aliased as Recipe. It starts 
+by loading the <code>Recipe</code> model, QUnit, and the fixtures
+used to simulate the server:</p>
+
+<pre><code>steal( "./recipe.js", 
+    "funcunit/qunit", 
+    "cookbook/models/fixtures", 
+    function( Recipe ){
+</code></pre>
+
+<p>Next it specifies which module the following tests belong to:</p>
+
+<pre><code>module("cookbook/models/recipe");
+</code></pre>
+
+<p>Then, it defines a <code>findAll</code> test: </p>
+
+<pre><code>test("findAll", function(){
+    expect(4);
+    stop();
+    Recipe.findAll({}, function(recipes){
+        ok(recipes)
+        ok(recipes.length)
+        ok(recipes[0].name)
+        ok(recipes[0].description)
+        start();
+    });
+});
+</code></pre>
+
+<p>The <code>findAll</code> test calls <code>Recipe.findAll</code> and
+attempts to verify that it returns recipes with
+a name and description.</p>
+
+<p>Because <code>Recipe.findAll</code> is asynchronous, this
+test calls QUnit's <code>stop</code> and <code>start</code> methods
+to signal when the test is complete.</p>
+
+<p><code>recipe_test.js</code> goes on to test the remainder of 
+<code>Recipe</code>'s CRUD methods: create, update, destroy.</p>
+
+<h2>create_test.js</h2>
+
+<p><code>cookbook/recipe/create/create_test.js</code> tests 
+the <code>cookbook/recipe/create</code> module aliased as
+RecipeCreate.  It starts by loading funcunit, the 
+RecipeCreate control, the Recipe model and
+the recipeStore fixture:</p>
+
+<pre><code>steal('funcunit', 
+    './create.js',
+    'cookbook/models/recipe.js',
+    'cookbook/models/fixtures', 
+    function (S, RecipeCreate, Recipe, recipeStore ) {
+</code></pre>
+
+<p>Next, it defines the module, with setup and teardown 
+code that runs before and after every test:</p>
+
+<pre><code>module("cookbook/recipe/create", {
+    setup: function(){
+        $("#qunit-test-area")
+                  .append("&lt;form id='create'&gt;&lt;/form&gt;");
+        new RecipeCreate("#create");
+    },
+    teardown: function(){
+        $("#qunit-test-area").empty();
+        recipeStore.reset();
+    }
+});
+</code></pre>
+
+<p><code>setup</code> creates a <em>form</em> element and creates a new <code>RecipeCreate</code> instance</p>
+
+<p>on it.  <code>teardown</code> removes the element and <a href="can.fixture.store.reset.html">resets</a> the
+<code>recipeStore</code> to contain the original set of recipes.</p>
+
+<p><code>create_test.js</code> tests that RecipeCreate can create a recipe:</p>
+
+<pre><code>test("create recipes", function () {
+       ...
+});
+</code></pre>
+
+<p>We are going to create an <strong>Ice Water</strong> recipe, so we
+listen to a recipe being created and check it's contents like:</p>
+
+<pre><code>stop();
+Recipe.bind("created",function(ev, recipe){
+    ok(true, "Ice Water added");
+
+    equals(recipe.name, 
+        "Ice Water", 
+        "name set correctly");
+
+    equals(recipe.description, 
+        "Pour water in a glass. Add ice cubes.", 
+        "description set correctly" );
+
+    start();
+    Recipe.unbind("created",arguments.callee);
+})
+</code></pre>
+
+<p>As this test is asynchronous, it calls QUnit's stop and start. After
+listening to Recipes being created, the test creates
+a recipe by simulating a user filling in the recipe form and clicking submit:</p>
+
+<pre><code>S("[name=name]").type("Ice Water");
+S("[name=description]").type("Pour water in a glass. "+
+                             "Add ice cubes.");
+
+S("[type=submit]").click();
+</code></pre>
+
+<p>Then, it verifies the submit button's value is "Creating":</p>
+
+<pre><code>S("[type=submit]").val("Creating...",
+                       "button text changed while created");
+</code></pre>
+
+<p>Finally, when the value is changed back to "Create", the 
+test checks that the form has been reset: </p>
+
+<pre><code>S("[type=submit]").val("Create", function(){
+    ok(true, "button text changed back after create" );
+    equals(S("[name=name]").val(), "", "form reset");
+    equals(S("[name=description]").val(), "", "form reset");
+});
+</code></pre>
+
+<h2>list_test.js</h2>
+
+<p><code>cookbook/recipe/list/list_test.js</code> tests the <code>cookbook/recipe/list</code>
+module aliased as RecipeList. It starts by loading funcunit, the 
+RecipeList control, the Recipe model and
+the recipeStore fixture:</p>
+
+<pre><code>steal('funcunit', 
+    './list.js',
+    'cookbook/models/recipe.js',
+    'cookbook/models/fixtures', 
+    function (S, RecipeCreate, Recipe, recipeStore ) {
+</code></pre>
+
+<p>Next, it defines the module it is testing, with setup and teardown 
+code that runs before and after every test:</p>
+
+<pre><code>module("cookbook/recipe/list", {
+    setup: function(){
+        $("#qunit-test-area").append("&lt;div id='recipes'&gt;&lt;/div&gt;");
+        this.list = new RecipeList("#recipes");
+    },
+    teardown: function(){
+        $("#qunit-test-area").empty();
+        recipeStore.reset();
+    }
+});
+</code></pre>
+
+<p><code>setup</code> creates a <em>div</em> element and creates a new <code>RecipeList</code> 
+instance. That list will be accessible within each test as <code>this.list</code>. 
+<code>teardown</code> removes the element and <a href="can.fixture.store.reset.html">resets</a> 
+the <code>recipeStore</code> to contain the original set of recipes.</p>
+
+<p>Then, <code>list_test.js</code> tests that RecipeList displays all
+the recipes that are loaded on the server:</p>
+
+<pre><code>test("lists all recipes", function(){
+    stop();
+
+    Recipe.findAll({}, function(recipes){
+
+        S(".recipe").size(recipes.length,function(){
+            ok(true, "All recipes listed");
+
+            start();
+        })
+    })
+});
+</code></pre>
+
+<p>And it tests that created recipes are added to the list of recipes
+by creating a recipe and making sure a corresponding element shows 
+up on the page:</p>
+
+<pre><code>test("lists created recipes", function(){
+
+    new Recipe({
+        name: "Grilled Cheese",
+        description: "grill cheese in bread"
+    }).save();
+
+    S('h3:contains(Grilled Cheese X)')
+                  .exists("Lists created recipe");
+})
+</code></pre>
+
+<p>To test deleting a recipe, <code>list_test.js</code> creates a recipe then
+clicks its destroy link and makes sure the element has been removed:</p>
+
+<pre><code>test("delete recipes", function(){
+    new Recipe({
+        name: "Ice Water",
+        description: "mix ice and water"
+    }).save();
+
+    // wait until grilled cheese has been added
+    S('h3:contains(Ice Water X)').exists();
+
+    S.confirm(true);
+    S('h3:last a').click();
+
+    S('h3:contains(Ice Water)')
+        .missing("Grilled Cheese Removed");
+
+});
+</code></pre>
+
+<h2>cookbook_test.js</h2>
+
+<p><code>cookbook/cookbook_test.js</code> loads all other tests
+and tests the <code>cookbook</code> module. It starts
+by loading FuncUnit and all the other tests:</p>
+
+<pre><code>steal(
+    'funcunit',
+    './models/recipe_test.js',
+    'cookbook/recipe/create/create_test.js',
+    'cookbook/recipe/list/list_test.js',
+    function (S) {
+</code></pre>
+
+<p>Next it defines which module it's testing:</p>
+
+<pre><code>module("cookbook", {
+    setup : function () {
+        S.open("//cookbook/index.html");
+    }
+});
+</code></pre>
+
+<p><code>setup</code> uses FuncUnit to open the application's page. Any
+FuncUnit commands, for example <code>S("h1").text()</code>, will
+operate within that page instead of the 
+testing window. This is ideal for integration and functional tests.</p>
+
+<p><code>cookbook_test.js</code> then tests if the page contains
+JavaScriptMVC's welcome text:</p>
+
+<pre><code>test("welcome test", function () {
+    equals( S("h1").text(), 
+            "Welcome to JavaScriptMVC!", 
+            "welcome text" );
+});
+</code></pre>
+
+<p>Finally, it tests the integration between RecipeCreate and 
+RecipeList by creating a recipe and making sure it is 
+listed on the page:</p>
+
+<pre><code>test("creating a recipes adds it to the list ", function () {
+
+    S("[name=name]").type("Ice Water");
+    S("[name=description]").type("Pour water in a glass. "+
+                                 "Add ice cubes.");
+
+    S("[type=submit]").click();
+
+    S("h3:contains(Ice Water)").exists();
+    S("p:contains(Pour water in a glass. Add ice cubes.)")
+      .exists()
+});
+</code></pre>
+
+<p>Continue to <a href="building.cookbook.html">Building Cookbook</a>.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

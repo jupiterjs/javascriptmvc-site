@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Developing JavaScriptMVC </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="developingjmvc.html" data-search="Developing JavaScriptMVC">
+				Developing JavaScriptMVC
+			</a>
+			
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Developing JavaScriptMVC
+
+	
+		<span class="module">developingjmvc</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>Awesome, you want to contribute back some code to JavaScriptMVC, or build your own
+download.  This article
+explains how.</p>
+
+<p>JavaScriptMVC is comprised of several projects, each with 
+it's own repository:</p>
+
+<ul>
+<li><a href="http://github.com/bitovi/steal">http://github.com/bitovi/steal</a></li>
+<li><a href="http://github.com/bitovi/canjs">http://github.com/bitovi/canjs</a></li>
+<li><a href="http://github.com/bitovi/jquerypp">http://github.com/bitovi/jquerypp</a></li>
+<li><a href="http://github.com/bitovi/documentjs">http://github.com/bitovi/documentjs</a></li>
+<li><a href="http://github.com/bitovi/funcunit">http://github.com/bitovi/funcunit</a></li>
+</ul>
+
+<p>These are collected in the javascriptmvc repository:</p>
+
+<ul>
+<li><a href="http://github.com/bitovi/javascriptmvc">http://github.com/bitovi/javascriptmvc</a></li>
+</ul>
+
+<p>Read how to get, test, and build each project in JavaScriptMVC:</p>
+
+<h2>1.  Get</h2>
+
+<p>In Github, fork the repo you want to make changes to.  Then clone
+the javascriptmvc repo and install the submodules like:</p>
+
+<pre><code class="lang-javascript">git clone git@github.com:bitovi/javascriptmvc</code></pre>
+
+<p>Now, open the javascriptmvc folder's .gitmodule file and change the url of the submodule(s)
+you have forked.  For example, you might change:</p>
+
+<pre><code class="lang-javascript">    url = git://github.com/bitovi/canjs.git</code></pre>to
+
+<pre><code class="lang-javascript">    url = git://github.com/justinbmeyer/canjs.git</code></pre>
+
+<p>Now run:</p>
+
+<pre><code class="lang-javascript">cd javascriptmvc
+git submodule init
+git submodule update</code></pre>Finally, you might need <b>cd</b> into each submodule and 
+run
+
+<pre><code class="lang-javascript">git checkout</code></pre>
+
+<p>Now make your changes!</p>
+
+<h2>2. Test</h2>
+
+<p>To test FuncUnit, Steal, CanJS, and jQuery++ combined open 
+<a href='/test.html'>javascriptmvc/test.html</a> in 
+every supported browser and run:</p>
+
+<pre><code class="lang-javascript">./js test/run.js</code></pre>
+
+<p>To test just the invidual projects, do the following:</p>
+
+<h4>StealJS</h4>
+
+<p>Open <a href='/steal/test/qunit.html'>/steal/test/qunit.html</a> 
+in a browser.</p>
+
+<p>Run:</p>
+
+<pre><code class="lang-javascript">./js steal/test/run.js</code></pre>
+
+<h4>FuncUnit</h4>
+
+<p>Open <a href='/funcunit/funcunit.html'>/funcunit/funcunit.html</a> 
+and <a href='/funcunit/qunit.html'>/funcunit/qunit.html</a> in every browser.</p>
+
+<p>Run:</p>
+
+<pre><code class="lang-javascript">funcunit/envjs funcunit/funcunit.html</code></pre>
+
+<h4>CanJS</h4>
+
+<p>Open <a href='/canjs/qunit.html'>/canjs/qunit.html</a> 
+in every browser.</p>
+
+<p>Run:</p>
+
+<pre><code class="lang-javascript">./js canjs/test/run.js</code></pre>
+
+<h4>jQuery++</h4>
+
+<p>Open <a href='/jquerypp/qunit.html'>/jquerypp/qunit.html</a> 
+in every browser.</p>
+
+<p>Run:</p>
+
+<pre><code class="lang-javascript">./js jquerypp/test/run.js</code></pre>
+
+<h2>3. Build</h2>
+
+<p>Coming soon, but most projects have a build.js and so does framework.</p>
+
+<h2>4. Building the Docs</h2>
+
+<p>Run:</p>
+
+<pre><code class="lang-javascript">js jmvc\scripts\doc.js</code></pre>
+
+<p>If you have problems, you might need to create a <code>jmvc/docs</code> folder.
+Pages like this one are found in <code>jmvc/pages/</code>.</p>
+
+<h2>4. Deploying the Docs</h2>
+
+<p>Run:</p>
+
+<pre><code class="lang-javascript">ruby scripts\deploy.rb</code></pre>
+
+<p>First you need to add our EC2 private key in the scripts folder, named key.  If you want to 
+deploy, talk to Brian to get access to this key.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

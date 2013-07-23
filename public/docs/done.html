@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Upgrading to 3.3 </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="installing.html" data-search="Installing JavaScriptMVC">
+						Installing JavaScriptMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="rapidstart.html" data-search="Rapid Start">
+						Rapid Start
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="getstarted.html" data-search="Get Started with JMVC">
+						Get Started with JMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="mvc.html" data-search="Get Started with CanJS">
+						Get Started with CanJS
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="tutorials.jquerypp.html" data-search="Get Started with jQuery++">
+						Get Started with jQuery++
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="funcunit.getstarted.html" data-search="Get Started with FuncUnit">
+						Get Started with FuncUnit
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="organizing.html" data-search="Organizing Your App">
+						Organizing Your App
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="ajaxy.html" data-search="Searchable Ajax Apps">
+						Searchable Ajax Apps
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="services.html" data-search="Ajax Service Guidelines">
+						Ajax Service Guidelines
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="done.html" data-search="Upgrading to 3.3">
+						Upgrading to 3.3
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Upgrading to 3.3
+
+	
+		<span class="module">done</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>JavaScriptMVC 3.3 introduces a lot of new features to build large and responsive applications. As such, there are a few changes from 3.2 and this guide walks through the API differences between the versions.</p>
+
+<h2>CanJS</h2>
+
+<p><a href="canjs.html">Can</a> has replaced the previous MVC internals of JavaScript MVC, but provides backwards compatability to jQuery MX. jQuery MX $.Class, $.Model, and $.Controller will not be supported in future versions, and we urge you to switch to using can.</p>
+
+<h2>Steal</h2>
+
+<p><a href="stealjs.html">Steal</a> in 3.3 has support for AMD modules. Steal will still load resources as 3.2, however will also now follow the pattern for dependencies represented by a string id.</p>
+
+<p>So, as a simple example:</p>
+
+<pre><code>steal('fooResource', function(foo) {});
+</code></pre>
+
+<p>In the above example, "foo" refers to the module returned by fooResource/fooResource.js.</p>
+
+<p>This leads to the gotcha when defining "$" in the previous syntax. So code that used to look like:</p>
+
+<pre><code>steal('jquery', 'someResource')
+.then('someController', function($) {});
+</code></pre>
+
+<p>The above will not work as expected, because "$" will refer to a module returned by "someController" or undefined. In 3.3, a simple change will fix this issue for jQuery users:</p>
+
+<pre><code>steal('jquery', 'someResource')
+.then('someController', function() {});
+</code></pre>
+
+<h2>$.Class.prototype.callback</h2>
+
+<p>"callback" has been deprecated and is now "proxy" to match jQuery's API.</p>
+
+<p>3.2:</p>
+
+<pre><code>$.Controller('foo', {}, {
+    init: function() {
+        $.get('/resource', this.callback('render'));
+    },
+
+    render: function() {}
+});
+</code></pre>
+
+<p>3.3:</p>
+
+<pre><code>$.Controller('foo', {}, {
+    init: function() {
+        $.get('/resource', this.proxy('render'));
+    },
+
+    render: function() {}
+});
+</code></pre>
+
+<h2>$.View</h2>
+
+<p>$.View() now returns a document fragment to aid with faster rendering within your application. However, when nesting templates, you'll need the actual html string returned by $.View.render as opposed to the document fragment.</p>
+
+<p>Within your EJS templates in 3.2:</p>
+
+<pre><code>&lt;div&gt;
+    &lt;%== $.View('//sometemplate.ejs', {}) %&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>3.3:</p>
+
+<pre><code>&lt;div&gt;
+    &lt;%== $.View.render('//sometemplate.ejs', {}) %&gt;
+&lt;/div&gt;
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

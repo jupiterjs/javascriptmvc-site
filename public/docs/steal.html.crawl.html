@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - steal.html.crawl</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="stealjs.html" data-search="StealJS">
+				StealJS
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="steal.html.html" data-search="steal.html">
+				steal.html
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="function" href="steal.html.crawl.html" data-search="steal.html.crawl">
+						crawl
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="steal.html.ready.html" data-search="steal.html.ready">
+						ready
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="steal.html.wait.html" data-search="steal.html.wait">
+						wait
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+crawl
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+		<section class="signature">
+			<h2>crawl(url, opts)</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>url
+				<code>{Object}</code></h4>
+			<div class="description">
+				<p>the starting page to crawl</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>opts
+				<code>{String | Object}</code></h4>
+			<div class="description">
+				<p>the location to put the crawled content.</p>
+			</div>
+			
+			
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+</div>
+
+		</section>
+		
+
+		
+
+		
+		<section class="comment">
+			<p>Loads an ajax driven page and generates the html for google to crawl. Check out the <a href="ajaxy.html">tutorial</a> 
+for a more complete walkthrough.</p>
+
+<p>This crawler indexes an entire Ajax site.  It</p>
+
+<ol>
+<li>Opens a page in a headless browser.</li>
+<li>Waits until its content is ready.</li>
+<li>Scrapes its contents.</li>
+<li>Writes the contents to a file.</li>
+<li>Adds any links in the page that start with #! to be indexed</li>
+<li>Changes <code>window.location.hash</code> to the next index-able page</li>
+<li>Goto #2 and repeats until all pages have been loaded</li>
+</ol>
+
+<h2>2. Wait until content is ready.</h2>
+
+<p>By default, <a href="steal.html.html">steal.html</a> will just wait until all scripts have finished loading
+before scraping the page's contents.  To delay this, use
+[steal.html.delay] and <a href="steal.html.ready.html">steal.html.ready</a>.</p>
+
+<h2>3. Write the contents to a file.</h2>
+
+<p>You can change where the contents of the file are writen to by changing
+the second parameter passed to <code>crawl</code>.</p>
+
+<p>By default uses EnvJS, but you can use PhantomJS for more advanced pages:</p>
+
+<pre><code>steal('steal/html', function(){
+    steal.html.crawl("ajaxy/ajaxy.html", {
+        out: 'ajaxy/out',
+        browser: 'phantomjs'
+    })
+})
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - OpenerObject </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="steal|build|open|open.js.html" data-search="steal/build/open/open.js">
+				steal/build/open/open.js
+			</a>
+			
+	<ul>
+		
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="typedef" href="steal.build.openOptions.html" data-search="OpenerObject">
+						OpenerObject
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>typedef</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+OpenerObject
+
+	
+		<span class="module">steal.build.openOptions</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+		<div class='primary-options'>
+			<h2>
+	
+	
+	   Type Definition:
+	
+	<code>{Object}</code>
+</h2>
+
+
+
+
+
+<ul class="options">
+	
+	<li class="option">
+		<h5>each <code>{function(filter, depth, callback)}</code></h5>
+		<div class="description">
+			<ul>
+<li><p>each(filter, depth, callback(options, stel)) - goes through steals loaded by this
+application.  You can provide it a:</p></li>
+<li><p>filter - a function to filter out some types of steal methods, 
+it supports js and css.</p></li>
+<li>depth - if true, goes through with breadth first search, false is 
+breadth. Defaults to breadth (how steal loads scripts)</li>
+<li><p>callback - a method that is called with each steal option</p>
+
+<p>opener.each(function(option){
+console.log(option.text)
+})</p></li>
+</ul>
+		</div>
+	</li>
+	
+	<li class="option">
+		<h5>steal <code>{<a href="steal.html" >steal</a>(<a href="steal.moduleIdReference.html" >moduleIdRef</a>, <a href="steal.definition.html" >definition</a>)}</code></h5>
+		<div class="description">
+			<p>the steal loaded by the app</p>
+		</div>
+	</li>
+	
+	<li class="option">
+		<h5>url <code>{String}</code></h5>
+		<div class="description">
+			<p>the html page opened</p>
+		</div>
+	</li>
+	
+	<li class="option">
+		<h5>rootSteal <code>{<a href="steal.html" >steal</a>(<a href="steal.moduleIdReference.html" >moduleIdRef</a>, <a href="steal.definition.html" >definition</a>)}</code></h5>
+		<div class="description">
+			<p>the first steal file</p>
+		</div>
+	</li>
+	
+</ul>
+
+
+		</div>
+		
+
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

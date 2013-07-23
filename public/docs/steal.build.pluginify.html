@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - steal.build.pluginify</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="stealjs.html" data-search="StealJS">
+				StealJS
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="steal.build.html" data-search="steal.build">
+				steal.build
+			</a>
+			
+	<ul>
+		
+			
+		
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="steal.build.open.html" data-search="steal.build.open">
+						open
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="steal.build.packages.html" data-search="steal.build.packages">
+						packages
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="function" href="steal.build.pluginify.html" data-search="steal.build.pluginify">
+						pluginify
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+pluginify
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+		<section class="signature">
+			<h2>steal.build.pluginify(moduleId, opts)</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>moduleId
+				<code>{Object}</code></h4>
+			<div class="description">
+				<p>The moduleId of the plugin to be built.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>opts
+				<code>{Object}</code></h4>
+			<div class="description">
+				<p>An object map of the following optional configuration
+properties:</p>
+			</div>
+			
+			
+			<ul class="options">
+				
+				<li class="option">
+					<h5>out 
+						<code>{String}</code>
+					</h5>
+					<div class="description">
+						<p>Specifies the location of the generated file. The default filename is the 
+moduleId with <code>.</code> replacing all <code>/</code> in the moduleId's folder. For example,
+pluginifying <code>"foo/bar"</code> will create `"foo/bar/foo.bar.js"</p>
+
+<pre><code>steal.build.pluginify("foo/bar",{
+  out: "bar.js"
+})
+</code></pre>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>exclude 
+						<code>{Array}</code>
+					</h5>
+					<div class="description">
+						<p>An array of moduleIds to exclude. If the moduleId ends with a 
+slash (ex: <code>"can/"</code>) all modules within that folder will be ignored.</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>standAlone 
+						<code>{Boolean | String}</code>
+					</h5>
+					<div class="description">
+						<p>Set to <code>true</code> to only build the moduleId resource, everything
+else will be excluded. <code>standAlone</code> can also be set to a specific module or 
+folder.</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>nojquery 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p>Excludes jQuery and adds <code>jquery: "jQuery"</code> to the shim. Example:</p>
+
+<pre><code>steal.build.pluginify("foo/bar",{
+  nojquery: true
+})
+</code></pre>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>nocanjs 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p>Exclude all CanJS files and adds corresponding shims.</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>minify 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p>Set to <code>true</code> to minify the build.</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>wrapInner 
+						<code>{Array}</code>
+					</h5>
+					<div class="description">
+						<p>An array containing code you want to wrap the output in 
+like <code>[before, after]</code>. Example:</p>
+
+<pre><code>steal.build.pluginify("foo/bar",{
+  wrapInner: ["(function($,can){","})(jQuery, can)"]
+})
+</code></pre>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>shim 
+						<code>{Object}</code>
+					</h5>
+					<div class="description">
+						<p>Specifies a mappings between an excluded moduleId and
+it's global value.  For example:</p>
+
+<pre><code>steal.build.pluginify("foo/bar",{
+  exclude: ["jquery","can/"],
+  shim: {
+    jquery: "jQuery",
+    "can/util": "can",
+    "can/control": "can.Control"
+  }
+})
+</code></pre>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>skipAll 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<ul>
+<li>Don't run any of the code in steal callbacks (used for canjs build)</li>
+</ul>
+					</div>
+				</li>
+				
+			</ul>
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+</div>
+
+		</section>
+		
+
+		
+
+		
+		<section class="comment">
+			<p><code>steal.build.pluginify(moduleId, options)</code> builds a 'steal-less' version 
+of a module. It can called programatically in JavaScript like:</p>
+
+<pre><code>steal.build.pluginify('widgets/chart',{
+  nojquery: true,
+  nocanjs: true,
+  exclude: ["underscore"],
+  shim: { "underscore" : "_" }
+})
+</code></pre>
+
+<p>Basic examples can be called from the command line like:</p>
+
+<pre><code>./js steal/pluginifyjs widgets/chart -nojquery -nocanjs
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

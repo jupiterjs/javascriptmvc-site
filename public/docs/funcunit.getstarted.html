@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Get Started with FuncUnit </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="installing.html" data-search="Installing JavaScriptMVC">
+						Installing JavaScriptMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="rapidstart.html" data-search="Rapid Start">
+						Rapid Start
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="getstarted.html" data-search="Get Started with JMVC">
+						Get Started with JMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="mvc.html" data-search="Get Started with CanJS">
+						Get Started with CanJS
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="tutorials.jquerypp.html" data-search="Get Started with jQuery++">
+						Get Started with jQuery++
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="funcunit.getstarted.html" data-search="Get Started with FuncUnit">
+						Get Started with FuncUnit
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="organizing.html" data-search="Organizing Your App">
+						Organizing Your App
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="ajaxy.html" data-search="Searchable Ajax Apps">
+						Searchable Ajax Apps
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="services.html" data-search="Ajax Service Guidelines">
+						Ajax Service Guidelines
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="done.html" data-search="Upgrading to 3.3">
+						Upgrading to 3.3
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Get Started with FuncUnit
+
+	
+		<span class="module">funcunit.getstarted</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>In this guide, we'll use <a href="FuncUnit.html">FuncUnit</a> to write functional tests for the jQuery UI 
+autocomplete widget. We'll go over:</p>
+
+<ul>
+<li>Running a test in browser</li>
+<li>Writing a test</li>
+<li>Debugging a broken test</li>
+<li>Running tests via Selenium</li>
+<li>Running tests via PhantomJS</li>
+</ul>
+
+<h2>Running Autocomplete Tests</h2>
+
+<p>Open <em>funcunit/test/autosuggest/autosuggest.html</em> in a browser.  Type "J" in the input.  You'll see the following:</p>
+
+<p><img class='image_tag' src='funcunit/pages/images/autosuggest.png' /></p>
+
+<p>This page is a simple demo app, using <a href="http://jqueryui.com/demos/autocomplete/">jQueryUI autocomplete</a>. It 
+shows results when you start typing, then you can click a result (or use mouse navigation) to populate the input.</p>
+
+<p>There is a test already written.  Open <i>funcunit/test/autosuggest/autosuggest_test.js</i> in your IDE:</p>
+
+<pre><code class="lang-javascript">module("autosuggest",{
+  setup: function() {
+    S.open('autosuggest.html')
+  }
+});
+
+test("results appear",function(){
+  S('input').visible().click().type("Java")
+
+  // wait until we have some results
+  S('.ui-menu-item').visible(function(){
+    equal( S('.ui-menu-item').size(), 2, "there are 2 results")
+  })
+});</code></pre>
+
+<p>As you can probably tell, the <a href="funcunit.finding.html">S method</a> is an alias for jQuery (*).  This test:</p>
+
+<ol>
+<li>Opens autosuggest.html</li>
+<li>Grabs the input element, clicks it, and types "Java"</li>
+<li>Grabs the element that is populated with results, waits for it to be visible</li>
+<li>Asserts that there are 2 results shown</li>
+</ol>
+
+<p>(*) Actually its a <a href="http://api.jquery.com/jQuery.sub/">copy</a> of jQuery that performs queries in 
+the application window by default, and sometimes caches its selector to run asynchronously.</p>
+
+<p>To run this test, open <i>funcunit/test/autosuggest/funcunit.html</i> in any browser (turn off your popup blocker).  The test will open and run.  The results are shown in the QUnit page:</p>
+
+<p><img class='image_tag' src='funcunit/pages/images/qunit.png' /></p>
+
+<h2>Writing an Autocomplete Test</h2>
+
+<p>Next we'll add a test for selecting a result with the keyboard.  FuncUnit's [apifuncunit API] consists of:</p>
+
+<ul>
+<li><a href="funcunit.finding.html">The S Method</a> - Perform a query in the application window</li>
+<li><a href="funcunit.actions.html">Actions</a> - Simulate user actions like <a href="FuncUnit.prototype.click.html">click</a>,  <a href="FuncUnit.prototype.type.html">type</a>,  <a href="FuncUnit.prototype.drag.html">drag</a></li>
+<li><a href="funcunit.waits.html">Waits</a> - Wait for a condition in your page to be met.  Fail the test if the condition isn't met before a timeout.</li>
+<li><a href="funcunit.getters.html">Assertions &amp; getters</a> - Synchronously check a condition in your page.</li>
+</ul>
+
+<p>The setup and assertion methods are part of the <a href="http://docs.jquery.com/Qunit">QUnit</a> API.</p>
+
+<p>Our test should do the following:</p>
+
+<ol>
+<li>Type "JavaS" in the input.</li>
+<li>Wait for a result to be visible.</li>
+<li>Select the input and press the down and enter keys to select the first item.</li>
+<li>Wait for the input to show "JavaScript".</li>
+</ol>
+
+<p>Add the following under the first test:</p>
+
+<pre><code class="lang-javascript">test("keyboard navigation",function(){
+  S('input').visible().click().type("JavaS")
+
+  S('.ui-menu-item').visible()
+  S('input').type('[down][enter]')
+    .val("JavaScript")
+});</code></pre>
+
+<p>A few important notes about this test:</p>
+
+<ol>
+<li>We have no assertions. This is ok. Most FuncUnit tests don't need them. If the wait conditions aren't met before a timeout, the test will fail.  If the test completes, this feature is working.</li>
+<li>The click, visible, and val methods are actually doing asynchronous things. FuncUnit lets you write tests with this linear syntax by queueing the actual methods and running them one by one. This is to prevent your tests from being an unreadable mess of nested functions like:</li>
+</ol>
+
+<pre><code class="lang-javascript">S('.input').visible(function(){
+  S('.input').click(function(){
+    S('input').type("JavaS")
+  })
+})</code></pre>
+
+<p>Reload the funcunit.html page and see your new test run and pass.</p>
+
+<h2>Debugging tests</h2>
+
+<p>Now change .val("JavaScript") to .text("C#").  Reload the page and watch it timeout and fail.</p>
+
+<p><img class='image_tag' src='funcunit/pages/images/broken.png' /></p>
+
+<p>In this case, the error message shown is a good indication for why the test is broken. But often we need 
+more visibility to debug a test.</p>
+
+<p>Your first debugging instinct might be "Let's add a breakpoint!".  But, as noted, this 
+code is running asynchronously.  When .val() runs, its adding a method to 
+FuncUnit.queue, not actually doing the check.  When its this wait condition's turn to 
+run, $("input").val() === "JavaScript" is checked repeatedly until its true or a timeout is reached.  </p>
+
+<p>We can replace the string value with a checker function and use console.log to see what's going on. When 
+previous queued methods finish, this function will run on repeat. Change that line to:</p>
+
+<pre><code class="lang-javascript">  .val(function(val){
+    console.log(val, this)
+    if(val === "C#") return true;
+  });</code></pre>
+
+<p>"this" in your wait method is the element that .text is being run against. The console will show the following:</p>
+
+<p><img class='image_tag' src='funcunit/pages/images/console.png' /></p>
+
+<p>Using this technique, you can inspect the state of your app at various points throughout the test. Undo 
+this breaking change before moving on to the next part.</p>
+
+<h2>Running in Selenium</h2>
+
+<p>Next we'll run this same test via the browser automation tool Selenium. Open a 
+command prompt to the JMVC directory and run the following:</p>
+
+<pre><code class="lang-javascript">./js funcunit/run selenium funcunit/test/autosuggest/funcunit.html</code></pre>
+
+<p>On windows, just use "js" instead of ./js. This will open the test page in 
+Firefox, run the same test, and report the results on the command line:</p>
+
+<p><img class='image_tag' src='funcunit/pages/images/commandline.png' /></p>
+
+<p>You can configure this step to run in any browser via the [integrations settings.js file].</p>
+
+<h2>Running in PhantomJS</h2>
+
+<p>Running in Selenium is great, but physically opening a browser can be too slow for quick 
+regression testing.  <a href="http://www.phantomjs.org/">PhantomJS</a> is a headless version of WebKit, which can run the same 
+tests from the commandline much faster without opening any visual browser windows. To run 
+this step, first you must <a href="funcunit.phantomjs.html">PhantomJS</a>. Then run:</p>
+
+<pre><code class="lang-javascript">./js funcunit/open/phantomjs funcunit/test/autosuggest/funcunit.html</code></pre>
+
+<p>Phantom opens your page, runs the same test, and reports results on the commandline. 
+This step can be easily integrated in your build process via <a href="funcunit.jenkins.html">Jenkins</a> or <a href="funcunit.maven.html">Maven</a>.</p>
+
+<h2>Conclusion</h2>
+
+<p>Hopefully, this guide illustrates how FuncUnit provides the holy grail of testing: easy, familiar syntax, in browser running for 
+easy debugging, and simple automation.  </p>
+
+<p>FuncUnit will transform your development lifecycle, give your developers confidence, and improve quality.</p>
+
+<p>That's it! If you want to learn more, read about FuncUnit's <a href="FuncUnit.html">API</a> and <a href="funcunit.integrations.html">integrations</a> 
+or check out some <a href="funcunit.demos.html">demos</a>.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

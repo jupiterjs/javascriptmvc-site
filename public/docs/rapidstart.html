@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Rapid Start </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="installing.html" data-search="Installing JavaScriptMVC">
+						Installing JavaScriptMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="rapidstart.html" data-search="Rapid Start">
+						Rapid Start
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="getstarted.html" data-search="Get Started with JMVC">
+						Get Started with JMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="mvc.html" data-search="Get Started with CanJS">
+						Get Started with CanJS
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="tutorials.jquerypp.html" data-search="Get Started with jQuery++">
+						Get Started with jQuery++
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="funcunit.getstarted.html" data-search="Get Started with FuncUnit">
+						Get Started with FuncUnit
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="organizing.html" data-search="Organizing Your App">
+						Organizing Your App
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="ajaxy.html" data-search="Searchable Ajax Apps">
+						Searchable Ajax Apps
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="services.html" data-search="Ajax Service Guidelines">
+						Ajax Service Guidelines
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="done.html" data-search="Upgrading to 3.3">
+						Upgrading to 3.3
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Rapid Start
+
+	
+		<span class="module">rapidstart</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>This walks through the basics of JavaScriptMVC by building a 
+smal todo app.  Check out the <a href="getstarted.html">Getting Started Guide</a> 
+for a more in-depth overview.</p>
+
+<h2>Get JavaScriptMVC</h2>
+
+<p><a href="installing.html">Install JavaScriptMVC</a>. Once you have JavaScriptMVC, you should have a folder with:</p>
+
+<pre><code>can            - lightweight MVC components
+documentjs     - documentation engine
+funcunit       - testing app
+jquerypp       - useful collections of jQuery plugins
+steal          - dependency management
+js             - JS command line for Linux/Mac
+js.bat         - JS command line for Windows
+stealconfig.js - configuration file for script loading
+</code></pre>
+
+<p><b>Notice</b>: The folder that has these sub-projects is called the <a href="rootfolder.html">root folder</a>.</p>
+
+<h2>Get JavaScriptMVC running.</h2>
+
+<p>JMVC uses <a href="steal.html">steal/steal.js</a> for dependency 
+management. Steal loads scripts, CSS and more.  To use JavaScriptMVC's 
+features like <a href="can.Control.html">can.Control</a> and <a href="can.view.html">can.view</a>,
+'steal' them like:</p>
+
+<pre><code>steal('can/control','can/view/ejs',function(Control, view){
+  //code that uses controller and view goes here
+})
+</code></pre>
+
+<p>To use steal, you need to add the steal script to 
+your page. In the <a href="rootfolder.html">root folder</a> create a <strong>todos</strong> folder
+and empty <strong>todos.html</strong> and <strong>todos.js</strong> that look like:</p>
+
+<pre><code>ROOT\
+    can\
+    documentjs\
+    jquery\
+    funcunit\
+    steal\
+    todos\
+      todos.js
+      todos.html
+</code></pre>
+
+<p>To load <em>steal.js</em> and <em>todos.js</em>, make <strong>todos.html</strong> look like:</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;ul id='todos'&gt;&lt;/ul&gt;
+  &lt;input id='editor'/&gt;
+  &lt;script src='../steal/steal.js?todos/todos.js'&gt;
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Open the page in your browser.  Use a debugger like firebug to see <em>steal.js</em> and <em>todos.js</em> loading.</p>
+
+<h2>steal <code>steal([paths])</code></h2>
+
+<p><a href="steal.html">steal</a> is used to load scripts, styles, even CoffeeScript, LESS
+and templates into your application.  </p>
+
+<p>Paths are assumed to be relative to 
+the <a href="rootfolder.html">root folder</a>. This means that 
+the following always loads <code>can/construct/construct.js</code> no 
+matter which file is calling steal:</p>
+
+<pre><code>steal('can/construct/construct.js');
+</code></pre>
+
+<p>You can load relative to the current file by adding <code>./</code> to the
+start of your path like:</p>
+
+<pre><code>steal('./helpers.js')
+</code></pre>
+
+<p>Steal also supports css, allowing you to steal <code>todos/todos.css</code> 
+like:</p>
+
+<pre><code>steal('./todos.css')
+</code></pre>
+
+<p>Because loading paths like <code>can/construct/construct.js</code> is so 
+common, if you do not provide an extension like <code>.js</code>, steal 
+will append the last folder name and <code>.js</code>. This makes
+the following load <code>can/construct/construct.js</code>:</p>
+
+<pre><code>steal('can/construct')
+</code></pre>
+
+<p>Steal is an asynchronous loader, so you can't do:</p>
+
+<pre><code>steal('can/construct')
+can.Construct
+</code></pre>
+
+<p>Instead, do:</p>
+
+<pre><code>steal('can/construct', function(Construct){
+  Construct
+});
+</code></pre>
+
+<p>Steal calls back functions with the return value
+of each module. For example:</p>
+
+<pre><code>steal('can/control', 
+      'can/model',
+      function( Control, Model ){
+
+});
+</code></pre>
+
+<p>Stealing the <code>'can'</code> module steals <a href="canjs.html">CanJS's</a> core files
+and provides the <code>can</code> namespace to the callback function. For
+example:</p>
+
+<pre><code>steal('can', function(can){
+  can.Model
+  can.Control
+  can.view
+  can.route
+})
+</code></pre>
+
+<p>For this application, we will load CanJS's most
+common plugins.  Add the following to <strong>todos.js</strong>:</p>
+
+<pre><code>steal('can',
+      'can/util/fixture',
+      function(can){
+
+})
+</code></pre>
+
+<p>The following goes through each plugin while we build the todos app.</p>
+
+<h2>can.Construct <code>can.Construct([name,] [staticProps,] [prototypeProps])</code></h2>
+
+<p>Constructors made with <a href="can.Construct.html">can.Construct</a> are used to create
+objects with shared properties. It's used by both
+<strong>can.Control</strong> and <strong>can.Model</strong>.</p>
+
+<p>To create a <strong>Constructor function</strong> of your own, call <strong>can.Construct</strong> with the:</p>
+
+<ul>
+<li><strong>staticProperties</strong> that are attached directly to the constructor, and</li>
+<li>instance <strong>prototypeProperties</strong>.</li>
+</ul>
+
+<p><strong>can.Construct</strong> sets up the prototype chain so subclasses can be further extended and sub-classed as far as you like:</p>
+
+<pre><code>steal('can/construct', function(Construct){
+
+  var Todo = Construct({
+    init : function(){},
+
+    author : function(){ ... },
+
+    coordinates : function(){ ... },
+
+    allowedToEdit: function(account) { 
+     return true;
+    }
+  });
+
+  var PrivateTodo = Todo({
+    allowedToEdit: function(account) {
+      return account.owns(this);
+    }
+  })
+
+});
+</code></pre>
+
+<p><em>Brief aside on <code>super</code>. If you steal the [super can.Construct.super] plugin,  can.Construct provides a <code>_super</code> method to call the function of the same name higher on the prototype chain like:</em></p>
+
+<pre><code>var SecureNote = Todo({
+  allowedToEdit: function(account) {
+    return this._super(account) &amp;&amp; 
+       this.isSecure();
+  }
+})
+</code></pre>
+
+<h3>constructor / init <code>new ConstructorFunction(arg1, arg2)</code></h3>
+
+<p>When a constructor is called with the <code>new</code> keyword, <strong>can.Construct</strong> creates 
+the instance and calls <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a> with 
+the arguments passed to <code>new ConstructorFunction(…)</code>.</p>
+
+<pre><code>var Todo = can.Construct({
+  init : function(text) {
+    this.text = text
+  },
+  read : function(){
+    console.log(this.text);
+  }
+})
+
+var todo = new Todo("Hello World");
+todo.read()
+</code></pre>
+
+<p><em>Brief aside on <strong>init</strong>.  can.Construct actually calls 
+<a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a> before 
+init. <code>setup</code> can be used to change (or normalize) the arguments 
+passed to <strong>init</strong>.</em></p>
+
+<h2>Model <code>can.Model(staticProperties, prototypeProperties)</code></h2>
+
+<p>Models are central to any application.  They 
+contain data and logic surrounding it. Extend
+<a href="can.Model.html">can.Model</a> with your domain specific 
+methods and can.Model provides a set of methods 
+for managing changes.</p>
+
+<p>To create a <strong>Model</strong> constructor, call <strong>can.Model</strong> with the:</p>
+
+<ul>
+<li><strong>staticProperties</strong>, including 
+<a href="can.Model.findAll.html">findAll</a>,
+<a href="can.Model.findOne.html">findOne</a>,
+<a href="can.Model.create.html">create</a>,
+<a href="can.Model.update.html">update</a>,
+<a href="can.Model.destroy.html">destroy</a> properties, and</li>
+<li>prototype instance properties.</li>
+</ul>
+
+<p>Make a Todo model in <strong>todos.js</strong> like the following:</p>
+
+<pre><code>steal('can',
+     'can/util/fixture',
+      function(can){
+
+  Todo = can.Model({
+    findAll : "GET /todos",
+    findOne : "GET /todos/{id}",
+    create  : "POST /todos",
+    update  : "PUT /todos/{id}",
+    destroy : "DELETE /todos/{id}"
+  },
+  {});
+
+});
+</code></pre>
+
+<p><strong>Note:</strong> We're keeping Todo global so you can try the following commands in your browser:</p>
+
+<h3>new can.Model(attributes)</h3>
+
+<p>Create a todo instance like:</p>
+
+<pre><code>var todo = new Todo({name: "do the dishes"});
+</code></pre>
+
+<h3>attr <code>model.attr( name, [value] )</code></h3>
+
+<p><a href="can.Observe.prototype.attr.html">can.Observe.prototype.attr</a> reads or sets properties on model instances.</p>
+
+<pre><code>todo.attr('name') //-&gt; "do the dishes"
+
+todo.attr('name', "wash the dishes" );
+
+todo.attr() //-&gt; {name: "wash the dishes"}
+
+todo.attr({name: "did the dishes"});
+</code></pre>
+
+<h3>Talking to the server</h3>
+
+<p>Model uses static <a href="can.Model.findAll.html">findAll</a>,
+<a href="can.Model.findOne.html">findOne</a>, <a href="can.Model.create.html">create</a>,
+<a href="can.Model.update.html">update</a>, and <a href="can.Model.destroy.html">destroy</a>
+methods to create, read, update and delete 
+model instances on the server.  </p>
+
+<p>Now you can call methods on Todo that
+make changes on the server.  For example, 
+in your console, try:</p>
+
+<pre><code>Todo.findAll({});
+</code></pre>
+
+<p>In the console, you'll see it make a request 
+to <code>GET /todos</code>.</p>
+
+<p>Assuming your server does not have a <code>/todos</code> service,
+this won't work.  That's ok, we can simulate them with
+<a href="can.fixture.html">can.fixture</a>.</p>
+
+<h3>can.fixture <code>can.fixture(url, fixture(request, response(...) ) )</code></h3>
+
+<p>Fixtures simulate requests to a specific url.  The <code>fixture</code> function is called with:</p>
+
+<ul>
+<li><strong>request</strong> - request object passed to $.ajax</li>
+<li><strong>response</strong> - response callback that specifies the response</li>
+</ul>
+
+<p>As a shortcut, if the <code>fixture</code> function returns a value, that value
+is used as the response data. For example, the following
+simulates a <code>GET</code> request to <code>/todos</code>:</p>
+
+<pre><code>can.fixture("GET /todos", function(request, response){
+        return [
+        {id: 1, name: "wake up"},
+        {id: 2, name: "take out trash"},
+        {id: 3, name: "do dishes"}
+    ];
+});
+</code></pre>
+
+<p><code>can.fixture(fixtures)</code> allows you to specify multiple fixtures
+at once. To simulate the todo services, add the following within the
+steal callback:</p>
+
+<pre><code>// our list of todos
+var TODOS = [
+    {id: 1, name: "wake up"},
+    {id: 2, name: "take out trash"},
+    {id: 3, name: "do dishes"}
+]; 
+can.fixture({
+  // findAll
+  "GET /todos": function(){
+    return TODOS
+  },
+  // findOne
+  "GET /todos/{id}": function(orig){
+    return TODOS[(+orig.data.id)-1];
+  },
+  // create
+  "POST /todos": function(request){
+    TODOS.push(request.data);
+    return {id: TODOS.length}
+  },
+  // update
+  "PUT /todos/{id}": function(){
+    return {};
+  },
+  // destroy
+  "DELETE /todos/{id}": function(){
+    return {};
+  }
+});
+</code></pre>
+
+<p>Now you can use Model's ajax methods to CRUD todos.</p>
+
+<h3>findAll <code>findAll( params, success( todos ), error() )</code></h3>
+
+<p><a href="can.Model.findAll.html">findAll</a> retrieves multiple todos:</p>
+
+<pre><code>Todo.findAll({}, function( todos ) {
+  console.log( todos );
+})
+</code></pre>
+
+<h3>findOne <code>findOne( params, success( todo ), error() )</code></h3>
+
+<p><a href="can.Model.findOne.html">findOne</a> retrieves a single todo:</p>
+
+<pre><code>Todo.findOne({}, function( todo ) {
+  console.log( todo );
+})
+</code></pre>
+
+<h3>save <code>todo.save( success( todo ), error() )</code></h3>
+
+<p><a href="can.Model.prototype.save.html">Save</a> can <strong>create</strong> 
+or <strong>update</strong> instances depending if the 
+instance has already been created or not.</p>
+
+<p>To <strong>create</strong> a todo on the server, create a
+todo instance and call <strong>save</strong> like the following:</p>
+
+<pre><code>var todo = new Todo({name: "mow lawn"})
+todo.save(function(todo){
+  console.log( todo );
+})
+</code></pre>
+
+<p>To <strong>update</strong> a todo on the server, change the attributes
+and call <strong>save</strong> again like the following:</p>
+
+<pre><code>var todo = new Todo({name: "mow lawn"});
+todo.save( function(todo){
+  console.log("created", todo );
+
+  todo.attr("name", "mow my lawn")
+  todo.save( function( todo ) {
+    console.log("updated", todo );
+  })
+})
+</code></pre>
+
+<h3>destroy <code>todo.destroy( success( todo ), error() )</code></h3>
+
+<p><a href="can.Model.prototype.destroy.html">Destroy</a> deletes a 
+record on the server.  You can do this like:</p>
+
+<pre><code>var todo = new Todo({name: "mow lawn"});
+todo.save( function(todo){
+  console.log("created", todo );
+
+  todo.destroy( function( todo ) {
+    console.log("destroyed", todo );
+  })
+})
+</code></pre>
+
+<h3>bind <code>todo.bind( event, handler( ev, todo ) )</code></h3>
+
+<p>Listening to changes in the Model is what MVC is about. Model 
+lets you <a href="can.Model.prototype.bind.html">bind</a> to changes on an individual 
+instance or <a href="can.Model.bind.html">all instances</a>. For example, you can listen to 
+when an instance is <strong>created</strong> on the server like:</p>
+
+<pre><code>var todo = new Todo({name: "mow lawn"});
+todo.bind('created', function(ev, todo){
+  console.log("created", todo );
+})
+todo.save()
+</code></pre>
+
+<p>You can listen to anytime an <strong>instance</strong> is created on the server by binding on the model:</p>
+
+<pre><code>Todo.bind('created', function(ev, todo){
+  console.log("created", todo );
+})
+</code></pre>
+
+<p>Model produces the following events on the model constructor and instances whenever a model Ajax request completes:</p>
+
+<ul>
+<li><strong>created</strong> - an instance is created on the server</li>
+<li><strong>updated</strong> - an instance is updated on the server</li>
+<li><strong>destroyed</strong> - an instance is destroyed on the server</li>
+</ul>
+
+<h2>can.view <code>can.view( idOrUrl, data )</code></h2>
+
+<p><a href="can.view.html">can.view</a> is used to easily create HTML with
+JS templates. Pass it ...</p>
+
+<ul>
+<li>the <strong>id</strong> of a script tag to use as the content of the template</li>
+<li><strong>data</strong> to pass to the template</li>
+</ul>
+
+<p>... and it returns the rendered result of the template.  For
+example, add the following to <strong>todos.html</strong>:</p>
+
+<pre><code>&lt;script type='text/ejs' id='todosEJS'&gt;
+  &lt;% for(var i = 0; i &lt; this.length; i++ ){ %&gt;
+    &lt;li&gt;&lt;%= this[i].name %&gt;&lt;/li&gt;
+  &lt;% } %&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>Render a list of todos with:</p>
+
+<pre><code> Todo.findAll( {}, function( todos ){
+     console.log( can.view( 'todosEJS', todos ) );
+ });
+</code></pre>
+
+<p>can.view also takes a <strong>url</strong> for a template location.  <strong>Create</strong> a <em>todos/todos.ejs</em> file that 
+contains the following:</p>
+
+<pre><code>&lt;% this.each(function(todo){ %&gt;
+  &lt;li&gt;&lt;%= todo.attr('name') %&gt;&lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
+
+<p>Render this with:</p>
+
+<pre><code>Todo.findAll( {}, function( todos ){
+  console.log( can.view( 'todos.ejs', todos ) );
+});
+</code></pre>
+
+<p><strong>can.view</strong> works with <a href="can.EJS.html">can.EJS</a> and <a href="can.Mustache.html">can.Mustache</a>.</p>
+
+<h3>stealing templates</h3>
+
+<p>Use <strong>steal</strong> to load and eventually package 
+templates. Steal <code>todos.ejs</code> in <code>todos.js</code> like:</p>
+
+<pre><code>steal('can',
+      './todos.ejs',
+      'can/util/fixture',
+      function( can, todoEJS ) {
+</code></pre>
+
+<p><code>todosEJS(data)</code> takes data to render the template and returns
+a documentFragment. Render <code>todos.ejs</code> like:</p>
+
+<pre><code>Todo.findAll( {}, function( todos ){
+  $('#todos').html( todosEJS( todos ) );
+});
+</code></pre>
+
+<p>To make this work, make sure <code>todos.html</code> has a <code>#todos</code> element like:</p>
+
+<pre><code>&lt;ul id='todos'&gt;&lt;/ul&gt;
+</code></pre>
+
+<h3>Hookup <code>&lt;li &lt;%= (el)-&gt; CODE %&gt; &gt;</code></h3>
+
+<p><a href="jQuery.fn.hookup.html">can.view.hookup</a> lets you provide 
+<a href="http://wiki.ecmascript.org/doku.php?id=strawman:arrow_function_syntax">ES5-style arrow function</a>
+callbacks on elements in your template.  These callback functions get called after the template has been 
+inserted into the DOM. You can call jQuery methods on the element like:</p>
+
+<pre><code>&lt;li &lt;%= ($el) -&gt; $el.fadeIn() %&gt; style='display:none'&gt;
+  &lt;%= this[i].name %&gt;
+&lt;/li&gt;
+</code></pre>
+
+<p>In your code, add a <strong>returning</strong>  magic tag (<code>&lt;%= %&gt;</code>) that 
+matches the <em>arrow function syntax</em>.  The argument passed to the 
+function will be the jQuery-wrapped element.  </p>
+
+<p>This lets you hookup model data to elements in EJS.  Change <strong>todos.ejs</strong> to:</p>
+
+<pre><code>&lt;% this.each(function(todo){ %&gt;
+  &lt;li &lt;%= (el) -&gt; el.data('todo', todo) %&gt; class='todo'&gt;
+    &lt;%= todo.attr('name') %&gt;
+    &lt;a href="javascript://" class='destroy'&gt;X&lt;/a&gt;
+  &lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
+
+<p>Here we're setting model instance in the element's data and 
+adding classes which will allow us to select this element just by knowing model's id.</p>
+
+<h2>can.Control <code>can.Control(staticProps, prototypeProps)</code></h2>
+
+<p><a href="can.Control.html">can.Control</a> creates organized, memory-leak free, 
+rapidly performing, stateful controls. It is used to create 
+UI controls like tabs, grids, and contextmenus and used 
+to organize them into higher-order business rules 
+with <a href="can.route.html">can.route</a>. Its serves as both a traditional view 
+and a traditional controller.</p>
+
+<p>Let's make a basic todos widget that lists todos and lets 
+us destroy them. Add the following to <strong>todos.js</strong>:</p>
+
+<pre><code>var Todos = can.Control({
+  init: function( element , options ){
+    Todo.findAll({}, function(todos){
+      element.html( todosEJS( todos ) );
+    });
+  }
+})
+</code></pre>
+
+<p>We can create this widget on the <code>#todos</code> element with:</p>
+
+<pre><code>new Todos('#todos', {});
+</code></pre>
+
+<h3>init <code>can.Control.prototype.init(element, options)</code></h3>
+
+<p><a href="can.Control">Init</a> is called when a
+new Controller instance is created.  It's called with:</p>
+
+<ul>
+<li><strong>element</strong> - The jQuery wrapped element passed to the 
+              controller. Control accepts a raw HTMLElement, a CSS selector, or a NodeList.  This is set as <strong>this.element</strong> on the control instance.</li>
+<li><strong>options</strong> - The second argument passed to new Control, extended with
+              the Control's static <strong>defaults</strong>. This is set as 
+              <strong>this.options</strong> on the controller instance.</li>
+</ul>
+
+<h3>Listening to events</h3>
+
+<p>Control automatically binds prototype methods that look
+like event handlers.  Listen to <strong>click</strong>s on <code>&lt;li&gt;</code> elements like:</p>
+
+<pre><code>var Todos = can.Control({
+  init: function( element , options ){
+    Todo.findAll({}, function(todos){
+      element.html( todosEJS( todos ) );
+    });
+  },
+  "li click": function(li, event){
+    console.log("You clicked", li.text() )
+
+    // let other controls know what happened
+    li.trigger('selected', li.data('todo') );
+  }
+});
+</code></pre>
+
+<p>When an <code>&lt;li&gt;</code> is clicked, <code>"li click"</code> is called with:</p>
+
+<ul>
+<li>The NodeList of a single <strong>element</strong> that was clicked</li>
+<li>The <strong>event</strong> data</li>
+</ul>
+
+<p>Control uses event delegation, so you can add <code>&lt;li&gt;</code>s without needing to rebind event handlers.</p>
+
+<p>To destroy a todo when it's <code>&lt;a href='javascript:// class='destroy'&gt;</code> link is clicked:</p>
+
+<pre><code>var Todos = can.Control({
+  init: function( element ){
+    Todo.findAll({}, function(todos){
+      element.html( todosEJS( todos ) );
+    });
+  },
+  "li click": function(li){
+    li.trigger('selected', li.data('todo') );
+  },
+  "li .destroy click": function(el, ev){
+    // get the li element that has the model
+    var li = el.closest('li');
+
+    // get the model and destroy it
+    li.data('todo').destroy();
+  }
+})
+</code></pre>
+
+<p>Notice that when a todo instance is destroyed, it is
+automatically removed from the page. This is live-binding
+in action and it is AMAZING!</p>
+
+<p>It works because <a href="can.EJS.html">can.EJS</a> live-binds to <a href="can.Observe.html">can.Observe</a>s 
+and <a href="can.Observe.List.html">can.Observe.List</a>s. When a List or
+Observe changes, EJS will update the DOM to reflect the 
+changes. <code>todos</code> is a <a href="can.Model.List.html">can.Model.List</a> which inherits from
+<a href="can.Observe.List.html">can.Observe.List</a> and each <code>todo</code> is a <a href="can.Model.html">can.Model</a> which
+inherits from <a href="can.Observe.html">can.Observe</a>.</p>
+
+<p>When the <code>todo</code> is destroyed, it removes that instance from
+<code>todos</code>. When <code>todos</code> is updated, the page is updated.</p>
+
+<h3>Templated Event Handlers <code>"{objectName}" event</code></h3>
+
+<p>can.Control can bind to objects other than <code>this.element</code> with templated 
+event handlers. This is <strong>critical</strong>
+for avoiding memory leaks that are so common 
+among MVC applications.  </p>
+
+<p>When can.Control sees a method like <code>"{objectName} event"</code>, it looks 
+for <code>objectName</code> on the control's options (<code>this.options</code>) and then 
+the <code>window</code>.</p>
+
+<p>For example <code>"{todo} updated"</code> listens to updated events on
+the todo passed the following <code>Editor</code> control.</p>
+
+<pre><code>Editor = can.Control({
+  init: function(){
+    this.setName();
+  },
+  setName : function(){
+    this.element.val(this.options.todo.name);
+  },
+  "{todo} updated" : function(){
+    this.setName();
+  },
+  // when the input changes
+  // update the todo instance
+  "change" : function(){
+    var todo = this.options.todo
+    todo.attr('name',this.element.val() )
+    todo.save();
+  }
+});
+
+var todo = new Todo({id: 6, name: "trash"});
+
+var editor = new Editor("#editor",{todo: todo});
+</code></pre>
+
+<p>To make this work, make sure <code>todos.html</code> has an "#editor" element:</p>
+
+<pre><code>&lt;input id='editor' type='text'/&gt;
+</code></pre>
+
+<p>When the "#editor" element is removed, or <code>editor</code> is destroyed,
+can.Control will stop listening to <code>todo</code>'s updated event, freeing memory
+for garbage collection.</p>
+
+<h3>destroy <code>controller.destroy()</code></h3>
+
+<p><a href="can.Control.prototype.destroy.html">can.Control.prototype.destroy</a> unbinds a control's
+event handlers and releases its element, but does not remove 
+the element from the page. </p>
+
+<pre><code>var editor = new Editor("#todos")
+editor.destroy();
+</code></pre>
+
+<p>When a controller's element is removed from the page
+<strong>destroy</strong> is called automatically.</p>
+
+<pre><code>new Editor("#editor")
+$("#editor").remove();
+</code></pre>
+
+<p>All event handlers bound with can.Control are unbound when 
+the control is destroyed (or its element is removed).</p>
+
+<p><em>Brief aside on destroy and templated event binding. Taken 
+together, templated event binding, and control's automatic
+clean-up make it almost impossible to write leaking applications. An application 
+that uses only templated event handlers on controls within the body could free up all 
+data by calling <code>$(document.body).empty()</code>.</em></p>
+
+<h3>on <code>control.on()</code></h3>
+
+<p><a href="can.Control.prototype.on.html">can.Control.prototype.on</a> function rebinds 
+all event handlers. The following adds a <code>todo</code> method to Editor that
+allows it to switch which todo it edits:</p>
+
+<pre><code>Editor = can.Control({
+  todo: function(todo){
+    this.options.todo =  todo;
+    this.on();
+    this.setName();
+  },
+  // a helper that sets the value of the input
+  // to the todo's name
+  setName: function(){
+    this.element.val(this.options.todo.name);
+  },
+  // listen for changes in the todo
+  // and update the input
+  "{todo} updated" : function(){
+    this.setName();
+  },
+  // when the input changes
+  // update the todo instance
+  "change" : function(){
+    var todo = this.options.todo
+    todo.attr('name',this.element.val() )
+    todo.save();
+  }
+});
+
+var todo1= new Todo({id: 6, name: "trash"}),
+    todo2 = new Todo({id: 6, name: "dishes"});
+
+// create the editor;
+var editor = new Editor("#editor");
+
+// show the first todo
+editor.todo(todo1);
+
+// switch it to the second todo
+editor.todo(todo2);
+</code></pre>
+
+<h2>Routing</h2>
+
+<p><a href="can.route.html">can.route</a> is the core of CanJS's 
+routing functionality. It is a <a href="can.Observe.html">can.Observe</a> that
+updates <code>window.location.hash</code> when its properties change
+and updates its properties when <code>window.location.hash</code> 
+changes. It allows very sophisticated routing behavior ... too
+sophisticated for this guide. But, it also handles 
+the basics with ease.  </p>
+
+<p>Listen to routes in controls with special "route" events like:</p>
+
+<pre><code>var Routing = can.Control({
+  "route" : function(){
+    // matches empty hash, #, or #!
+  },
+  "todos/:id route" : function(data){
+    // matches routes like #!todos/5
+  }
+})
+
+// create routing controller
+new Routing(document.body);
+</code></pre>
+
+<p><code>route</code> methods get called back with 
+route <strong>data</strong>.  The empty <code>"route"</code> will be called 
+with no data. But, <code>"todos/:id route"</code> will be called 
+with data like: <code>{id: 6}</code>.</p>
+
+<p>We can update the route by changing can.route's data like:</p>
+
+<pre><code>can.route.attr('id','6') // location.hash = #!todos/6
+</code></pre>
+
+<p>Or we can set the hash ourselves like</p>
+
+<pre><code>var hash = can.route.url({id: 7}) // #!todos/7
+location.hash = hash;
+</code></pre>
+
+<p>The following enhances the Routing control to listen for
+<code>".todo selected"</code> events and update <code>can.route</code>.  When the
+can.route changes, it retrieves the todo from the server
+and updates the editor widget.</p>
+
+<pre><code>Routing = can.Control({
+  init : function(){
+    this.editor = new Editor("#editor")
+    new Todos("#todos");
+  },
+  // the index page
+  "route" : function(){
+     $("#editor").hide();
+  },
+  "todos/:id route" : function(data){
+    $("#editor").show();
+    Todo.findOne(data, $.proxy(function(todo){
+      this.editor.todo(todo);
+    }, this))
+  },
+  ".todo selected" : function(el, ev, todo){
+    can.route.attr('id',todo.id);
+  }
+});
+
+// create routing controller
+new Routing(document.body);
+</code></pre>
+
+<p>The <strong>Routing</strong> control is a traditional controller. It coordinates
+between the <code>can.route</code>, <code>Editor</code> and <code>Todos</code>.  <code>Editor</code> and <code>Todos</code>
+are traditional views, consuming models.</p>
+
+<p>If you can understand this, you understand 
+everything. Congrats!</p>
+
+<h2>FuncUnit</h2>
+
+<p>JavaScriptMVC uses <a href="FuncUnit.html">FuncUnit</a> for testing.  FuncUnit provides an API 
+for writing functional tests that simulate clicks and keypresses a user would make.</p>
+
+<p>To create a FuncUnit test:</p>
+
+<ul>
+<li>Create a test file that steals funcunit and</li>
+<li>Create a test.html page that steals your test file</li>
+</ul>
+
+<p>In the <strong>todos</strong> directory, make test.html and add the following HTML:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;script src='../steal/steal.js?todos/todos_test.js'&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Now make <strong>todos_test.js</strong> and add the following:</p>
+
+<pre><code>steal('funcunit', function(S){
+
+  module('todos')
+
+  test('todos test', function(){
+    ok(true, "the test loads");
+  })
+
+})
+</code></pre>
+
+<p>Open <strong>test.html</strong> in your browser.  One test passes.</p>
+
+<h3>Writing a test</h3>
+
+<p><code>S</code> is FuncUnit.  FuncUnit's API is very similar to jQuery's (hence the S). Tell 
+the test to open the todos page using <a href="FuncUnit.open.html">S.open</a>:</p>
+
+<pre><code>S.open("//todos/todos.html");
+</code></pre>
+
+<p>Once the page is open, select the first todo and click it:</p>
+
+<pre><code>S(".todo:first").click();
+</code></pre>
+
+<p>Selecting a todo will set the input element's value to the first todo's name. Wait 
+for this using a <a href="funcunit.waits.html">wait</a> command:</p>
+
+<pre><code>S("#editor").val("wake up", "First Todo added correctly");
+</code></pre>
+
+<p>The second parameter is an assertion message.</p>
+
+<p>Replace the test code within the steal callback with the following:</p>
+
+<pre><code>module('todos', {
+  setup: function(){
+    S.open("//todos/todos.html");
+  }
+})
+
+test('edit first todo', function(){
+  S(".todo:first").click();
+  S("#editor").val("wake up", "First Todo added correctly");
+})
+</code></pre>
+
+<p>Reload test.html. You'll 
+see the page open and run the test in a separate window.</p>
+
+<h3>Test Coverage</h3>
+
+<p>You can see which parts of your app are covered by your tests and which 
+parts need more testing using the [steal.instrument steal/instrument] plugin.</p>
+
+<p>To add coverage, add the following code to the very bottom of stealconfig.js:</p>
+
+<pre><code>steal('steal/instrument', function(instrument){
+  instrument({
+    ignores: ["jquery","can","funcunit","steal",
+            "*/test","*_test.js","*funcunit.js"]
+  })
+})
+</code></pre>
+
+<p>Reload test.html. When the tests are done, you'll see 
+overall coverage stats.</p>
+
+<p><img class='image_tag' src='tutorials/images/coverage1.png' /></p>
+
+<p>Click the filename to see what lines did and didn't run.</p>
+
+<p><img class='image_tag' src='tutorials/images/coverage2.png' /></p>
+
+<h3>Automation</h3>
+
+<p>To run these tests automated, run the following from the console:</p>
+
+<pre><code>./js funcunit/open/selenium todos/test.html
+</code></pre>
+
+<p>FuncUnit supports <a href="funcunit.integrations.html">integration</a> with CI tools 
+like <a href="funcunit.jenkins.html">Jenkins</a>, build tools like <a href="funcunit.maven.html">maven</a>, 
+and running via the <a href="funcunit.phantomjs.html">PhantomJS</a> headless browser.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Building Cookbook </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="getstarted.html" data-search="Get Started with JMVC">
+				Get Started with JMVC
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.creating.html" data-search="Creating Cookbook">
+						Creating Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.testing.html" data-search="Testing Cookbook">
+						Testing Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="building.cookbook.html" data-search="Building Cookbook">
+						Building Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.documenting.html" data-search="Documenting Cookbook">
+						Documenting Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Building Cookbook
+
+	
+		<span class="module">building.cookbook</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>There is a large overhead associated with 
+downloading many JavaScript and CSS files. <a href="stealjs.html">StealJS</a>
+can build your app into a single minified JS and CSS file
+for faster download.</p>
+
+<div class='whisper'>
+    It can also break your app into cache-able minified parts
+    for more advanced performance techniques.
+</div>
+
+<h2>Build Script</h2>
+
+<p>To build your application, run the following command from a console:</p>
+
+<pre><code> &gt; ./js cookbook/scripts/build.js
+   Building to cookbook/
+   ...
+   Building cookbook/production.js
+            cookbook/production.css
+</code></pre>
+
+<p>Verify that production.js was created by checking your <code>cookbook</code> folder.</p>
+
+<h2>Switch to Production Mode</h2>
+
+<p>Switch to production mode by changing the script tag to include steal.production.js:</p>
+
+<pre><code>&lt;script type='text/javascript'
+       src='../steal/steal.production.js?cookbook'&gt;
+&lt;/script&gt;
+</code></pre>
+
+<h2>Reload and verify</h2>
+
+<p>Reload your page. Only two JavaScript files will load: steal.production.js and production.js.
+Not bad considering 28 files are loaded in development mode.</p>
+
+<p>When you're ready, learn how to <a href="cookbook.documenting.html">Document Cookbook</a></p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

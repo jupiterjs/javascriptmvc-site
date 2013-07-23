@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Srchr </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="examples.html" data-search="Examples">
+				Examples
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="srchr.html" data-search="Srchr">
+						Srchr
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="todo.html" data-search="Todo">
+						Todo
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="contacts.html" data-search="Contacts ">
+						Contacts 
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Srchr
+
+	
+		<span class="module">srchr</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>Srchr searches several data sources for content and 
+displays it to the user.  See it in 
+action <a href="http://javascriptmvc.com/srchr/srchr.html">here</a>. This article
+covers how to install Srchr. To understand how Srchr works and many
+of the core concepts behind JavaScriptMVC, please watch:</p>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=NZi5Ru4KVug">Part 1 - MVC architecture and the observer pattern</a></li>
+<li><a href="http://www.youtube.com/watch?v=yFxDY5SQQp4">Part 2 - Development process</a></li>
+</ul>
+
+<h2>Installing Srchr</h2>
+
+<p>Install the Srchr app by cloning the git repo:</p>
+
+<pre><code>&gt; git clone git://github.com/bitovi/srchr srchr
+&gt; cd srchr
+&gt; git submodule update --init --recursive
+</code></pre>
+
+<p>Once you get the application you should have a structure similar to below</p>
+
+<pre><code>/srchr [top-level directory]
+    /can
+    /documentjs
+    /steal
+    /funcunit
+    /srchr
+        /history
+        /models
+        /scripts
+        /search
+        /search_result
+        /tabs
+        /templates
+        /test
+        test.html
+        srchr.less
+        srchr.js
+        srchr.html
+        ...
+</code></pre>
+
+<p>Srchr is now ready to be used. To run the Srchr application simply open <em>srchr/index.html</em> in your browser. </p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

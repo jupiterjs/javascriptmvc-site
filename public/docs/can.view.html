@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - can.view</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="canjs.html" data-search="CanJS">
+				CanJS
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	<ul>
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="can.view.modifiers.html" data-search="jQuery modifiers">
+						jQuery modifiers
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>static</span>
+						
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="property" href="can.view.cache.html" data-search="cache">
+						cache
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.view.ejs.html" data-search="ejs">
+						ejs
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="property" href="can.view.ext.html" data-search="ext">
+						ext
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.view.hook.html" data-search="hook">
+						hook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.view.mustache.html" data-search="mustache">
+						mustache
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.view.register.html" data-search="register">
+						register
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.view.render.html" data-search="render">
+						render
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+					</li>
+					
+				
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+can.view
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			<p>A JavaScript template framework. 
+<code>can.view</code> is a JavaScript template framework that provides:</p>
+
+<ul>
+<li>template loading from html elements or external files</li>
+<li>synchronous and asynchronous template loading</li>
+<li>deferred support</li>
+<li>callbacks on elements for functionality like live live-binding</li>
+</ul>
+
+<p>can.view supports other templating languages, but using <a href="can.EJS.html">can.EJS</a> is highly encouraged.</p>
+		</section>
+
+		
+		<section class="signature">
+			<h2>can.view(view, data, helpers)</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>view
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>The URL to a template or the ID of a template.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>data
+				<code>{Object}</code></h4>
+			<div class="description">
+				<p>Data to populate the template with.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>helpers
+				<code>{Object&lt;String,function()&gt;}</code></h4>
+			<div class="description">
+				<p>Helpers referenced in the template.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{String}</code></h4>
+		<div class="description">
+			<p>The template with the data interpolated into it.</p>
+		</div>
+	</div>
+
+
+</div>
+
+		</section>
+		
+
+		
+
+		
+		<section class="comment">
+			<h2>Use</h2>
+
+<p><code>can.view( idOrUrl, data, helpers )</code> loads template content from an element, a url or a string, renders
+it with data, and converts it to a documentFragment so it can be easily and 
+efficiently inserted into the DOM.</p>
+
+<pre><code>document.getElementById('person')
+  .appendChild( can.view('person.ejs', {name: "Justin" } ) )
+</code></pre>
+
+<p>This code:</p>
+
+<ol>
+<li><p>Loads the template a 'mytemplate.ejs'. It might look like:
+<pre><code>&lt;h2>&lt;%= name %>&lt;/h2></pre></code></p></li>
+<li><p>Renders it with {message: 'hello world'}, resulting in:
+<pre><code>&lt;div id='foo'>"&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>
+<li><p>Inserts the result into the foo element. Foo might look like:
+<pre><code>&lt;div id='person'>&lt;h2>Justin&lt;/h2>&lt;/div></pre></code></p></li>
+</ol>
+
+<h2>Loading Templates</h2>
+
+<p><code>can.view</code> can load templates from a url or from a script.</p>
+
+<h3>Loading templates from a script tag</h3>
+
+<p>To load from a script tag, create a script tag with:</p>
+
+<ul>
+<li>the template contents within the script tag</li>
+<li>an id</li>
+<li><p>a type attribute that specifies the type of template</p>
+
+<script type='text/ejs' id='recipesEJS'>
+<% for(var i=0; i < recipes.length; i++){ %>
+  <li><%=recipes[i].name %></li>
+<%} %>
+</script></li>
+</ul>
+
+<p>Render with this template like:</p>
+
+<pre><code>document.getElementById('recipes')
+  .appendChild( can.view('recipesEJS', recipeData ) )
+</code></pre>
+
+<p>Notice we passed the id of the element we want to render.</p>
+
+<h3>Loading templates from a url</h3>
+
+<p>To load from a url, simply pass the location of the template
+to <code>can.view</code>.  The location of the template needs an extension that
+matches the type of template:</p>
+
+<pre><code>document.getElementById('recipes')
+  .appendChild( can.view('templates/recipes.ejs', recipeData ) )
+</code></pre>
+
+<h3>Creating templates from strings</h3>
+
+<p>You can also register a view string for a given id programmatically for any registered template engine using
+<code>can.view.&lt;engine&gt;(id, template)</code>:</p>
+
+<pre><code>can.view.ejs('myViewEJS', '&lt;h2&gt;&lt;%= message %&gt;&lt;/h2&gt;');
+can.view('myView', { message : 'Hello EJS' });
+// -&gt; &lt;h2&gt;Hello EJS&lt;/h2&gt;
+</code></pre>
+
+<h3>Renderer functions</h3>
+
+<p>Additionally to rendering a template immediately it is also possible to retrieve a renderer function by just passing
+the view name. The renderer function can be called with the template data at a later point in time:</p>
+
+<pre><code>var renderer = can.view('templates/recipes.ejs');
+// Do some things
+document.getElementById('recipes')
+  .appendChild( renderer(recipeData ) )
+</code></pre>
+
+<p>It is also possible to get a nameless renderer function when creating a template from a string:</p>
+
+<pre><code>var renderer = can.view.ejs('&lt;strong&gt;&lt;%= message %&gt;&lt;/strong&gt;');
+renderer({
+  message : 'Message form EJS'
+}); // -&gt; &lt;strong&gt;Message from EJS&lt;/strong&gt;
+
+renderer = can.view.mustache('&lt;strong&gt;{{message}}&lt;/strong&gt;');
+renderer({
+  message : 'Message form Mustache'
+}); // -&gt; &lt;strong&gt;Message from Mustache&lt;/strong&gt;
+</code></pre>
+
+<h2>Supported Template Engines</h2>
+
+<p>CanJS supports the following template languages:</p>
+
+<ul>
+<li><p>EmbeddedJS (ejs)</p>
+
+<pre><code>&lt;h2>&lt;%= message %>&lt;/h2></code></pre></li>
+<li><p>Mustache (mustache)</p>
+
+<pre><code>&lt;h2{{message}}&lt/h2></code></pre></li>
+<li><p>JAML (jaml)</p>
+
+<pre><code>h2(data.message);</code></pre></li>
+<li><p>Micro (micro)</p>
+
+<pre><code>&lt;h2>{%= message %}&lt;/h2></code></pre></li>
+<li><p>jQuery.Tmpl (tmpl)</p>
+
+<pre><code>&lt;h2>${message}&lt;/h2></code></pre></li>
+</ul>
+
+<h2>Rendering to strings and sub-templates</h2>
+
+<p>To render to a string, use <code>can.view.render(idOrUrl, data)</code> like:</p>
+
+<pre><code>can.view.render("/templates/recipe.ejs",{recipe: recipe})
+</code></pre>
+
+<p>To render a sub-template within another template, use render like:</p>
+
+<pre><code>&lt;% $.each(recipes, function(i, recipe){ %&gt;
+  &lt;li&gt;&lt;%== can.view.render("/templates/recipe.ejs",{
+             recipe: recipe
+            }) %&gt;
+  &lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
+
+<h2>Asynchronous Loading</h2>
+
+<p>By default, retrieving templates is done synchronously. This 
+is fine because StealJS packages view templates with your 
+JS download.</p>
+
+<p>However, some people might not be using StealJS or want to 
+delay loading templates until necessary. If you have the need, 
+you can provide a callback paramter like:</p>
+
+<pre><code>can.view('recipes',recipeData, function(frag){
+  document.getElementById('recipes')
+    .appendChild(frag)
+});
+</code></pre>
+
+<p>The callback function will be called with the result of 
+the rendered template.</p>
+
+<h2>Deferreds</h2>
+
+<p>If you pass deferreds to can.view it 
+will wait until all deferreds resolve before rendering 
+the view. This makes it a one-liner to make a request and use the 
+result to render a template.</p>
+
+<p>The following makes a request for todos in parallel with the 
+todos.ejs template. Once todos and template have been loaded, 
+it with render the view with the todos.</p>
+
+<pre><code>can.view('recipes', Todo.findAll() , function(frag){
+  document.getElementById('recipes')
+    .appendChild(frag)
+})
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

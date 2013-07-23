@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - steal.config.shim</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="stealjs.html" data-search="StealJS">
+				StealJS
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="steal.html" data-search="steal">
+				steal
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="steal.config.html" data-search="steal.config">
+				config
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="steal.config.shim.html" data-search="steal.config.shim">
+				shim
+			</a>
+			
+	<ul>
+		
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>property</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+shim
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+		<section class="signature">
+			<h2>steal.config(&quot;shim&quot;,options)</h2>
+<div class="signature-wrapper">
+<p>Allows configuring a
+specific module's behavior. It accepts an object map of 
+<code>moduleId</code> property names to options. For example, the
+following ensures that the "jquery" module is loaded before
+"jquery.ui.tabs.js":</p>
+
+<pre><code>steal.config("shim",{
+  "jquery.ui.tabs.js" : {
+    deps: ["jquery"]
+  }
+});
+</code></pre>
+
+<p>The following options are supported:</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>options
+				<code>{Object}</code></h4>
+			<div class="description">
+				
+			</div>
+			
+			
+			<ul class="options">
+				
+				<li class="option">
+					<h5>deps 
+						<code>{Object}</code>
+					</h5>
+					<div class="description">
+						<p>the dependencies that must load before this module</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>exports 
+						<code>{String}</code>
+					</h5>
+					<div class="description">
+						<p>define the export value of the module</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>ignore 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p>ignore this module completely in production builds</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>minify 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p>minify this script in production</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>packaged 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p>if set to false, don't package this file, but load it in production</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>type 
+						<code>{String}</code>
+					</h5>
+					<div class="description">
+						<p>the type this module represents</p>
+					</div>
+				</li>
+				
+			</ul>
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+</div>
+
+		</section>
+		
+
+		
+		<div class='primary-options'>
+			<h2>
+	
+	   Property Type:
+	
+	
+	<code>{Object}</code>
+</h2>
+
+
+
+
+
+
+		</div>
+		
+
+		
+		<section class="comment">
+			<h3>deps</h3>
+
+<p><code>deps</code> is an array of module ids that must load 
+and run before this module. For example, if <code>moocalendar</code> 
+depends on <code>mootools</code> and 'can/view/ejs`, but does not use
+steal, write:</p>
+
+<pre><code>steal.config({
+  shim: {
+    moocalendar: {
+      deps: ["mootools","can/view/ejs"]  
+    }
+  }       
+});
+</code></pre>
+
+<p>If a shim moduleId's value is an array, or string, it is assumed
+to be a dependency. This means the following will work the 
+same as above:</p>
+
+<pre><code>steal.config({
+  shim: {
+    moocalendar: ["mootools","can/view/ejs"]  
+  }       
+});
+</code></pre>
+
+<p>This type of thing works too:</p>
+
+<pre><code>steal.config("shim",{
+  "jquery.ui.tabs.js": "jquery"
+  }
+});
+</code></pre>
+
+<h3>exports</h3>
+
+<p>The <code>exports</code> option allows a module that is not using steal to export a value
+that can be an argument in a steal callback function. <code>exports</code> can
+be specified as a String or a function.  If <code>exports</code> is a string,
+that string is the name of a global variable to use after the 
+module's code has been run. For example, the following might allow you 
+to reference jQuery as <strong>jQ</strong> in <code>steal('jquery',function(jQ){})</code>:</p>
+
+<pre><code>steal.config({
+   shim : {
+     jquery: {
+       exports: "jQuery"
+     }
+   }
+ })
+</code></pre>
+
+<p><code>"jQuery"</code> is the name of the global variable to export.</p>
+
+<p>If <code>exports</code> is a function, it is run after the module's code has run
+and passed the modules <code>deps</code> as arguments.  The function's return
+value is used as the module's value. For example:</p>
+
+<pre><code>steal.config({
+   shim : {
+     jquery: {
+       exports: "jQuery"
+     },
+     "slider/slider.js": {
+       deps: ["jquery","jqueryconstruct.js"]
+       exports: function($, jQueryConstruct){
+         return jQueryConstruct($.fn.slider)
+       }  
+     }
+   }
+ })
+</code></pre>
+
+<h3>ignore</h3>
+
+<p>Setting <code>ignore: true</code> ignores this module completely in production 
+builds. It does not package it and will not load it.</p>
+
+<pre><code>steal.config({
+   shim : {
+     "mydebugtools/mydebugtools.js": {
+       ignore: true
+     }
+   }
+ })
+</code></pre>
+
+<h3>minify</h3>
+
+<p>Setting <code>minify: false</code> prevents this module from being minified. Some modules
+have already been minified or possibly break with minification.</p>
+
+<pre><code>steal.config({
+   shim : {
+     "datejs": {
+       minify: false
+     }
+   }
+ })
+</code></pre>
+
+<h3>packaged</h3>
+
+<p>Setting <code>packaged: false</code> prevents the module from being added in
+a production build, but it will still load.</p>
+
+<pre><code>steal.config({
+   shim : {
+     "jquery": {
+       packaged: false
+     }
+   }
+ })
+</code></pre>
+
+<h3>type</h3>
+
+<p>Specifying the type can override the module's type infered from
+it's extension.</p>
+
+<pre><code>steal.config({
+   shim : {
+     "foo/bar.js": {
+      type: "css"
+     }
+   }
+ })
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

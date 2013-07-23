@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Creating Cookbook </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="getstarted.html" data-search="Get Started with JMVC">
+				Get Started with JMVC
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="cookbook.creating.html" data-search="Creating Cookbook">
+						Creating Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.testing.html" data-search="Testing Cookbook">
+						Testing Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="building.cookbook.html" data-search="Building Cookbook">
+						Building Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.documenting.html" data-search="Documenting Cookbook">
+						Documenting Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Creating Cookbook
+
+	
+		<span class="module">cookbook.creating</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>We're going to create a basic cookbook application that
+lets us create, and delete recipes. It will look like:</p>
+
+<p><img class='image_tag' src='../tutorials/getstarted/Cookbook.png' />
+</br>
+We'll use JavaScriptMVC's <a href="steal.generate.html">generator scripts</a> to
+assist in setting up your application's
+files and folders. They save time creating boilerplate
+js, html, and css files.</p>
+
+<h2>Generating an Application</h2>
+
+<p>To create your application, open a console window and 
+navigate to your <a href="rootfolder.html">root folder</a>, and run:</p>
+
+<pre><code>&gt; ./js jmvc/generate/app cookbook
+</code></pre>
+
+<p>This script creates an application folder and
+files. Here's what each file does:</p>
+
+<pre><code>cookbook/                // folder for your app
+  cookbook.less          // less for your app
+  index.html             // a page for your app
+  cookbook.js            // app file, loads other files
+  test.html              // app's test page
+  cookbook_test.js       // app's tests
+  models/                // model &amp; data layers
+    fixtures/            // simulated Ajax responses
+  scripts/               // command line scripts
+    build.html           // html for build script
+    build.js             // build script
+    clean.js             // code cleaning / linting
+    crawl.js             // generate search content
+    docs.js              // create documentation
+</code></pre>
+
+<p>We'll use index.html for our application. If 
+you need to make another page for your app you 
+can generate it:</p>
+
+<pre><code class="lang-text">> ./js jmvc/generate/page cookbook dev.html
+Generating ... dev.html</code></pre>
+
+<p>Or you add the steal script to an existing page 
+page followed by <code>?cookbook</code> like:</p>
+
+<pre><code>&lt;script type='text/javascript'
+        src='../path/to/steal/steal.js?cookbook'&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>If you open //cookbook/index.html, you'll see a
+JavaScriptMVC welcome screen.  </p>
+
+<p><img class='image_tag' src='../tutorials/getstarted/Welcome.png' />
+<br/>Open <code>cookbook/index.html</code> and you will find:</p>
+
+<pre><code>&lt;script src='../steal/steal.js?cookbook'&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>This line loads <a href="steal.html">steal</a> and tells steal to 
+load <code>cookbook/cookbook.js</code>. <code>cookbook/cookbook.js</code> is
+your application file.  Open it and you will find:</p>
+
+<pre><code>steal(
+    './cookbook.less',          
+    './models/fixtures/fixtures.js',    
+    function(){                 
+
+})
+</code></pre>
+
+<p>The application file loads and configures your applications resources.  Currently,
+it's loading the app's less file, fixtures (there are no fixtures yet).</p>
+
+<p>Now it's time to make some widgets, models, and fixtures that allow us to create and delete
+recipes!  </p>
+
+<h2>Scaffolding Recipes</h2>
+
+<p>We'll use the scaffold generator to quickly create:</p>
+
+<ul>
+<li>A Recipe model for CRUDing recipes on the server</li>
+<li>A Fixture for simulating a recipe service</li>
+<li>A widget for creating recipes</li>
+<li>A widget for listing and deleting recipes</li>
+</ul>
+
+<p>To scaffold recipes run the following in the command-line console:</p>
+
+<pre><code>&gt; ./js jmvc/generate/scaffold cookbook/models/recipe
+</code></pre>
+
+<p>Here's what each part does:</p>
+
+<p><strong>recipe.js</strong></p>
+
+<p>Creates a recipe <a href="can.Model.html">model</a> that is used
+to create, retrieve, updated, and delete 
+recipes on the server.</p>
+
+<p><strong>recipe_test.js</strong></p>
+
+<p>Tests the recipe model.</p>
+
+<p><strong>fixtures.js</strong></p>
+
+<p>The generator added code to simulate the Recipe Model's Ajax
+requests (You might not have a Recipe service).</p>
+
+<p><strong>recipe/create</strong></p>
+
+<p>This folder contains the code, demo page, and tests for a
+widget that creates Recipes.</p>
+
+<p><strong>recipe/list</strong></p>
+
+<p>This folder contains the code, demo page, and tests for a
+widget that lists recipes.</p>
+
+<p><strong>(steal added)</strong></p>
+
+<p>"(steal added)" means the generator is 
+adding a steal call to load
+a generated file for you.  For example, 
+<code>cookbook/cookbook.js</code> now steals <code>'cookbook/recipe/create'</code> and <code>'cookbook/recipe/list'</code>.</p>
+
+<h2>Page Setup</h2>
+
+<p>After the generator runs, your application file (<code>cookbook.js</code>)
+looks like:</p>
+
+<pre><code>steal(
+    'cookbook/recipe/create',
+    'cookbook/recipe/list',
+    './cookbook.less',
+    './models/fixtures/fixtures.js',
+    function(RecipeCreate, RecipeList){
+
+    new RecipeList('#recipes');
+    new RecipeCreate('#create');
+})
+</code></pre>
+
+<p>You'll notice that it now loads <code>cookbook/recipe/create</code>
+and <code>cookbook/recipe/list</code> and then tries to add these widgets to the
+<code>#recipes</code> and <code>#create</code> elements.  </p>
+
+<p>However, <code>#recipes</code> and <code>#create</code> elements did not 
+exist! Fortunately, the generator also added their HTML to <code>index.html</code> so that 
+it includes:</p>
+
+<pre><code>&lt;h2&gt;Recipes&lt;/h2&gt;
+&lt;ul id='recipes'&gt;&lt;/ul&gt;
+&lt;form id='create'&gt;&lt;/form&gt;
+</code></pre>
+
+<p>Remove all other generated parts of the <code>index.html</code> page so it just looks like:</p>
+
+<pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en"&gt;
+    &lt;head&gt;
+        &lt;title&gt;cookbook&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h2&gt;Recipes&lt;/h2&gt;
+        &lt;ul id='recipes'&gt;&lt;/ul&gt;
+        &lt;form id='create'&gt;&lt;/form&gt;
+        &lt;script type='text/javascript' src='../steal/steal.js?cookbook'&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h2>Run Cookbook</h2>
+
+<p>That's it. You've created a simple Cookbook 
+application. Open cookbook/index.html in a browser. </p>
+
+<p><img class='image_tag' src='../tutorials/getstarted/Cookbook.png' /></p>
+
+<div style='background-color: #dddddd;  margin: 20px 0px;padding: 20px'>
+<p>
+<b style='color:red'>NOTICE:</b> 
+If you are having problems and 
+using Chrome from the filesystem, it's because Chrome has an
+<a href="http://code.google.com/p/chromium/issues/detail?id=47416">insanely restrictive AJAX policies on the filesystem</a>.
+</p>
+<p>
+Essentially, Chrome does not allow AJAX requests to
+files outside the html page's folder.  JavaScriptMVC
+organizes your files into separate folders.
+</p>
+<p>
+To fix this, just run JavaScriptMVC from a web server.
+Or, you can use another browser.  Or you can add
+`--allow-file-access-from-files` to Chrome's start script.
+</p>
+<p>
+If you're annoyed like we are, 
+<a href="http://code.google.com/p/chromium/issues/detail?id=47416">star the issue</a>
+and let 
+google know you'd like Chrome to work on the filesystem!
+</p>
+</div>
+
+<p>Continue to <a href="cookbook.testing.html">Testing Cookbook</a> or continue to read how
+this code works.</p>
+
+<h2>How it Works</h2>
+
+<p>The Cookbook application can be broken into 5 parts:</p>
+
+<ul>
+<li>The Recipe model</li>
+<li>The recipes fixture</li>
+<li>The RecipeCreate control</li>
+<li>The RecipeList control</li>
+<li>The cookbook application that puts it all together</li>
+</ul>
+
+<h3>The Recipe Model and Fixture</h3>
+
+<p><code>cookbook/models/recipe.js</code> looks like:</p>
+
+<pre><code>steal('can', function (can) {
+
+    return can.Model(
+    {
+        findAll : "GET /recipes",
+        findOne : "GET /recipes/{id}",
+        create : "POST /recipes",
+        update : "PUT /recipes/{id}",
+        destroy : "DELETE /recipes/{id}"
+    },
+    {});
+});
+</code></pre>
+
+<p>This loads CanJS's core, which includes <a href="can.Model.html">can.Model</a>, and uses it to create a 
+constructor function that lets us
+create, retrieve, update, and delete models programmatically like:</p>
+
+<p><strong>create</strong></p>
+
+<pre><code>// create a recipe instance
+var recipe = new Recipe({
+  name: 'Hot Dog',
+  description: 'nuke dog, put in bun'
+})
+
+// call save to create on the server
+recipe.save()
+</code></pre>
+
+<p><strong>retrieve</strong></p>
+
+<pre><code>// get recipes from the server
+Recipe.findAll({}, function(recipes){
+  // do something with recipes
+})
+</code></pre>
+
+<p><strong>update</strong></p>
+
+<pre><code>// update the properties of a created recipe
+recipe.attr({
+  name: 'Bratwurst',
+  description: 'nuke bratwurst, put in bun'
+});
+
+// call save to send updates to the server
+recipe.save()
+</code></pre>
+
+<p><strong>delete</strong></p>
+
+<pre><code>// call destroy
+recipe.destroy()
+</code></pre>
+
+<p>Of course, we don't have a server to make requests to. This is
+where fixtures come in.</p>
+
+<h3>The Recipe Fixture</h3>
+
+<p><a href="can.fixture.html">Fixtures</a> intercept AJAX requests and
+simulate the response. They enable
+you to start work on the front end without a ready server.</p>
+
+<p>Open <code>cookbook/models/fixtures/fixtures.js</code> and you will this:</p>
+
+<pre><code>steal("can/util/fixture", function(fixture) {
+
+    var store = fixture.store(5, function(i){
+        return {
+            name: "recipe "+i,
+            description: "recipe " + i
+        }
+    });
+
+    fixture({
+        'GET /recipes' : store.findAll,
+        'GET /recipes/{id}' : store.findOne,
+        'POST /recipes' : store.create,
+        'PUT /recipes/{id}' : store.update,
+        'DELETE /recipes/{id}' : store.destroy
+    });
+
+    return store;
+});
+</code></pre>
+
+<p>The scaffold generator added this to simulate a server 
+with 5 recipes.  Read more about how this works on
+<a href="can.fixture.store.html">store's documentation page</a>.</p>
+
+<h3>The RecipeCreate control</h3>
+
+<p>Open <code>cookbook/recipe/create/create.html</code> in your 
+browser.  This page demos the RecipeCreate control and
+lets you create recipes.  It lets us work on a control
+independent of the rest of the application.</p>
+
+<p>Open <code>cookbook/recipe/create/create.js</code> to find:</p>
+
+<pre><code>steal('can', 
+    'cookbook/models/recipe.js',
+    './init.ejs', 
+    'jquery/dom/form_params',
+    function (can, Recipe, initView) {
+
+    return can.Control(
+    /** @Prototype */
+    {
+        init: function () {
+            this.element.html(initEJS());
+        },
+        submit: function (el, ev) {
+            ev.preventDefault();
+            el.find('[type=submit]').val('Creating...');
+
+            new Recipe(el.formParams()).save(function() {
+                el.find('[type=submit]').val('Create');
+                el[0].reset()
+            });
+        }
+    });
+});
+</code></pre>
+
+<p>This code uses <a href="steal.html">steal</a> to load dependencies and then creates and returns 
+a control constructor function.  In <code>cookbook/cookbook.js</code> that 
+control constructor function is aliased as RecipeCreate.  A new instance
+is created on the <code>#create</code> element as follows:</p>
+
+<pre><code>new RecipeCreate('#create')
+</code></pre>
+
+<p>When a control instance is created, the control's <code>init</code>
+method is called and runs </p>
+
+<pre><code>this.element.html(initEJS());
+</code></pre>
+
+<p><code>initEJS</code> is a <a href="can.view.ejs.html">renderer</a> function that renders
+the template at <code>cookbook/recipe/create/init.ejs</code> into 
+a documentFragment. That document fragment is set as the control's inner html
+using jQuery's <a href="http://api.jquery.com/html/">html</a> method.</p>
+
+<p>When a control instance is created, it also binds event handlers on the
+control's element.  In this case, it listens for "submit" events on the element.</p>
+
+<p>When a submit event happens, it updates the submit button's text, then creates
+a new recipe.</p>
+
+<h3>The RecipeList control</h3>
+
+<p>Open <code>cookbook/recipe/list/list.html</code> in your 
+browser.  This page demos the RecipeList control. It loads
+Recipes from the server, lets you delete recipes, and it also 
+listens for recipes being created and adds them to the list.</p>
+
+<p>Open <code>cookbook/recipe/list/list.js</code> to
+see the control's code:</p>
+
+<pre><code>steal('can',
+    './init.ejs',
+    'cookbook/models/recipe.js',
+    function (can, initEJS, Recipe) {
+
+    return can.Control(
+    /** @Static */
+    {
+        defaults : {
+            Recipe: Recipe
+        }
+    },
+    /** @Prototype */
+    {
+        init: function () {
+            this.list = new Recipe.List();
+            this.element.html(initEJS(this.list));
+            this.list.replace(Recipe.findAll());
+        },
+        '.destroy click': function (el) {
+            if (confirm("Are you sure you want to destroy?")) {
+                el.closest('.recipe').data('recipe').destroy();
+            }
+        },
+        "{Recipe} created": function (Model, ev, instance) {
+            this.list.push(instance);
+        }
+    });
+});
+</code></pre>
+
+<p>In <code>cookbook/cookbook.js</code>, when a <code>new RecipeList</code> is created, <code>init</code> is 
+called. <code>init</code> first creates an empty <a href="can.Model.List.html">can.Model.List</a>:</p>
+
+<pre><code>this.list = new Recipe.List();
+</code></pre>
+
+<p>Then it renders <code>cookbook/recipe/list/init.ejs</code> and sets the result as
+the inner html of the <code>controls</code> element:</p>
+
+<pre><code>this.element.html(initEJS(this.list));
+</code></pre>
+
+<p><code>init.ejs</code> looks like:</p>
+
+<pre><code>&lt;% this.each(function(current) { %&gt;
+  &lt;li class="recipe" &lt;%= (el) -&gt; el.data('recipe', current) %&gt;&gt;
+  &lt;h3&gt;
+    &lt;%= current.attr('name') %&gt;
+    &lt;a href='javascript://' class='destroy'&gt;X&lt;/a&gt;
+  &lt;/h3&gt;
+  &lt;p&gt;&lt;%= current.attr('description') %&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;% }) %&gt;
+</code></pre>
+
+<p>In the template, <code>this</code> is <code>this.list</code>. <code>this.list</code> is initially empty so
+the inner html of <code>this.element</code> is empty. The <a href="can.Observe.List.prototype.replace.html">replace</a>
+method replaces the contents of the list with <code>items</code>.  If <code>items</code> is a
+[can.deferred deferred], it replaces the contents of the list with the
+resolved value of the deferred.</p>
+
+<p>The following replaces the items in <code>this.list</code> with <code>Recipes</code> from the server:</p>
+
+<pre><code>this.list.replace(Recipe.findAll());
+</code></pre>
+
+<p>Once the list is updated, the page is automatically updated 
+with live-binding. <code>init.ejs</code> iterates through the recipes. For each
+recipe, it creates an LI element and renders <code>name</code> and <code>description</code>.</p>
+
+<p>Notice that the view adds each recipe instance to its LI element's data with:</p>
+
+<pre><code>&lt;%= (el) -&gt; el.data('recipe', current) %&gt;
+</code></pre>
+
+<p><strong>Destroying Recipes</strong></p>
+
+<p>Each recipe has a destroy link.  When it is clicked, the list's
+<code>'.destroy click'</code> method is called:</p>
+
+<pre><code>'.destroy click': function (el) {
+    if (confirm("Are you sure you want to destroy?")) {
+        el.closest('.recipe').data('recipe').destroy();
+    }
+}
+</code></pre>
+
+<p>This method checks if you want to destroy the recipe.  If you do,
+it finds the parent 'recipe' element and gets back the recipe instance that's
+in jQuery.data. It then calls <a href="can.Model.prototype.destroy.html">model's destroy</a> method.</p>
+
+<p>When a model is destroyed, all occurrences will be removed from any list. Due to live binding
+the recipe on the page will be removed automatically.</p>
+
+<p><strong>Creating Recipes</strong></p>
+
+<p>When a recipe is created, a "created" event is triggered.  The List control listens for this
+with:</p>
+
+<pre><code>"{Recipe} created" : function(Recipe, ev, recipe){
+  this.list.push(recipe);
+}
+</code></pre>
+
+<p>When a recipe is created, we just add it to the list we are currently displaying.
+Thanks to live binding the list will show the new recipe.</p>
+
+<h3>Putting it all Together</h3>
+
+<p>The cookbook application loads both of these widgets and adds them to the page.
+When RecipeCreate creates a Recipe, it creates a 'created' event which
+RecipeList listens for and adds that newly created recipe to its list
+of recipes.</p>
+
+<p>It's useful to notice that <code>RecipeCreate</code> and <code>RecipeList</code> operate independently of
+each other.</p>
+
+<p>Continue to <a href="cookbook.testing.html">Testing Cookbook</a>.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - makePackage</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="steal|build|js|js.js.html" data-search="steal/build/js/js.js">
+				steal/build/js/js.js
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="function" href="makePackage.html" data-search="makePackage">
+						makePackage
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+makePackage
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p><code>steal.build.js.makePackage(moduleOptions, dependencies, cssPackage, buildOptions)</code>
+creates JavaScript and CSS packages. For example:</p>
+
+<pre><code>steal.build.js.makePackage( [
+   { buildType : "js", id : "a.js", text: "a" },
+   { buildType : "js", id : "b.js", text: "b" },
+   { buildType : "css", id : "c.css", text: "c" }
+  ],
+  { "package/1.js" : ["jquery/jquery.js"] },
+  "package/css.css",
+  {stealOwnModules: true}
+)
+</code></pre>
+
+<p>... produces an object with minified js that looks like the following
+unminified source:</p>
+
+<pre><code>// indicates these modules are loading
+steal.has("a.js","b.js");
+
+// steal any packages this package depends on
+// waits makes them wait until the prior steal has finished
+steal({id:"package/1.js",waits:true,has:["jquery/jquery.js"]});
+steal({id:"package/css.css",waits:true,has:["c.css"]});
+
+// steal the modules required by production.js
+// so that it can be marked completed
+// at the right time
+steal("a.js","b.js");
+
+// temporarily saves and empties the pending
+// queue because the content's of other files
+// will add to it and steal.excuted will clear it.
+steal.pushPending();
+// the files and executed contexts
+a;
+steal.executed("a.js");
+b;
+steal.executed("b.js");
+
+// pop production.js's pending state back into
+// the pending queue.  
+// When production.js is done loading, steal
+// will use pending as production.js's dependencies.
+steal.popPending();
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

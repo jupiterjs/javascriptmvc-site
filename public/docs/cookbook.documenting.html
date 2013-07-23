@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Documenting Cookbook </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="getstarted.html" data-search="Get Started with JMVC">
+				Get Started with JMVC
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.creating.html" data-search="Creating Cookbook">
+						Creating Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="cookbook.testing.html" data-search="Testing Cookbook">
+						Testing Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="building.cookbook.html" data-search="Building Cookbook">
+						Building Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="cookbook.documenting.html" data-search="Documenting Cookbook">
+						Documenting Cookbook
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Documenting Cookbook
+
+	
+		<span class="module">cookbook.documenting</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>Documentation is a critical step in creating maintainable code. 
+It's often burdensome on developers and 
+becomes neglected. JavaScriptMVC's integrates <a href="DocumentJS.html">DocumentJS</a> to make
+it easy to document your code. </p>
+
+<h2>Generating Documentation</h2>
+
+<p>Create the docs by running:</p>
+
+<pre><code>&gt; ./js cookbook/scripts/docs.js
+</code></pre>
+
+<h2>Viewing Documentation</h2>
+
+<p>Open <strong>cookbook/docs/index.html</strong> and you'll find something like:</p>
+
+<p><img class='image_tag' src='../tutorials/getstarted/Docs.png' /></p>
+
+<h2>Writing Documentation</h2>
+
+<p>The generated app comes with very minimal docs.  But, it 
+gives you a great place to 
+start.  Open <strong>cookbook/cookbook.md</strong>. This is the top level
+page for the cookbook application.  Notice that it's markdown!</p>
+
+<p>The syntax for documentation is very similar to JavaDoc.  However, there are some 
+important differences.  Consult the <a href="DocumentJS.html">DocumentJS's documentation</a>
+for more information.</p>
+
+<h2>Next steps</h2>
+
+<p>In the context of this trivial application, you've 
+been exposed to major features of JavaScriptMVC: </p>
+
+<ul>
+<li>code separation</li>
+<li>testing</li>
+<li>building</li>
+<li>documentation</li>
+</ul>
+
+<p>This is pretty cool! Look at how simply you went from 
+nothing to a compressed, tested, and documented application.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

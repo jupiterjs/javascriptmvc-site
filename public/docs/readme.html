@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - README</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="README.html" data-search="README">
+				README
+			</a>
+			
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+README
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>The repository at https://github.com/mustache/spec is the formal standard for
+Mustache.  It defines both normal usage and edge-case behavior for libraries
+parsing the Mustache templating language (or a superset thereof).</p>
+
+<p>The specification is developed as a series of YAML files, under the <code>specs</code>
+directory.</p>
+
+<h2>Versioning</h2>
+
+<p>This specification is being <a href="http://semver.org">semantically versioned</a>.
+Roughly described, major version changes will always represent backwards
+incompatible changes, minor version changes will always represent new language
+features and will be backwards compatible, and patch ('tiny') version changes
+will always be bug fixes.  For the purposes of semantic versioning, the public
+API is the contents of the <code>specs</code> directory and the algorithm for testing
+against it.</p>
+
+<p>Mustache implementations SHOULD report the most recent version of the spec
+(major and minor version numbers).  If an implementation has support for any
+optional modules, they SHOULD indicate so with a remark attached to the
+version number (e.g. "vX.Y, including lambdas" or "v.X.Y+λ").  It is
+RECOMMENDED that implementations not supporting at least v1.0.0 of this spec
+refer to themselves as "Mustache-like", or "Mustache-inspired".</p>
+
+<h2>Alternate Formats</h2>
+
+<p>Since YAML is a reasonably complex format that not every language has good
+tools for working with, we also provide JSON versions of the specs on a
+best-effort basis.</p>
+
+<p>These should be identical to the YAML specifications, but if you find the need
+to regenerate them, they can be trivially rebuilt by invoking <code>rake build</code>.</p>
+
+<p>It is also worth noting that some specifications (notably, the lambda module)
+rely on YAML "tags" to denote special types of data (e.g. source code).  Since
+JSON offers no way to denote this, a special key ("<code>__tag__</code>") is injected
+with the name of the tag as its value.  See <code>TESTING.md</code> for more information
+about handling tagged data.</p>
+
+<h2>Optional Modules</h2>
+
+<p>Specification files beginning with a tilde (<code>~</code>) describe optional modules.
+At present, the only module being described as optional is regarding support
+for lambdas.  As a guideline, a module may be a candidate for optionality
+when:</p>
+
+<ul>
+<li>It does not affect the core syntax of the language.</li>
+<li>It does not significantly affect the output of rendered templates.</li>
+<li>It concerns implementation language features or data types that are not
+common to or core in every targeted language.</li>
+<li>The lack of support by an implementation does not diminish the usage of
+Mustache in the target language.</li>
+</ul>
+
+<p>As an example, the lambda module is primarily concerned with the handling of a
+particular data type (code).  This is a type of data that may be difficult to
+support in some languages, and users of those languages will not see the lack
+as an 'inconsistency' between implementations.</p>
+
+<p>Support for specific pragmas or syntax extensions, however, are best managed
+outside this core specification, as adjunct specifications.</p>
+
+<p>Implementors are strongly encouraged to support any and all modules they are
+reasonably capable of supporting.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

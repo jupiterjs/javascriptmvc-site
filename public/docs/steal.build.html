@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - steal.build</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="stealjs.html" data-search="StealJS">
+				StealJS
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="steal.build.html" data-search="steal.build">
+				steal.build
+			</a>
+			
+	<ul>
+		
+			
+		
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="steal.build.open.html" data-search="steal.build.open">
+						open
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="steal.build.packages.html" data-search="steal.build.packages">
+						packages
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="steal.build.pluginify.html" data-search="steal.build.pluginify">
+						pluginify
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+steal.build
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+		<section class="signature">
+			<h2>steal.build( moduleId, options )</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>moduleId
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>a JS moduleId or html page that loads steal to build. For example:</p>
+
+<pre><code>steal.build('myapp');
+
+./js steal/buildjs myapp
+</code></pre>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>options
+				<code>{Object}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>An object literal with the following optional values:</p>
+			</div>
+			
+			
+			<ul class="options">
+				
+				<li class="option">
+					<h5>to 
+						<code>{String}</code>
+					</h5>
+					<div class="description">
+						<p>The folder to put the production.js and production.css files. Ex: <code>"myproject"</code>.</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>minify 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p><code>true</code> to minify scripts, <code>false</code> if otherwise. Defaults to <code>true</code>.</p>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>depth 
+						<code>{Number}</code>
+					</h5>
+					<div class="description">
+						<ul>
+<li>The total number of packages to load in production if <a href="steal.packages.html">steal.packages</a>
+is used. Defaults to <code>Infinity</code>.</li>
+</ul>
+					</div>
+				</li>
+				
+				<li class="option">
+					<h5>packageSteal 
+						<code>{Boolean}</code>
+					</h5>
+					<div class="description">
+						<p><code>true</code> to package stealjs with <code>production.js</code>. Defaults to <code>false</code>.</p>
+
+<p>Example:</p>
+
+<pre><code>steal.build("app",{
+  minify: false,
+  depth: 3.
+  packageSteal: true,
+  to: "staticproduction/app"
+})
+</code></pre>
+					</div>
+				</li>
+				
+			</ul>
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+</div>
+
+		</section>
+		
+
+		
+
+		
+		<section class="comment">
+			<p><code>steal.build(moduleId, options)</code> builds a JavaScript module along 
+with all of its dependencies. It also builds any packages specified
+by <a href="steal.packages.html">steal.packages</a>. </p>
+
+<p>Calling steal's build in rhino might look like:</p>
+
+<pre><code>steal.build('myproject/myproject.js',{
+  to: "myproject",
+  depth: 4
+});
+</code></pre>
+
+<p>This could be run on the command-line like:</p>
+
+<pre><code>./js steal/buildjs myproject -to "myproject" -depth 4
+</code></pre>
+
+<p>If you used the app <a href="steal.generate.html">generator</a> to create
+an application, build your project like:</p>
+
+<pre><code>./js myproject/script/build.js
+</code></pre>
+
+<p>Use <a href="steal.build.apps.html">steal.build.apps</a> to build multiple applications at once
+and group shared dependencies into cache-able scripts.</p>
+
+<h2>Excluding code from a build.</h2>
+
+<p>Often, you don't want some code to be run in production. There
+are serveral ways to make that happen:</p>
+
+<h3>steal.dev.log</h3>
+
+<p><a href="steal.dev.log.html">steal.dev.log</a> can be used as a replacement to console.log. Steal
+will remove all lines that look like the following:</p>
+
+<p>steal.dev.log("A message")</p>
+
+<h3>ignore</h3>
+
+<p>Use <a href="steal.config.shim.html">steal.config.shim</a> to specify that a module should be ignored like:</p>
+
+<pre><code>steal.config({
+  shim: {
+    "mydebugtool/mydebugtool.js" : {ignore: true}
+  }
+})
+</code></pre>
+
+<p><code>mydebugtool/mydebugtool.js</code> will not be loaded in production</p>
+
+<h3>packaged</h3>
+
+<p>Sometimes you don't want to include some module in production, but you
+still want it to load. A common case is loading jQuery from a 
+cdn. This can be done by setting <code>packaged</code> to false in
+shim like:</p>
+
+<pre><code>steal.config({
+  shim: {
+    "jquery" : {packaged: false}
+  },
+  {
+    paths: {jquery: "http://cdn.com/jquery"}
+  }
+})
+</code></pre>
+
+<h2>Trouble-shooting</h2>
+
+<p><code>steal.build</code> uses EnvJS to simulate a html page and DOM for your 
+scripts to run inside. EnvJS is not a full featured browser and
+the page might not be similar to the pages your app's code
+runs inside. Fortunately, the fixes are easy:</p>
+
+<p>__Prevent DOM manipulations, Ajax calls, or setTimeout's before onload</p>
+
+<p>The easist way to do this is to surround this code with an <code>if(steal.isRhino)</code>
+like:</p>
+
+<pre><code>if( steal.isRhino ) {
+  $.get("/user/current", function(){  ... })
+}
+</code></pre>
+
+<p><strong>Feature detect calling Canvas and other HTML5 APIs</strong></p>
+
+<p>Instead of doing:</p>
+
+<pre><code>canvas.getContext('2d');
+</code></pre>
+
+<p>Write</p>
+
+<pre><code>if( canvas.getContext ) {
+     canvas.getContext('2d')
+}
+</code></pre>
+
+<p><em>The next version of StealJS will not have this problem.</em></p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

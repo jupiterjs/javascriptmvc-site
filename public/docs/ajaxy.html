@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Searchable Ajax Apps </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="tutorials.html" data-search="Tutorials">
+				Tutorials
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="installing.html" data-search="Installing JavaScriptMVC">
+						Installing JavaScriptMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="rapidstart.html" data-search="Rapid Start">
+						Rapid Start
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="getstarted.html" data-search="Get Started with JMVC">
+						Get Started with JMVC
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="mvc.html" data-search="Get Started with CanJS">
+						Get Started with CanJS
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="tutorials.jquerypp.html" data-search="Get Started with jQuery++">
+						Get Started with jQuery++
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="funcunit.getstarted.html" data-search="Get Started with FuncUnit">
+						Get Started with FuncUnit
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="organizing.html" data-search="Organizing Your App">
+						Organizing Your App
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="page" href="ajaxy.html" data-search="Searchable Ajax Apps">
+						Searchable Ajax Apps
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="services.html" data-search="Ajax Service Guidelines">
+						Ajax Service Guidelines
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="page" href="done.html" data-search="Upgrading to 3.3">
+						Upgrading to 3.3
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Searchable Ajax Apps
+
+	
+		<span class="module">ajaxy</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>This tutorial walks you through building a simple widget
+that listens for changes in the browser location hash
+and updates the content of the page.  It demonstrates how to make
+a site Google crawlable and searchable.</p>
+
+<h2>The App</h2>
+
+<p>We'll make a mini app that updates the contents of page with an
+Ajax request when a user clicks on a navigation link. Then, we'll make this searchable
+with the <code>ajaxy/scripts/crawl.js</code> script.</p>
+
+<div class='demo_wrapper' data-demo-src='tutorials/ajaxy/ajaxy.html' data-demo-height='500'></div>
+
+<p>The crawl script generates html pages that Google can use as a representation
+of the content of an Ajax application.  Read Google's documentation on its
+<a href="https://developers.google.com/webmasters/ajax-crawling/docs/getting-started">Ajax crawling API</a>
+ before continuing this tutorial.</p>
+
+<h2>Setup</h2>
+
+<p><a href="installing.html">Download and install</a> the latest version of JavaScriptMVC.</p>
+
+<p>After installing JavaScriptMVC, open a command line to 
+the <a href="steal.config.root.html">steal.config.root</a> folder (where you unzipped
+JavaScriptMVC).  </p>
+
+<p>We'll use the application generator to generate an application
+skeleton folder.  Run:</p>
+
+<pre><code>[WINDOWS] &gt; js jmvc/generate/app ajaxy
+[Lin/Mac] &gt; ./js jmvc/generate/app ajaxy
+</code></pre>
+
+<h2>The Code</h2>
+
+<p>In the generated ajaxy folder, you'll find <code>ajaxy.html</code>
+and <code>ajaxy.js</code>.  We'll add a content area
+and few links to 
+<code>ajaxy.html</code>.  When we click on  links,
+we'll make <code>ajaxy.js</code> load content into
+the content area.</p>
+
+<p>Change <code>ajaxy.html</code> so it looks like:</p>
+
+<pre><code class="lang-xml">&lt;!DOCTYPE HTML>
+&lt;html lang="en">
+    &lt;head>
+        &lt;title>Ajaxy&lt;/title>
+        &lt;meta name="fragment" content="!">
+    &lt;/head>
+    &lt;body>
+        &lt;a href='#!videos'>Videos&lt;/a>
+        &lt;a href='#!articles'>Articles&lt;/a>
+        &lt;a href='#!images'>Images&lt;/a>
+        &lt;div id='content'>&lt;/div>
+        &lt;script type='text/javascript' 
+            src='../steal/steal.js?ajaxy,development'>     
+        &lt;/script>
+    &lt;/body>
+&lt;/html></code></pre>
+
+<p>Notice that the page includes a <code>&lt;meta name="fragment" content="!"&gt;</code>
+tag.  This tells to Google to process <code>ajaxy.html</code> as having Ajax content.</p>
+
+<p>Next, add some content to show when these links are clicked.  Put the following content
+in each file:</p>
+
+<p><strong>ajaxy/fixtures/articles.html</strong></p>
+
+<pre><code class="lang-xml">&lt;h1>Articles&lt;/h1>
+&lt;p>Some articles.&lt;/p></code></pre>
+
+<p><strong>ajaxy/fixtures/images.html</strong></p>
+
+<pre><code class="lang-xml">&lt;h1>Images&lt;/h1>
+&lt;p>Some images.&lt;/p></code></pre>
+
+<p><strong>ajaxy/fixtures/videos.html</strong></p>
+
+<pre><code class="lang-xml">&lt;h1>Videos&lt;/h1>
+&lt;p>Some videos.&lt;/p></code></pre>
+
+<p>Finally, change <code>ajaxy.js</code> to look like:</p>
+
+<pre><code>steal('jquery',
+      'can/construct/proxy',
+      'can/control',
+      'can/route',
+      'steal/html',
+      function($, can){
+
+var Ajaxy = can.Control({
+    "{route} change" : function(route, ev){
+        this.updateContent(route.page)
+    },
+    updateContent : function(hash){
+        // postpone reading the html 
+        steal.html.wait();
+
+        $.get("fixtures/" + hash + ".html", {}, this.proxy('replaceContent'), "text")
+    },
+    replaceContent : function(html){
+        this.element.html(html);
+
+        // indicate the html is ready to be crawled
+        steal.html.ready();
+    }
+})
+
+new Ajaxy('#content', { route: can.route(":page", { page: "videos" }) });
+
+});
+</code></pre>
+
+<p>When a route (<code>"{route} change"</code>) event occurs, Ajaxy
+uses the <code>route.page</code> value to make a 
+request (<code>$.get</code>)
+for content in the<code>fixtures</code> folder.  For more information
+on routing, visit <a href="can.route.html">can.route</a>.</p>
+
+<p>When the content is retrieved, it replaces the element's 
+html (<code>this.element.html(...)</code>).</p>
+
+<p>Ajaxy also calls <code>updateContent</code> to load content when
+the page loads initially. </p>
+
+<h2>Crawling and scraping</h2>
+
+<p>To crawl your site and generate google-searchable html, run:</p>
+
+<pre><code class="lang-none">[WINDOWS] > js ajaxy\scripts\crawl.js
+[Lin/Mac] > ./js ajaxy/scripts/crawl.js</code></pre>
+
+<p>This script peforms the following actions:</p>
+
+<ol>
+<li>Opens a page in a headless browser.</li>
+<li>Waits until its content is ready.</li>
+<li>Scrapes its contents.</li>
+<li>Writes the contents to a file.</li>
+<li>Adds any links in the page that start with #! to be indexed</li>
+<li>Changes the url hash to the next index-able page</li>
+<li>Goto #2 and repeats until all pages have been loaded</li>
+</ol>
+
+<h2>Pausing the html scraping.</h2>
+
+<p>By default, the contents are scraped immediately after the page's scripts have loaded or
+the route has changed.  The Ajax request for content
+happens asynchronously so we have to tell <a href="steal.html.html">steal.html</a> to wait to scrape the content.</p>
+
+<p>To do this, Ajaxy calls:</p>
+
+<pre><code>steal.html.wait();
+</code></pre>
+
+<p>before the Ajax request.  And when the page is ready, Ajaxy calls:</p>
+
+<pre><code>steal.html.ready();
+</code></pre>
+
+<h2>Getting Google To Crawl Your Site</h2>
+
+<p>If you haven't already, read up on 
+Google's <a href="https://developers.google.com/webmasters/ajax-crawling/docs/getting-started">Ajax crawling API.</a></p>
+
+<p>When google wants to crawl your site, it will send a 
+request to your page with <code>_escaped_fragment=</code>.  </p>
+
+<p>When your server sees this param, redirect google to the generated html page.  For example, when the Google Spider requests <code>http://mysite.com?_escaped_fragment=val</code>, this is its attempt to crawl <code>http://mysite.com#!val</code>.  You should redirect this request to <code>http://mysite.com/html/val.html</code>.</p>
+
+<p>Yes, it's that easy!</p>
+
+<h2>Phantom for Advanced Pages</h2>
+
+<p>By default the crawl script uses EnvJS to open your page and build a static snapshot.  For some pages, EnvJS won't be powerful enough to accurately simulate everything.  If your page experiences errors, you can use PhantomJS (headless Webkit) to generate snapshots instead, which may work better.</p>
+
+<p>To turn on Phantom:</p>
+
+<ol>
+<li>Install it using the install instructions <a href="funcunit.phantomjs.html">here</a></li>
+<li>Open scripts/crawl.js and change the second parameter of steal.html.crawl to an options object with a browser option, like this:</li>
+</ol>
+
+<pre><code class="lang-javascript">steal('steal/html', function(){
+  steal.html.crawl("ajaxy/ajaxy.html", 
+  {
+    out: 'ajaxy/out',
+    browser: 'phantomjs'
+  })
+})</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>
