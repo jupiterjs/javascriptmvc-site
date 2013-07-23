@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - Listening To Events </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="jquery.controller.listening.html" data-search="Listening To Events">
+				Listening To Events
+			</a>
+			
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+Listening To Events
+
+	
+		<span class="module">jquery.controller.listening</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>Controllers make creating and tearing down event handlers extremely
+easy.  The tearingdown of event handlers is especially important
+in preventing memory leaks in long lived applications.</p>
+
+<h2>Automatic Binding</h2>
+
+<p>When a [jQuery.Controller.prototype.setup new controller is created],
+contoller checks its prototype methods for functions that are named like 
+event handlers.  It binds these functions to the 
+controller's [jQuery.Controller.prototype.element element] with 
+event delegation.  When
+the controller is destroyed (or it's element is removed from the page), controller
+will unbind its event handlers automatically.</p>
+
+<p>For example, each of the following controller's functions will automatically
+bound:</p>
+
+<pre><code>$.Controller("Crazy",{
+
+  // listens to all clicks on this element
+  "click" : function(el, ev){},
+
+  // listens to all mouseovers on 
+  // li elements withing this controller
+  "li mouseover" : function(el, ev){}
+
+  // listens to the window being resized
+  "{window} resize" : function(window, ev){}
+})
+</code></pre>
+
+<p>Controller will bind function names with spaces, standard DOM events, and 
+event names in $.event.special.</p>
+
+<p>In general, Controller will know automatically when to bind event handler functions except for 
+one case - event names without selectors that are not in $.event.special.</p>
+
+<p>But to correct for this, you just need to add the 
+function to the [jQuery.Controller.static.listensTo listensTo] 
+property.  Here's how:</p>
+
+<pre><code> $.Controller("MyShow",{
+   listensTo: ["show"]
+ },{
+   show: function( el, ev ) {
+     el.show();
+   }
+ })
+ $('.show').my_show().trigger("show");
+</code></pre>
+
+<h2>Callback parameters</h2>
+
+<p>Event handlers bound with controller are called back with the element and the event 
+as parameters.  <b>this</b> refers to the controller instance.  For example:</p>
+
+<pre><code>$.Controller("Tabs",{
+
+  // li - the list element that was clicked
+  // ev - the click event
+  "li click" : function(li, ev){
+     this.tab(li).hide()
+  },
+  tab : function(li){
+    return $(li.find("a").attr("href"))
+  }
+})
+</code></pre>
+
+<h2>Templated Event Bindings</h2>
+
+<p>One of Controller's most powerful features is templated event 
+handlers.  You can parameterize the event name,
+the selector, or event the root element.</p>
+
+<h3>Templating event names and selectors:</h3>
+
+<p>Often, you want to make a widget's behavior 
+configurable. A common example is configuring which event
+a menu should show a sub-menu (ex: on click or mouseenter).  The 
+following controller lets you configure when a menu should show 
+sub-menus:</p>
+
+<p>The following makes two buttons.  One says hello on click, 
+the other on a 'tap' event.</p>
+
+<pre><code>$.Controller("Menu",{
+  "li {showEvent}" : function(el){
+    el.children('ul').show()
+  }
+})
+
+$("#clickMe").menu({showEvent : "click"});
+$("#touchMe").menu({showEvent : "mouseenter"});
+</code></pre>
+
+<p>$.Controller replaces value in <code>{}</code> with 
+values in a 
+controller's [jQuery.Controller.prototype.options options]. This means
+we can easily provide a default <code>showEvent</code> value and create
+a menu without providing a value like:</p>
+
+<pre><code>$.Controller("Menu",
+{
+  defaults : {
+    showEvent : "click"
+  }
+},
+{
+  "li {showEvent}" : function(el){
+    el.children('ul').show()
+  }
+});
+
+$("#clickMe").menu(); //defaults to using click
+</code></pre>
+
+<p>Sometimes, we might might want to configure our widget to 
+use different elements.  The following makes the menu widget's
+<code>button</code> elements configurable:</p>
+
+<pre><code>$.Controller("Menu",{
+  "{button} {showEvent}" : function(el){
+    el.children('ul').show()
+  }
+})
+
+$('#buttonMenu').menu({button: "button"});
+</code></pre>
+
+<h3>Templating the root element.</h3>
+
+<p>Finally, controller lets you bind to objects outside 
+of the [jQuery.Controller.prototype.element controller's element].</p>
+
+<p>The following listens to clicks on the window:</p>
+
+<pre><code>$.Controller("HideOnClick",{
+  "{window} click" : function(){
+    this.element.hide()
+  }
+})
+</code></pre>
+
+<p>The following listens to Todos being created:</p>
+
+<pre><code>$.Controller("NewTodos",{
+  "{App.Models.Todo} created" : function(Todo, ev, newTodo){
+    this.element.append("newTodos.ejs", newTodo)
+  }
+});
+</code></pre>
+
+<p>But instead of making NewTodos only work with the Todo model,
+we can make it configurable:</p>
+
+<pre><code>$.Controller("Newbie",{
+  "{model} created" : function(Model, ev, newItem){
+    this.element.append(this.options.view, newItem)
+  }
+});
+
+$('#newItems').newbie({
+  model: App.Models.Todo,
+  view: "newTodos.ejs"
+})
+</code></pre>
+
+<h3>How Templated events work</h3>
+
+<p>When looking up a value to replace <code>{}</code>,
+controller first looks up the item in the options, then it looks
+up the value in the window object.  It does not use eval to look up the
+object.  Instead it uses [jQuery.String.getObject].</p>
+
+<h2>Subscribing to OpenAjax messages and custom bindings</h2>
+
+<p>The jquery/controller/subscribe plugin allows controllers to listen
+to OpenAjax.hub messages like:</p>
+
+<pre><code>$.Controller("Listener",{
+  "something.updated subscribe" : function(called, data){
+
+  }
+})
+</code></pre>
+
+<p>You can create your own binders by adding to [jQuery.Controller.static.processors].</p>
+
+<h2>Manually binding to events.</h2>
+
+<p>The [jQuery.Controller.prototype.bind] and [jQuery.Controller.prototype.delegate]
+methods let you listen to events on other elements.  These event handlers will
+be unbound when the controller instance is destroyed.</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC - The generated jQuery plugin </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="jquery.controller.plugin.html" data-search="The generated jQuery plugin">
+				The generated jQuery plugin
+			</a>
+			
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+The generated jQuery plugin
+
+	
+		<span class="module">jquery.controller.plugin</span>
+	
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p>When you create a controller, it creates a jQuery plugin that can be
+used to:</p>
+
+<ul>
+<li>Create controllers on an element or elements</li>
+<li>Call controller methods</li>
+<li>Update a controller</li>
+</ul>
+
+<p>For example, the following controller:</p>
+
+<pre><code>$.Controller("My.Widget",{
+  say : function(){
+     alert(this.options.message);
+  }
+})
+</code></pre>
+
+<p>creates a <code>jQuery.fn.my_widget</code> method that you can use like:</p>
+
+<pre><code>// create my_widget on each .thing
+$(".thing").my_widget({message : "Hello"}) 
+
+// alerts "Hello"
+$(".thing").my_widget("say");
+
+// updates the message option
+$(".thing").my_widget({message : "World"});
+
+// alerts "World"
+$(".thing").my_widget("say");
+</code></pre>
+
+<p>Note that in every case, the my_widget plugin
+returns the original jQuery collection for chaining (<code>$('.thing')</code>).  If you want to
+get a value from a controller, use the [jQuery.fn.controllers] or [jQuery.fn.controller].</p>
+
+<h2>Creating controllers</h2>
+
+<p>When a controller's jQuery plugin helper is used on a jQuery collection, it goes to each 
+element and tests if it has a controller instance on the element.  If it does not, it creates one.</p>
+
+<p>It calls <code>new YourController</code> with the element and any additional arguments you passed 
+to the jQuery plugin helper.  So for example, say there are 2 elements in <code>$('.thing')</code>.</p>
+
+<p>This:</p>
+
+<pre><code>$(".thing").my_widget({message : "Hello"})
+</code></pre>
+
+<p>Does the exact same thing as:</p>
+
+<pre><code>var things = $('.thing'),
+    options = {message : "Hello"};
+new My.Widget(things[0],options);
+new My.Widget(things[1],options);
+</code></pre>
+
+<p>Note, when a <code>new Class</code> is created, it calls your 
+class's prototype setup and init methods. Read [jQuery.Controller.prototype.setup controller's setup] 
+for the details on what happens when a new controller is created.</p>
+
+<h2>Calling methods on controllers</h2>
+
+<p>Once a Controller is already on an element, you can call methods on it with the same jQuery
+helper.  The first param to the helper is the name of the method, the following params are 
+passed to the jQuery function.  For example:</p>
+
+<pre><code>$.Controller("Adder",{
+  sum : function(first, second, third){
+     this.element.text(first+second+third);
+  }
+})
+
+// add an adder to the page
+$("#myadder").adder()
+
+// show the sum of 1+2+3
+$("#myadder").adder("sum",1,2,3);
+</code></pre>
+
+<h2>Naming</h2>
+
+<p>By default, a controller's jQuery helper is the controller name:</p>
+
+<ul>
+<li>[jQuery.String.underscore underscored]</li>
+<li>"." replaced with "_"</li>
+<li>with Controllers removed.</li>
+</ul>
+
+<p>Here are some examples:</p>
+
+<pre><code>$.Controller("Foo")                 // -&gt; .foo()
+$.Controller("Foo.Bar")             // -&gt; .foo_bar()
+$.Controller("Foo.Controllers.Bar") // -&gt; .foo_bar()
+</code></pre>
+
+<p>You can overwrite the Controller's default name by setting a static pluginName property:</p>
+
+<pre><code>$.Controller("My.Tabs",
+{
+  pluginName: "tabs"
+},
+{ ... })
+
+$("#tabs").tabs()
+</code></pre>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

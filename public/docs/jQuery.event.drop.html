@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - jQuery.event.drop</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="jquerypp.html" data-search="jQuery++">
+				jQuery++
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="jQuery.event.drop.html" data-search="jQuery.event.drop">
+				jQuery.event.drop
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="constructor" href="$.Drop.html" data-search="$.Drop">
+						$.Drop
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+jQuery.event.drop
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p><code>jQuery.event.drop</code> provides drop events for <a href="jQuery.event.drag.html">jQuery.event.drag</a>. By binding to a 
+drop event, callback functions will be called during the corresponding phase of the drag motion.</p>
+
+<h2>Drop Events</h2>
+
+<p>All drop events are called with the native event, an instance of [jQuery.Drop], and [jQuery.Drag]. The following
+drop events are supported:</p>
+
+<ul>
+<li>[jQuery.event.special.dropinit dropinit] - the drag motion is started, drop positions are calculated.</li>
+<li>[jQuery.event.special.dropover dropover] - a drag moves over a drop element, called once as the drop is dragged over the element.</li>
+<li>[jQuery.event.special.dropout dropout] - a drag moves out of the drop element.</li>
+<li>[jQuery.event.special.dropmove dropmove] - a drag is moved over a drop element, called repeatedly as the element is moved.</li>
+<li>[jQuery.event.special.dropon dropon] - a drag is released over a drop element.</li>
+<li>[jQuery.event.special.dropend dropend] - the drag motion has completed.</li>
+</ul>
+
+<p>A drop instance supports the following methods:</p>
+
+<ul>
+<li><a href="$.Drop.prototype.cache.html">cache</a> - cache the position of the drop for faster hit detection</li>
+<li><a href="$.Drop.prototype.cancel.html">cancel</a> - cancel this drop point from responding to drags</li>
+</ul>
+
+<p>If you are adding drop points after the start of a drag motion, call [$.Drop.compile] to
+re-calculate all drop points.</p>
+
+<h2>Examples</h2>
+
+<p>Here's how to listen for when a drag moves over a drop:</p>
+
+<pre><code>$('.drop').delegate("dropover", function(ev, drop, drag){
+  $(this).addClass("drop-over")
+})
+</code></pre>
+
+<p>A bit more complex example:</p>
+
+<div class='demo_wrapper' data-demo-src='jquery/event/drop/drop.html' data-demo-height='1000'></div>
+
+<h2>How it works</h2>
+
+<ol>
+<li><p>When you bind on a drop event, it adds that element to the list of rootElements.
+RootElements might be drop points, or might have delegated drop points in them.</p></li>
+<li><p>When a drag motion is started, each rootElement is queried for the events listening on it.
+These events might be delegated events so we need to query for the drop elements.</p></li>
+<li><p>With each drop element, we add a Drop object with all the callbacks for that element.
+Each element might have multiple event provided by different rootElements.  We merge
+callbacks into the Drop object if there is an existing Drop object.</p></li>
+<li><p>Once Drop objects have been added to all elements, we go through them and call draginit
+if available.</p></li>
+</ol>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - jQuery.dimensions</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="jquerypp.html" data-search="jQuery++">
+				jQuery++
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="jQuery.dimensions.html" data-search="jQuery.dimensions">
+				jQuery.dimensions
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.fn.innerHeight.html" data-search="jQuery.fn.innerHeight">
+						jQuery.fn.innerHeight
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.fn.innerWidth.html" data-search="jQuery.fn.innerWidth">
+						jQuery.fn.innerWidth
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.fn.outerHeight.html" data-search="jQuery.fn.outerHeight">
+						jQuery.fn.outerHeight
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.fn.outerWidth.html" data-search="jQuery.fn.outerWidth">
+						jQuery.fn.outerWidth
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+			<li><a href="">download</a></li>
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+jQuery.dimensions
+
+<span class="module">jquery/dom/dimensions</span>
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p><code>jQuery.dimensions</code> adds support for animating and setting inner and outer dimensions.
+It overwrites</p>
+
+<ul>
+<li><code><a href="jQuery.fn.outerHeight.html">jQuery.fn.outerHeight(value, includeMargins)</a></code></li>
+<li><code><a href="jQuery.fn.outerWidth.html">jQuery.fn.outerWidth(value, includeMargins)</a></code></li>
+<li><code><a href="jQuery.fn.innerHeight.html">jQuery.fn.innerHeight(value)</a></code></li>
+<li><code><a href="jQuery.fn.innerWidth.html">jQuery.fn.innerWidth(value)</a></code></li>
+</ul>
+
+<p>to let you set these properties and extends <a href="http://api.jquery.com/animate/">animate</a> to animate them.</p>
+
+<h2>Use</h2>
+
+<p>When writing reusable plugins, you often want to 
+set or animate an element's width and height that include its padding,
+border, or margin.  This is especially important in plugins that
+allow custom styling.</p>
+
+<h2>Quick Examples</h2>
+
+<pre><code> $('#foo').outerWidth(100).innerHeight(50);
+ $('#bar').animate({ outerWidth: 500 });
+ $('#bar').animate({
+   outerWidth: 500,
+   innerHeight: 200
+ });
+</code></pre>
+
+<h2>Demo</h2>
+
+<div class='demo_wrapper' data-demo-src='jquery/dom/dimensions/dimensions.html'></div>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

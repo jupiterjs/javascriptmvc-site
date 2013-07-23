@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - jQuery.selection</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		<li class="search-container active parent">
+			<a href="jquerypp.html" data-search="jQuery++">
+				jQuery++
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="jQuery.selection.html" data-search="jQuery.selection">
+				jQuery.selection
+			</a>
+			
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.fn.selection.html" data-search="jQuery.fn.selection">
+						jQuery.fn.selection
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+jQuery.selection
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<p><code>jQuery.selection</code> adds <code><a href="jQuery.fn.selection.html">jQuery.fn.selection</a></code> to get or set the current selection.</p>
+
+<h2>Setting</h2>
+
+<p>You can select the text, for example on an element like this:</p>
+
+<pre><code>&lt;div id="text"&gt;This is some text&lt;/div&gt;
+</code></pre>
+
+<p>Using <code>jQuery.fn.selection</code> by providing a start and end offset:</p>
+
+<pre><code>  $('#text').selection(8, 12)
+</code></pre>
+
+<h2>Getting</h2>
+
+<p>A call without any parameters will return the current selection:</p>
+
+<pre><code>  $('#text').selection() // -&gt; { start : 8, end : 12, width : 4 }
+</code></pre>
+
+<p>Where the returned object contains:</p>
+
+<ul>
+<li><strong>start</strong> - The number of characters from the start of the element to the start of the selection.</li>
+<li><strong>end</strong> - The number of characters from the start of the element to the end of the selection.</li>
+<li><strong>width</strong> - The width of the selection range.</li>
+</ul>
+
+<p>The selected text can be retrieved like this:</p>
+
+<pre><code>  var text = $('#text').text(),
+      selected = text.substr(selection.start, selection.end);
+  selected // -&gt; some
+</code></pre>
+
+<p>Selection works with all elements. If you want to get selection information of the document:</p>
+
+<pre><code>$(document.body).selection();
+</code></pre>
+
+<h2>Demo</h2>
+
+<p>This demo shows setting the selection in various elements</p>
+
+<div class='demo_wrapper' data-demo-src='jquery/dom/selection/selection.html'></div>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>

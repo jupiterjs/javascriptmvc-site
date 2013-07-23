@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>JavaScriptMVC  - observe</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="stylesheet" type="text/css" 
+		
+			href="./static/production.css"
+		 />
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="./static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="./index.html">JavaScriptMVC</a>
+			</div>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/consulting/">Consulting</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container api">
+	<nav class="sidebar">
+		
+		<div class="search-wrapper">
+			<div class="search">
+				<input type="text"/>
+			</div>
+		</div>
+		
+		<ul class="api cascading primary-grouping"> 
+	
+		
+		<li class="search-container active parent">
+			<a href="index.html" data-search="JavaScriptMVC">
+				JavaScriptMVC
+			</a>
+		</li>
+		
+		
+			<li class="search-container active">
+			<a href="observe.html" data-search="observe">
+				observe
+			</a>
+			
+
+		</li>
+		
+	
+</ul>
+
+	</nav>
+	<article class="content docs">
+		<section class="title">
+			<div class="pull-right">
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	<ul class="links">
+		
+			<li><a href="">source</a></li>
+		
+		
+			
+		
+		
+	</ul>
+</div>
+
+<h1>
+observe
+
+
+</h1>
+
+<span class="inherits">&nbsp;</span>
+
+		</section>
+
+		<section class="contents">
+		</section>
+
+		<section class="description">
+			
+		</section>
+
+		
+
+		
+
+		
+		<section class="comment">
+			<h2>3.1 Backlog - Deferreds</h2>
+
+<p>jQuery 1.6 brought Deferred support.  They are a great feature
+that promise to make a lot of asynchronous functionality 
+easier to write and manage. But, many people struggle 
+with uses other than 'waiting for a bunch of Ajax requests to complete'. For 3.1, we 
+identified an extremely common, but annoying, practice that becomes
+a one-liner with deferreds: loading data and a template and rendering the
+result into an element.</p>
+
+<h2>Templates Consume Deferreds</h2>
+
+<p>Here's what that looks like in 3.1:</p>
+
+<pre><code>$('#todos').html('temps/todos.ejs', $.get('/todos',{},'json') );
+</code></pre>
+
+<p>This will make two parallel ajax requests.  One request 
+is made for the template at <code>temps/todos.ejs</code> which might look like:</p>
+
+<pre><code>&lt;% for(var i =0; i< this.length; i++) { %>
+  &lt;li>&lt;%= this[i].name %>&lt;/li>
+&lt;% } %>
+</code></pre>
+
+<p>The second request loads <code>/todos</code> which might look like:</p>
+
+<pre><code>[
+    {"id" : 1, "name": "Take out the Trash"},
+    {"id" : 2, "name": "Do the Laundry"}
+]
+</code></pre>
+
+<p>When both have been loaded, the template is rendered with the todos data and
+the result set as the <code>#todos</code> element's innerHTML.  </p>
+
+<p>This is fab fast! The AJAX and template request are made in parallel and rendered
+when both are complete.  I am too lazy to write 
+out what this would look like before deferreds.  Actually, I'm not too lazy:</p>
+
+<pre><code>var template,
+    data,
+    done = function(){ 
+       if( template &amp;&amp; data ) { 
+         var html = new EJS({text: template})
+                                .render(data);
+         $('#todos').html( html )
+       }
+    }
+$.get('temps/todos.ejs', function(text){
+  template = text;
+  done();
+},'text')
+$.get('/todos',{}, function(json){
+  data = json
+  done();
+},'json')
+</code></pre>
+
+<h2>Models Return Deferreds</h2>
+
+<p>Model AJAX functions now return deferreds.  Creating models like:</p>
+
+<pre><code>$.Model('User',{
+  findAll: '/users'
+},{});
+
+$.Model('Todo',{
+  findAll: '/todos'
+},{})
+</code></pre>
+
+<p>Lets you request todos and users and get back a deferred that can be 
+used in functions that accept deferreds like $.when:</p>
+
+<pre><code>$.when( User.findAll(), 
+        Todo.findAll() )
+</code></pre>
+
+<p>Or $.View:</p>
+
+<pre><code>$('#content').html('temps/content.ejs',{
+  users : User.findAll(),
+  todos: Todo.findAll()
+})
+</code></pre>
+
+<h2>Conclusion</h2>
+
+<p>Despite using templates, this is 
+still 'waiting for a bunch of Ajax requests to complete'.  Does 
+anyone have other good uses for deferreds?</p>
+		</section>
+		
+
+		
+	</article>
+</div>
+
+
+
+	<footer>
+		<nav class="container">
+			<a class="brand javascriptmvc" href="index.html"></a>
+		</nav>
+	</footer>
+	<script type="text/javascript">
+		window.Bitovi = {
+			URL: {
+				BUILDER: '',
+				BUILDER_DATA: '',
+				BITHUB: '',
+				CDN: ''
+			}
+		}
+		steal = {
+			productionId: "production.js",
+			executed: ["documentjs/site/static/build/production.css"]
+		}
+	</script>
+	<script type='text/javascript' 
+	
+		src="./static/steal.production.js"
+	
+		></script>
+</body>
+
+</html>
