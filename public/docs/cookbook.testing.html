@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -366,7 +381,7 @@ code that runs before and after every test:</p>
 
 <p><code>setup</code> creates a <em>form</em> element and creates a new <code>RecipeCreate</code> instance</p>
 
-<p>on it.  <code>teardown</code> removes the element and <a href="can.fixture.store.reset.html">resets</a> the
+<p>on it.  <code>teardown</code> removes the element and [can.fixture.store.reset resets] the
 <code>recipeStore</code> to contain the original set of recipes.</p>
 
 <p><code>create_test.js</code> tests that RecipeCreate can create a recipe:</p>
@@ -454,7 +469,7 @@ code that runs before and after every test:</p>
 
 <p><code>setup</code> creates a <em>div</em> element and creates a new <code>RecipeList</code> 
 instance. That list will be accessible within each test as <code>this.list</code>. 
-<code>teardown</code> removes the element and <a href="can.fixture.store.reset.html">resets</a> 
+<code>teardown</code> removes the element and [can.fixture.store.reset resets] 
 the <code>recipeStore</code> to contain the original set of recipes.</p>
 
 <p>Then, <code>list_test.js</code> tests that RecipeList displays all
@@ -596,7 +611,8 @@ listed on the page:</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

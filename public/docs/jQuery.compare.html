@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>JavaScriptMVC  - jQuery.compare</title>
+	<title>JavaScriptMVC - jQuery.compare </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -88,16 +103,6 @@
 	<ul>
 		
 			
-				
-				
-				<li class="search-container">
-					<a class="function" href="jQuery.fn.compare.html" data-search="jQuery.fn.compare">
-						jQuery.fn.compare
-					</a>
-				</li>
-				
-			
-			
 		
 	</ul>
 
@@ -132,6 +137,8 @@
 <h1>
 jQuery.compare
 
+	
+
 <span class="module">dom/compare</span>
 </h1>
 
@@ -147,6 +154,17 @@ jQuery.compare
 		</section>
 
 		
+		<section class="signature">
+			<h2>jQuery(el).compare([el])</h2>
+<div class="signature-wrapper">
+
+
+
+
+</div>
+
+		</section>
+		
 
 		
 
@@ -158,7 +176,7 @@ a bitmask detailing how they are positioned relative to each other.</p>
 <pre><code>$('#foo').compare($('#bar')) //-&gt; Number
 </code></pre>
 
-<p>You can expect it to return the same results as 
+<p>You can expect it to return the same results as
 <a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#Node3-compareDocumentPosition">| compareDocumentPosition</a>.
 Parts of this documentation and source come from <a href="http://ejohn.org/blog/comparing-document-position">| John Resig</a>.</p>
 
@@ -192,7 +210,7 @@ if( $('#foo').compare($('#bar')) &amp; 10 ) {
 
 <h2>Demo</h2>
 
-<div class='demo_wrapper' data-demo-src='jquery/dom/compare/compare.html'></div>
+<div class='demo_wrapper' data-demo-src='jquerypp/dom/compare/compare.html' data-demo-height='500'></div>
 		</section>
 		
 
@@ -221,7 +239,8 @@ if( $('#foo').compare($('#bar')) &amp; 10 ) {
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

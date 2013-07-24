@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>JavaScriptMVC  - jQuery.event.swipe</title>
+	<title>JavaScriptMVC - jQuery.event.swipe </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -91,7 +106,7 @@
 				
 				
 				<li class="search-container">
-					<a class="property" href="delay.html" data-search="delay">
+					<a class="property" href="jQuery.event.swipe.delay.html" data-search="delay">
 						delay
 					</a>
 				</li>
@@ -103,7 +118,7 @@
 				
 				
 				<li class="search-container">
-					<a class="property" href="max.html" data-search="max">
+					<a class="property" href="jQuery.event.swipe.max.html" data-search="max">
 						max
 					</a>
 				</li>
@@ -115,7 +130,7 @@
 				
 				
 				<li class="search-container">
-					<a class="property" href="min.html" data-search="min">
+					<a class="property" href="jQuery.event.swipe.min.html" data-search="min">
 						min
 					</a>
 				</li>
@@ -152,6 +167,10 @@
 <h1>
 jQuery.event.swipe
 
+	
+		<span class="module">jQuery.event.swipe</span>
+	
+
 
 </h1>
 
@@ -175,7 +194,7 @@ jQuery.event.swipe
 			<p><code>jQuery.event.swipe</code> provides cross browser <code>swipeleft</code>, <code>swiperight</code>, <code>swipeup</code>, <code>swipedown</code> and a general <code>swipe</code> event.
 On mobile devices, swipe uses touch events. On desktop browsers, swipe uses mouseevents.</p>
 
-<p>A swipe happens when the pointer travels between [jQuery.event.swipe.min] and [jQuery.event.swipe.max] pixels within [jQuery.event.swipe.delay] milliseconds in any of the four directions.</p>
+<p>A swipe happens when the pointer travels between <a href="jQuery.event.swipe.min.html">jQuery.event.swipe.min</a> and <a href="jQuery.event.swipe.max.html">jQuery.event.swipe.max</a> pixels within <a href="jQuery.event.swipe.delay.html">jQuery.event.swipe.delay</a> milliseconds in any of the four directions.</p>
 
 <pre><code>$('#swiper').on({
   'swipe' : function(ev) {
@@ -223,7 +242,8 @@ On mobile devices, swipe uses touch events. On desktop browsers, swipe uses mous
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

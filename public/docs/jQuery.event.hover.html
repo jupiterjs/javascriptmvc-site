@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>JavaScriptMVC  - jQuery.event.hover</title>
+	<title>JavaScriptMVC - jQuery.event.hover </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -91,8 +106,56 @@
 				
 				
 				<li class="search-container">
-					<a class="constructor" href="$.Hover.html" data-search="$.Hover">
-						$.Hover
+					<a class="constructor" href="jQuery.Hover.html" data-search="jQuery.Hover">
+						jQuery.Hover
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.hoverenter.html" data-search="hoverenter">
+						hoverenter
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.hoverinit.html" data-search="hoverinit">
+						hoverinit
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.hoverleave.html" data-search="hoverleave">
+						hoverleave
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.hovermove.html" data-search="hovermove">
+						hovermove
 					</a>
 				</li>
 				
@@ -128,6 +191,10 @@
 <h1>
 jQuery.event.hover
 
+	
+		<span class="module">jQuery.event.hover</span>
+	
+
 
 </h1>
 
@@ -153,10 +220,10 @@ A hover happens when the mouse stops moving over an element for a period of time
 You can listen to the following events:</p>
 
 <ul>
-<li><code>[jQuery.event.hover.hoverinit hoverinit]</code> - called on mouseenter, use this event to customize [jQuery.Hover.prototype.delay] and [jQuery.Hover.prototype.distance]</li>
-<li><code>[jQuery.event.hover.hoverenter hoverenter]</code> - an element is being hovered</li>
-<li><code>[jQuery.event.hover.hovermove hovermove]</code> - the mouse moves on an element that has been hovered</li>
-<li><code>[jQuery.event.hover.hoverleave hoverleave]</code> - the mouse leaves the element that has been hovered</li>
+<li><code><a href="jQuery.event.special.hoverinit.html">hoverinit</a></code> - called on mouseenter, use this event to customize <a href="jQuery.Hover.prototype.delay.html">jQuery.Hover.prototype.delay</a> and <a href="jQuery.Hover.prototype.distance.html">jQuery.Hover.prototype.distance</a></li>
+<li><code><a href="jQuery.event.special.hoverenter.html">hoverenter</a></code> - an element is being hovered</li>
+<li><code><a href="jQuery.event.special.hovermove.html">hovermove</a></code> - the mouse moves on an element that has been hovered</li>
+<li><code><a href="jQuery.event.special.hoverleave.html">hoverleave</a></code> - the mouse leaves the element that has been hovered</li>
 </ul>
 
 <h2>Quick Example</h2>
@@ -179,8 +246,7 @@ and removes the class on <code>hoverleave</code>.</p>
 <p>An element is hovered when the mouse moves less than a certain distance in specific time over the element.</p>
 
 <p>You can configure that distance and time by adjusting the <code>distance</code> (in pixels) and <code>delay</code> (in ms) values.
-It can either be set globally by adjusting the static properties [jQuery.Hover.static.delay] and [jQuery.Hover.static.distance]:
-Or you can adjust [jQuery.Hover.prototype.delay] and [jQuery.Hover.prototype.distance] for an individual hover during <code>hoverinit</code>:</p>
+It can be set globally by adjusting the <a href="jQuery.Hover.prototype.delay.html">jQuery.Hover.prototype.delay</a> and <a href="jQuery.Hover.prototype.distance.html">jQuery.Hover.prototype.distance</a> for an individual hover during <code>hoverinit</code>:</p>
 
 <pre><code>$(".option").on("hoverinit", function(ev, hover){
   //set the distance to 10px
@@ -192,7 +258,7 @@ Or you can adjust [jQuery.Hover.prototype.delay] and [jQuery.Hover.prototype.dis
 
 <h2>Demo</h2>
 
-<div class='demo_wrapper' data-demo-src='jquery/event/hover/hover.html'></div>
+<div class='demo_wrapper' data-demo-src='jquerypp/event/hover/hover.html' data-demo-height='350'></div>
 		</section>
 		
 
@@ -221,7 +287,8 @@ Or you can adjust [jQuery.Hover.prototype.delay] and [jQuery.Hover.prototype.dis
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

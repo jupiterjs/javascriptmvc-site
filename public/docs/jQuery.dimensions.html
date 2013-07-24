@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>JavaScriptMVC  - jQuery.dimensions</title>
+	<title>JavaScriptMVC - jQuery.dimensions </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -148,7 +163,7 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>page</li>
+		<li>function</li>
 	</ul>
 	<ul class="links">
 		
@@ -166,7 +181,9 @@
 <h1>
 jQuery.dimensions
 
-<span class="module">jquery/dom/dimensions</span>
+	
+
+<span class="module">jquerypp/dom/dimensions</span>
 </h1>
 
 <span class="inherits">&nbsp;</span>
@@ -181,12 +198,23 @@ jQuery.dimensions
 		</section>
 
 		
+		<section class="signature">
+			<h2>jQuery.dimensions</h2>
+<div class="signature-wrapper">
+
+
+
+
+</div>
+
+		</section>
+		
 
 		
 
 		
 		<section class="comment">
-			<p><code>jQuery.dimensions</code> adds support for animating and setting inner and outer dimensions.
+			<p>Adds support for animating and setting inner and outer dimensions.
 It overwrites</p>
 
 <ul>
@@ -200,7 +228,7 @@ It overwrites</p>
 
 <h2>Use</h2>
 
-<p>When writing reusable plugins, you often want to 
+<p>When writing reusable plugins, you often want to
 set or animate an element's width and height that include its padding,
 border, or margin.  This is especially important in plugins that
 allow custom styling.</p>
@@ -217,7 +245,7 @@ allow custom styling.</p>
 
 <h2>Demo</h2>
 
-<div class='demo_wrapper' data-demo-src='jquery/dom/dimensions/dimensions.html'></div>
+<div class='demo_wrapper' data-demo-src='jquerypp/dom/dimensions/dimensions.html' data-demo-height='550'></div>
 		</section>
 		
 
@@ -246,7 +274,8 @@ allow custom styling.</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -153,6 +168,30 @@
 				
 				
 				<li class="search-container">
+					<a class="property" href="can.Construct.constructorExtends.html" data-search="constructorExtends">
+						constructorExtends
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Construct.extend.html" data-search="extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Construct.fullName.html" data-search="fullName">
 						fullName
 					</a>
@@ -207,8 +246,6 @@
 				</li>
 				
 			
-			
-		
 			
 		
 	</ul>
@@ -307,12 +344,12 @@ newInstance
 		</section>
 
 		<section class="description">
-			<p>Create a new instance of a Construct. </p>
+			<p>Returns an instance of <code>can.Construct</code>. This method can be overridden to return a cached instance.</p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>newInstance([...args])</h2>
+			<h2>can.Construct.newInstance([...args])</h2>
 <div class="signature-wrapper">
 
 
@@ -401,7 +438,8 @@ var args = ["Justin","Barry","Meyer"],
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -226,9 +241,10 @@ link
 
 		
 		<section class="signature">
-			<h2>link(innerText, options, props[, merge])</h2>
+			<h2>can.route.link( innerText, data, props [, merge] )</h2>
 <div class="signature-wrapper">
-
+<p>Make an anchor tag (<code>&lt;A&gt;</code>) that when clicked on will update can.route's properties
+to match those in <code>data</code>.</p>
 
 	<h3>Parameters</h3>
 
@@ -246,7 +262,7 @@ link
 		</li>
 		
 		<li class="parameter">
-			<h4>options
+			<h4>data
 				<code>{Object}</code></h4>
 			<div class="description">
 				<p>The data to populate the route with.</p>
@@ -356,7 +372,8 @@ can.route.link( "The zoo", { id: 5 }, true )
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

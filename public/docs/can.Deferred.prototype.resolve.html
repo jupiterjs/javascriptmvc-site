@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -73,136 +88,12 @@
 			</a>
 		</li>
 		
-		<li class="search-container active parent">
-			<a href="canjs.html" data-search="CanJS">
-				CanJS
-			</a>
-		</li>
-		
 		
 			<li class="search-container active">
-			<a href="can.Deferred.html" data-search="can.Deferred">
-				can.Deferred
+			<a href="can.Deferred.prototype.resolve.html" data-search="resolve">
+				resolve
 			</a>
 			
-	<ul>
-		
-			
-				
-					
-					<li class="heading search-container">
-						<span>prototype</span>
-						
-	<ul>
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="function" href="can.Deferred.prototype.always.html" data-search="always">
-						always
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="function" href="can.Deferred.prototype.done.html" data-search="done">
-						done
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="function" href="can.Deferred.prototype.isResolved.html" data-search="isResolved">
-						isResolved
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="function" href="can.Deferred.prototype.reject.html" data-search="reject">
-						reject
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="function" href="can.Deferred.prototype.rejectWith.html" data-search="rejectWith">
-						rejectWith
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container active">
-					<a class="function" href="can.Deferred.prototype.resolve.html" data-search="resolve">
-						resolve
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="function" href="can.Deferred.prototype.resolveWith.html" data-search="resolveWith">
-						resolveWith
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="function" href="can.Deferred.prototype.then.html" data-search="then">
-						then
-					</a>
-				</li>
-				
-			
-			
-		
-	</ul>
-
-
-					</li>
-					
-				
-				
-			
-			
-		
-	</ul>
-
 
 		</li>
 		
@@ -250,7 +141,7 @@ resolve
 
 		
 		<section class="signature">
-			<h2>resolve([argument])</h2>
+			<h2>deferred.resolve([argument])</h2>
 <div class="signature-wrapper">
 
 
@@ -314,7 +205,8 @@ def.resolve({ animals: [ 'pig', 'cow' ] })</code></pre>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

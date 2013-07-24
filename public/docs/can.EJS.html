@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -135,6 +150,84 @@
 			
 			
 		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Tags</span>
+						
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.EJS.tags.scriptlet.html" data-search="&lt;% CODE %&gt;">
+						&lt;% CODE %&gt;
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.EJS.tags.escaped.html" data-search="&lt;%= CODE %&gt;">
+						&lt;%= CODE %&gt;
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.EJS.tags.unescaped.html" data-search="&lt;%== CODE %&gt;">
+						&lt;%== CODE %&gt;
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.EJS.tags.templated.html" data-search="&lt;%% CODE %&gt;">
+						&lt;%% CODE %&gt;
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.EJS.tags.comment.html" data-search="&lt;%# CODE %&gt;">
+						&lt;%# CODE %&gt;
+					</a>
+				</li>
+				
+			
+			
+		
+	</ul>
+
+
+					</li>
+					
+				
+				
+			
+			
+		
 	</ul>
 
 
@@ -175,19 +268,27 @@ can.EJS
 		</section>
 
 		<section class="description">
-			
+			<p>EJS provides <strong>live</strong> ERB-style client-side templates. </p>
 		</section>
 
+		
+		<section class="signature">
+			<h2>new can.EJS(options)</h2>
+<div class="signature-wrapper">
+<p>Creates an EmbeddedJS template. Use EJS with <a href="can.view.html">can.view</a> or <a href="can.view.ejs.html">can.view.ejs</a>.</p>
+
+
+
+</div>
+
+		</section>
 		
 
 		
 
 		
 		<section class="comment">
-			<p>EJS provides <strong>live</strong> ERB-style client-side templates. Use EJS 
-with <a href="can.view.html">can.view</a> and for live templating use EJS with <a href="can.Observe.html">can.Observe</a>.</p>
-
-<h2>Basic Example</h2>
+			<h2>Basic Example</h2>
 
 <p>The following renders a Teacher's name and students into an element.  First, 
 create a teacher template in a script tag like:</p>
@@ -225,7 +326,7 @@ between <code>&lt;%= %&gt;</code> is inserted into the page.</p>
 };
 
 document.getElementById('teacher')
-  .appendChild( can.view("teacherEjs", teacher) )
+  .appendChild( can.view("teacherEJS", teacher) )
 </code></pre>
 
 <p>This results in HTML like:</p>
@@ -275,9 +376,9 @@ helpful, but it does nothing fancy.</p>
 <p>Next, turn your teacher into a <code>new can.Observe(object)</code> and pass
 that to <code>can.view</code>:</p>
 
-<pre><code>var teacher = can.Observe({
+<pre><code>var teacher = new can.Observe({
   name : "Mr. Smith",
-  grade : "a"
+  grade : "a",
   students : [
     {name : "Suzy"},
     {name : "Payal"},
@@ -287,7 +388,7 @@ that to <code>can.view</code>:</p>
 });
 
 document.getElementById('teacher')
-  .appendChild( can.view("teacherEjs", teacher) );
+  .appendChild( can.view("teacherEJS", teacher) );
 </code></pre>
 
 <p>Finally, update some properties of teacher and slap your 
@@ -313,38 +414,6 @@ are editable, so experiment!</p>
 <h2>Magic Tags</h2>
 
 <p>EJS uses 5 types of tags:</p>
-
-<p><strong><code>&lt;% CODE %&gt;</code></strong> - Runs JS Code.</p>
-
-<p>This type of magic tag does not modify the template but is used for JS control statements like for-loops, if/else, switch, etc.  An example:</p>
-
-<pre><code>&lt;% if( items.attr('length') === 0 ) { %&gt;
-    &lt;tr&gt;&lt;td&gt;You have no items&lt;/td&gt;&lt;/tr&gt;
-&lt;% } else { %&gt;
-    &lt;% list(items, function(){ %&gt;
-      &lt;tr&gt; .... &lt;/tr&gt;
-    &lt;% }) %&gt;
-&lt;% } %&gt;
-</code></pre>
-
-<p>Variable declarations and control blocks should always be defined in their own dedicated tags. Live binding leverages this hinting to ensure that logic is declared and executed at its intended scope.</p>
-
-<pre><code>&lt;!-- Each statement has its own dedicated EJS tag --&gt;
-&lt;% var address = person.attr('address') %&gt;
-&lt;% list(items, function() { %&gt;
-    &lt;tr&gt; .... &lt;/tr&gt;
-&lt;% }) %&gt;
-&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;
-
-&lt;!-- This won't work! --&gt;
-&lt;%
-  var address = person.attr('address');
-  list(items, function() {
-%&gt;
-    &lt;tr&gt; .... &lt;/tr&gt;
-&lt;% }) %&gt;
-&lt;span&gt;&lt;%= address.attr('street') %&gt;&lt;span&gt;
-</code></pre>
 
 <p><strong><code>&lt;%= CODE %&gt;</code></strong> - Runs JS Code and writes the <em>escaped</em> result into the result of the template.</p>
 
@@ -459,6 +528,40 @@ by <code>.complete()</code>.  If they change, EJS will automatically unbind.</p>
 <pre><code>var todos = Todo.findAll({}); //returns a can.Model.List
 can.view('//todo/views/init.ejs', todos)
 </code></pre>
+
+<h2>Element Callbacks</h2>
+
+<p>If a function is returned by the <code>&lt;%= %&gt;</code> or <code>&lt;%== %&gt;</code> magic tags within an element’s tag like:</p>
+
+<pre><code>&lt;div &lt;%= function( element ) { element.style.display = 'none' } %&gt; &gt;
+  Hello
+&lt;/div&gt;
+</code></pre>
+
+<p>The function is called back with the HTMLElement as the first argument. This is useful to initialize functionality on an element within the view. This is so common that EJS supports ES5 arrow functions that get passed the NodeList wrapped element. Using jQuery, this lets you write the above callback as:</p>
+
+<pre><code>&lt;div &lt;%= (el) -&gt; el.hide() %&gt; &gt;
+  Hello
+&lt;/div&gt;
+</code></pre>
+
+<p>This technique is commonly used to add data, especially model instances, to an element like:</p>
+
+<pre><code>&lt;% todos.each( function( todo ) { %&gt;
+  &lt;li &lt;%= (el) -&gt; el.data( 'todo', todo ) %&gt;&gt;
+    &lt;%= todo.attr( 'name' ) %&gt;
+  &lt;/li&gt;
+&lt;% } ) %&gt;
+</code></pre>
+
+<p>jQuery’s <code>el.data( NAME, data )</code> adds data to an element. If your library does not support this, can provides it as <code>can.data( NodeList, NAME, data )</code>. Rewrite the above example as:</p>
+
+<pre><code>&lt;% list(todos, function( todo ) { %&gt;
+  &lt;li &lt;%= (el) -&gt; can.data( el, 'todo', todo ) %&gt;&gt;
+    &lt;%= todo.attr( 'name' ) %&gt;
+  &lt;/li&gt;
+&lt;% } ) %&gt;
+</code></pre>
 		</section>
 		
 
@@ -487,7 +590,8 @@ can.view('//todo/views/init.ejs', todos)
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

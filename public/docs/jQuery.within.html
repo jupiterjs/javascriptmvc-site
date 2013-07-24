@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>JavaScriptMVC  - jQuery.within</title>
+	<title>JavaScriptMVC - jQuery.within </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -88,16 +103,6 @@
 	<ul>
 		
 			
-				
-				
-				<li class="search-container">
-					<a class="function" href="jQuery.fn.within.html" data-search="jQuery.fn.within">
-						jQuery.fn.within
-					</a>
-				</li>
-				
-			
-			
 		
 			
 				
@@ -124,7 +129,7 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>page</li>
+		<li>function</li>
 	</ul>
 	<ul class="links">
 		
@@ -139,6 +144,10 @@
 
 <h1>
 jQuery.within
+
+	
+		<span class="module">jQuery.within</span>
+	
 
 
 </h1>
@@ -155,12 +164,10 @@ jQuery.within
 		</section>
 
 		
-
-		
-
-		
-		<section class="comment">
-			<p><code>jQuery.within</code> helps to determine all elements that have a certain position or area in common by providing <code><a href="jQuery.fn.withinBox.html">jQuery.fn.withinBox</a></code> and <code><a href="jQuery.fn.within.html">jQuery.fn.within</a></code>. The following example returns all <code>div</code> elements on the point 200px left and 200px from the top:</p>
+		<section class="signature">
+			<h2>jQuery(el).within(left, top)</h2>
+<div class="signature-wrapper">
+<p>Helps to determine all elements that have a certain position or area in common by providing <code><a href="jQuery.fn.withinBox.html">jQuery.fn.withinBox</a></code> and <code><a href="jQuery.fn.within.html">jQuery.fn.within</a></code>. The following example returns all <code>div</code> elements on the point 200px left and 200px from the top:</p>
 
 <pre><code>$('div').within(200, 200)
 </code></pre>
@@ -170,16 +177,105 @@ jQuery.within
 <pre><code>$('*').withinBox(200, 200, 100, 100)
 </code></pre>
 
-<blockquote>
-  <p><a href="jQuery.event.drag.html">jQuery.event.drag</a> uses <em>$.within</em> to determine dropable elements at the current position.</p>
-</blockquote>
+<p><a href="jQuery.event.drag.html">jQuery.event.drag</a> uses <em>$.within</em> to determine dropable elements at the current position.</p>
 
-<h2>Example</h2>
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>jQuery(el).withinBox(left, top, width, height)</h2>
+<div class="signature-wrapper">
+<p>Returns all elements matching the selector that have a given area in common:
+ $('*').withinBox(200, 200, 100, 100)</p>
+
+<p>### Example</p>
 
 <p>Move the mouse in the following example and it will show the ids for <code>div</code> elements within the current mouse position:</p>
 
 <iframe style="width: 100%; height: 330px" src="http://jsfiddle.net/hHLcg/embedded/result,html,js,css" allowfullscreen="allowfullscreen" frameborder="0">JSFiddle</iframe>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>left
+				<code>{Number}</code></h4>
+			<div class="description">
+				<p>the position from the left of the page</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>top
+				<code>{Number}</code></h4>
+			<div class="description">
+				<p>the position from the top of the page</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>width
+				<code>{Number}</code></h4>
+			<div class="description">
+				<p>the width of the area</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>height
+				<code>{Number}</code></h4>
+			<div class="description">
+				<p>the height of the area</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>useOffsetCache<code>=false</code>
+				<code>{Boolean}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>cache the dimensions and offset of the elements.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{jQuery}</code></h4>
+		<div class="description">
+			<p>a jQuery collection of elements whos area
+ overlaps the element position.</p>
+		</div>
+	</div>
+
+
+</div>
+
 		</section>
+		
+
+		
+
 		
 
 		
@@ -207,7 +303,8 @@ jQuery.within
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

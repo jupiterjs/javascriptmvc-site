@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -177,6 +192,18 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.view.frag.html" data-search="frag">
+						frag
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="function" href="can.view.hook.html" data-search="hook">
 						hook
 					</a>
@@ -275,14 +302,18 @@ mustache
 		</section>
 
 		<section class="description">
-			<p>Register a Mustache template string or create a renderer function. </p>
+			
 		</section>
 
 		
 		<section class="signature">
-			<h2>can.view.mustache(id, template)</h2>
+			<h2>can.view.mustache( [id,] template )</h2>
 <div class="signature-wrapper">
+<p>Register a Mustache template string and create a renderer function.</p>
 
+<pre><code>var renderer = can.view.mustache("&lt;h1&gt;{{message}}&lt;/h1&gt;");
+renderer({message: "Hello"}) //-&gt; docFrag[ &lt;h1&gt;Hello&lt;/h1&gt; ]
+</code></pre>
 
 	<h3>Parameters</h3>
 
@@ -290,42 +321,18 @@ mustache
 		
 		<li class="parameter">
 			<h4>id
-				<code>{String}</code></h4>
+				<code>{String}</code><span class="pull-right optional">Optional</span></h4>
 			<div class="description">
-				<p>An ID for the template.</p>
+				<p>An optional ID for the template.</p>
+
+<pre><code>can.view.ejs("greet","&lt;h1&gt;{{message}}&lt;/h1&gt;");
+can.view("greet",{message: "Hello"}) //-&gt; docFrag[&lt;h1&gt;Hello&lt;/h1&gt;]
+</code></pre>
 			</div>
 			
 			
 			
 		</li>
-		
-		<li class="parameter">
-			<h4>template
-				<code>{String}</code></h4>
-			<div class="description">
-				<p>A Mustache template in string form.</p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
-
-
-
-</div>
-
-		</section>
-		
-		<section class="signature">
-			<h2>can.view.mustache(template)</h2>
-<div class="signature-wrapper">
-
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
 		
 		<li class="parameter">
 			<h4>template
@@ -343,15 +350,27 @@ mustache
 
 	<h3>Returns</h3>
 	<div class="returns">
-		<h4><code>{function()}</code></h4>
+		<h4><code>{<a href="can.view.renderer.html" >renderer</a>(data, helpers)}</code></h4>
 		<div class="description">
 			<p>A renderer function that takes data and helpers.</p>
+		</div>
+	</div>
 
-<p><code>can.view.mustache([id,] template)</code> registers an Mustache template string 
+
+</div>
+
+		</section>
+		
+
+		
+
+		
+		<section class="comment">
+			<p><code>can.view.mustache([id,] template)</code> registers an Mustache template string 
 for a given id programatically. The following
 registers <code>myStache</code> and renders it into a documentFragment.</p>
 
-<pre><code> can.view.ejs('myStache', '&lt;h2&gt;{{message}}&lt;/h2&gt;');
+<pre><code> can.viewmustache('myStache', '&lt;h2&gt;{{message}}&lt;/h2&gt;');
 
  var frag = can.view('myStache', {
      message : 'Hello there!'
@@ -370,17 +389,7 @@ documentFragment.</p>
      message : 'Mustache'
  }); // -&gt; &lt;div&gt;Mustache&lt;/div&gt;
 </code></pre>
-		</div>
-	</div>
-
-
-</div>
-
 		</section>
-		
-
-		
-
 		
 
 		
@@ -408,7 +417,8 @@ documentFragment.</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

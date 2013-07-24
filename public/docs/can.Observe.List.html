@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -322,19 +337,19 @@ can.Observe.List
 
 		
 		<section class="signature">
-			<h2>can.Observe.List([elements])</h2>
+			<h2>new can.Observe.List([array])</h2>
 <div class="signature-wrapper">
-
+<p>Create an observable array-like object.</p>
 
 	<h3>Parameters</h3>
 
 	<ol class="parameters">
 		
 		<li class="parameter">
-			<h4>elements
+			<h4>array
 				<code>{Array}</code><span class="pull-right optional">Optional</span></h4>
 			<div class="description">
-				<p>elements to seed the List with</p>
+				<p>items to seed the List with</p>
 			</div>
 			
 			
@@ -348,9 +363,24 @@ can.Observe.List
 	<div class="returns">
 		<h4><code>{<a href="can.Observe.List.html" >can.Observe.List</a>}</code></h4>
 		<div class="description">
-			<p>an instance of <code>can.Observe.List</code> with the elements from <em>elements</em></p>
+			<p>an instance of <code>can.Observe.List</code> with the elements from <em>array</em></p>
 		</div>
 	</div>
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>can.Observe.List([name,] [staticProperties,] instanceProperties)</h2>
+<div class="signature-wrapper">
+<p>Creates a new extended constructor function. </p>
+
+<p>This is deprecated. In CanJS 1.2, by default, calling the constructor function
+without <code>new</code> will create a <code>new</code> instance. Use <a href="can.Construct.extend.html">can.Observe.extend</a> 
+instead of calling the constructor to extend.</p>
+
 
 
 </div>
@@ -362,9 +392,7 @@ can.Observe.List
 
 		
 		<section class="comment">
-			<p><code>can.Observe.List</code> provides a way for you to use <code>can.Observe</code>s with arrays. Much like <code>can.Observe</code>,
-when you use the getters and setters on <code>can.Observe.List</code>, events are fired that you can listen for
-and react to.</p>
+			<p>Use for observable array-like objects.</p>
 
 <h2>Working with Lists</h2>
 
@@ -470,7 +498,8 @@ list.pop(); // 'An element changed.'
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

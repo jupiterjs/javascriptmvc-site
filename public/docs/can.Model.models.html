@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -249,6 +264,30 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Model.makeFindAll.html" data-search="can.Model.makeFindAll">
+						makeFindAll
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Model.makeFindOne.html" data-search="can.Model.makeFindOne">
+						makeFindOne
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="function" href="can.Model.model.html" data-search="model">
 						model
 					</a>
@@ -267,6 +306,8 @@
 				</li>
 				
 			
+			
+		
 			
 		
 			
@@ -352,7 +393,7 @@ models
 
 		
 		<section class="signature">
-			<h2>models(data[, oldList])</h2>
+			<h2>can.Model.models(data[, oldList])</h2>
 <div class="signature-wrapper">
 
 
@@ -421,7 +462,7 @@ overwriting <code>can.Model.models</code> is the best way to normalize it.</p>
 <p>The following uses models to convert to a <a href="can.Model.List.html">can.Model.List</a> of model
 instances.</p>
 
-<pre><code>Task = can.Model({},{})
+<pre><code>Task = can.Model.extend({},{})
 var tasks = Task.models([
   {id: 1, name : "dishes", complete : false},
   {id: 2, name: "laundry", compelte: true}
@@ -466,7 +507,7 @@ tasks.count // -&gt; 1500
 
 <p>You will want to overwrite models to pass the base models what it expects like:</p>
 
-<pre><code>Task = can.Model({
+<pre><code>Task = can.Model.extend({
   models : function(data){
     return can.Model.models.call(this,data.thingsToDo);
   }
@@ -503,7 +544,8 @@ create the individual instances.</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

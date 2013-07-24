@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -153,6 +168,30 @@
 				
 				
 				<li class="search-container">
+					<a class="property" href="can.Construct.constructorExtends.html" data-search="constructorExtends">
+						constructorExtends
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Construct.extend.html" data-search="extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Construct.fullName.html" data-search="fullName">
 						fullName
 					</a>
@@ -207,8 +246,6 @@
 				</li>
 				
 			
-			
-		
 			
 		
 	</ul>
@@ -312,9 +349,26 @@ setup
 
 		
 		<section class="signature">
-			<h2>setup(base, fullName, staticProps, protoProps)</h2>
+			<h2>can.Construct.setup(base, fullName, staticProps, protoProps)</h2>
 <div class="signature-wrapper">
+<p>A static <code>setup</code> method provides inheritable setup functionality
+for a Constructor function. The following example
+creates a Group constructor function.  Any constructor
+functions that inherit from Group will be added to 
+<code>Group.childGroups</code>.</p>
 
+<pre><code>Group = can.Construct.extend({
+  setup: function(Construct, fullName, staticProps, protoProps){
+    this.childGroups = [];
+    if(Construct !== can.Construct){
+      this.childGroups(Construct)
+    }
+    Construct.setup.apply(this, arguments)
+  }   
+},{})
+var Flock = Group.extend(...)
+Group.childGroups[0] //-&gt; Flock
+</code></pre>
 
 	<h3>Parameters</h3>
 
@@ -377,8 +431,10 @@ setup
 
 		
 		<section class="comment">
-			<p>The static <code>setup</code> method is called immediately after a constructor function is created and 
-set to inherit from its base constructor. It is useful for setting up additional inheritance work.
+			<p>The static <code>setup</code> method is called immediately after a constructor 
+function is created and 
+set to inherit from its base constructor. It is useful for setting up 
+additional inheritance work.
 Do not confuse this with the prototype <code><a href="can.Construct.prototype.setup.html">can.Construct.prototype.setup</a></code> method.</p>
 
 <h2>Setup Extends Defaults</h2>
@@ -447,7 +503,8 @@ Child.base; // Parent</code></pre>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

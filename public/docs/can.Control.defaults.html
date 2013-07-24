@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -193,6 +208,18 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Control.extend.html" data-search="can.Control.extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Control.processors.html" data-search="processors">
 						processors
 					</a>
@@ -309,15 +336,31 @@ defaults
 		
 
 		
+		<div class='primary-options'>
+			<h2>
+	
+	   Property Type:
+	
+	
+	<code>{Object}</code>
+</h2>
+
+
+
+
+
+
+		</div>
+		
 
 		
 		<section class="comment">
 			<p><code>defaults</code> provides default values for a Control's options.
 Options passed into the constructor function will be shallowly merged
 into the values from defaults in <a href="can.Control.prototype.setup.html">can.Control.prototype.setup</a>, and
-the result will be stored in <code><a href="can.Control.prototype.options.html">this.options</a></code>.</p>
+the result will be stored in <a href="can.Control.prototype.options.html">this.options</a>.</p>
 
-<pre><code>Message = can.Control({
+<pre><code>Message = can.Control.extend({
   defaults: {
     message: "Hello World"
   }
@@ -358,7 +401,8 @@ new Message( "#el12", { message: "hi" } ); //writes hi
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

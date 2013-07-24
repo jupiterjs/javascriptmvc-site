@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -79,16 +94,10 @@
 			</a>
 		</li>
 		
-		<li class="search-container active parent">
-			<a href="can.fixture.html" data-search="can.fixture">
-				can.fixture
-			</a>
-		</li>
-		
 		
 			<li class="search-container active">
-			<a href="can.fixture.store.html" data-search="store">
-				store
+			<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
 			</a>
 			
 	<ul>
@@ -97,8 +106,8 @@
 				
 				
 				<li class="search-container">
-					<a class="function" href="can.fixture.store.create.html" data-search="can.fixture.store.create">
-						create
+					<a class="property" href="can.fixture.delay.html" data-search="delay">
+						delay
 					</a>
 				</li>
 				
@@ -109,8 +118,8 @@
 				
 				
 				<li class="search-container">
-					<a class="function" href="can.fixture.store.destroy.html" data-search="can.fixture.store.destroy">
-						destroy
+					<a class="property" href="can.fixture.on.html" data-search="on">
+						on
 					</a>
 				</li>
 				
@@ -121,8 +130,8 @@
 				
 				
 				<li class="search-container">
-					<a class="function" href="can.fixture.store.find.html" data-search="can.fixture.store.find">
-						find
+					<a class="function" href="can.fixture.rand.html" data-search="rand">
+						rand
 					</a>
 				</li>
 				
@@ -133,8 +142,40 @@
 				
 				
 				<li class="search-container">
-					<a class="function" href="can.fixture.store.findAll.html" data-search="can.fixture.store.findAll">
-						findAll
+					<a class="property" href="can.fixture.rootUrl.html" data-search="rootUrl">
+						rootUrl
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container active">
+					<a class="function" href="can.fixture.store.html" data-search="store">
+						store
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>Types</span>
+						
+	<ul>
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="typedef" href="can.fixture.types.Store.html" data-search="Store">
+						Store
 					</a>
 				</li>
 				
@@ -145,8 +186,8 @@
 				
 				
 				<li class="search-container">
-					<a class="function" href="can.fixture.store.findOne.html" data-search="can.fixture.store.findOne">
-						findOne
+					<a class="typedef" href="can.fixture.types.requestHandler.html" data-search="requestHandler">
+						requestHandler
 					</a>
 				</li>
 				
@@ -157,22 +198,20 @@
 				
 				
 				<li class="search-container">
-					<a class="function" href="can.fixture.store.reset.html" data-search="can.fixture.store.reset">
-						reset
+					<a class="typedef" href="can.fixture.types.responseHandler.html" data-search="responseHandler">
+						responseHandler
 					</a>
 				</li>
 				
 			
 			
 		
-			
+	</ul>
+
+
+					</li>
+					
 				
-				
-				<li class="search-container">
-					<a class="function" href="can.fixture.store.update.html" data-search="can.fixture.store.update">
-						update
-					</a>
-				</li>
 				
 			
 			
@@ -226,30 +265,13 @@ store
 
 		
 		<section class="signature">
-			<h2>can.fixture.store([types,] count, make[, filter])</h2>
+			<h2>can.fixture.store(count, make[, filter])</h2>
 <div class="signature-wrapper">
 
 
 	<h3>Parameters</h3>
 
 	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>types
-				<code>{Array | String}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>An array of the fixture names or the singular fixture name.
-If an array, the first item is the plural fixture name (prefixed with -) and the second
-item is the singular name.  If a string, it's assumed to be the singular fixture name.  Make
-will simply add s to the end of it for the plural name. If this parameter is not an array
-or a String the fixture won't be added and only return the generator object.</p>
-			</div>
-			
-			
-			
-			
-			
-		</li>
 		
 		<li class="parameter">
 			<h4>count
@@ -301,7 +323,7 @@ false otherwise. For example:</p>
 
 	<h3>Returns</h3>
 	<div class="returns">
-		<h4><code>{Object}</code></h4>
+		<h4><code>{can.fixture.Store}</code></h4>
 		<div class="description">
 			<p>A generator object providing fixture functions for <em>findAll</em>, <em>findOne</em>, <em>create</em>,
 <em>update</em> and <em>destroy</em>.</p>
@@ -328,7 +350,7 @@ the store can do filtering, grouping, sorting, and paging.</p>
 
 <pre><code>var todoStore = can.fixture.store(100, function(i){
   return {
-       id: i,
+    id: i,
     name: "todo number "+i,
     description: "a description of some todo",
     ownerId: can.fixture.rand(10)
@@ -336,10 +358,20 @@ the store can do filtering, grouping, sorting, and paging.</p>
 })
 </code></pre>
 
-<p><code>todoStore</code>'s methods can be used for the response to a REST service like:</p>
+<p><code>todoStore</code>'s methods:</p>
+
+<ul>
+<li><a href="can.fixture.types.Store.findAll.html">findAll</a>,</li>
+<li><a href="can.fixture.types.Store.findOne.html">findOne</a>,</li>
+<li><a href="can.fixture.types.Store.create.html">create</a>,</li>
+<li><a href="can.fixture.types.Store.update.html">update</a>, and</li>
+<li><a href="can.fixture.types.Store.destroy.html">destroy</a> </li>
+</ul>
+
+<p>Can be used to simulate a REST service like:</p>
 
 <pre><code> can.fixture({
-      'GET /todos':         todoStore.findAll,
+   'GET /todos':         todoStore.findAll,
    'GET /todos/{id}':    todoStore.findOne,
    'POST /todos':        todoStore.create,
    'PUT /todos/{id}':    todoStore.update,
@@ -364,60 +396,6 @@ the store can do filtering, grouping, sorting, and paging.</p>
 
 })
 </code></pre>
-
-<h2>Simulated Service</h2>
-
-<p><code>can.fixture.store</code>'s <a href="can.fixture.store.findAll.html">findAll</a>,
-<a href="can.fixture.store.findOne.html">findOne</a>,
-<a href="can.fixture.store.findOne.html">create</a>,
-<a href="can.fixture.store.findOne.html">update</a>, and
-<a href="can.fixture.store.findOne.html">destroy</a> methods are used to
-simulate a REST service that </p>
-
-<h2>With can.ajax</h2>
-
-<pre><code>//makes a nested list of messages
-can.fixture.store(["messages","message"], 1000,
- function(i, messages){
-  return {
-    subject: "This is message "+i,
-    body: "Here is some text for this message",
-    date: Math.floor( new Date().getTime() ),
-    parentId : i &lt; 100 ? null : Math.floor(Math.random()*i)
-  }
-})
-//uses the message fixture to return messages limited by
-// offset, limit, order, etc.
-can.ajax({
-  url: "messages",
-  data: {
-     offset: 100,
-     limit: 50,
-     order: ["date ASC"],
-     parentId: 5},
-   },
-   fixture: "-messages",
-   success: function( messages ) {  ... }
-});
-</code></pre>
-
-<h2>With can.Model</h2>
-
-<p><code>can.fixture.make</code> returns a model store that offers <code>findAll</code>, <code>findOne</code>, <code>create</code>,
-<code>update</code> and <code>destroy</code> fixture functions you can map to a <a href="can.Model.html">can.Model</a> Ajax request.
-Consider a model like this:</p>
-
-<p>And an unnamed generated fixture like this:</p>
-
-<pre><code> var store = can.fixture.make(100, function(i) {
-     return {
-         id : i,
-         name : 'Todo ' + i
-     }
- });
-</code></pre>
-
-<p>You can map can.Model requests using the return value of <code>can.fixture.make</code>:</p>
 		</section>
 		
 
@@ -446,7 +424,8 @@ Consider a model like this:</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -249,6 +264,30 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Model.makeFindAll.html" data-search="can.Model.makeFindAll">
+						makeFindAll
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Model.makeFindOne.html" data-search="can.Model.makeFindOne">
+						makeFindOne
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="function" href="can.Model.model.html" data-search="model">
 						model
 					</a>
@@ -267,6 +306,8 @@
 				</li>
 				
 			
+			
+		
 			
 		
 			
@@ -352,7 +393,7 @@ bind
 
 		
 		<section class="signature">
-			<h2>bind(eventName, handler)</h2>
+			<h2>model.bind(eventName, handler)</h2>
 <div class="signature-wrapper">
 
 
@@ -408,7 +449,7 @@ Model instance.</p>
 			<p><code>bind(eventName, handler(ev, args...) )</code> is used to listen
 to events on this model instance.  Example:</p>
 
-<pre><code>Task = can.Model()
+<pre><code>Task = can.Model.extend()
 var task = new Task({name : "dishes"})
 task.bind("name", function(ev, newVal, oldVal){})
 </code></pre>
@@ -428,7 +469,7 @@ an instance is:</p>
 
 <p>like:</p>
 
-<pre><code>Task = can.Model()
+<pre><code>Task = can.Model.extend()
 var task = new Task({name : "dishes"})
 
 task.bind("created", function(ev, newTask){
@@ -483,7 +524,8 @@ model instance is removed from the store, freeing memory.  </p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

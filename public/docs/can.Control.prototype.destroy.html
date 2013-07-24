@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -193,6 +208,18 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Control.extend.html" data-search="can.Control.extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Control.processors.html" data-search="processors">
 						processors
 					</a>
@@ -308,9 +335,10 @@ destroy
 
 		
 		<section class="signature">
-			<h2>destroy()</h2>
+			<h2>control.destroy()</h2>
 <div class="signature-wrapper">
-
+<p>Prepares a control for garbage collection and is a place to
+reset any changes the control has made.</p>
 
 
 
@@ -323,10 +351,7 @@ destroy
 
 		
 		<section class="comment">
-			<p><code>destroy</code> prepares a control for garbage collection and is a place to
-reset any changes the control has made.  </p>
-
-<h2>Allowing Garbage Collection</h2>
+			<h2>Allowing Garbage Collection</h2>
 
 <p>Destroy is called whenever a control's element is removed from the page using 
 the library's standard HTML modifier methods.  This means that you
@@ -379,7 +404,8 @@ $( '#clickme' ).remove();
 <p><strong>YUI</strong></p>
 
 <ul>
-<li>TODO!</li>
+<li>Y.Node.prototype.remove</li>
+<li>Y.Node.prototype.destroy</li>
 </ul>
 
 <h2>Teardown in Destroy</h2>
@@ -392,7 +418,7 @@ destroy, make sure you call Control's base functionality</strong>.</p>
 <p>The following example changes an element's text when the control is
 created and sets it back when the control is removed:</p>
 
-<pre><code>Changer = can.Control({
+<pre><code>Changer = can.Control.extend({
   init: function() {
     this.oldText = this.element.text();
     this.element.text( "Changed!!!" );
@@ -448,7 +474,8 @@ changer.destroy();
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

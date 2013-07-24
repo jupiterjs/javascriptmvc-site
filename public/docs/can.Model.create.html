@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -249,6 +264,30 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Model.makeFindAll.html" data-search="can.Model.makeFindAll">
+						makeFindAll
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Model.makeFindOne.html" data-search="can.Model.makeFindOne">
+						makeFindOne
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="function" href="can.Model.model.html" data-search="model">
 						model
 					</a>
@@ -267,6 +306,8 @@
 				</li>
 				
 			
+			
+		
 			
 		
 			
@@ -347,35 +388,16 @@ create
 		</section>
 
 		<section class="description">
-			<p>Create a new resource on the server. </p>
+			<p>Specifies how to create a new resource on the server. <code>create(serialized)</code> is called  by <a href="can.Model.prototype.save.html">save</a> if the model instance <a href="can.Model.prototype.isNew.html">is new</a>.</p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>[METHOD] /path/to/resource</h2>
+			<h2>can.Model.create: function(serialized) -&gt; seferred</h2>
 <div class="signature-wrapper">
-<p>If you provide a URL, the Model will send a request to that URL using
-the method specified (or POST if none is specified) when saving a
-new instance on the server. (See below for more details.)</p>
-
-
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{<a href="can.Deferred.html" >can.Deferred</a>}</code></h4>
-		<div class="description">
-			<p>A Deferred that resolves to the created model.</p>
-		</div>
-	</div>
-
-
-</div>
-
-		</section>
-		
-		<section class="signature">
-			<h2>function(serialized)</h2>
-<div class="signature-wrapper">
-<p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>
+<p>Specify a function to create persistent instances. The function will
+typically perform an AJAX request to a service that results in
+creating a record in a database.</p>
 
 	<h3>Parameters</h3>
 
@@ -400,9 +422,85 @@ the model to create.</p>
 	<div class="returns">
 		<h4><code>{<a href="can.Deferred.html" >can.Deferred</a>}</code></h4>
 		<div class="description">
-			<p>A Deferred that resolves to the created model.</p>
+			<p>A Deferred that resolves to an object of attributes
+that will be added to the created model isntance.  The object <strong>MUST</strong> contain
+an <a href="can.Model.id.html">id</a> property so that future calls to <a href="can.Model.prototype.save.html">save</a>
+will call <a href="can.Model.update.html">can.Model.update</a>.</p>
 		</div>
 	</div>
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>can.Model.create: &quot;[METHOD] /path/to/resource&quot;</h2>
+<div class="signature-wrapper">
+<p>Specify a HTTP method and url to create persistent instances.</p>
+
+<p>If you provide a URL, the Model will send a request to that URL using
+the method specified (or POST if none is specified) when saving a
+new instance on the server. (See below for more details.)</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>METHOD
+				<code>{<a href="HttpMethod.html" >HttpMethod</a>}</code></h4>
+			<div class="description">
+				<p>An HTTP method. Defaults to <code>"POST"</code>.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>url
+				<code>{STRING}</code></h4>
+			<div class="description">
+				<p>The URL of the service to retrieve JSON data.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>can.Model.create: {ajaxSettings}</h2>
+<div class="signature-wrapper">
+<p>Specify an options object that is used to make a HTTP request to create
+persistent instances.</p>
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>ajaxSettings
+				<code>{<a href="can.AjaxSettings.html" >can.AjaxSettings</a>}</code></h4>
+			<div class="description">
+				<p>A settings object that
+specifies the options available to pass to <a href="can.ajax.html">can.ajax</a>.</p>
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
 
 
 </div>
@@ -422,7 +520,7 @@ model instance on the server. </p>
 <p>The easiest way to implement create is to give it the url 
 to post data to:</p>
 
-<pre><code>var Recipe = can.Model({
+<pre><code>var Recipe = can.Model.extend({
   create: "/recipes"
 },{})
 </code></pre>
@@ -452,7 +550,7 @@ something that looks like:</p>
 
 <p>The code looks like:</p>
 
-<pre><code>can.Model("Recipe", {
+<pre><code>can.Model.extend("Recipe", {
   create : function( attrs ){
     return $.post("/recipes.json",attrs, undefined ,"json");
   }
@@ -486,7 +584,8 @@ something that looks like:</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

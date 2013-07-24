@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -153,6 +168,30 @@
 				
 				
 				<li class="search-container">
+					<a class="property" href="can.Construct.constructorExtends.html" data-search="constructorExtends">
+						constructorExtends
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Construct.extend.html" data-search="extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Construct.fullName.html" data-search="fullName">
 						fullName
 					</a>
@@ -207,8 +246,6 @@
 				</li>
 				
 			
-			
-		
 			
 		
 	</ul>
@@ -312,9 +349,9 @@ setup
 
 		
 		<section class="signature">
-			<h2>setup(...args)</h2>
+			<h2>construct.setup(...args)</h2>
 <div class="signature-wrapper">
-
+<p>A setup function for the instantiation of a constructor function.</p>
 
 	<h3>Parameters</h3>
 
@@ -324,7 +361,7 @@ setup
 			<h4>args
 				<code>{*}</code></h4>
 			<div class="description">
-				<p>the arguments passed to the constructor.</p>
+				<p>The arguments passed to the constructor.</p>
 			</div>
 			
 			
@@ -338,8 +375,24 @@ setup
 	<div class="returns">
 		<h4><code>{Array | undefined}</code></h4>
 		<div class="description">
-			<p>if an array is returned, the elements of that array are passed as
-arguments to <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a>. Otherwise, the arguments to the
+			<p>If an array is returned, the array's items are passed as
+arguments to <a href="can.Construct.prototype.init.html">init</a>. The following example always makes 
+sure that init is called with a jQuery wrapped element:</p>
+
+<pre><code>WidgetFactory = can.Construct.extend({
+    setup: function(element){
+        return [$(element)]
+    }
+})
+
+MyWidget = WidgetFactory.extend({
+    init: function($el){
+        $el.html("My Widget!!")
+    }
+})
+</code></pre>
+
+<p>Otherwise, the arguments to the
 constructor are passed to <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a> and the return value of <code>setup</code> is discarded.</p>
 		</div>
 	</div>
@@ -354,22 +407,9 @@ constructor are passed to <a href="can.Construct.prototype.init.html">can.Constr
 
 		
 		<section class="comment">
-			<p>If a prototype <code>setup</code> method is provided, it is called when a new 
-instance is created. It is passed the same arguments that were passed
-to the constructor.</p>
+			<h2>Deciding between <code>setup</code> and <code>init</code></h2>
 
-<p>Because <code>setup</code> is not defined on <code>can.Construct</code> itself, calling super from
-directly-inheriting classes will break. In other words, don't do this:</p>
-
-<pre><code class="lang-javascript">can.Construct('Snowflake', {
-    setup: function() {
-        this._super(); // this will break!
-    }
-});</code></pre>
-
-<h2><code>setup</code> vs. <code>init</code></h2>
-
-<p>Usually, you should use <a href="can.Construct.prototype.init.html">can.Construct.prototype.init</a> to do your class's initialization.
+<p>Usually, you should use <a href="can.Construct.prototype.init.html">init</a> to do your constructor function's initialization.
 Use <code>setup</code> instead for:</p>
 
 <ul>
@@ -386,21 +426,22 @@ call their base's <code>init</code> methods.</li>
 method. It converts the first argument to a jQuery collection and
 extends the controller's defaults with the options that were passed.</p>
 
-<pre><code class="lang-javascript">can.Construct("can.Control", {
+<pre><code>can.Control = can.Construct.extend({
     setup: function(domElement, rawOptions) {
         // set up this.element
         this.element = $(domElement);
 
         // set up this.options
         this.options = can.extend({},
-                                  this.constructor.defaults,
-                                  rawOptions
-                                 );
+                              this.constructor.defaults,
+                              rawOptions
+                             );
 
         // pass this.element and this.options to init.
         return [this.element, this.options];        
     }
-});</code></pre>         
+});
+</code></pre>
 		</section>
 		
 
@@ -429,7 +470,8 @@ extends the controller's defaults with the options that were passed.</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

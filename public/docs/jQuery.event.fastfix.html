@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -85,19 +100,7 @@
 				
 				
 				<li class="search-container">
-					<a class="constructor" href="creates.html" data-search="a new vector instance from the arguments.  Example:">
-						a new vector instance from the arguments.  Example:
-					</a>
-				</li>
-				
-			
-			
-		
-			
-				
-				
-				<li class="search-container">
-					<a class="page" href="jQuery.Range.html" data-search="jQuery.Range">
+					<a class="constructor" href="jQuery.Range.html" data-search="jQuery.Range">
 						jQuery.Range
 					</a>
 				</li>
@@ -109,7 +112,19 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.animate.html" data-search="jQuery.animate">
+					<a class="constructor" href="jQuery.Vector.html" data-search="jQuery.Vector">
+						jQuery.Vector
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.animate.html" data-search="jQuery.animate">
 						jQuery.animate
 					</a>
 				</li>
@@ -145,7 +160,7 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.dimensions.html" data-search="jQuery.dimensions">
+					<a class="function" href="jQuery.dimensions.html" data-search="jQuery.dimensions">
 						jQuery.dimensions
 					</a>
 				</li>
@@ -157,7 +172,7 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.event.default.html" data-search="jQuery.event.default">
+					<a class="constructor" href="jQuery.event.default.html" data-search="jQuery.event.default">
 						jQuery.event.default
 					</a>
 				</li>
@@ -169,7 +184,7 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.event.destroyed.html" data-search="jQuery.event.destroyed">
+					<a class="constructor" href="jQuery.event.destroyed.html" data-search="jQuery.event.destroyed">
 						jQuery.event.destroyed
 					</a>
 				</li>
@@ -205,7 +220,7 @@
 				
 				
 				<li class="search-container active">
-					<a class="page" href="jQuery.event.fastfix.html" data-search="jQuery.event.fastfix">
+					<a class="constructor" href="jQuery.event.fastfix.html" data-search="jQuery.event.fastfix">
 						jQuery.event.fastfix
 					</a>
 				</li>
@@ -253,7 +268,7 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.event.resize.html" data-search="jQuery.event.resize">
+					<a class="constructor" href="jQuery.event.resize.html" data-search="jQuery.event.resize">
 						jQuery.event.resize
 					</a>
 				</li>
@@ -293,7 +308,7 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.selection.html" data-search="jQuery.selection">
+					<a class="function" href="jQuery.selection.html" data-search="jQuery.selection">
 						jQuery.selection
 					</a>
 				</li>
@@ -305,7 +320,7 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.styles.html" data-search="jQuery.styles">
+					<a class="function" href="jQuery.styles.html" data-search="jQuery.styles">
 						jQuery.styles
 					</a>
 				</li>
@@ -317,7 +332,7 @@
 				
 				
 				<li class="search-container">
-					<a class="page" href="jQuery.within.html" data-search="jQuery.within">
+					<a class="function" href="jQuery.within.html" data-search="jQuery.within">
 						jQuery.within
 					</a>
 				</li>
@@ -338,7 +353,7 @@
 		<section class="title">
 			<div class="pull-right">
 	<ul class="tags">
-		<li>page</li>
+		<li>constructor</li>
 	</ul>
 	<ul class="links">
 		
@@ -442,7 +457,8 @@ can bring you significant performance improvements in modern browsers.</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

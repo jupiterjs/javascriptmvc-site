@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>JavaScriptMVC  - jQuery.event.drag</title>
+	<title>JavaScriptMVC - jQuery.event.drag </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -91,8 +106,92 @@
 				
 				
 				<li class="search-container">
-					<a class="constructor" href="$.Drag.html" data-search="$.Drag">
-						$.Drag
+					<a class="constructor" href="jQuery.Drag.html" data-search="jQuery.Drag">
+						jQuery.Drag
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dragcleanup.html" data-search="dragcleanup">
+						dragcleanup
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dragdown.html" data-search="dragdown">
+						dragdown
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dragend.html" data-search="dragend">
+						dragend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.draginit.html" data-search="draginit">
+						draginit
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dragmove.html" data-search="dragmove">
+						dragmove
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dragout.html" data-search="dragout">
+						dragout
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dragover.html" data-search="dragover">
+						dragover
 					</a>
 				</li>
 				
@@ -128,6 +227,10 @@
 <h1>
 jQuery.event.drag
 
+	
+		<span class="module">jQuery.event.drag</span>
+	
+
 
 </h1>
 
@@ -149,7 +252,7 @@ jQuery.event.drag
 		
 		<section class="comment">
 			<p><code>jQuery.event.drag</code> provides drag events for jQuery.
-A [jQuery.Drag] instance is created on a drag and passed
+A <a href="jQuery.Drag.html">jQuery.Drag</a> instance is created on a drag and passed
 as a parameter to the drag event handlers.  By calling
 methods on the drag event, you can alter the drag's
 behavior.</p>
@@ -159,12 +262,12 @@ behavior.</p>
 <p>The drag plugin allows you to listen to the following events:</p>
 
 <ul>
-<li><code>dragdown</code> - the mouse cursor is pressed down</li>
-<li><code>draginit</code> - the drag motion is started</li>
-<li><code>dragmove</code> - the drag is moved</li>
-<li><code>dragend</code> - the drag has ended</li>
-<li><code>dragover</code> - the drag is over a drop point</li>
-<li><code>dragout</code> - the drag moved out of a drop point</li>
+<li><code><a href="jQuery.event.special.dragdown.html">dragdown</a></code> - the mouse cursor is pressed down</li>
+<li><code><a href="jQuery.event.special.draginit.html">draginit</a></code> - the drag motion is started</li>
+<li><code><a href="jQuery.event.special.dragmove.html">dragmove</a></code> - the drag is moved</li>
+<li><code><a href="jQuery.event.special.dragend.html">dragend</a></code> - the drag has ended</li>
+<li><code><a href="jQuery.event.special.dragover.html">dragover</a></code> - the drag is over a drop point</li>
+<li><code><a href="jQuery.event.special.dragout.html">dragout</a></code> - the drag moved out of a drop point</li>
 </ul>
 
 <p>Just by binding on one of these events, you make
@@ -194,24 +297,24 @@ By calling methods and changing the properties of the drag object, you can alter
 <p>The drag properties and methods:</p>
 
 <ul>
-<li><code>[jQuery.Drag.prototype.cancel cancel]</code> - stops the drag motion from happening*</li>
-<li><code>[jQuery.Drag.prototype.ghost ghost]</code> - copys the draggable and drags the cloned element*</li>
-<li><code>[jQuery.Drag.prototype.horizontal horizontal]</code> - limits the scroll to horizontal movement*</li>
-<li><code>[jQuery.Drag.prototype.location location]</code> - where the drag should be on the screen*</li>
-<li><code>[jQuery.Drag.prototype.mouseElementPosition mouseElementPosition]</code> - where the mouse should be on the drag*</li>
-<li><code>[jQuery.Drag.prototype.only only]</code> - only have drags, no drops*</li>
-<li><code>[jQuery.Drag.prototype.representative representative]</code> - move another element in place of this element*</li>
-<li><code>[jQuery.Drag.prototype.revert revert]</code> - animate the drag back to its position*</li>
-<li><code>[jQuery.Drag.prototype.vertical vertical]</code> - limit the drag to vertical movement*</li>
-<li><code>[jQuery.Drag.prototype.limit limit]</code> - limit the drag within an element (<em>limit plugin)</em></li>
-<li><code>[jQuery.Drag.prototype.scrolls scrolls]</code> - scroll scrollable areas when dragging near their boundries (<em>scroll plugin)</em></li>
+<li><code><a href="jQuery.Drag.prototype.cancel.html">cancel</a></code> - stops the drag motion from happening*</li>
+<li><code><a href="jQuery.Drag.prototype.ghost.html">ghost</a></code> - copys the draggable and drags the cloned element*</li>
+<li><code><a href="jQuery.Drag.prototype.horizontal.html">horizontal</a></code> - limits the scroll to horizontal movement*</li>
+<li><code><a href="jQuery.Drag.prototype.location.html">location</a></code> - where the drag should be on the screen*</li>
+<li><code><a href="jQuery.Drag.prototype.mouseElementPosition.html">mouseElementPosition</a></code> - where the mouse should be on the drag*</li>
+<li><code><a href="jQuery.Drag.prototype.only.html">only</a></code> - only have drags, no drops*</li>
+<li><code><a href="jQuery.Drag.prototype.representative.html">representative</a></code> - move another element in place of this element*</li>
+<li><code><a href="jQuery.Drag.prototype.revert.html">revert</a></code> - animate the drag back to its position*</li>
+<li><code><a href="jQuery.Drag.prototype.vertical.html">vertical</a></code> - limit the drag to vertical movement*</li>
+<li><code><a href="jQuery.Drag.prototype.limit.html">limit</a></code> - limit the drag within an element (<em>limit plugin)</em></li>
+<li><code><a href="jQuery.Drag.prototype.scrolls.html">scrolls</a></code> - scroll scrollable areas when dragging near their boundries (<em>scroll plugin)</em></li>
 </ul>
 
 <h2>Demo</h2>
 
 <p>Now lets see some examples:</p>
 
-<div class='demo_wrapper' data-demo-src='jquery/event/drag/drag.html' data-demo-height='1000'></div>
+<div class='demo_wrapper' data-demo-src='jquerypp/event/drag/drag.html' data-demo-height='1200'></div>
 		</section>
 		
 
@@ -240,7 +343,8 @@ By calling methods and changing the properties of the drag object, you can alter
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

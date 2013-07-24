@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -169,6 +184,16 @@
 			
 			
 		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Observe.prototype.serialize.html" data-search="serialize">
+						serialize
+					</a>
+				</li>
+				
+			
 			
 		
 			
@@ -386,7 +411,7 @@ each
 
 		
 		<section class="signature">
-			<h2>each(callback)</h2>
+			<h2>observe.each( callback(item, propName ) )</h2>
 <div class="signature-wrapper">
 <p><code>each</code> iterates through the Observe, calling a function
 for each property value and key.</p>
@@ -397,7 +422,7 @@ for each property value and key.</p>
 		
 		<li class="parameter">
 			<h4>callback
-				<code>{function()}</code></h4>
+				<code>{function(item, propName)}</code></h4>
 			<div class="description">
 				<p>the function to call for each property
 The value and key of each property will be passed as the first and second
@@ -475,7 +500,8 @@ names; // ['Alice', 'Bob']
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

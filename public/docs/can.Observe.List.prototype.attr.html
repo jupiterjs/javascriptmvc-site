@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -324,7 +339,7 @@ attr
 
 		
 		<section class="signature">
-			<h2>attr()</h2>
+			<h2>list.attr()</h2>
 <div class="signature-wrapper">
 <p>Gets a collection of all the elements in this <code>can.Observe.List</code>.</p>
 
@@ -343,7 +358,7 @@ attr
 		</section>
 		
 		<section class="signature">
-			<h2>attr(index)</h2>
+			<h2>list.attr(index)</h2>
 <div class="signature-wrapper">
 <p>Reads a element from this <code>can.Observe.List</code>.</p>
 
@@ -379,7 +394,7 @@ attr
 		</section>
 		
 		<section class="signature">
-			<h2>attr(index, value)</h2>
+			<h2>list.attr(index, value)</h2>
 <div class="signature-wrapper">
 <p>Assigns <em>value</em> to the index <em>index</em> on this <code>can.Observe.List</code>, expanding the list if necessary.</p>
 
@@ -426,7 +441,7 @@ attr
 		</section>
 		
 		<section class="signature">
-			<h2>attr(elements[, replaceCompletely])</h2>
+			<h2>list.attr(elements[, replaceCompletely])</h2>
 <div class="signature-wrapper">
 <p>Merges the members of <em>elements</em> into this List, replacing each from the beginning in order. If
  <em>elements</em> is longer than the current List, the current List will be expanded. If <em>elements</em>
@@ -718,7 +733,8 @@ of this, you may recieve multiple <em>length</em> events with the same
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

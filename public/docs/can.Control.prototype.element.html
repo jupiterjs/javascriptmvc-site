@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -193,6 +208,18 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Control.extend.html" data-search="can.Control.extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Control.processors.html" data-search="processors">
 						processors
 					</a>
@@ -303,12 +330,35 @@ element
 		</section>
 
 		<section class="description">
-			<p>The element the Control is associated with. 
-The control instance's HTMLElement (or window) wrapped by the 
+			<p>The element the Control is associated with. </p>
+		</section>
+
+		
+
+		
+		<div class='primary-options'>
+			<h2>
+	
+	   Property Type:
+	
+	
+	<code>{<a href="can.NodeList.html" >NodeList</a>}</code>
+</h2>
+
+
+
+
+
+
+		</div>
+		
+
+		
+		<section class="comment">
+			<p>The control instance's HTMLElement (or window) wrapped by the 
 util library for ease of use. It is set by the first
 parameter to <code>new can.Construct( element, options )</code> 
-in <a href="can.Control.prototype.setup.html">can.Control.prototype.setup</a>.  Control listens on <code>this.element</code>
-for events.</p>
+in <a href="can.Control.prototype.setup.html">can.Control.prototype.setup</a>.  By default, a control listens to events on <code>this.element</code>.</p>
 
 <h3>Quick Example</h3>
 
@@ -334,7 +384,7 @@ NodeList.  To get the raw HTMLElement, write:</p>
 </code></pre>
 
 <p>The following details the NodeList used by each library with 
-an example of updating it's text:</p>
+an example of updating its text:</p>
 
 <p><strong>jQuery</strong> <code>jQuery( HTMLElement )</code></p>
 
@@ -348,16 +398,18 @@ an example of updating it's text:</p>
 
 <p><strong>Dojo</strong> <code>new dojo.NodeList( HTMLElement )</code></p>
 
-<pre><code>// TODO
+<pre><code>this.element.text("Hello World")
 </code></pre>
 
 <p><strong>Mootools</strong> <code>$$( HTMLElement )</code></p>
 
-<p>this.element.empty().appendText("Hello World")</p>
+<pre><code>this.element.empty().appendText("Hello World")
+</code></pre>
 
 <p><strong>YUI</strong> </p>
 
-<p>// TODO</p>
+<pre><code>this.element.set("text", "Hello World")
+</code></pre>
 
 <h2>Changing <code>this.element</code></h2>
 
@@ -377,7 +429,7 @@ original element.</p>
      this.oldElement = $( el );
      var newEl = $( '&lt;div/&gt;' );
      this.oldElement.wrap( newEl );
-     can.Controll.prototype.setup.call( this, newEl, options );
+     can.Control.prototype.setup.call( this, newEl, options );
   },
   init: function() {
      this.element //-&gt; the div
@@ -406,38 +458,6 @@ then calling <a href="can.Control.prototype.on.html">can.Control.prototype.on</a
 }
 </code></pre>
 		</section>
-
-		
-
-		
-		<div class='primary-options'>
-			<h2>
-	
-	   Property Type:
-	
-	
-	<code>{NodeList}</code>
-</h2>
-
-
-
-
-
-
-		</div>
-		
-
-		
-		<section class="comment">
-			<p>The library-wrapped element this control is associated with,
-as passed into the constructor. If you want to change the element
-that a Control will attach to, you should do it in <a href="can.Control.prototype.setup.html">setup</a>.
-If you change the element later, make sure to call <a href="can.Control.prototype.on.html">on</a>
-to rebind all the bindings.</p>
-
-<p>If <code>element</code> is removed from the DOM, <a href="can.Control.prototype.destroy.html">can.Control.prototype.destroy</a> will
-be called and the Control will be destroyed.</p>
-		</section>
 		
 
 		
@@ -465,7 +485,8 @@ be called and the Control will be destroyed.</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

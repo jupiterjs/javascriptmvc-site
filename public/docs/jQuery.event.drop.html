@@ -17,7 +17,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	<title>JavaScriptMVC  - jQuery.event.drop</title>
+	<title>JavaScriptMVC - jQuery.event.drop </title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -91,8 +106,80 @@
 				
 				
 				<li class="search-container">
-					<a class="constructor" href="$.Drop.html" data-search="$.Drop">
-						$.Drop
+					<a class="constructor" href="jQuery.Drop.html" data-search="jQuery.Drop">
+						jQuery.Drop
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dropend.html" data-search="dropend">
+						dropend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dropinit.html" data-search="dropinit">
+						dropinit
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dropmove.html" data-search="dropmove">
+						dropmove
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dropon.html" data-search="dropon">
+						dropon
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dropout.html" data-search="dropout">
+						dropout
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="jQuery.event.special.dropover.html" data-search="dropover">
+						dropover
 					</a>
 				</li>
 				
@@ -128,6 +215,10 @@
 <h1>
 jQuery.event.drop
 
+	
+		<span class="module">jQuery.event.drop</span>
+	
+
 
 </h1>
 
@@ -153,23 +244,23 @@ drop event, callback functions will be called during the corresponding phase of 
 
 <h2>Drop Events</h2>
 
-<p>All drop events are called with the native event, an instance of [jQuery.Drop], and [jQuery.Drag]. The following
+<p>All drop events are called with the native event, an instance of <a href="jQuery.Drop.html">jQuery.Drop</a>, and <a href="jQuery.Drag.html">jQuery.Drag</a>. The following
 drop events are supported:</p>
 
 <ul>
-<li>[jQuery.event.special.dropinit dropinit] - the drag motion is started, drop positions are calculated.</li>
-<li>[jQuery.event.special.dropover dropover] - a drag moves over a drop element, called once as the drop is dragged over the element.</li>
-<li>[jQuery.event.special.dropout dropout] - a drag moves out of the drop element.</li>
-<li>[jQuery.event.special.dropmove dropmove] - a drag is moved over a drop element, called repeatedly as the element is moved.</li>
-<li>[jQuery.event.special.dropon dropon] - a drag is released over a drop element.</li>
-<li>[jQuery.event.special.dropend dropend] - the drag motion has completed.</li>
+<li><a href="jQuery.event.special.dropinit.html">dropinit</a> - the drag motion is started, drop positions are calculated.</li>
+<li><a href="jQuery.event.special.dropover.html">dropover</a> - a drag moves over a drop element, called once as the drop is dragged over the element.</li>
+<li><a href="jQuery.event.special.dropout.html">dropout</a> - a drag moves out of the drop element.</li>
+<li><a href="jQuery.event.special.dropmove.html">dropmove</a> - a drag is moved over a drop element, called repeatedly as the element is moved.</li>
+<li><a href="jQuery.event.special.dropon.html">dropon</a> - a drag is released over a drop element.</li>
+<li><a href="jQuery.event.special.dropend.html">dropend</a> - the drag motion has completed.</li>
 </ul>
 
 <p>A drop instance supports the following methods:</p>
 
 <ul>
-<li><a href="$.Drop.prototype.cache.html">cache</a> - cache the position of the drop for faster hit detection</li>
-<li><a href="$.Drop.prototype.cancel.html">cancel</a> - cancel this drop point from responding to drags</li>
+<li><a href="jQuery.Drop.prototype.cache.html">cache</a> - cache the position of the drop for faster hit detection</li>
+<li><a href="jQuery.Drop.prototype.cancel.html">cancel</a> - cancel this drop point from responding to drags</li>
 </ul>
 
 <p>If you are adding drop points after the start of a drag motion, call [$.Drop.compile] to
@@ -186,7 +277,7 @@ re-calculate all drop points.</p>
 
 <p>A bit more complex example:</p>
 
-<div class='demo_wrapper' data-demo-src='jquery/event/drop/drop.html' data-demo-height='1000'></div>
+<div class='demo_wrapper' data-demo-src='jquerypp/event/drop/drop.html' data-demo-height='500'></div>
 
 <h2>How it works</h2>
 
@@ -229,7 +320,8 @@ if available.</p></li>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -153,6 +168,30 @@
 				
 				
 				<li class="search-container">
+					<a class="property" href="can.Construct.constructorExtends.html" data-search="constructorExtends">
+						constructorExtends
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Construct.extend.html" data-search="extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Construct.fullName.html" data-search="fullName">
 						fullName
 					</a>
@@ -207,8 +246,6 @@
 				</li>
 				
 			
-			
-		
 			
 		
 	</ul>
@@ -305,62 +342,85 @@ can.Construct
 		</section>
 
 		<section class="description">
-			
+			<p>Provides a way to easily use the power of prototypal inheritance 
+without worrying about hooking up all the particulars yourself. Use
+<a href="can.Construct.extend.html">can.Construct.extend</a> to create a inheritable
+constructor function of your own.</p>
 		</section>
 
 		
 		<section class="signature">
-			<h2>can.Construct([name, [staticProperties,]] instanceProperties)</h2>
+			<h2>new can.Construct([args..])</h2>
 <div class="signature-wrapper">
+<p>Create a new instance of a constructor function. <code>new</code> is not
+used with <code>can.Construct</code> directly. Instead, it is used with a constructor 
+function returned by <a href="can.Construct.extend.html">can.Construct.extend</a>. For
+example:</p>
+
+<pre><code>Animal = can.Construct.extend({
+  sayHi: function(){
+    console.log("hi")
+  }
+})
+var animal = new Animal()
+animal.sayHi();
+</code></pre>
+
+<p>Any arguments passed to the construction function are passed 
+to <a href="can.Construct.prototype.setup.html">setup</a> and <a href="can.Construct.prototype.init.html">init</a>.</p>
 
 
-	<h3>Parameters</h3>
 
-	<ol class="parameters">
+</div>
+
+		</section>
 		
-		<li class="parameter">
-			<h4>name
-				<code>{String}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>the namespace and name of the constructor</p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>staticProperties
-				<code>{Object}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>properties that will belong to the constructor</p>
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>instanceProperties
-				<code>{Object}</code></h4>
-			<div class="description">
-				<p>properties that will belong to instances made with the constructor</p>
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
+		<section class="signature">
+			<h2>can.Construct([name,] [staticProperties,] instanceProperties)</h2>
+<div class="signature-wrapper">
+<p>Creates a new extended constructor function. Example:</p>
+
+<pre><code>Animal = can.Construct({
+  sayHi: function(){
+    console.log("hi")
+  }
+})
+</code></pre>
+
+<p>This is deprecated. In CanJS 1.2, by default, calling the constructor function
+without <code>new</code> will create a <code>new</code> instance.  This behavior is controlled
+by the <a href="can.Construct.constructorExtends.html">constructorExtends</a> property.</p>
+
+<p>Use <a href="can.Construct.extend.html">can.Construct.extend</a> 
+instead of calling the constructor to extend.</p>
 
 
-	<h3>Returns</h3>
-	<div class="returns">
-		<h4><code>{function()}</code></h4>
-		<div class="description">
-			<p>The constructor.</p>
-		</div>
-	</div>
+
+</div>
+
+		</section>
+		
+		<section class="signature">
+			<h2>can.Construct([args...])</h2>
+<div class="signature-wrapper">
+<p>Create a new instance of a constructor function if
+<a href="can.Construct.constructorExtends.html">constructorExtends</a> is 
+false. <code>can.Construct([args...])</code> is not used with <code>can.Construct</code>
+directly. Instead it is used on constructor functions
+extended from <a href="can.Construct.html">can.Construct</a>.</p>
+
+<pre><code>Animal = can.Construct.extend({
+   constructorExtends: false
+},{
+  sayHi: function(){
+    console.log("hi")
+  }
+})
+var animal = Animal();
+</code></pre>
+
+<p>This will be the default behavior in CanJS 1.2.</p>
+
 
 
 </div>
@@ -372,53 +432,42 @@ can.Construct
 
 		
 		<section class="comment">
-			<p><code>can.Construct</code> provides a way to easily use the power of prototypal inheritance without worrying
-about hooking up all the particulars yourself. It is inspired by John Resig's 
-<a href="http://ejohn.org/blog/simple-javascript-inheritance/|Simple">JavaScript Inheritance</a> concept.</p>
+			<h2>Use</h2>
 
-<p>In the example below, <code>Animal</code> is a constructor function. All instances of <code>Animal</code> will have a <code>breathe</code>
+<p>In the example below, <code>Animal</code> is a constructor function. All instances of <code>Animal</code> will have a <code>speak</code>
 method, and the <code>Animal</code> constructor itself has a <code>legs</code> property.</p>
 
-<pre><code class="lang-javascript">can.Construct('Animal', {
+<pre><code>Animal = can.Construct.extend({
     legs: 4
 }, {
     init: function(sound) {
         this.sound = sound;
-    }
+    },
     speak: function() {
         console.log(this.sound);
     }
-});</code></pre>
-
-<p>You don't have to pass in a name. If you do, the constructor is assigned to that name globally. If not,
-you'll want to make sure you save your constructor to use later:</p>
-
-<pre><code class="lang-javascript">var Robot = can.Construct({
-    beep: function() {
-        console.log('Beep boop.');
-    }
-});</code></pre>
+});
+</code></pre>
 
 <p>You can make instances by calling your constructor with the <code>new</code> keyword. When you do, the <a href="can.Construct.prototype.init.html">init</a>
 method gets called (if you supplied one):</p>
 
-<pre><code class="lang-javascript">var panther = new Animal({sound: 'growl'});
+<pre><code>var panther = new Animal('growl');
 panther.speak(); // "growl"
-panther instanceof Animal; // true</code></pre>
-
-<p>This becomes much more powerful when you add inheritance.</p>
+panther instanceof Animal; // true
+</code></pre>
 
 <h2>Inheritance</h2>
 
-<p>Subclasses with <code>can.Construct</code> are simple. All you need to do is call the base constructor
+<p>Creating "subclasses" with <code>can.Construct</code> is simple. All you need to do is call the base constructor
 with the new function's static and instance properties. For example, we want our <code>Snake</code> to
 be an <code>Animal</code>, but there are some differences:</p>
 
-<pre><code class="lang-javascript">Animal('Snake', {
+<pre><code>Snake = Animal({
     legs: 0
 }, {
     init: function() {
-        this.sound = 'ssssss';
+        Animal.prototype.init.call(this, 'ssssss');
     },
     slither: function() {
         console.log('slithering...');
@@ -429,9 +478,8 @@ var baslisk = new Snake();
 baslisk.speak();   // "ssssss"
 baslisk.slither(); // "slithering..."
 baslisk instanceof Snake;  // true
-baslisk instanceof Animal; // true</code></pre>
-
-<p>Note that <code>Animal</code>'s <code>init</code> does not get called.</p>
+baslisk instanceof Animal; // true
+</code></pre>
 
 <h2>Static properties and inheritance</h2>
 
@@ -500,7 +548,8 @@ Snake.legs; // 0</code></pre>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

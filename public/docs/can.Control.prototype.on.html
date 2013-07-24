@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -193,6 +208,18 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Control.extend.html" data-search="can.Control.extend">
+						extend
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="property" href="can.Control.processors.html" data-search="processors">
 						processors
 					</a>
@@ -308,7 +335,7 @@ on
 
 		
 		<section class="signature">
-			<h2>on([el,] selector, eventName, func)</h2>
+			<h2>control.on([el,] selector, eventName, func)</h2>
 <div class="signature-wrapper">
 
 
@@ -335,7 +362,7 @@ on
 		
 		<li class="parameter">
 			<h4>selector
-				<code>{String}</code></h4>
+				<code>{<a href="CSSSelectorString.html" >CSSSelectorString</a>}</code></h4>
 			<div class="description">
 				<p>A css selector for event delegation.</p>
 			</div>
@@ -387,9 +414,9 @@ and second parameter.  Otherwise the function is called back like a normal bind.
 		</section>
 		
 		<section class="signature">
-			<h2>on()</h2>
+			<h2>control.on()</h2>
 <div class="signature-wrapper">
-
+<p>Rebind all of a control's event handlers.</p>
 
 
 	<h3>Returns</h3>
@@ -442,7 +469,7 @@ var taskstriker = new TaskStriker({
 </code></pre>
 
 <p>To update the taskstriker's task, add a task method that updates
-this.options and calls rebind like:</p>
+this.options and rebinds the event handlers for the new task like:</p>
 
 <pre><code>TaskStriker = can.Control({
   "{task} completed": function(){
@@ -516,7 +543,8 @@ somethingClicked: function( el, ev ) {
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	

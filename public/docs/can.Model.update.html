@@ -35,9 +35,24 @@
 		<nav class="container">
 
 			<div class="logo-menu">
-				<a class="brand" href="./index.html">JavaScriptMVC</a>
+				<a class="brand canjs" href="./index.html">JavaScriptMVC</a>
+				<ul class="dropdown-menu">
+					<li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+					<li class="active"><a href="./index.html">CanJS</a></li>
+					<li><a href="http://jquerypp.com">jQuery++</a></li>
+					<li><a href="http://javascriptmvc.com/docs/stealjs.html">StealJS</a></li>
+					<li><a href="http://javascriptmvc.com/docs/FuncUnit.html">FuncUnit</a></li>
+					<li><a href="http://javascriptmvc.com/docs/DocumentJS.html">DocumentJS</a></li>
+				</ul>
 			</div>
-
+			<ul class="nav">
+				<li><a href="/index.html">Home</a></li>
+				<li class="active"><a href="/docs/index.html">Docs</a></li>
+				<li><a href="http://forum.javascriptmvc.com">Forums</a></li>
+				<li><a href="http://github.com/bitovi/javascriptmvc">Code</a></li>
+				<li><a href="http://twitter.com/javascriptmvc">Twitter</a></li>
+				<li><a href="/dist/javascriptmvc-3.3.zip">Download</a></li>
+			</ul>
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -249,6 +264,30 @@
 				
 				
 				<li class="search-container">
+					<a class="function" href="can.Model.makeFindAll.html" data-search="can.Model.makeFindAll">
+						makeFindAll
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
+					<a class="function" href="can.Model.makeFindOne.html" data-search="can.Model.makeFindOne">
+						makeFindOne
+					</a>
+				</li>
+				
+			
+			
+		
+			
+				
+				
+				<li class="search-container">
 					<a class="function" href="can.Model.model.html" data-search="model">
 						model
 					</a>
@@ -267,6 +306,8 @@
 				</li>
 				
 			
+			
+		
 			
 		
 			
@@ -352,7 +393,7 @@ update
 
 		
 		<section class="signature">
-			<h2>[METHOD] /path/to/resource</h2>
+			<h2>can.Model.update: &quot;[METHOD] /path/to/resource&quot;</h2>
 <div class="signature-wrapper">
 <p>If you provide a URL, the Model will send a request to that URL using
 the method specified (or PUT if none is specified) when updating an
@@ -373,7 +414,7 @@ instance on the server. (See below for more details.)</p>
 		</section>
 		
 		<section class="signature">
-			<h2>function(id, serialized)</h2>
+			<h2>can.Model.update: function(id, serialized) -&gt; can.Deffered</h2>
 <div class="signature-wrapper">
 <p>If you provide a function, the Model will expect you to do your own AJAX requests.</p>
 
@@ -432,7 +473,7 @@ update a model instance on the server. </p>
 
 <p>The easist way to implement update is to just give it the url to <code>PUT</code> data to:</p>
 
-<pre><code>Recipe = can.Model({
+<pre><code>Recipe = can.Model.extend({
   update: "/recipes/{id}"
 },{});
 </code></pre>
@@ -453,7 +494,7 @@ name=salad
 
 <p>If your server doesn't use PUT, you can change it to post like:</p>
 
-<pre><code>$.Model("Recipe",{
+<pre><code>Recipe = can.Model.extend({
   update: "POST /recipes/{id}"
 },{});
 </code></pre>
@@ -486,7 +527,7 @@ something that looks like:</p>
 
 <p>The code looks like:</p>
 
-<pre><code>Recipe = can.Model({
+<pre><code>Recipe = can.Model.extend({
   update : function(id, attrs ) {
     return $.post("/recipes/"+id+".json",attrs, null,"json");
   }
@@ -520,7 +561,8 @@ something that looks like:</p>
 			executed: ["documentjs/site/static/build/production.css"]
 		}
 	</script>
-	<script type='text/javascript' 
+	<p></p>
+	<script 
 	
 		src="./static/steal.production.js"
 	
