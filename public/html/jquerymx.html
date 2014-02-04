@@ -406,7 +406,7 @@ inserts the result in the <code>#tasks</code> element.</p>
 
 <p><code>tasks.ejs</code> might look like:</p>
 
-<pre><code class=" javascript">&lt;% $.each(<span class="keyword">this</span>, <span class="function"><span class="keyword">function</span><span class="params">(task)</span>{</span>  %&gt;
+<pre><code class=" javascript">&lt;% $.each(<span class="keyword">this</span>, <span class="function"><span class="keyword">function</span><span class="params">(i, task)</span>{</span>  %&gt;
   &lt;li&gt;&lt;%= task.name %&gt;&lt;/li&gt;
 &lt;% }) %&gt;
 </code></pre>
